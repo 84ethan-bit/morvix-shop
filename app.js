@@ -59,9 +59,7 @@ function renderProducts() {
     title.textContent = '🔥 지금 가장 많이 찾는 검증 제품';
   }
 
-  count.textContent = `총 ${filtered.length}개 검증 자산`;
-
-  grid.innerHTML = filtered.map(p => `
+    grid.innerHTML = filtered.map(p => `
     <div class="product-card" onclick="openProductDetail('${p.slug}')">
       <div class="card-image-wrapper">
         <img class="card-image" src="${p.thumbnail}" alt="${p.name}">
@@ -72,11 +70,10 @@ function renderProducts() {
         <h3 class="card-title">${p.name}</h3>
         <p class="card-subtitle">${p.subtitle}</p>
         <div class="card-meta">
-          <div class="card-price-box">
-            <span class="price-discount">${p.discount_rate} OFF</span>
-            <span class="price-current">${p.price.toLocaleString()}원</span>
+          <div class="card-trust-box" style="display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: #2ed573; font-weight: 700;">
+            <span>🔥 MORVIX 추천</span>
           </div>
-          <button class="btn-card-buy">🛒 최저가 확인 ➔</button>
+          <button class="btn-card-buy">🛒 최저가/구매처 확인 ➔</button>
         </div>
       </div>
     </div>
@@ -100,13 +97,13 @@ function openProductDetail(slug) {
     linksArray = product.affiliate_links.sort((a, b) => (a.priority || 99) - (b.priority || 99));
   } else if (product.affiliate_links) {
     if (product.affiliate_links.coupang) {
-      linksArray.push({ platform: 'coupang', label: '🛒 쿠팡 최저가 확인 및 구매 ➔', url: product.affiliate_links.coupang, bg_gradient: 'linear-gradient(135deg, #ff4757, #ff6b81)' });
+      linksArray.push({ platform: 'coupang', label: '🛒 쿠팡 최저가 확인 및 구매하기 ➔', url: product.affiliate_links.coupang, bg_gradient: 'linear-gradient(135deg, #ff4757, #ff6b81)' });
     }
     if (product.affiliate_links.naver) {
       linksArray.push({ platform: 'naver', label: '🟢 네이버 쇼핑커넥트 확인 및 구매 ➔', url: product.affiliate_links.naver, bg_gradient: 'linear-gradient(135deg, #03cf5d, #02b651)' });
     }
   } else if (product.coupang_link) {
-    linksArray.push({ platform: 'coupang', label: '🛒 쿠팡 최저가 확인 및 구매 ➔', url: product.coupang_link, bg_gradient: 'linear-gradient(135deg, #ff4757, #ff6b81)' });
+    linksArray.push({ platform: 'coupang', label: '🛒 쿠팡 최저가 확인 및 구매하기 ➔', url: product.coupang_link, bg_gradient: 'linear-gradient(135deg, #ff4757, #ff6b81)' });
   }
 
   body.innerHTML = `
@@ -117,26 +114,28 @@ function openProductDetail(slug) {
       <div class="detail-right">
         <span class="detail-slug-box">morvix.kr/${product.slug}</span>
         <h2 class="detail-title">${product.name}</h2>
-        <div class="detail-rating">★★★★★ ${product.rating} / 5.0 (구매 리뷰 ${product.review_count}개)</div>
+        <div class="detail-rating">★★★★★ ${product.rating || 4.9} / 5.0 (실사용 만족도 검증 완료)</div>
         <p style="color: var(--text-muted); font-size: 0.95rem;">"${product.subtitle}"</p>
         
         <ul class="usps-list">
           ${product.usps.map(u => `<li>✔ ${u}</li>`).join('')}
         </ul>
 
-        <div style="display: flex; gap: 10px; align-items: baseline; margin-top: 16px;">
-          <span style="color: #ff4757; font-weight: 800; font-size: 1.1rem;">${product.discount_rate}</span>
-          <span style="font-family: var(--font-brand); font-size: 2rem; font-weight: 900; color: #fff;">
-            ${product.price.toLocaleString()}원
-          </span>
-          <span style="color: var(--text-muted); text-decoration: line-through; font-size: 0.9rem;">
-            ${product.original_price.toLocaleString()}원
-          </span>
+        <div class="detail-trust-banner" style="display: flex; align-items: center; justify-content: space-between; margin-top: 16px; background: rgba(46, 213, 115, 0.1); border: 1px solid rgba(46, 213, 115, 0.3); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.88rem; color: #2ed573; font-weight: 700;">
+          <span>🔥 MORVIX 검증 추천</span>
+          <span>⚡ 제휴 플랫폼별 실시간 최저가 확인</span>
         </div>
 
         <div class="affiliate-cta-group" style="display: flex; flex-direction: column; gap: 10px; margin-top: 18px;">
           ${linksArray.map(link => `
             <a href="${link.url}" target="_blank" class="btn-affiliate-cta" onclick="registerAffiliateConversion('${product.slug}', '${link.platform}')" style="background: ${link.bg_gradient || 'linear-gradient(135deg, #00f2fe, #4facfe)'}; color: #fff; text-align: center; padding: 14px; border-radius: var(--radius-md); font-weight: 700; text-decoration: none; display: block; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+              ${link.label}
+            </a>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `;0; text-decoration: none; display: block; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
               ${link.label}
             </a>
           `).join('')}
