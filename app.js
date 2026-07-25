@@ -1024,6 +1024,42 @@ function renderAnalyticsTable() {
   }).join('');
 }
 
+function getProductQualityScore(p) {
+  let score = 0;
+  if (p.thumbnail && p.thumbnail.length > 5) score += 20;
+  if (p.image_status === 'Verified') score += 10;
+  if (p.price && p.price > 0) score += 20;
+  if (Array.isArray(p.affiliate_links) && p.affiliate_links.length > 0) score += 20;
+  if (p.category && p.category !== 'all') score += 15;
+  if (p.subtitle || (Array.isArray(p.usps) && p.usps.length > 0)) score += 15;
+  return score;
+}
+
+function getProductHealth(score) {
+  if (score >= 85) return { label: '🟢 Healthy', color: '#2ed573', bg: 'rgba(46,213,115,0.15)' };
+  if (score >= 60) return { label: '🟡 Review Need', color: '#ffa502', bg: 'rgba(255,165,2,0.15)' };
+  return { label: '🔴 Broken', color: '#ff4757', bg: 'rgba(255,71,87,0.15)' };
+}
+
+function updateProductPrice(id, newPrice) {
+  const p = dbData.products.find(item => item.id === id);
+  if (!p) return;
+  const numPrice = parseInt(newPrice);
+  if (isNaN(numPrice)) return;
+
+  p.price = numPrice;
+  if (!p.price_history) p.price_history = [];
+  p.price_history.push({ price: numPrice, date: new Date().toISOString() });
+  p.version = (p.version || 1) + 1;
+
+  saveMasterDbToStorage();
+  renderAdminProductList();
+  renderProducts();
+  alert(`✅ [Master DB v${p.version}] 실시간 가격이 ${numPrice.toLocaleString()}원으로 변경되었으며 price_history 히스토리에 아카이브되었습니다.`);
+}
+
+window.updateProductPrice = updateProductPrice;
+
 function renderAdminProductList() {
   const tbody = document.getElementById('master-product-tbody');
   if (!tbody || !dbData) return;
@@ -1061,9 +1097,14 @@ function renderAdminProductList() {
 
     const imgStatus = p.image_status || (p.thumbnail && p.thumbnail.includes('unsplash') ? 'Verified' : 'Manual');
     const imgBadge = imgStatus === 'Verified' ? '<span style="background: rgba(46,213,115,0.2); color: #2ed573; padding: 2px 5px; border-radius: 3px; font-size: 0.68rem; font-weight: 700;">🟢 HD 검증</span>' :
-                     imgStatus === 'AI Generated' ? '<span style="background: rgba(0,210,255,0.2); color: #00d2ff; padding: 2px 5px; border-radius: 3px; font-size: 0.68rem; font-weight: 700;">🔵 AI 생성을 완료함</span>' :
-                     imgStatus === 'Missing' ? '<span style="background: rgba(255,71,87,0.2); color: #ff4757; padding: 2px 5px; border-radius: 3px; font-size: 0.68rem; font-weight: 700;">🔴 이미지 보완 필요</span>' :
-                     '<span style="background: rgba(255,165,2,0.2); color: #ffa502; padding: 2px 5px; border-radius: 3px; font-size: 0.68rem; font-weight: 700;">🟡 수동 입력</span>';
+                     imgStatus === 'AI Generated' ? '<span style="background: rgba(0,210,255,0.2); color: #00d2ff; padding: 2px 5px; border-radius: 3px; font-size: 0.68rem; font-weight: 700;">🔵 AI 픽셀</span>' :
+                     imgStatus === 'Missing' ? '<span style="background: rgba(255,71,87,0.2); color: #ff4757; padding: 2px 5px; border-radius: 3px; font-size: 0.68rem; font-weight: 700;">🔴 이미지 없음</span>' :
+                     '<span style="background: rgba(255,165,2,0.2); color: #ffa502; padding: 2px 5px; border-radius: 3px; font-size: 0.68rem; font-weight: 700;">🟡 수동 세팅</span>';
+
+    const qScore = getProductQualityScore(p);
+    const health = getProductHealth(qScore);
+    const versionStr = `v${p.version || 1}`;
+    const historyCount = p.price_history ? p.price_history.length : 1;
 
     return `
       <tr>
@@ -1074,11 +1115,13 @@ function renderAdminProductList() {
               <img src="${p.thumbnail}" onclick="openProductDetail('${p.slug}')" style="width: 42px; height: 42px; object-fit: cover; border-radius: 4px; cursor: pointer;">
             </div>
             <div>
-              <div style="display: flex; gap: 6px; align-items: center;">
+              <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
                 <strong style="color: #00d2ff; font-size: 0.88rem; cursor: pointer; text-decoration: underline;" onclick="openProductDetail('${p.slug}')">${p.name} 🔍</strong>
                 ${imgBadge}
+                <span style="background: ${health.bg}; color: ${health.color}; padding: 2px 5px; border-radius: 3px; font-size: 0.68rem; font-weight: 700;">${health.label} (${qScore}점)</span>
+                <span style="background: rgba(255,255,255,0.08); color: #aaa; padding: 2px 4px; border-radius: 3px; font-size: 0.65rem; font-weight: 600;">${versionStr}</span>
               </div>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">morvix.kr/${p.slug} | ${p.episode_label || p.episode_id}</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">morvix.kr/${p.slug} | ${p.episode_label || p.episode_id} | 💰 변동이력 ${historyCount}건</div>
             </div>
           </div>
         </td>
