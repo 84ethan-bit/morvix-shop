@@ -386,6 +386,9 @@ function openProductDetail(slug) {
     linksArray.push({ platform: 'coupang', label: '🛒 쿠팡 최저가 확인 및 구매하기 ➔', url: product.coupang_link, bg_gradient: 'linear-gradient(135deg, #ff4757, #ff6b81)' });
   }
 
+  // Related Cross-Selling Products Cluster
+  const relatedProds = dbData.products.filter(p => p.slug !== slug).slice(0, 3);
+
   body.innerHTML = `
     <div class="detail-grid">
       <div class="detail-left">
@@ -421,9 +424,34 @@ function openProductDetail(slug) {
         </div>
       </div>
     </div>
+
+    <!-- Related Cross-Selling Cluster -->
+    <div style="margin-top: 28px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+      <h4 style="color: var(--primary-accent); font-size: 0.98rem; font-weight: 800; margin-bottom: 12px;">🔗 함께 둘러보면 일상의 억까가 풀리는 연관 추천 클러스터</h4>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+        ${relatedProds.map(rp => `
+          <div onclick="openProductDetail('${rp.slug}')" style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 10px; cursor: pointer; transition: transform 0.2s;">
+            <img src="${rp.thumbnail}" style="width: 100%; height: 90px; object-fit: cover; border-radius: 4px; margin-bottom: 6px;">
+            <div style="font-size: 0.82rem; font-weight: 700; color: #fff; line-height: 1.2; height: 2rem; overflow: hidden;">${rp.name}</div>
+            <div style="font-size: 0.78rem; color: #2ed573; margin-top: 6px; font-weight: 600;">🛒 최저가 확인 ➔</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
   `;
 
   if (modal) modal.classList.add('active');
+}
+
+// Curation Quick Filter Helper
+function filterCuration(catId) {
+  document.querySelectorAll('.curation-pill').forEach(pill => pill.classList.remove('active'));
+  const activePill = document.querySelector(`.curation-pill[onclick="filterCuration('${catId}')"]`);
+  if (activePill) activePill.classList.add('active');
+
+  currentCategory = catId;
+  renderCategories();
+  renderProducts();
 }
 
 // Track Outbound Clicks

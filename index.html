@@ -76,6 +76,27 @@
     </div>
   </section>
 
+  <!-- AI Curation Discovery Quick Bar -->
+  <section class="curation-bar" style="background: rgba(255, 255, 255, 0.02); border-bottom: 1px solid var(--border-color); padding: 12px 16px;">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;">
+      <button class="curation-pill active" onclick="filterCuration('all')" style="background: rgba(0, 242, 254, 0.15); border: 1px solid var(--primary-accent); color: var(--primary-accent); padding: 6px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 700; cursor: pointer; white-space: nowrap;">
+        🥇 인기/할인 TOP 랭킹
+      </button>
+      <button class="curation-pill" onclick="filterCuration('summer')" style="background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; cursor: pointer; white-space: nowrap;">
+        🦟 여름/열대야 억까 탈출
+      </button>
+      <button class="curation-pill" onclick="filterCuration('it')" style="background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; cursor: pointer; white-space: nowrap;">
+        💻 직장인 데스크테리어
+      </button>
+      <button class="curation-pill" onclick="filterCuration('pet')" style="background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; cursor: pointer; white-space: nowrap;">
+        🐾 집사 필수 힐링템
+      </button>
+      <button class="curation-pill" onclick="filterCuration('car')" style="background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; cursor: pointer; white-space: nowrap;">
+        🚗 드라이버 차량 구원템
+      </button>
+    </div>
+  </section>
+
   <!-- Category Nav Bar -->
   <nav class="category-nav">
     <div class="category-container" id="category-container">
