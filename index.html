@@ -105,6 +105,24 @@
     </div>
   </div>
 
+  <!-- Admin PIN Login Modal -->
+  <div class="modal-overlay" id="admin-login-modal">
+    <div class="modal-card" style="max-width: 420px; text-align: center; padding: 36px 24px;">
+      <button class="modal-close" id="btn-close-login-modal">&times;</button>
+      <div style="font-size: 2.8rem; margin-bottom: 12px;">🔒</div>
+      <h3 style="font-size: 1.3rem; font-weight: 800; color: #fff; margin-bottom: 6px;">MORVIX Admin OS 인증</h3>
+      <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 20px;">관리자 전용 PIN 암호를 입력해 주세요.</p>
+      
+      <form id="form-admin-login">
+        <input type="password" id="input-admin-pin" placeholder="PIN 암호 입력 (기본: 2026)" style="width: 100%; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: rgba(0,0,0,0.4); color: #fff; text-align: center; font-size: 1.2rem; font-weight: 700; letter-spacing: 4px; margin-bottom: 16px;" required autofocus autocomplete="current-password">
+        <button type="submit" style="width: 100%; background: var(--primary-gradient); color: #fff; border: none; padding: 14px; border-radius: var(--radius-md); font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);">
+          🚀 관리자 시스템 1초 접속
+        </button>
+      </form>
+      <div id="login-error-msg" style="color: #ff4757; font-size: 0.88rem; margin-top: 14px; display: none; font-weight: 700;">⚠️ 인증 실패: PIN 암호가 올바르지 않습니다.</div>
+    </div>
+  </div>
+
   <!-- Admin OS Modal -->
   <div class="modal-overlay" id="admin-modal">
     <div class="admin-card">

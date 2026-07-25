@@ -189,35 +189,58 @@ function setupAdminEvents() {
   const modal = document.getElementById('admin-modal');
   const brandLogo = document.getElementById('brand-logo');
 
-  // Verify Admin Auth PIN
+  const loginModal = document.getElementById('admin-login-modal');
+  const btnCloseLogin = document.getElementById('btn-close-login-modal');
+  const formLogin = document.getElementById('form-admin-login');
+  const inputPin = document.getElementById('input-admin-pin');
+  const loginErrorMsg = document.getElementById('login-error-msg');
+
+  // Verify Admin Auth PIN via In-Page Modal
   function verifyAndOpenAdmin() {
     if (sessionStorage.getItem('morvix_admin_auth') === 'true') {
-      btnOpen.classList.add('visible');
+      if (loginModal) loginModal.classList.remove('active');
       modal.classList.add('active');
       renderAnalyticsTable();
       renderAdminProductList();
       return;
     }
 
-    const pin = prompt("🔒 MORVIX Admin OS PIN 번호를 입력하세요:");
-    if (pin === "2026") {
-      sessionStorage.setItem('morvix_admin_auth', 'true');
-      btnOpen.classList.add('visible');
-      modal.classList.add('active');
-      renderAnalyticsTable();
-      renderAdminProductList();
-    } else if (pin !== null) {
-      alert("⚠️ 인증 실패: 잘못된 PIN 번호입니다.");
+    if (loginModal) {
+      if (loginErrorMsg) loginErrorMsg.style.display = 'none';
+      if (inputPin) inputPin.value = '';
+      loginModal.classList.add('active');
+      setTimeout(() => { if (inputPin) inputPin.focus(); }, 100);
     }
+  }
+
+  // Handle Admin PIN Form Submit
+  if (formLogin) {
+    formLogin.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const pin = inputPin.value.trim();
+      if (pin === "2026") {
+        sessionStorage.setItem('morvix_admin_auth', 'true');
+        if (loginErrorMsg) loginErrorMsg.style.display = 'none';
+        loginModal.classList.remove('active');
+        modal.classList.add('active');
+        renderAnalyticsTable();
+        renderAdminProductList();
+      } else {
+        if (loginErrorMsg) loginErrorMsg.style.display = 'block';
+      }
+    });
+  }
+
+  if (btnCloseLogin) {
+    btnCloseLogin.addEventListener('click', () => {
+      loginModal.classList.remove('active');
+    });
   }
 
   // Check URL query/hash/path trigger (e.g., ?admin, #admin, /admin)
   const isAdminUrl = window.location.search.includes('admin') || window.location.hash.includes('admin') || window.location.pathname.includes('admin');
   if (isAdminUrl) {
-    btnOpen.classList.add('visible');
-    setTimeout(verifyAndOpenAdmin, 300);
-  } else if (sessionStorage.getItem('morvix_admin_auth') === 'true') {
-    btnOpen.classList.add('visible');
+    setTimeout(verifyAndOpenAdmin, 200);
   }
 
   btnOpen.addEventListener('click', verifyAndOpenAdmin);
