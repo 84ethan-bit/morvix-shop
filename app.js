@@ -379,20 +379,66 @@ function filterCuration(catId) {
   renderProducts();
 }
 
-// Analytics Trackers
-function trackOutboundClick(slug) {
+// --------------------------------------------------------------------------
+// Real Outbound Click Event Instrumentation & Shortlink Redirection (/go/:slug)
+// --------------------------------------------------------------------------
+const EVENT_LOG_KEY = 'morvix_real_click_events_v1';
+
+function logRealClickEvent(slug, platform) {
   const prod = dbData.products.find(p => p.slug === slug);
-  if (prod) {
-    if (prod.analytics) prod.analytics.clicks_count = (prod.analytics.clicks_count || 0) + 1;
+  if (!prod) return;
+
+  if (!prod.analytics) {
+    prod.analytics = { clicks_count: 0, platform_clicks: { coupang: 0, naver: 0 }, conversions_count: 0, ctr: 0.0 };
+  }
+  if (!prod.analytics.platform_clicks) {
+    prod.analytics.platform_clicks = { coupang: 0, naver: 0 };
+  }
+
+  prod.analytics.clicks_count = (prod.analytics.clicks_count || 0) + 1;
+  prod.analytics.platform_clicks[platform] = (prod.analytics.platform_clicks[platform] || 0) + 1;
+  prod.analytics.conversions_count = (prod.analytics.conversions_count || 0) + 1;
+
+  // Persist Master DB state
+  saveMasterDbToStorage();
+
+  // Log granular event history with timestamp and referrer
+  try {
+    const rawLogs = localStorage.getItem(EVENT_LOG_KEY);
+    const logs = rawLogs ? JSON.parse(rawLogs) : [];
+    logs.unshift({
+      timestamp: new Date().toISOString(),
+      slug: slug,
+      product_name: prod.name,
+      platform: platform,
+      referrer: document.referrer || 'direct'
+    });
+    localStorage.setItem(EVENT_LOG_KEY, JSON.stringify(logs.slice(0, 500)));
+  } catch (e) {
+    console.warn("Event logging warning:", e);
   }
 }
 
 function registerAffiliateConversion(slug, platform) {
-  const prod = dbData.products.find(p => p.slug === slug);
-  if (prod && prod.analytics) {
-    if (!prod.analytics.platform_clicks) prod.analytics.platform_clicks = { coupang: 0, naver: 0 };
-    prod.analytics.platform_clicks[platform] = (prod.analytics.platform_clicks[platform] || 0) + 1;
-    prod.analytics.conversions_count = (prod.analytics.conversions_count || 0) + 1;
+  logRealClickEvent(slug, platform);
+}
+
+function handleGoRedirectRoute() {
+  const hash = window.location.hash || '';
+  if (hash.startsWith('#go/') || hash.startsWith('#/go/')) {
+    const slug = hash.replace(/^#(?:|\/)go\//, '').trim();
+    const prod = dbData.products.find(p => p.slug === slug);
+    if (prod) {
+      const affiliateLinks = Array.isArray(prod.affiliate_links) && prod.affiliate_links.length > 0 
+        ? prod.affiliate_links 
+        : [{ platform: 'coupang', url: prod.coupang_link || 'https://m.shopping.naver.com' }];
+      
+      const targetLink = affiliateLinks[0];
+      logRealClickEvent(slug, targetLink.platform || 'coupang');
+      
+      // Auto-redirect to affiliate destination
+      window.location.href = targetLink.url;
+    }
   }
 }
 
@@ -931,8 +977,13 @@ function deleteProduct(id) {
 }
 
 function setupRouting() {
+  handleGoRedirectRoute();
   let slug = window.location.hash.replace('#', '');
-  if (slug && slug !== 'admin') openProductDetail(slug);
+  if (slug && slug !== 'admin' && !slug.startsWith('go/')) openProductDetail(slug);
 }
+
+window.addEventListener('hashchange', () => {
+  handleGoRedirectRoute();
+});
 
 document.addEventListener('DOMContentLoaded', initShopOS);
