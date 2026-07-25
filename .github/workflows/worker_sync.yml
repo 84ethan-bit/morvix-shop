@@ -1,0 +1,38 @@
+name: MORVIX Phase 2 Worker 6-Hour Sync Automation
+
+on:
+  schedule:
+    # Run every 6 hours (00:00, 06:00, 12:00, 18:00 UTC)
+    - cron: '0 */6 * * *'
+  workflow_dispatch: # Allow manual trigger from GitHub UI
+
+jobs:
+  sync_worker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Check out repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: 🤖 Execute Phase 2 Worker Sync
+        run: |
+          python worker/sync.py
+
+      - name: 🚀 Commit & Push updated DB & Sync Audit Logs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "MORVIX Worker Bot"
+          git add morvix_shop_db.json worker/sync_history.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "auto: Phase 2 Worker 6-hour sync - updated Master DB & Audit Logs" && git push)

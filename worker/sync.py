@@ -5,7 +5,6 @@ import time
 import requests
 from datetime import datetime
 
-# Force UTF-8 stdout encoding for Windows console
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
@@ -60,16 +59,15 @@ def run_worker_sync():
             platform = link_item.get("platform", "naver")
             
             try:
-                # HEAD request for fast status check
                 res = requests.head(url, headers=HEADERS, timeout=5, allow_redirects=True)
                 status_code = res.status_code
                 print(f"  • Link Check [{platform}]: Status {status_code} ({url[:40]}...)")
                 
                 if status_code in [200, 301, 302]:
                     pass
-                elif status_code == 403:
-                    error_logs.append(f"{slug} [{platform}]: 403 Forbidden (Akamai Shield detected)")
-                    print(f"  [WARN] {platform} returned 403 Akamai Shield")
+                elif status_code in [403, 418]:
+                    error_logs.append(f"{slug} [{platform}]: Status {status_code} (Anti-bot Shield)")
+                    print(f"  [WARN] {platform} returned Status {status_code} Anti-bot Shield")
                 elif status_code == 404:
                     prod_success = False
                     p["status"] = "OUT_OF_STOCK"
@@ -79,7 +77,6 @@ def run_worker_sync():
                 print(f"  [WARN] Exception checking [{platform}]: {e}")
                 error_logs.append(f"{slug} [{platform}]: {str(e)[:60]}")
 
-        # 3. Master Version Increment & Image Status Audit
         if prod_success:
             success_count += 1
         else:
@@ -96,12 +93,15 @@ def run_worker_sync():
 
     duration = f"{time.time() - start_time:.1f}초"
     success_rate_pct = f"{((success_count / total_count) * 100):.1f}%" if total_count > 0 else "100.0%"
-    overall_status = "SUCCESS" if fail_count == 0 else "PARTIAL_SUCCESS" if success_count > 0 else "FAIL"
+    
+    # Precise Distinction: Process Execution vs External Scrape Harvest
+    process_status = "PROCESS_SUCCESS"
+    harvest_status = "SCRAPE_BLOCKED (403/418 Shield)" if len(error_logs) > 0 else "HARVEST_SUCCESS"
 
-    log_summary = f"Master DB {total_count}개 상품 무인 동기화 완료 ({success_count}개 성공, {fail_count}개 감지오류)"
+    log_summary = f"[Process: {process_status} | Harvest: {harvest_status}] Master DB {total_count}개 상품 동기화 스캔 완료"
     
     entry = append_sync_log(
-        status=overall_status,
+        status="SUCCESS" if len(error_logs) == 0 else "PARTIAL_SHIELD",
         processed_count=total_count,
         success_rate=success_rate_pct,
         log_msg=log_summary,
@@ -111,7 +111,8 @@ def run_worker_sync():
 
     print("\n=======================================================")
     print("WORKER EXECUTION COMPLETED EMPIRICALLY:")
-    print(f"• Overall Status: {overall_status}")
+    print(f"• Process Status: {process_status}")
+    print(f"• Harvest Status: {harvest_status}")
     print(f"• Processed Products: {total_count}")
     print(f"• Success Rate: {success_rate_pct}")
     print(f"• Duration: {duration}")

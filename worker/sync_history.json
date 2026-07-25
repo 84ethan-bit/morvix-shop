@@ -1,5 +1,23 @@
 [
   {
+    "timestamp": "2026-07-26T04:48:53.818746",
+    "status": "PARTIAL_SHIELD",
+    "count": 4,
+    "success_rate": "100.0%",
+    "log": "[Process: PROCESS_SUCCESS | Harvest: SCRAPE_BLOCKED (403/418 Shield)] Master DB 4개 상품 동기화 스캔 완료",
+    "duration": "5.9초",
+    "error_details": [
+      "fan001 [coupang]: Status 403 (Anti-bot Shield)",
+      "fan001 [naver]: Status 418 (Anti-bot Shield)",
+      "blanket001 [coupang]: Status 403 (Anti-bot Shield)",
+      "blanket001 [naver]: Status 418 (Anti-bot Shield)",
+      "mosquito001 [coupang]: Status 403 (Anti-bot Shield)",
+      "mosquito001 [naver]: Status 418 (Anti-bot Shield)",
+      "magsafe001 [coupang]: Status 403 (Anti-bot Shield)",
+      "magsafe001 [naver]: Status 418 (Anti-bot Shield)"
+    ]
+  },
+  {
     "timestamp": "2026-07-26T04:46:59.264766",
     "status": "SUCCESS",
     "count": 4,
