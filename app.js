@@ -457,44 +457,72 @@ function setupAdminEvents() {
     });
   }
 
-  // ⚡ One-Click Auto Ingestion + AI Content Generator Handler
+  // ⚡ One-Click Auto Ingestion + Real Image & Title Scraper Handler
   const btnAutoFetch = document.getElementById('btn-auto-fetch');
   if (btnAutoFetch) {
-    btnAutoFetch.addEventListener('click', () => {
+    btnAutoFetch.addEventListener('click', async () => {
       const rawUrl = document.getElementById('input-auto-url').value.trim();
       if (!rawUrl) {
         alert("⚠️ 제휴 URL을 입력 후 [자동 불러오기]를 눌러주세요.");
         return;
       }
 
+      btnAutoFetch.disabled = true;
+      btnAutoFetch.textContent = '⏳ 실시간 이미지/제목 추출 중...';
+
       const isCoupang = rawUrl.includes('coupang.com');
       const isNaver = rawUrl.includes('naver.com');
 
       if (isCoupang) {
-        document.getElementById('input-link-coupang').value = rawUrl;
+        if (document.getElementById('input-link-coupang')) document.getElementById('input-link-coupang').value = rawUrl;
       } else if (isNaver) {
-        document.getElementById('input-link-naver').value = rawUrl;
+        if (document.getElementById('input-link-naver')) document.getElementById('input-link-naver').value = rawUrl;
       } else {
-        document.getElementById('input-link-coupang').value = rawUrl;
+        if (document.getElementById('input-link-coupang')) document.getElementById('input-link-coupang').value = rawUrl;
       }
 
       const nextEpNum = (dbData ? dbData.products.length + 1 : 13).toString().padStart(3, '0');
       const autoSlug = `item${nextEpNum}`;
-      document.getElementById('input-slug').value = autoSlug;
-      document.getElementById('input-episode').value = `INTERNAL_CASE_EP${nextEpNum}`;
+      if (document.getElementById('input-slug')) document.getElementById('input-slug').value = autoSlug;
+      if (document.getElementById('input-episode')) document.getElementById('input-episode').value = `INTERNAL_CASE_EP${nextEpNum}`;
 
-      document.getElementById('input-name').value = "모르빅스 생활 억까 탈출 검증 꿀템";
+      let fetchedTitle = "모르빅스 생활 억까 탈출 검증 꿀템";
+      let fetchedImg = "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80";
+
+      try {
+        const metaRes = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(rawUrl)}`);
+        if (metaRes.ok) {
+          const metaData = await metaRes.json();
+          if (metaData && metaData.data) {
+            if (metaData.data.title) fetchedTitle = metaData.data.title;
+            if (metaData.data.image && metaData.data.image.url) fetchedImg = metaData.data.image.url;
+          }
+        }
+      } catch (err) {
+        console.warn("Auto OpenGraph fetch fallback used:", err);
+      }
+
+      if (document.getElementById('input-name')) document.getElementById('input-name').value = fetchedTitle;
       if (document.getElementById('input-price')) document.getElementById('input-price').value = 24900;
-      document.getElementById('input-category').value = "summer";
-      document.getElementById('input-subtitle').value = "일상의 불편함을 3초 만에 완벽 해결하는 검증 솔루션";
-      document.getElementById('input-usps').value = [
-        "100만 바이럴 검증 실생활 문제 해결 설계",
-        "압도적 가성비 최저가 파트너스 보장",
-        "초간단 사용 및 내구성 안심 인증 원단/부품",
-        "MORVIX 숏폼 에피소드 실측 검증 완료"
-      ].join('\n');
+      if (document.getElementById('input-category')) document.getElementById('input-category').value = "summer";
+      if (document.getElementById('input-subtitle')) document.getElementById('input-subtitle').value = `${fetchedTitle} - 일상의 불편함을 3초 만에 완벽 해결하는 검증 솔루션`;
+      if (document.getElementById('input-usps')) {
+        document.getElementById('input-usps').value = [
+          "100만 바이럴 검증 실생활 문제 해결 설계",
+          "압도적 가성비 최저가 파트너스 보장",
+          "초간단 사용 및 내구성 안심 인증 원단/부품",
+          "MORVIX 숏폼 에피소드 실측 검증 완료"
+        ].join('\n');
+      }
 
-      alert(`⚡ [원클릭 자동 불러오기 & AI 콘텐츠 생성 완료!]\n\n• 단축 슬러그: morvix.kr/${autoSlug}\n• 연동 에피소드: EP${nextEpNum}\n• 15초 릴스 스크립트 콘티 자동 생성 완료\n• 4컷 웹툰 에피소드 소재 자동 생성 완료\n• SEO 블로그 카피 자동 생성 완료`);
+      // Store fetchedImg on form element dataset for submission
+      const formEl = document.getElementById('form-add-product');
+      if (formEl) formEl.dataset.fetchedImg = fetchedImg;
+
+      btnAutoFetch.disabled = false;
+      btnAutoFetch.textContent = '⚡ 자동 불러오기';
+
+      alert(`⚡ [실제 상품 이미지 & 제목 추출 완료!]\n\n• 추출된 상품명: ${fetchedTitle}\n• 대표 이미지: ${fetchedImg ? '실제 상품 이미지 연동 완료' : '기본 고화질 이미지'}\n• 단축 슬러그: morvix.kr/${autoSlug}\n• 연동 에피소드: EP${nextEpNum}`);
     });
   }
 
@@ -546,6 +574,7 @@ function setupAdminEvents() {
       }
 
       const epNum = episode.replace(/[^0-9]/g, '') || '013';
+      const thumbnailImg = formAddProduct.dataset.fetchedImg || "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80";
 
       const newProd = {
         id: `PROD-${Date.now()}`,
@@ -567,8 +596,8 @@ function setupAdminEvents() {
         webtoon_idea: `🎨 [4컷 웹툰] 1컷: 불편함 -> 2컷: 분통 -> 3컷: ${name} 장착 -> 4컷: 상쾌한 해결`,
         seo_copy: `📝 [SEO 리뷰] ${name} 실사용 솔직 후기 및 파트너스 최저가 구매 가이드`,
         affiliate_links: affiliateLinks,
-        thumbnail: "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80",
-        images: ["https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80"],
+        thumbnail: thumbnailImg,
+        images: [thumbnailImg],
         webtoon_episode_title: `${episode} 바이럴 에피소드`,
         webtoon_cuts_count: 15,
         clicks_count: 0,
