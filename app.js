@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MORVIX SHOP OS v2.0 - Multi-Category Super-App & AI Content Factory Engine
+   MORVIX SHOP OS v2.1 - Real Naver Shopping Connect Live Link Integration
    ========================================================================== */
 
 const INITIAL_DB_DATA = {
@@ -7,7 +7,7 @@ const INITIAL_DB_DATA = {
     "brand_name": "MORVIX SHOP OS",
     "domain": "morvix.kr",
     "tagline": "일상을 바꾸는 검증된 꿀템만 소개합니다.",
-    "version": "v2.0 (Multi-Category Super-App & AI Content Engine)"
+    "version": "v2.1 (Real Naver Shopping Connect Live Links)"
   },
   "categories": [
     {"id": "all", "name": "모든 제품", "icon": "📦"},
@@ -16,18 +16,16 @@ const INITIAL_DB_DATA = {
     {"id": "best100", "name": "베스트 100", "icon": "🏆"},
     {"id": "summer", "name": "여름/장마", "icon": "❄️"},
     {"id": "life", "name": "생활용품", "icon": "🏠"},
-    {"id": "kitchen", "name": "주방/요리", "icon": "🍳"},
     {"id": "cleaning", "name": "청소/위생", "icon": "🧹"},
     {"id": "it", "name": "IT/디지털", "icon": "📱"},
-    {"id": "car", "name": "자동차", "icon": "🚗"},
-    {"id": "pet", "name": "반려동물", "icon": "🐾"}
+    {"id": "car", "name": "자동차", "icon": "🚗"}
   ],
   "products": [
     {
       "id": "PROD-010",
       "slug": "fan001",
       "short_url": "morvix.kr/fan001",
-      "name": "모르빅스 무선 파워 듀얼 서큘레이터",
+      "name": "[26년형] 신일 무소음 스탠드 BLDC 서큘레이터",
       "subtitle": "회사 책상 앞 38도 사막지대 억까 탈출 초강풍 무선 서큘레이터",
       "category": "summer",
       "is_featured": true,
@@ -44,19 +42,19 @@ const INITIAL_DB_DATA = {
       ],
       "reels_script_idea": "🔥 [15초 릴스 콘티] '회사 에어컨 고장났을 때 책상 밑에서 듀얼 서큘레이터 켜고 혼자 천국 맛보는 극락 시츄에이션'",
       "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 사막 땀뻘뻘 -> 2컷: 옆자리 대리님 비웃음 -> 3컷: 서큘레이터 가동 -> 4컷: 얼음나라 도착",
-      "seo_copy": "📝 [SEO 리뷰] 여름철 사무실 탁상용 무선 서큘레이터 추천 3가지 이유 및 쿠팡 최저가 비교",
+      "seo_copy": "📝 [SEO 리뷰] 여름철 사무실 탁상용 무선 서큘레이터 추천 3가지 이유 및 네이버 최저가 비교",
       "affiliate_links": [
         {
           "platform": "coupang",
-          "label": "🛒 쿠팡 최저가 확인 및 구매하기 ➔",
+          "label": "🛒 쿠팡 파트너스 최저가 확인 ➔",
           "url": "https://link.coupang.com/a/morvix_fan001",
           "priority": 1,
           "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
         },
         {
           "platform": "naver",
-          "label": "🟢 네이버 쇼핑커넥트 확인 및 구매 ➔",
-          "url": "https://shopping.naver.com/bridge/morvix_fan001",
+          "label": "🟢 네이버 쇼핑커넥트 실시간 가격 확인 ➔",
+          "url": "https://cr3.shopping.naver.com/v2/bridge/searchGate?nv_mid=87871668680&cat_id=50008981&query=%EC%84%9C%ED%81%98%EB%A0%88%EC%9D%B4%ED%84%B0&t=mrvvlt2w&h=4f594005b0bc1d3300679dbc246c07b907bde5fd&frm=NVSCDIG",
           "priority": 2,
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
@@ -92,15 +90,15 @@ const INITIAL_DB_DATA = {
       "affiliate_links": [
         {
           "platform": "coupang",
-          "label": "🛒 쿠팡 최저가 확인 및 구매하기 ➔",
+          "label": "🛒 쿠팡 파트너스 최저가 확인 ➔",
           "url": "https://link.coupang.com/a/morvix_blanket001",
           "priority": 1,
           "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
         },
         {
           "platform": "naver",
-          "label": "🟢 네이버 쇼핑커넥트 확인 및 구매 ➔",
-          "url": "https://shopping.naver.com/bridge/morvix_blanket001",
+          "label": "🟢 네이버 쇼핑커넥트 실시간 가격 확인 ➔",
+          "url": "https://cr3.shopping.naver.com/v2/bridge/searchGate?nv_mid=86257630082&cat_id=50008981&query=%EC%84%9C%ED%81%98%EB%A0%88%EC%9D%B4%ED%84%B0&t=mrvvlt1l&h=976a4b447043a6a191cc3156c652eeb00325dfee&frm=NVSCSPE",
           "priority": 2,
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
@@ -112,128 +110,10 @@ const INITIAL_DB_DATA = {
       "conversions_count": 164
     },
     {
-      "id": "PROD-011",
-      "slug": "magsafe001",
-      "short_url": "morvix.kr/magsafe001",
-      "name": "모르빅스 3in1 초고속 마그네틱 데스크 거치대",
-      "subtitle": "아이폰+스마트워치+무선이어폰 책상 위선 3초 깔끔 정리템",
-      "category": "it",
-      "is_featured": true,
-      "episode_id": "INTERNAL_CASE_EP011",
-      "episode_label": "🎬 EP011 숏폼 소개 제품",
-      "price": 29800,
-      "rating": 4.92,
-      "review_count": 178,
-      "usps": [
-        "15W 초고속 맥세이프 1초 자력 착붙 충전",
-        "지저분한 충전선 3개 깔끔 단 1선 통합",
-        "알루미늄 럭셔리 다크 그레이 디자인",
-        "스마트 과열/과전압 6중 안전 보호 회로"
-      ],
-      "reels_script_idea": "🔥 [15초 릴스 콘티] '책상 뱀처럼 엉킨 충전선 싹 쳐내고 마그네틱 거치대 1초 착붙 데스크테리어 쾌감'",
-      "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 선 꼬임 스트레스 -> 2컷: 고양이 선 잘라먹음 -> 3컷: 3in1 거치대 -> 4컷: 감성 데스크 완성",
-      "seo_copy": "📝 [SEO 리뷰] 애플 3in1 맥세이프 충전 거치대 책상 선 정리 추천 비교 실사용 후기",
-      "affiliate_links": [
-        {
-          "platform": "coupang",
-          "label": "🛒 쿠팡 최저가 확인 및 구매하기 ➔",
-          "url": "https://link.coupang.com/a/morvix_magsafe001",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
-        }
-      ],
-      "thumbnail": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&auto=format&fit=crop&q=80",
-      "images": ["https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&auto=format&fit=crop&q=80"],
-      "clicks_count": 420,
-      "platform_clicks": {"coupang": 310, "naver": 110},
-      "conversions_count": 52
-    },
-    {
-      "id": "PROD-012",
-      "slug": "petwater001",
-      "short_url": "morvix.kr/petwater001",
-      "name": "모르빅스 무소음 쿼드 필터 펫 자동 정수기",
-      "subtitle": "음수량 부족 냥이/댕댕이 결석 방지 24시간 샘물 정수기",
-      "category": "pet",
-      "is_featured": true,
-      "episode_id": "INTERNAL_CASE_EP012",
-      "episode_label": "🎬 EP012 숏폼 소개 제품",
-      "price": 27500,
-      "rating": 4.97,
-      "review_count": 245,
-      "usps": [
-        "4중 콕시드 활성탄 털/이물질 99.9% 멸균 차단",
-        "20dB 사람 수면 방해 zero 수중 펌프 무소음",
-        "투명 수량 창으로 간편 잔여 수량 체크",
-        "BPA Free 안심 젖병 소재 사출"
-      ],
-      "reels_script_idea": "🔥 [15초 릴스 콘티] '물 안 마시던 고양이가 샘물 정수기 켜자마자 폭풍 음수하는 귀염 터지는 힐링 숏폼'",
-      "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 고양이 방광염 병원비 300만원 -> 2컷: 집사 통곡 -> 3컷: 자동 정수기 세팅 -> 4컷: 음수량 3배 달성",
-      "seo_copy": "📝 [SEO 리뷰] 고양이 강아지 음수량 늘리는 무소음 자동 정수기 4중 필터 성능 수의사 보증 후기",
-      "affiliate_links": [
-        {
-          "platform": "coupang",
-          "label": "🛒 쿠팡 최저가 확인 및 구매하기 ➔",
-          "url": "https://link.coupang.com/a/morvix_petwater001",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
-        }
-      ],
-      "thumbnail": "https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=800&auto=format&fit=crop&q=80",
-      "images": ["https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=800&auto=format&fit=crop&q=80"],
-      "clicks_count": 560,
-      "platform_clicks": {"coupang": 420, "naver": 140},
-      "conversions_count": 71
-    },
-    {
-      "id": "PROD-008",
-      "slug": "car001",
-      "short_url": "morvix.kr/car001",
-      "name": "모르빅스 3초 접이식 차광 우산 햇빛 차단막",
-      "subtitle": "여름 야외 주차 70도 찜통 차 안 3초 만에 20도로 차단",
-      "category": "car",
-      "is_featured": true,
-      "episode_id": "INTERNAL_CASE_EP008",
-      "episode_label": "🎬 EP008 숏폼 소개 제품",
-      "price": 19800,
-      "rating": 4.85,
-      "review_count": 89,
-      "usps": [
-        "UPF 50+ 자외선 99.9% 완벽 차단 은코팅",
-        "우산 펼치듯 3초 만에 차량 전면 유리 장착",
-        "가죽 가구 및 내장재 열화 박살 완전 차단",
-        "접었을 때 글로브박스 쏙 컴팩트 수납"
-      ],
-      "reels_script_idea": "🔥 [15초 릴스 콘티] '땡볕에 세워둔 차량 엉덩이 닿자마자 비명 지르다 우산 차광막 펴고 쾌적한 승차 실험'",
-      "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 핸들 잡다 손 데임 -> 2컷: 차 안 프라이팬 변신 -> 3컷: 차광 우산 장착 -> 4컷: 에어컨 시원 기분 최고",
-      "seo_copy": "📝 [SEO 리뷰] 여름철 필수 차량용 우산형 햇빛 차단막 3초 장착 수납 성능 실사용 리뷰",
-      "affiliate_links": [
-        {
-          "platform": "coupang",
-          "label": "🛒 쿠팡 최저가 확인 및 구매하기 ➔",
-          "url": "https://link.coupang.com/a/morvix_car001",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
-        },
-        {
-          "platform": "naver",
-          "label": "🟢 네이버 쇼핑커넥트 확인 및 구매 ➔",
-          "url": "https://shopping.naver.com/bridge/morvix_car001",
-          "priority": 2,
-          "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
-        }
-      ],
-      "thumbnail": "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&auto=format&fit=crop&q=80",
-      "images": ["https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&auto=format&fit=crop&q=80"],
-      "clicks_count": 850,
-      "platform_clicks": {"coupang": 510, "naver": 340},
-      "conversions_count": 92
-    },
-    {
       "id": "PROD-002",
       "slug": "mosquito001",
       "short_url": "morvix.kr/mosquito001",
-      "name": "모르빅스 UV 광촉매 무소음 모기 포집기",
+      "name": "듀플렉스 19W 캠핑 무소음 모기 포충기",
       "subtitle": "새벽 귓가 윙윙 모기 1초 유인 무소음 광촉매 포집기",
       "category": "cleaning",
       "is_featured": false,
@@ -254,10 +134,17 @@ const INITIAL_DB_DATA = {
       "affiliate_links": [
         {
           "platform": "coupang",
-          "label": "🛒 쿠팡 최저가 확인 및 구매하기 ➔",
+          "label": "🛒 쿠팡 파트너스 최저가 확인 ➔",
           "url": "https://link.coupang.com/a/morvix_mosquito001",
           "priority": 1,
           "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
+        },
+        {
+          "platform": "naver",
+          "label": "🟢 네이버 쇼핑커넥트 실시간 가격 확인 ➔",
+          "url": "https://cr3.shopping.naver.com/v2/bridge/searchGate?nv_mid=84090700375&cat_id=50001985&query=%EB%AA%A8%EA%B8%B0%ED%87%B4%EC%B9%98%EA%B8%B0&t=mrvvltpm&h=593129dc25c3e4b5a6da446bf1ff080499f28e71&frm=NVSCDIG",
+          "priority": 2,
+          "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
       "thumbnail": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80",
@@ -380,13 +267,12 @@ function openProductDetail(slug) {
       linksArray.push({ platform: 'coupang', label: '🛒 쿠팡 최저가 확인 및 구매하기 ➔', url: product.affiliate_links.coupang, bg_gradient: 'linear-gradient(135deg, #ff4757, #ff6b81)' });
     }
     if (product.affiliate_links.naver) {
-      linksArray.push({ platform: 'naver', label: '🟢 네이버 쇼핑커넥트 확인 및 구매 ➔', url: product.affiliate_links.naver, bg_gradient: 'linear-gradient(135deg, #03cf5d, #02b651)' });
+      linksArray.push({ platform: 'naver', label: '🟢 네이버 쇼핑커넥트 실시간 가격 확인 ➔', url: product.affiliate_links.naver, bg_gradient: 'linear-gradient(135deg, #03cf5d, #02b651)' });
     }
   } else if (product.coupang_link) {
     linksArray.push({ platform: 'coupang', label: '🛒 쿠팡 최저가 확인 및 구매하기 ➔', url: product.coupang_link, bg_gradient: 'linear-gradient(135deg, #ff4757, #ff6b81)' });
   }
 
-  // Related Cross-Selling Products Cluster
   const relatedProds = dbData.products.filter(p => p.slug !== slug).slice(0, 3);
 
   body.innerHTML = `
@@ -643,7 +529,7 @@ function setupAdminEvents() {
       if (linkCoupang) {
         affiliateLinks.push({
           platform: 'coupang',
-          label: '🛒 쿠팡 최저가 확인 및 구매하기 ➔',
+          label: '🛒 쿠팡 파트너스 최저가 확인 ➔',
           url: linkCoupang,
           priority: 1,
           bg_gradient: 'linear-gradient(135deg, #ff4757, #ff6b81)'
@@ -652,7 +538,7 @@ function setupAdminEvents() {
       if (linkNaver) {
         affiliateLinks.push({
           platform: 'naver',
-          label: '🟢 네이버 쇼핑커넥트 확인 및 구매 ➔',
+          label: '🟢 네이버 쇼핑커넥트 실시간 가격 확인 ➔',
           url: linkNaver,
           priority: 2,
           bg_gradient: 'linear-gradient(135deg, #03cf5d, #02b651)'
