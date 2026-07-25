@@ -808,6 +808,14 @@ window.verifyAndOpenAdmin = verifyAndOpenAdmin;
       
       const rawSlug = document.getElementById('input-slug') ? document.getElementById('input-slug').value.trim() : '';
       const slug = rawSlug || `item${nextNum}`;
+
+      // Duplicate Slug / Link Check
+      const existingSlug = dbData.products.find(p => p.slug === slug);
+      if (existingSlug) {
+        if (!confirm(`⚠️ [중복 슬러그 경고] morvix.kr/${slug} 은(는) 이미 등록된 상품입니다. 계속 진행하시겠습니까?`)) {
+          return;
+        }
+      }
       
       const category = document.getElementById('input-category') ? document.getElementById('input-category').value : 'summer';
       
@@ -822,7 +830,8 @@ window.verifyAndOpenAdmin = verifyAndOpenAdmin;
       
       const rawImg = document.getElementById('input-image-url') ? document.getElementById('input-image-url').value.trim() : '';
       const imageUrl = rawImg || 'https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80';
-      
+      const imgStatus = rawImg ? 'Verified' : 'Manual';
+
       const rawSub = document.getElementById('input-subtitle') ? document.getElementById('input-subtitle').value.trim() : '';
       const subtitle = rawSub || `${name} - 일상의 불편함을 3초 만에 해결하는 검증 추천템`;
 
@@ -845,12 +854,14 @@ window.verifyAndOpenAdmin = verifyAndOpenAdmin;
         subtitle: subtitle,
         category: category,
         status: "ACTIVE",
+        image_status: imgStatus,
         is_featured: true,
         episode_id: episode,
         episode_label: `🎬 ${episode} 숏폼 제품`,
         price: price,
-        original_price: Math.round(price * 1.4),
-        discount_rate: "30%",
+        price_history: price ? [{ price: price, date: new Date().toISOString() }] : [],
+        original_price: price ? Math.round(price * 1.4) : null,
+        discount_rate: price ? "30%" : null,
         rating: 5.0,
         review_count: 1,
         affiliate_links: affiliateLinks,
@@ -1048,14 +1059,25 @@ function renderAdminProductList() {
     const addedDateStr = p.added_date ? p.added_date.substring(0, 10) : '2026-07-26';
     const clicks = p.analytics ? (p.analytics.clicks_count || 0) : (p.clicks_count || 0);
 
+    const imgStatus = p.image_status || (p.thumbnail && p.thumbnail.includes('unsplash') ? 'Verified' : 'Manual');
+    const imgBadge = imgStatus === 'Verified' ? '<span style="background: rgba(46,213,115,0.2); color: #2ed573; padding: 2px 5px; border-radius: 3px; font-size: 0.68rem; font-weight: 700;">🟢 HD 검증</span>' :
+                     imgStatus === 'AI Generated' ? '<span style="background: rgba(0,210,255,0.2); color: #00d2ff; padding: 2px 5px; border-radius: 3px; font-size: 0.68rem; font-weight: 700;">🔵 AI 생성을 완료함</span>' :
+                     imgStatus === 'Missing' ? '<span style="background: rgba(255,71,87,0.2); color: #ff4757; padding: 2px 5px; border-radius: 3px; font-size: 0.68rem; font-weight: 700;">🔴 이미지 보완 필요</span>' :
+                     '<span style="background: rgba(255,165,2,0.2); color: #ffa502; padding: 2px 5px; border-radius: 3px; font-size: 0.68rem; font-weight: 700;">🟡 수동 입력</span>';
+
     return `
       <tr>
         <td style="text-align: center;"><input type="checkbox" class="admin-prod-checkbox" value="${p.id}"></td>
         <td>
           <div style="display: flex; gap: 8px; align-items: center;">
-            <img src="${p.thumbnail}" onclick="openProductDetail('${p.slug}')" style="width: 36px; height: 36px; object-fit: cover; border-radius: 4px; cursor: pointer;">
+            <div style="position: relative;">
+              <img src="${p.thumbnail}" onclick="openProductDetail('${p.slug}')" style="width: 42px; height: 42px; object-fit: cover; border-radius: 4px; cursor: pointer;">
+            </div>
             <div>
-              <strong style="color: #00d2ff; font-size: 0.88rem; cursor: pointer; text-decoration: underline;" onclick="openProductDetail('${p.slug}')">${p.name} 🔍</strong>
+              <div style="display: flex; gap: 6px; align-items: center;">
+                <strong style="color: #00d2ff; font-size: 0.88rem; cursor: pointer; text-decoration: underline;" onclick="openProductDetail('${p.slug}')">${p.name} 🔍</strong>
+                ${imgBadge}
+              </div>
               <div style="font-size: 0.75rem; color: var(--text-muted);">morvix.kr/${p.slug} | ${p.episode_label || p.episode_id}</div>
             </div>
           </div>
