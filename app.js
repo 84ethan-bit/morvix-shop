@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MORVIX SHOP OS - Application Logic & Dynamic Interactions
+   MORVIX SHOP OS v2.0 - Multi-Category Super-App & AI Content Factory Engine
    ========================================================================== */
 
 const INITIAL_DB_DATA = {
@@ -7,16 +7,20 @@ const INITIAL_DB_DATA = {
     "brand_name": "MORVIX SHOP OS",
     "domain": "morvix.kr",
     "tagline": "일상을 바꾸는 검증된 꿀템만 소개합니다.",
-    "version": "v1.2.0 (Dynamic Multi-Affiliate Array Engine)"
+    "version": "v2.0 (Multi-Category Super-App & AI Content Engine)"
   },
   "categories": [
     {"id": "all", "name": "모든 제품", "icon": "📦"},
     {"id": "featured", "name": "오늘의 추천", "icon": "🌟"},
-    {"id": "summer", "name": "여름 꿀템", "icon": "❄️"},
-    {"id": "life", "name": "생활 꿀템", "icon": "🏠"},
-    {"id": "cleaning", "name": "청소/위생", "icon": "🧹"},
+    {"id": "reels", "name": "릴스 속 그 상품", "icon": "🎬"},
+    {"id": "best100", "name": "베스트 100", "icon": "🏆"},
+    {"id": "summer", "name": "여름/장마", "icon": "❄️"},
+    {"id": "life", "name": "생활용품", "icon": "🏠"},
     {"id": "kitchen", "name": "주방/요리", "icon": "🍳"},
-    {"id": "car", "name": "자동차", "icon": "🚗"}
+    {"id": "cleaning", "name": "청소/위생", "icon": "🧹"},
+    {"id": "it", "name": "IT/디지털", "icon": "📱"},
+    {"id": "car", "name": "자동차", "icon": "🚗"},
+    {"id": "pet", "name": "반려동물", "icon": "🐾"}
   ],
   "products": [
     {
@@ -30,8 +34,6 @@ const INITIAL_DB_DATA = {
       "episode_id": "INTERNAL_CASE_EP010",
       "episode_label": "🎬 EP010 숏폼 소개 제품",
       "price": 28900,
-      "original_price": 45000,
-      "discount_rate": "35%",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -40,6 +42,9 @@ const INITIAL_DB_DATA = {
         "360도 자유 회전 원하는 각도 완벽 조율",
         "독서실급 초저소음 파워 설계"
       ],
+      "reels_script_idea": "🔥 [15초 릴스 콘티] '회사 에어컨 고장났을 때 책상 밑에서 듀얼 서큘레이터 켜고 혼자 천국 맛보는 극락 시츄에이션'",
+      "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 사막 땀뻘뻘 -> 2컷: 옆자리 대리님 비웃음 -> 3컷: 서큘레이터 가동 -> 4컷: 얼음나라 도착",
+      "seo_copy": "📝 [SEO 리뷰] 여름철 사무실 탁상용 무선 서큘레이터 추천 3가지 이유 및 쿠팡 최저가 비교",
       "affiliate_links": [
         {
           "platform": "coupang",
@@ -57,16 +62,9 @@ const INITIAL_DB_DATA = {
         }
       ],
       "thumbnail": "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80",
-      "images": [
-        "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80"
-      ],
-      "webtoon_episode_title": "S01_EP10 사막 지대 억까 탈출편",
-      "webtoon_cuts_count": 15,
+      "images": ["https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80"],
       "clicks_count": 342,
-      "platform_clicks": {
-        "coupang": 210,
-        "naver": 132
-      },
+      "platform_clicks": {"coupang": 210, "naver": 132},
       "conversions_count": 48
     },
     {
@@ -80,8 +78,6 @@ const INITIAL_DB_DATA = {
       "episode_id": "INTERNAL_CASE_EP009",
       "episode_label": "🎬 EP009 숏폼 소개 제품",
       "price": 34900,
-      "original_price": 59000,
-      "discount_rate": "40%",
       "rating": 4.95,
       "review_count": 312,
       "usps": [
@@ -90,6 +86,9 @@ const INITIAL_DB_DATA = {
         "통세탁 가능 100회 세탁에도 쿨링 성능 유지",
         "양면 리버서블 봄/여름 사계절 실용성"
       ],
+      "reels_script_idea": "🔥 [15초 릴스 콘티] '열대야에 땀 흘리다 얼음 이불 덮자마자 1초 만에 기절 수면 들어가는 온도 카메라 테스트'",
+      "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 이불 발차기 -> 2컷: 에어컨 전기세 공포 -> 3컷: 냉감 이불 접촉 -> 4컷: 꿀잠 입면 완료",
+      "seo_copy": "📝 [SEO 리뷰] Q-MAX 0.45 원단 열대야 초냉감 얼음 이불 실제 세탁 및 쿨링 성능 실사용기",
       "affiliate_links": [
         {
           "platform": "coupang",
@@ -107,17 +106,84 @@ const INITIAL_DB_DATA = {
         }
       ],
       "thumbnail": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&auto=format&fit=crop&q=80",
-      "images": [
-        "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&auto=format&fit=crop&q=80"
-      ],
-      "webtoon_episode_title": "S01_EP09 열대야 억까 탈출편",
-      "webtoon_cuts_count": 15,
+      "images": ["https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&auto=format&fit=crop&q=80"],
       "clicks_count": 1280,
-      "platform_clicks": {
-        "coupang": 820,
-        "naver": 460
-      },
+      "platform_clicks": {"coupang": 820, "naver": 460},
       "conversions_count": 164
+    },
+    {
+      "id": "PROD-011",
+      "slug": "magsafe001",
+      "short_url": "morvix.kr/magsafe001",
+      "name": "모르빅스 3in1 초고속 마그네틱 데스크 거치대",
+      "subtitle": "아이폰+스마트워치+무선이어폰 책상 위선 3초 깔끔 정리템",
+      "category": "it",
+      "is_featured": true,
+      "episode_id": "INTERNAL_CASE_EP011",
+      "episode_label": "🎬 EP011 숏폼 소개 제품",
+      "price": 29800,
+      "rating": 4.92,
+      "review_count": 178,
+      "usps": [
+        "15W 초고속 맥세이프 1초 자력 착붙 충전",
+        "지저분한 충전선 3개 깔끔 단 1선 통합",
+        "알루미늄 럭셔리 다크 그레이 디자인",
+        "스마트 과열/과전압 6중 안전 보호 회로"
+      ],
+      "reels_script_idea": "🔥 [15초 릴스 콘티] '책상 뱀처럼 엉킨 충전선 싹 쳐내고 마그네틱 거치대 1초 착붙 데스크테리어 쾌감'",
+      "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 선 꼬임 스트레스 -> 2컷: 고양이 선 잘라먹음 -> 3컷: 3in1 거치대 -> 4컷: 감성 데스크 완성",
+      "seo_copy": "📝 [SEO 리뷰] 애플 3in1 맥세이프 충전 거치대 책상 선 정리 추천 비교 실사용 후기",
+      "affiliate_links": [
+        {
+          "platform": "coupang",
+          "label": "🛒 쿠팡 최저가 확인 및 구매하기 ➔",
+          "url": "https://link.coupang.com/a/morvix_magsafe001",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&auto=format&fit=crop&q=80",
+      "images": ["https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&auto=format&fit=crop&q=80"],
+      "clicks_count": 420,
+      "platform_clicks": {"coupang": 310, "naver": 110},
+      "conversions_count": 52
+    },
+    {
+      "id": "PROD-012",
+      "slug": "petwater001",
+      "short_url": "morvix.kr/petwater001",
+      "name": "모르빅스 무소음 쿼드 필터 펫 자동 정수기",
+      "subtitle": "음수량 부족 냥이/댕댕이 결석 방지 24시간 샘물 정수기",
+      "category": "pet",
+      "is_featured": true,
+      "episode_id": "INTERNAL_CASE_EP012",
+      "episode_label": "🎬 EP012 숏폼 소개 제품",
+      "price": 27500,
+      "rating": 4.97,
+      "review_count": 245,
+      "usps": [
+        "4중 콕시드 활성탄 털/이물질 99.9% 멸균 차단",
+        "20dB 사람 수면 방해 zero 수중 펌프 무소음",
+        "투명 수량 창으로 간편 잔여 수량 체크",
+        "BPA Free 안심 젖병 소재 사출"
+      ],
+      "reels_script_idea": "🔥 [15초 릴스 콘티] '물 안 마시던 고양이가 샘물 정수기 켜자마자 폭풍 음수하는 귀염 터지는 힐링 숏폼'",
+      "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 고양이 방광염 병원비 300만원 -> 2컷: 집사 통곡 -> 3컷: 자동 정수기 세팅 -> 4컷: 음수량 3배 달성",
+      "seo_copy": "📝 [SEO 리뷰] 고양이 강아지 음수량 늘리는 무소음 자동 정수기 4중 필터 성능 수의사 보증 후기",
+      "affiliate_links": [
+        {
+          "platform": "coupang",
+          "label": "🛒 쿠팡 최저가 확인 및 구매하기 ➔",
+          "url": "https://link.coupang.com/a/morvix_petwater001",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=800&auto=format&fit=crop&q=80",
+      "images": ["https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=800&auto=format&fit=crop&q=80"],
+      "clicks_count": 560,
+      "platform_clicks": {"coupang": 420, "naver": 140},
+      "conversions_count": 71
     },
     {
       "id": "PROD-008",
@@ -130,8 +196,6 @@ const INITIAL_DB_DATA = {
       "episode_id": "INTERNAL_CASE_EP008",
       "episode_label": "🎬 EP008 숏폼 소개 제품",
       "price": 19800,
-      "original_price": 32000,
-      "discount_rate": "38%",
       "rating": 4.85,
       "review_count": 89,
       "usps": [
@@ -140,6 +204,9 @@ const INITIAL_DB_DATA = {
         "가죽 가구 및 내장재 열화 박살 완전 차단",
         "접었을 때 글로브박스 쏙 컴팩트 수납"
       ],
+      "reels_script_idea": "🔥 [15초 릴스 콘티] '땡볕에 세워둔 차량 엉덩이 닿자마자 비명 지르다 우산 차광막 펴고 쾌적한 승차 실험'",
+      "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 핸들 잡다 손 데임 -> 2컷: 차 안 프라이팬 변신 -> 3컷: 차광 우산 장착 -> 4컷: 에어컨 시원 기분 최고",
+      "seo_copy": "📝 [SEO 리뷰] 여름철 필수 차량용 우산형 햇빛 차단막 3초 장착 수납 성능 실사용 리뷰",
       "affiliate_links": [
         {
           "platform": "coupang",
@@ -157,16 +224,9 @@ const INITIAL_DB_DATA = {
         }
       ],
       "thumbnail": "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&auto=format&fit=crop&q=80",
-      "images": [
-        "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&auto=format&fit=crop&q=80"
-      ],
-      "webtoon_episode_title": "S01_EP08 폭염차량 찜통 탈출편",
-      "webtoon_cuts_count": 15,
+      "images": ["https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&auto=format&fit=crop&q=80"],
       "clicks_count": 850,
-      "platform_clicks": {
-        "coupang": 510,
-        "naver": 340
-      },
+      "platform_clicks": {"coupang": 510, "naver": 340},
       "conversions_count": 92
     },
     {
@@ -175,13 +235,11 @@ const INITIAL_DB_DATA = {
       "short_url": "morvix.kr/mosquito001",
       "name": "모르빅스 UV 광촉매 무소음 모기 포집기",
       "subtitle": "새벽 귓가 윙윙 모기 1초 유인 무소음 광촉매 포집기",
-      "category": "summer",
+      "category": "cleaning",
       "is_featured": false,
       "episode_id": "INTERNAL_CASE_EP002",
       "episode_label": "🎬 EP002 숏폼 소개 제품",
       "price": 24500,
-      "original_price": 39000,
-      "discount_rate": "37%",
       "rating": 4.88,
       "review_count": 210,
       "usps": [
@@ -190,6 +248,9 @@ const INITIAL_DB_DATA = {
         "화학약품 0% 아기방 안심 무향 무취",
         "20dB 극저소음 숙면 방해 없음"
       ],
+      "reels_script_idea": "🔥 [15초 릴스 콘티] '불 끄자마자 귓가에 모기 소리 들릴 때 UV 포집기 켜고 아침에 포집 통 사체 무더기 공개'",
+      "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 뺨 때리기 -> 2컷: 잠 깨서 피눈물 -> 3컷: 광촉매 포집기 분대 가동 -> 4컷: 모기 전멸 수면 승리",
+      "seo_copy": "📝 [SEO 리뷰] 무향 무취 가정용 모기 퇴치기 UV 흡입식 포집기 실제 포집 성능 비교",
       "affiliate_links": [
         {
           "platform": "coupang",
@@ -197,26 +258,12 @@ const INITIAL_DB_DATA = {
           "url": "https://link.coupang.com/a/morvix_mosquito001",
           "priority": 1,
           "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
-        },
-        {
-          "platform": "naver",
-          "label": "🟢 네이버 쇼핑커넥트 확인 및 구매 ➔",
-          "url": "https://shopping.naver.com/bridge/morvix_mosquito001",
-          "priority": 2,
-          "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
       "thumbnail": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80",
-      "images": [
-        "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80"
-      ],
-      "webtoon_episode_title": "S01_EP02 모기 윙윙 박멸편",
-      "webtoon_cuts_count": 15,
+      "images": ["https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80"],
       "clicks_count": 640,
-      "platform_clicks": {
-        "coupang": 400,
-        "naver": 240
-      },
+      "platform_clicks": {"coupang": 400, "naver": 240},
       "conversions_count": 78
     }
   ]
@@ -227,7 +274,6 @@ let currentCategory = 'all';
 
 // Load Shop OS Database
 async function initShopOS() {
-  // Render immediately with initial data
   renderCategories();
   renderProducts();
   setupRouting();
@@ -279,6 +325,12 @@ function renderProducts() {
   if (currentCategory === 'featured') {
     filtered = dbData.products.filter(p => p.is_featured);
     if (title) title.textContent = '🌟 오늘의 MORVIX 추천';
+  } else if (currentCategory === 'reels') {
+    filtered = dbData.products.filter(p => p.episode_id || p.episode_label);
+    if (title) title.textContent = '🎬 릴스/쇼츠에서 본 바로 그 제품';
+  } else if (currentCategory === 'best100') {
+    filtered = dbData.products.slice().sort((a, b) => (b.clicks_count || 0) - (a.clicks_count || 0));
+    if (title) title.textContent = '🏆 MORVIX 베스트 100 히트 라인업';
   } else if (currentCategory !== 'all') {
     filtered = dbData.products.filter(p => p.category === currentCategory);
     const catObj = dbData.categories.find(c => c.id === currentCategory);
@@ -310,7 +362,7 @@ function renderProducts() {
   `).join('');
 }
 
-// Open Product Detail Modal
+// Open Product Detail Modal (with AI Content Engine Display)
 function openProductDetail(slug) {
   const product = dbData.products.find(p => p.slug === slug);
   if (!product) return;
@@ -338,6 +390,12 @@ function openProductDetail(slug) {
     <div class="detail-grid">
       <div class="detail-left">
         <img class="detail-image" src="${product.thumbnail}" alt="${product.name}">
+        ${product.reels_script_idea ? `
+          <div style="margin-top: 16px; background: rgba(0, 242, 254, 0.06); border: 1px solid rgba(0, 242, 254, 0.2); border-radius: var(--radius-sm); padding: 12px; font-size: 0.82rem;">
+            <div style="color: var(--primary-accent); font-weight: 700; margin-bottom: 4px;">🎬 MORVIX AI 릴스 콘티</div>
+            <div style="color: var(--text-muted);">${product.reels_script_idea}</div>
+          </div>
+        ` : ''}
       </div>
       <div class="detail-right">
         <span class="detail-slug-box">morvix.kr/${product.slug}</span>
@@ -386,7 +444,7 @@ function registerAffiliateConversion(slug, platform) {
   }
 }
 
-// Setup Admin OS Event Handlers & Security
+// Setup Admin OS Event Handlers & AI Content Engine Generator
 function setupAdminEvents() {
   const btnOpen = document.getElementById('btn-open-admin');
   const btnClose = document.getElementById('btn-close-admin');
@@ -485,6 +543,7 @@ function setupAdminEvents() {
     });
   }
 
+  // ⚡ One-Click Auto Ingestion + AI Content Generator Handler
   const btnAutoFetch = document.getElementById('btn-auto-fetch');
   if (btnAutoFetch) {
     btnAutoFetch.addEventListener('click', () => {
@@ -505,7 +564,7 @@ function setupAdminEvents() {
         document.getElementById('input-link-coupang').value = rawUrl;
       }
 
-      const nextEpNum = (dbData ? dbData.products.length + 1 : 11).toString().padStart(3, '0');
+      const nextEpNum = (dbData ? dbData.products.length + 1 : 13).toString().padStart(3, '0');
       const autoSlug = `item${nextEpNum}`;
       document.getElementById('input-slug').value = autoSlug;
       document.getElementById('input-episode').value = `INTERNAL_CASE_EP${nextEpNum}`;
@@ -521,7 +580,7 @@ function setupAdminEvents() {
         "MORVIX 숏폼 에피소드 실측 검증 완료"
       ].join('\n');
 
-      alert(`⚡ [원클릭 자동 불러오기 완료!]\n단축 슬러그: morvix.kr/${autoSlug}\n에피소드: EP${nextEpNum}\n상품명/AI 4-USP가 자동 채워졌습니다.`);
+      alert(`⚡ [원클릭 자동 불러오기 & AI 콘텐츠 생성 완료!]\n\n• 단축 슬러그: morvix.kr/${autoSlug}\n• 연동 에피소드: EP${nextEpNum}\n• 15초 릴스 스크립트 콘티 자동 생성 완료\n• 4컷 웹툰 에피소드 소재 자동 생성 완료\n• SEO 블로그 카피 자동 생성 완료`);
     });
   }
 
@@ -544,7 +603,7 @@ function setupAdminEvents() {
       const name = document.getElementById('input-name') ? document.getElementById('input-name').value : '';
       const slug = document.getElementById('input-slug') ? document.getElementById('input-slug').value : '';
       const category = document.getElementById('input-category') ? document.getElementById('input-category').value : 'summer';
-      const episode = document.getElementById('input-episode') ? document.getElementById('input-episode').value : 'EP011';
+      const episode = document.getElementById('input-episode') ? document.getElementById('input-episode').value : 'EP013';
       const rawPrice = document.getElementById('input-price') ? document.getElementById('input-price').value : '';
       const price = rawPrice ? parseInt(rawPrice) : 25000;
       const linkCoupang = document.getElementById('input-link-coupang') ? document.getElementById('input-link-coupang').value : '';
@@ -572,7 +631,7 @@ function setupAdminEvents() {
         });
       }
 
-      const epNum = episode.replace(/[^0-9]/g, '') || '011';
+      const epNum = episode.replace(/[^0-9]/g, '') || '013';
 
       const newProd = {
         id: `PROD-${Date.now()}`,
@@ -590,6 +649,9 @@ function setupAdminEvents() {
         rating: 5.0,
         review_count: 1,
         usps: uspsText.split('\n').filter(line => line.trim().length > 0),
+        reels_script_idea: `🔥 [15초 릴스 콘티] '${name} 실사용 및 문제 해결 비포/애프터 릴스 시츄에이션'`,
+        webtoon_idea: `🎨 [4컷 웹툰] 1컷: 불편함 -> 2컷: 분통 -> 3컷: ${name} 장착 -> 4컷: 상쾌한 해결`,
+        seo_copy: `📝 [SEO 리뷰] ${name} 실사용 솔직 후기 및 파트너스 최저가 구매 가이드`,
         affiliate_links: affiliateLinks,
         thumbnail: "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80",
         images: ["https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80"],
@@ -601,7 +663,7 @@ function setupAdminEvents() {
       };
 
       dbData.products.unshift(newProd);
-      alert(`✅ 다중 제휴 상품등록 완료!\n단축 URL: morvix.kr/${slug}\n에피소드: EP${epNum}\n쿠팡 & 네이버 제휴 CTA가 활성화되었습니다.`);
+      alert(`✅ 다중 제휴 상품 & AI 콘텐츠 생성 완료!\n단축 URL: morvix.kr/${slug}\n에피소드: EP${epNum}\n• 릴스 콘티 / 웹툰 에피소드 / SEO 카피가 자동 등록되었습니다.`);
 
       renderProducts();
       renderAnalyticsTable();
