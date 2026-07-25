@@ -183,23 +183,73 @@ function registerAffiliateConversion(slug, platform) {
   }
 }
 
-// Setup Admin OS Event Handlers
+// Setup Admin OS Event Handlers & Security
 function setupAdminEvents() {
   const btnOpen = document.getElementById('btn-open-admin');
   const btnClose = document.getElementById('btn-close-admin');
   const modal = document.getElementById('admin-modal');
+  const brandLogo = document.getElementById('brand-logo');
 
-  btnOpen.addEventListener('click', () => {
-    modal.classList.add('active');
-    renderAnalyticsTable();
-    renderAdminProductList();
+  // Verify Admin Auth PIN
+  function verifyAndOpenAdmin() {
+    if (sessionStorage.getItem('morvix_admin_auth') === 'true') {
+      btnOpen.classList.add('visible');
+      modal.classList.add('active');
+      renderAnalyticsTable();
+      renderAdminProductList();
+      return;
+    }
+
+    const pin = prompt("🔒 MORVIX Admin OS PIN 번호를 입력하세요:");
+    if (pin === "2026") {
+      sessionStorage.setItem('morvix_admin_auth', 'true');
+      btnOpen.classList.add('visible');
+      modal.classList.add('active');
+      renderAnalyticsTable();
+      renderAdminProductList();
+    } else if (pin !== null) {
+      alert("⚠️ 인증 실패: 잘못된 PIN 번호입니다.");
+    }
+  }
+
+  // Check URL query/hash trigger (e.g., ?admin or #admin)
+  const isAdminUrl = window.location.search.includes('admin') || window.location.hash.includes('admin');
+  if (isAdminUrl || sessionStorage.getItem('morvix_admin_auth') === 'true') {
+    btnOpen.classList.add('visible');
+  }
+
+  btnOpen.addEventListener('click', verifyAndOpenAdmin);
+
+  // Secret Trigger 1: Triple-click on Brand Logo
+  let clickCount = 0;
+  let clickTimer = null;
+  if (brandLogo) {
+    brandLogo.addEventListener('click', (e) => {
+      e.preventDefault();
+      clickCount++;
+      clearTimeout(clickTimer);
+      if (clickCount >= 3) {
+        clickCount = 0;
+        verifyAndOpenAdmin();
+      } else {
+        clickTimer = setTimeout(() => { clickCount = 0; }, 600);
+      }
+    });
+  }
+
+  // Secret Trigger 2: Keyboard Shortcut (Ctrl + Shift + A)
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+      e.preventDefault();
+      verifyAndOpenAdmin();
+    }
   });
 
   btnClose.addEventListener('click', () => {
     modal.classList.remove('active');
   });
 
-  // Admin Modal Close Button
+  // Product Detail Modal Close Button
   document.getElementById('btn-close-modal').addEventListener('click', () => {
     document.getElementById('product-modal').classList.remove('active');
   });
