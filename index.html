@@ -211,9 +211,25 @@
             </div>
           </div>
 
-          <div class="form-group full-width">
-            <label>📷 대표 상품 이미지 URL (Image URL)</label>
-            <input type="url" id="input-image-url" placeholder="https://images.unsplash.com/photo-... 또는 이미지 주소 붙여넣기" required>
+          <div class="form-group full-width" style="background: rgba(255, 255, 255, 0.03); border: 1px dashed var(--primary-accent); padding: 14px; border-radius: var(--radius-sm);">
+            <label style="color: var(--primary-accent); font-weight: 700;">📷 #1 최우선 병목 해결: 대표 상품 이미지 URL & 실시간 프리뷰</label>
+            <div style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
+              <div style="width: 70px; height: 70px; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+                <img id="image-preview-thumb" src="https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+              <div style="flex: 1;">
+                <input type="url" id="input-image-url" placeholder="https://images.unsplash.com/... 또는 네이버/쿠팡 이미지 주소 붙여넣기" required style="width: 100%;">
+                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; font-size: 0.75rem;">
+                  <span style="color: var(--text-muted); font-weight: 600;">⚡ 1초 고화질 프리셋:</span>
+                  <button type="button" class="preset-btn" onclick="setImagePreset('https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80')">❄️ 서큘레이터</button>
+                  <button type="button" class="preset-btn" onclick="setImagePreset('https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&auto=format&fit=crop&q=80')">🧊 쿨링이불</button>
+                  <button type="button" class="preset-btn" onclick="setImagePreset('https://images.unsplash.com/photo-1595152772835-219674b2a8a6?w=800&auto=format&fit=crop&q=80')">🦟 모기포충기</button>
+                  <button type="button" class="preset-btn" onclick="setImagePreset('https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&auto=format&fit=crop&q=80')">📱 맥세이프</button>
+                  <button type="button" class="preset-btn" onclick="setImagePreset('https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&auto=format&fit=crop&q=80')">🧹 청소용품</button>
+                  <button type="button" class="preset-btn" onclick="setImagePreset('https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&auto=format&fit=crop&q=80')">🚗 차량용품</button>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="form-group full-width">

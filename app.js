@@ -391,8 +391,23 @@ function registerAffiliateConversion(slug, platform) {
   }
 }
 
+function setImagePreset(url) {
+  const input = document.getElementById('input-image-url');
+  const thumb = document.getElementById('image-preview-thumb');
+  if (input) input.value = url;
+  if (thumb) thumb.src = url;
+}
+
 // Admin OS Setup & Auto-Ingestion Handlers
 function setupAdminEvents() {
+  const inputImg = document.getElementById('input-image-url');
+  const thumbImg = document.getElementById('image-preview-thumb');
+  if (inputImg && thumbImg) {
+    inputImg.addEventListener('input', (e) => {
+      const val = e.target.value.trim();
+      if (val) thumbImg.src = val;
+    });
+  }
   const btnOpen = document.getElementById('btn-open-admin');
   const btnClose = document.getElementById('btn-close-admin');
   const modal = document.getElementById('admin-modal');
