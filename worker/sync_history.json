@@ -1,0 +1,16 @@
+[
+  {
+    "timestamp": "2026-07-26T04:46:59.264766",
+    "status": "SUCCESS",
+    "count": 4,
+    "success_rate": "100.0%",
+    "log": "Master DB 4개 상품 무인 동기화 완료 (4개 성공, 0개 감지오류)",
+    "duration": "5.9초",
+    "error_details": [
+      "fan001 [coupang]: 403 Forbidden (Akamai Shield detected)",
+      "blanket001 [coupang]: 403 Forbidden (Akamai Shield detected)",
+      "mosquito001 [coupang]: 403 Forbidden (Akamai Shield detected)",
+      "magsafe001 [coupang]: 403 Forbidden (Akamai Shield detected)"
+    ]
+  }
+]

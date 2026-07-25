@@ -6,15 +6,51 @@
     "version": "v3.0 (Unified Product Master DB Kernel)"
   },
   "categories": [
-    {"id": "all", "name": "모든 제품", "icon": "📦"},
-    {"id": "featured", "name": "오늘의 추천", "icon": "🌟"},
-    {"id": "reels", "name": "릴스 속 그 상품", "icon": "🎬"},
-    {"id": "best100", "name": "베스트 100", "icon": "🏆"},
-    {"id": "summer", "name": "여름/장마", "icon": "❄️"},
-    {"id": "life", "name": "생활용품", "icon": "🏠"},
-    {"id": "cleaning", "name": "청소/위생", "icon": "🧹"},
-    {"id": "it", "name": "IT/디지털", "icon": "📱"},
-    {"id": "car", "name": "자동차", "icon": "🚗"}
+    {
+      "id": "all",
+      "name": "모든 제품",
+      "icon": "📦"
+    },
+    {
+      "id": "featured",
+      "name": "오늘의 추천",
+      "icon": "🌟"
+    },
+    {
+      "id": "reels",
+      "name": "릴스 속 그 상품",
+      "icon": "🎬"
+    },
+    {
+      "id": "best100",
+      "name": "베스트 100",
+      "icon": "🏆"
+    },
+    {
+      "id": "summer",
+      "name": "여름/장마",
+      "icon": "❄️"
+    },
+    {
+      "id": "life",
+      "name": "생활용품",
+      "icon": "🏠"
+    },
+    {
+      "id": "cleaning",
+      "name": "청소/위생",
+      "icon": "🧹"
+    },
+    {
+      "id": "it",
+      "name": "IT/디지털",
+      "icon": "📱"
+    },
+    {
+      "id": "car",
+      "name": "자동차",
+      "icon": "🚗"
+    }
   ],
   "products": [
     {
@@ -68,16 +104,30 @@
         }
       ],
       "thumbnail": "https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80",
-      "images": ["https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80"],
+      "images": [
+        "https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80"
+      ],
       "analytics": {
         "clicks_count": 342,
-        "platform_clicks": { "coupang": 210, "naver": 132 },
+        "platform_clicks": {
+          "coupang": 210,
+          "naver": 132
+        },
         "conversions_count": 48,
         "ctr": 5.2,
         "conversion_rate": 2.3
       },
       "last_sync": "2026-07-26T02:30:00.000Z",
-      "sync_status": "OK"
+      "sync_status": "OK",
+      "price_history": [
+        {
+          "price": 28900,
+          "date": "2026-07-26T04:46:53.326874"
+        }
+      ],
+      "version": 2,
+      "last_synced_at": "2026-07-26T04:46:54.886221",
+      "image_status": "Verified"
     },
     {
       "id": "PROD-009",
@@ -130,16 +180,30 @@
         }
       ],
       "thumbnail": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&auto=format&fit=crop&q=80",
-      "images": ["https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&auto=format&fit=crop&q=80"],
+      "images": [
+        "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&auto=format&fit=crop&q=80"
+      ],
       "analytics": {
         "clicks_count": 1280,
-        "platform_clicks": { "coupang": 820, "naver": 460 },
+        "platform_clicks": {
+          "coupang": 820,
+          "naver": 460
+        },
         "conversions_count": 164,
         "ctr": 8.4,
         "conversion_rate": 4.1
       },
       "last_sync": "2026-07-26T02:30:00.000Z",
-      "sync_status": "OK"
+      "sync_status": "OK",
+      "price_history": [
+        {
+          "price": 34900,
+          "date": "2026-07-26T04:46:54.886221"
+        }
+      ],
+      "version": 2,
+      "last_synced_at": "2026-07-26T04:46:56.359846",
+      "image_status": "Verified"
     },
     {
       "id": "PROD-002",
@@ -192,16 +256,30 @@
         }
       ],
       "thumbnail": "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?w=800&auto=format&fit=crop&q=80",
-      "images": ["https://images.unsplash.com/photo-1595152772835-219674b2a8a6?w=800&auto=format&fit=crop&q=80"],
+      "images": [
+        "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?w=800&auto=format&fit=crop&q=80"
+      ],
       "analytics": {
         "clicks_count": 640,
-        "platform_clicks": { "coupang": 400, "naver": 240 },
+        "platform_clicks": {
+          "coupang": 400,
+          "naver": 240
+        },
         "conversions_count": 78,
         "ctr": 6.1,
         "conversion_rate": 3.2
       },
       "last_sync": "2026-07-26T02:30:00.000Z",
-      "sync_status": "OK"
+      "sync_status": "OK",
+      "price_history": [
+        {
+          "price": 24500,
+          "date": "2026-07-26T04:46:56.359846"
+        }
+      ],
+      "version": 2,
+      "last_synced_at": "2026-07-26T04:46:57.761330",
+      "image_status": "Verified"
     },
     {
       "id": "PROD-011",
@@ -254,16 +332,30 @@
         }
       ],
       "thumbnail": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&auto=format&fit=crop&q=80",
-      "images": ["https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&auto=format&fit=crop&q=80"],
+      "images": [
+        "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&auto=format&fit=crop&q=80"
+      ],
       "analytics": {
         "clicks_count": 420,
-        "platform_clicks": { "coupang": 310, "naver": 110 },
+        "platform_clicks": {
+          "coupang": 310,
+          "naver": 110
+        },
         "conversions_count": 52,
         "ctr": 4.9,
         "conversion_rate": 2.8
       },
       "last_sync": "2026-07-26T02:30:00.000Z",
-      "sync_status": "OK"
+      "sync_status": "OK",
+      "price_history": [
+        {
+          "price": 29800,
+          "date": "2026-07-26T04:46:57.761330"
+        }
+      ],
+      "version": 2,
+      "last_synced_at": "2026-07-26T04:46:59.262765",
+      "image_status": "Verified"
     }
   ]
 }
