@@ -299,8 +299,57 @@
       </div>
 
       <div class="admin-tab-content" id="tab-all-products">
-        <div id="admin-product-list" class="admin-product-list">
-          <!-- Injected by JavaScript -->
+        <!-- Operational Filter & Batch Action Toolbar -->
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 16px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); padding: 12px 16px; border-radius: var(--radius-md);">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; flex: 1;">
+            <input type="text" id="admin-search-keyword" placeholder="🔍 상품명 / 에피소드 / 슬러그 검색..." style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: #fff; padding: 8px 12px; border-radius: 4px; font-size: 0.85rem; min-width: 200px;">
+            
+            <select id="admin-filter-status" style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: #fff; padding: 8px 10px; border-radius: 4px; font-size: 0.85rem;">
+              <option value="ALL">🏷️ 전체 상태</option>
+              <option value="ACTIVE">🟢 ACTIVE (판매중)</option>
+              <option value="EXPIRED">🔴 EXPIRED (만료)</option>
+              <option value="OUT_OF_STOCK">🟡 OUT_OF_STOCK (품절)</option>
+              <option value="HIDDEN">👁️ HIDDEN (숨김)</option>
+            </select>
+
+            <select id="admin-filter-category" style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: #fff; padding: 8px 10px; border-radius: 4px; font-size: 0.85rem;">
+              <option value="ALL">📂 전체 카테고리</option>
+              <option value="summer">❄️ 여름/장마</option>
+              <option value="life">🏠 생활용품</option>
+              <option value="cleaning">🧹 청소/위생</option>
+              <option value="kitchen">🍳 주방/요리</option>
+              <option value="it">📱 IT/디지털</option>
+              <option value="car">🚗 자동차</option>
+              <option value="pet">🐾 반려동물</option>
+            </select>
+          </div>
+
+          <div style="display: flex; gap: 6px; align-items: center;">
+            <button class="preset-btn" onclick="batchUpdateStatus('ACTIVE')" style="background: rgba(46, 213, 115, 0.2); color: #2ed573; border-color: rgba(46, 213, 115, 0.4);">🟢 선택 ACTIVE</button>
+            <button class="preset-btn" onclick="batchUpdateStatus('HIDDEN')" style="background: rgba(255, 165, 2, 0.2); color: #ffa502; border-color: rgba(255, 165, 2, 0.4);">👁️ 선택 숨김</button>
+            <button class="preset-btn" onclick="batchDeleteProducts()" style="background: rgba(255, 71, 87, 0.2); color: #ff4757; border-color: rgba(255, 71, 87, 0.4);">🗑️ 선택 일괄 삭제</button>
+          </div>
+        </div>
+
+        <!-- Master Product Table -->
+        <div class="analytics-table-wrapper">
+          <table class="analytics-table">
+            <thead>
+              <tr>
+                <th style="width: 40px; text-align: center;"><input type="checkbox" id="check-all-admin" onclick="toggleSelectAllAdmin(this)"></th>
+                <th>상품명 / 에피소드</th>
+                <th>상태 (Status)</th>
+                <th>카테고리</th>
+                <th>제휴 플랫폼</th>
+                <th>등록일</th>
+                <th>총 클릭</th>
+                <th style="text-align: center;">작업</th>
+              </tr>
+            </thead>
+            <tbody id="master-product-tbody">
+              <!-- Injected by JavaScript -->
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

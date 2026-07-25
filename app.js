@@ -436,6 +436,7 @@ function loadMasterDbFromStorage() {
 
 // Stage 2: Admin OS Setup, Image Clipboard Paste & Drag-and-Drop Handlers
 function setupAdminEvents() {
+  bindAdminFilterEvents();
   const inputImg = document.getElementById('input-image-url');
   const thumbImg = document.getElementById('image-preview-thumb');
   const dropZone = document.getElementById('image-drop-zone');
@@ -710,20 +711,137 @@ function renderAnalyticsTable() {
 }
 
 function renderAdminProductList() {
-  const container = document.getElementById('admin-product-list');
-  if (!container || !dbData) return;
+  const tbody = document.getElementById('master-product-tbody');
+  if (!tbody || !dbData) return;
 
-  container.innerHTML = dbData.products.map(p => `
-    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
-      <div>
-        <strong style="color: #fff; font-size: 0.98rem; display: block; margin-bottom: 4px;">${p.name}</strong>
-        <div style="font-size: 0.82rem; color: var(--text-muted);">
-          morvix.kr/${p.slug} | Status: <span style="color: ${p.status === 'EXPIRED' ? '#ff4757' : '#2ed573'}; font-weight: 700;">${p.status || 'ACTIVE'}</span>
-        </div>
-      </div>
-      <button style="background: rgba(255, 71, 87, 0.2); color: #ff4757; border: 1px solid rgba(255, 71, 87, 0.4); padding: 6px 14px; border-radius: var(--radius-sm); cursor: pointer;" onclick="deleteProduct('${p.id}')">삭제</button>
-    </div>
-  `).join('');
+  const searchKw = (document.getElementById('admin-search-keyword')?.value || '').toLowerCase().trim();
+  const filterStatus = document.getElementById('admin-filter-status')?.value || 'ALL';
+  const filterCat = document.getElementById('admin-filter-category')?.value || 'ALL';
+
+  let filtered = dbData.products.filter(p => {
+    const matchesSearch = !searchKw || 
+      p.name.toLowerCase().includes(searchKw) || 
+      p.slug.toLowerCase().includes(searchKw) || 
+      (p.episode_id && p.episode_id.toLowerCase().includes(searchKw));
+    
+    const matchesStatus = filterStatus === 'ALL' || (p.status || 'ACTIVE') === filterStatus;
+    const matchesCat = filterCat === 'ALL' || p.category === filterCat;
+
+    return matchesSearch && matchesStatus && matchesCat;
+  });
+
+  tbody.innerHTML = filtered.map(p => {
+    const statusVal = p.status || 'ACTIVE';
+    const statusBg = statusVal === 'ACTIVE' ? 'rgba(46,213,115,0.2)' :
+                     statusVal === 'EXPIRED' ? 'rgba(255,71,87,0.2)' :
+                     statusVal === 'OUT_OF_STOCK' ? 'rgba(235,47,6,0.2)' : 'rgba(255,165,2,0.2)';
+    const statusColor = statusVal === 'ACTIVE' ? '#2ed573' :
+                        statusVal === 'EXPIRED' ? '#ff4757' :
+                        statusVal === 'OUT_OF_STOCK' ? '#ff6b81' : '#ffa502';
+
+    const hasCoupang = Array.isArray(p.affiliate_links) ? p.affiliate_links.some(l => l.platform === 'coupang') : !!p.coupang_link;
+    const hasNaver = Array.isArray(p.affiliate_links) ? p.affiliate_links.some(l => l.platform === 'naver') : false;
+
+    const addedDateStr = p.added_date ? p.added_date.substring(0, 10) : '2026-07-26';
+    const clicks = p.analytics ? (p.analytics.clicks_count || 0) : (p.clicks_count || 0);
+
+    return `
+      <tr>
+        <td style="text-align: center;"><input type="checkbox" class="admin-prod-checkbox" value="${p.id}"></td>
+        <td>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <img src="${p.thumbnail}" style="width: 36px; height: 36px; object-fit: cover; border-radius: 4px;">
+            <div>
+              <strong style="color: #fff; font-size: 0.88rem;">${p.name}</strong>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">morvix.kr/${p.slug} | ${p.episode_label || p.episode_id}</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <select onchange="updateProductStatus('${p.id}', this.value)" style="background: ${statusBg}; color: ${statusColor}; border: 1px solid ${statusColor}; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 0.78rem; cursor: pointer;">
+            <option value="ACTIVE" ${statusVal === 'ACTIVE' ? 'selected' : ''}>🟢 ACTIVE</option>
+            <option value="EXPIRED" ${statusVal === 'EXPIRED' ? 'selected' : ''}>🔴 EXPIRED</option>
+            <option value="OUT_OF_STOCK" ${statusVal === 'OUT_OF_STOCK' ? 'selected' : ''}>🟡 품절</option>
+            <option value="HIDDEN" ${statusVal === 'HIDDEN' ? 'selected' : ''}>👁️ 숨김</option>
+          </select>
+        </td>
+        <td style="font-size: 0.82rem; color: var(--text-muted);">${p.category}</td>
+        <td style="font-size: 0.8rem;">
+          ${hasCoupang ? '<span style="color: #ff4757; font-weight: 700; margin-right: 4px;">🛒 쿠팡</span>' : ''}
+          ${hasNaver ? '<span style="color: #2ed573; font-weight: 700;">🟢 네이버</span>' : ''}
+        </td>
+        <td style="font-size: 0.78rem; color: var(--text-muted);">${addedDateStr}</td>
+        <td style="font-weight: 700; color: var(--primary-accent);">${clicks.toLocaleString()}회</td>
+        <td style="text-align: center;">
+          <button style="background: rgba(255, 71, 87, 0.2); color: #ff4757; border: 1px solid rgba(255, 71, 87, 0.4); padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 700;" onclick="deleteProduct('${p.id}')">삭제</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// 1-Click Status Update Helper
+function updateProductStatus(id, newStatus) {
+  const prod = dbData.products.find(p => p.id === id);
+  if (prod) {
+    prod.status = newStatus;
+    saveMasterDbToStorage();
+    renderProducts();
+    renderAnalyticsTable();
+    renderAdminProductList();
+  }
+}
+
+// Search & Filter Event Listeners Setup
+function bindAdminFilterEvents() {
+  const searchInput = document.getElementById('admin-search-keyword');
+  const statusSelect = document.getElementById('admin-filter-status');
+  const catSelect = document.getElementById('admin-filter-category');
+
+  if (searchInput) searchInput.addEventListener('input', renderAdminProductList);
+  if (statusSelect) statusSelect.addEventListener('change', renderAdminProductList);
+  if (catSelect) catSelect.addEventListener('change', renderAdminProductList);
+}
+
+// Select All & Batch Actions
+function toggleSelectAllAdmin(masterCb) {
+  document.querySelectorAll('.admin-prod-checkbox').forEach(cb => cb.checked = masterCb.checked);
+}
+
+function getSelectedAdminProdIds() {
+  const checked = document.querySelectorAll('.admin-prod-checkbox:checked');
+  return Array.from(checked).map(cb => cb.value);
+}
+
+function batchUpdateStatus(newStatus) {
+  const ids = getSelectedAdminProdIds();
+  if (ids.length === 0) {
+    alert("⚠️ 상태를 변경할 상품을 선택해주세요.");
+    return;
+  }
+  dbData.products.forEach(p => {
+    if (ids.includes(p.id)) p.status = newStatus;
+  });
+  saveMasterDbToStorage();
+  renderProducts();
+  renderAnalyticsTable();
+  renderAdminProductList();
+  alert(`✅ 선택된 ${ids.length}개 상품 상태가 [${newStatus}] (으)로 변경되었습니다.`);
+}
+
+function batchDeleteProducts() {
+  const ids = getSelectedAdminProdIds();
+  if (ids.length === 0) {
+    alert("⚠️ 삭제할 상품을 선택해주세요.");
+    return;
+  }
+  if (confirm(`선택한 ${ids.length}개 상품을 일괄 삭제하시겠습니까?`)) {
+    dbData.products = dbData.products.filter(p => !ids.includes(p.id));
+    saveMasterDbToStorage();
+    renderProducts();
+    renderAnalyticsTable();
+    renderAdminProductList();
+  }
 }
 
 function deleteProduct(id) {
