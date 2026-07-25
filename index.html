@@ -152,9 +152,9 @@
         <button class="modal-close" id="btn-close-admin">&times;</button>
       </div>
       <div class="admin-tabs">
-        <button class="admin-tab active" data-tab="tab-add-product">➕ 신규 상품 등록</button>
-        <button class="admin-tab" data-tab="tab-analytics">📊 클릭/전환 분석</button>
-        <button class="admin-tab" data-tab="tab-all-products">📦 등록 상품 관리</button>
+        <button class="admin-tab active" data-tab="tab-add-product" onclick="switchAdminTab('tab-add-product')">➕ 신규 상품 등록</button>
+        <button class="admin-tab" data-tab="tab-analytics" onclick="switchAdminTab('tab-analytics')">📊 클릭/전환 분석</button>
+        <button class="admin-tab" data-tab="tab-all-products" onclick="switchAdminTab('tab-all-products')">📦 등록 상품 관리</button>
       </div>
 
       <div class="admin-tab-content active" id="tab-add-product">

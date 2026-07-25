@@ -299,7 +299,7 @@ function renderProducts() {
           <div class="card-trust-box" style="display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: #2ed573; font-weight: 700;">
             <span>🔥 MORVIX 추천</span>
           </div>
-          <button class="btn-card-buy">🛒 최저가/구매처 확인 ➔</button>
+          <button class="btn-card-buy" onclick="event.stopPropagation(); openProductDetail('${p.slug}');">🛒 최저가/구매처 확인 ➔</button>
         </div>
       </div>
     </div>
@@ -610,21 +610,41 @@ function setupAdminEvents() {
     });
   }
 
+function switchAdminTab(targetId) {
+  const adminTabs = document.querySelectorAll('.admin-tab');
+  adminTabs.forEach(t => {
+    if (t.getAttribute('data-tab') === targetId) t.classList.add('active');
+    else t.classList.remove('active');
+  });
+
+  document.querySelectorAll('.admin-tab-content').forEach(c => {
+    if (c.id === targetId) c.classList.add('active');
+    else c.classList.remove('active');
+  });
+
+  if (targetId === 'tab-analytics') renderAnalyticsTable();
+  if (targetId === 'tab-all-products') renderAdminProductList();
+}
+
+window.switchAdminTab = switchAdminTab;
+window.openProductDetail = openProductDetail;
+window.setImagePreset = setImagePreset;
+window.deleteProduct = deleteProduct;
+window.updateProductStatus = updateProductStatus;
+window.toggleSelectAllAdmin = toggleSelectAllAdmin;
+window.batchUpdateStatus = batchUpdateStatus;
+window.batchDeleteProducts = batchDeleteProducts;
+window.filterCuration = filterCuration;
+window.registerAffiliateConversion = registerAffiliateConversion;
+window.verifyAndOpenAdmin = verifyAndOpenAdmin;
+
   // Admin Tab Switching Listener
   const adminTabs = document.querySelectorAll('.admin-tab');
   adminTabs.forEach(tab => {
     tab.addEventListener('click', (e) => {
-      adminTabs.forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active'));
-      
       const btn = e.currentTarget;
-      btn.classList.add('active');
       const targetId = btn.getAttribute('data-tab');
-      const content = document.getElementById(targetId);
-      if (content) content.classList.add('active');
-
-      if (targetId === 'tab-analytics') renderAnalyticsTable();
-      if (targetId === 'tab-all-products') renderAdminProductList();
+      switchAdminTab(targetId);
     });
   });
 
