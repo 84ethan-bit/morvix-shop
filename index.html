@@ -248,47 +248,71 @@
       </div>
 
       <div class="admin-tab-content" id="tab-analytics">
-        <div class="analytics-summary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px;">
-          <div class="metric-box">
-            <span class="metric-label">총 아웃바운드 클릭</span>
-            <span class="metric-value" id="total-clicks">3,112회</span>
+        <!-- Live Operational Inventory KPIs -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 16px;">
+          <div class="metric-box" style="border-color: rgba(46, 213, 115, 0.4); background: rgba(46, 213, 115, 0.05);">
+            <span class="metric-label">🟢 ACTIVE (판매중)</span>
+            <span class="metric-value" id="kpi-active-count" style="color: #2ed573;">0개</span>
           </div>
-          <div class="metric-box">
-            <span class="metric-label">🛒 쿠팡 파트너스 클릭</span>
-            <span class="metric-value" id="coupang-clicks" style="color: #ff4757;">1,940회</span>
+          <div class="metric-box" style="border-color: rgba(255, 71, 87, 0.4); background: rgba(255, 71, 87, 0.05);">
+            <span class="metric-label">🔴 EXPIRED (만료)</span>
+            <span class="metric-value" id="kpi-expired-count" style="color: #ff4757;">0개</span>
           </div>
-          <div class="metric-box">
-            <span class="metric-label">🟢 네이버 쇼핑 클릭</span>
-            <span class="metric-value" id="naver-clicks" style="color: #2ed573;">1,172회</span>
+          <div class="metric-box" style="border-color: rgba(235, 47, 6, 0.4); background: rgba(235, 47, 6, 0.05);">
+            <span class="metric-label">🟡 OUT_OF_STOCK (품절)</span>
+            <span class="metric-value" id="kpi-stockout-count" style="color: #ff6b81;">0개</span>
           </div>
-          <div class="metric-box">
-            <span class="metric-label">평균 전환율 (CR)</span>
-            <span class="metric-value" id="avg-cr" style="color: var(--primary-accent);">12.3%</span>
-          </div>
-          <div class="metric-box">
-            <span class="metric-label">🔥 TOP 성과 상품</span>
-            <span class="metric-value highlight" id="top-product" style="font-size: 1.1rem;">초냉감 이불</span>
-          </div>
-          <div class="metric-box">
-            <span class="metric-label">🎬 TOP 유입 쇼츠</span>
-            <span class="metric-value" id="top-shorts" style="color: #eccc68; font-size: 1rem;">EP009</span>
-          </div>
-          <div class="metric-box">
-            <span class="metric-label">🏆 TOP 제휴 플랫폼</span>
-            <span class="metric-value" id="top-platform" style="color: #ff4757; font-size: 1rem;">쿠팡 (62.3%)</span>
+          <div class="metric-box" style="border-color: rgba(255, 165, 2, 0.4); background: rgba(255, 165, 2, 0.05);">
+            <span class="metric-label">👁️ HIDDEN (숨김)</span>
+            <span class="metric-value" id="kpi-hidden-count" style="color: #ffa502;">0개</span>
           </div>
         </div>
 
+        <!-- Revenue Traffic & Outbound Performance KPIs -->
+        <div class="analytics-summary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px;">
+          <div class="metric-box">
+            <span class="metric-label">📈 총 아웃바운드 클릭</span>
+            <span class="metric-value" id="total-clicks">0회</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">🛒 쿠팡 파트너스 클릭</span>
+            <span class="metric-value" id="coupang-clicks" style="color: #ff4757;">0회</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">🟢 네이버 쇼핑 클릭</span>
+            <span class="metric-value" id="naver-clicks" style="color: #2ed573;">0회</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">🎯 평균 전환율 (CR)</span>
+            <span class="metric-value" id="avg-cr" style="color: var(--primary-accent);">0.0%</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">🔥 TOP 1 성과 상품</span>
+            <span class="metric-value highlight" id="top-product" style="font-size: 1.05rem;">-</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">🎬 TOP 유입 쇼츠</span>
+            <span class="metric-value" id="top-shorts" style="color: #eccc68; font-size: 1rem;">-</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">🏆 우세 제휴 플랫폼</span>
+            <span class="metric-value" id="top-platform" style="color: #ff4757; font-size: 1rem;">-</span>
+          </div>
+        </div>
+
+        <!-- TOP Performance Master Table -->
+        <h4 style="color: var(--primary-accent); font-size: 0.95rem; font-weight: 800; margin-bottom: 10px;">🏆 TOP 성과 Master 랭킹 테이블</h4>
         <div class="analytics-table-wrapper">
           <table class="analytics-table">
             <thead>
               <tr>
-                <th>슬러그 URL</th>
-                <th>상품명</th>
-                <th>쿠팡 클릭 (coupang)</th>
-                <th>네이버 클릭 (naver)</th>
-                <th>전환 발생수</th>
-                <th>전환율 (CR)</th>
+                <th style="width: 50px;">순위</th>
+                <th>상품명 / 에피소드</th>
+                <th>상태</th>
+                <th>🛒 쿠팡 클릭</th>
+                <th>🟢 네이버 클릭</th>
+                <th>총 클릭</th>
+                <th>기여 전환수</th>
               </tr>
             </thead>
             <tbody id="analytics-tbody">

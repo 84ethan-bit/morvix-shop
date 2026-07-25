@@ -696,18 +696,94 @@ function setupAdminEvents() {
 
 function renderAnalyticsTable() {
   const tbody = document.getElementById('analytics-tbody');
-  if (!tbody || !dbData) return;
+  if (!tbody || !dbData || !dbData.products) return;
 
-  tbody.innerHTML = dbData.products.map(p => `
-    <tr>
-      <td style="font-family: monospace; color: var(--primary-accent); font-weight: 700;">morvix.kr/${p.slug}</td>
-      <td style="font-weight: 600;">${p.name}</td>
-      <td style="font-weight: 800; color: #ff4757;">🛒 ${(p.analytics?.platform_clicks?.coupang || 0).toLocaleString()}회</td>
-      <td style="font-weight: 800; color: #2ed573;">🟢 ${(p.analytics?.platform_clicks?.naver || 0).toLocaleString()}회</td>
-      <td style="font-weight: 800; color: #fff;">${(p.analytics?.conversions_count || 0).toLocaleString()}건</td>
-      <td><span style="padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; background: ${p.status === 'EXPIRED' ? 'rgba(255,71,87,0.2)' : 'rgba(46,213,115,0.2)'}; color: ${p.status === 'EXPIRED' ? '#ff4757' : '#2ed573'};">${p.status || 'ACTIVE'}</span></td>
-    </tr>
-  `).join('');
+  // 1. Calculate Live Operational Inventory KPIs
+  let activeCount = 0;
+  let expiredCount = 0;
+  let stockoutCount = 0;
+  let hiddenCount = 0;
+
+  let totalClicks = 0;
+  let totalCoupangClicks = 0;
+  let totalNaverClicks = 0;
+  let totalConversions = 0;
+
+  let topProd = null;
+  let maxClicks = -1;
+
+  dbData.products.forEach(p => {
+    const status = p.status || 'ACTIVE';
+    if (status === 'ACTIVE') activeCount++;
+    else if (status === 'EXPIRED') expiredCount++;
+    else if (status === 'OUT_OF_STOCK') stockoutCount++;
+    else if (status === 'HIDDEN') hiddenCount++;
+
+    const clicks = p.analytics ? (p.analytics.clicks_count || 0) : (p.clicks_count || 0);
+    const cClicks = p.analytics?.platform_clicks?.coupang || 0;
+    const nClicks = p.analytics?.platform_clicks?.naver || 0;
+    const convs = p.analytics ? (p.analytics.conversions_count || 0) : 0;
+
+    totalClicks += clicks;
+    totalCoupangClicks += cClicks;
+    totalNaverClicks += nClicks;
+    totalConversions += convs;
+
+    if (clicks > maxClicks) {
+      maxClicks = clicks;
+      topProd = p;
+    }
+  });
+
+  if (document.getElementById('kpi-active-count')) document.getElementById('kpi-active-count').textContent = `${activeCount}개`;
+  if (document.getElementById('kpi-expired-count')) document.getElementById('kpi-expired-count').textContent = `${expiredCount}개`;
+  if (document.getElementById('kpi-stockout-count')) document.getElementById('kpi-stockout-count').textContent = `${stockoutCount}개`;
+  if (document.getElementById('kpi-hidden-count')) document.getElementById('kpi-hidden-count').textContent = `${hiddenCount}개`;
+
+  if (document.getElementById('total-clicks')) document.getElementById('total-clicks').textContent = `${totalClicks.toLocaleString()}회`;
+  if (document.getElementById('coupang-clicks')) document.getElementById('coupang-clicks').textContent = `${totalCoupangClicks.toLocaleString()}회`;
+  if (document.getElementById('naver-clicks')) document.getElementById('naver-clicks').textContent = `${totalNaverClicks.toLocaleString()}회`;
+  
+  const avgCr = totalClicks > 0 ? ((totalConversions / totalClicks) * 100).toFixed(1) + '%' : '0.0%';
+  if (document.getElementById('avg-cr')) document.getElementById('avg-cr').textContent = avgCr;
+
+  if (document.getElementById('top-product')) document.getElementById('top-product').textContent = topProd ? topProd.name : 'N/A';
+  if (document.getElementById('top-shorts')) document.getElementById('top-shorts').textContent = topProd ? (topProd.episode_label || topProd.episode_id) : 'EP009';
+
+  const coupangPct = totalClicks > 0 ? ((totalCoupangClicks / (totalCoupangClicks + totalNaverClicks || 1)) * 100).toFixed(0) : '0';
+  if (document.getElementById('top-platform')) document.getElementById('top-platform').textContent = totalCoupangClicks >= totalNaverClicks ? `🛒 쿠팡 (${coupangPct}%)` : `🟢 네이버 (${100 - parseInt(coupangPct)}%)`;
+
+  // 2. Render TOP 10 Master Performance Ranking Table
+  const sortedProds = dbData.products.slice().sort((a, b) => {
+    const cA = a.analytics ? (a.analytics.clicks_count || 0) : (a.clicks_count || 0);
+    const cB = b.analytics ? (b.analytics.clicks_count || 0) : (b.clicks_count || 0);
+    return cB - cA;
+  }).slice(0, 10);
+
+  tbody.innerHTML = sortedProds.map((p, idx) => {
+    const cClicks = p.analytics?.platform_clicks?.coupang || 0;
+    const nClicks = p.analytics?.platform_clicks?.naver || 0;
+    const clicks = p.analytics ? (p.analytics.clicks_count || 0) : (p.clicks_count || 0);
+    const convs = p.analytics ? (p.analytics.conversions_count || 0) : 0;
+    const statusVal = p.status || 'ACTIVE';
+
+    const rankBadge = idx === 0 ? '🥇 1위' : idx === 1 ? '🥈 2위' : idx === 2 ? '🥉 3위' : `${idx + 1}위`;
+
+    return `
+      <tr>
+        <td style="font-weight: 800; color: #ffbe0b;">${rankBadge}</td>
+        <td>
+          <strong style="color: #fff; font-size: 0.88rem;">${p.name}</strong>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">morvix.kr/${p.slug} | ${p.episode_label || p.episode_id}</div>
+        </td>
+        <td><span style="padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; background: rgba(46,213,115,0.15); color: #2ed573;">${statusVal}</span></td>
+        <td style="font-weight: 700; color: #ff4757;">🛒 ${cClicks.toLocaleString()}회</td>
+        <td style="font-weight: 700; color: #2ed573;">🟢 ${nClicks.toLocaleString()}회</td>
+        <td style="font-weight: 800; color: var(--primary-accent);">${clicks.toLocaleString()}회</td>
+        <td style="font-weight: 700; color: #fff;">${convs.toLocaleString()}건</td>
+      </tr>
+    `;
+  }).join('');
 }
 
 function renderAdminProductList() {
