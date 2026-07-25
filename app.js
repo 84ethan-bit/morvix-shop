@@ -622,19 +622,41 @@ function setupAdminEvents() {
   if (formAddProduct) {
     formAddProduct.addEventListener('submit', (e) => {
       e.preventDefault();
-      const name = document.getElementById('input-name') ? document.getElementById('input-name').value : '';
-      const slug = document.getElementById('input-slug') ? document.getElementById('input-slug').value : '';
+      const nextNum = (dbData ? dbData.products.length + 1 : 13).toString().padStart(3, '0');
+      
+      const rawName = document.getElementById('input-name') ? document.getElementById('input-name').value.trim() : '';
+      const name = rawName || `모르빅스 검증 꿀템 EP${nextNum}`;
+      
+      const rawSlug = document.getElementById('input-slug') ? document.getElementById('input-slug').value.trim() : '';
+      const slug = rawSlug || `item${nextNum}`;
+      
       const category = document.getElementById('input-category') ? document.getElementById('input-category').value : 'summer';
-      const episode = document.getElementById('input-episode') ? document.getElementById('input-episode').value : 'EP013';
-      const price = document.getElementById('input-price') ? parseInt(document.getElementById('input-price').value || 25000) : 25000;
-      const linkCoupang = document.getElementById('input-link-coupang') ? document.getElementById('input-link-coupang').value : '';
-      const linkNaver = document.getElementById('input-link-naver') ? document.getElementById('input-link-naver').value : '';
-      const imageUrl = document.getElementById('input-image-url') ? document.getElementById('input-image-url').value : 'https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80';
-      const subtitle = document.getElementById('input-subtitle') ? document.getElementById('input-subtitle').value : '';
+      
+      const rawEp = document.getElementById('input-episode') ? document.getElementById('input-episode').value.trim() : '';
+      const episode = rawEp || `EP${nextNum}`;
+      
+      const priceInput = document.getElementById('input-price') ? document.getElementById('input-price').value : '';
+      const price = priceInput ? parseInt(priceInput) : 28900;
+      
+      const linkCoupang = document.getElementById('input-link-coupang') ? document.getElementById('input-link-coupang').value.trim() : '';
+      const linkNaver = document.getElementById('input-link-naver') ? document.getElementById('input-link-naver').value.trim() : '';
+      
+      const rawImg = document.getElementById('input-image-url') ? document.getElementById('input-image-url').value.trim() : '';
+      const imageUrl = rawImg || 'https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80';
+      
+      const rawSub = document.getElementById('input-subtitle') ? document.getElementById('input-subtitle').value.trim() : '';
+      const subtitle = rawSub || `${name} - 일상의 불편함을 3초 만에 해결하는 검증 추천템`;
 
       const affiliateLinks = [];
-      if (linkCoupang) affiliateLinks.push({ platform: 'coupang', label: '🛒 쿠팡 파트너스 최저가 확인 ➔', url: linkCoupang, priority: 1 });
-      if (linkNaver) affiliateLinks.push({ platform: 'naver', label: '🟢 네이버 쇼핑커넥트 최저가 확인 ➔', url: linkNaver, priority: 2 });
+      if (linkCoupang) {
+        affiliateLinks.push({ platform: 'coupang', label: '🛒 쿠팡 파트너스 최저가 확인 ➔', url: linkCoupang, priority: 1, bg_gradient: 'linear-gradient(135deg, #ff4757, #ff6b81)' });
+      }
+      if (linkNaver) {
+        affiliateLinks.push({ platform: 'naver', label: '🟢 네이버 쇼핑커넥트 최저가 확인 ➔', url: linkNaver, priority: 2, bg_gradient: 'linear-gradient(135deg, #03cf5d, #02b651)' });
+      }
+      if (affiliateLinks.length === 0) {
+        affiliateLinks.push({ platform: 'naver', label: '🟢 네이버 쇼핑커넥트 최저가 확인 ➔', url: 'https://m.shopping.naver.com', priority: 1, bg_gradient: 'linear-gradient(135deg, #03cf5d, #02b651)' });
+      }
 
       const newProd = {
         id: `PROD-${Date.now()}`,
@@ -656,7 +678,7 @@ function setupAdminEvents() {
         thumbnail: imageUrl,
         analytics: { clicks_count: 0, platform_clicks: { coupang: 0, naver: 0 }, conversions_count: 0, ctr: 0.0 },
         added_date: new Date().toISOString(),
-        expiry_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+        expiry_date: new Date(Date.now() + 360 * 24 * 60 * 60 * 1000).toISOString()
       };
 
       dbData.products.unshift(newProd);
