@@ -515,14 +515,14 @@ function setupAdminEvents() {
       btnAutoFetch.textContent = '⏳ 실시간 이미지/제목 추출 중...';
 
       const isCoupang = rawUrl.includes('coupang.com');
-      const isNaver = rawUrl.includes('naver.com');
+      const isNaver = rawUrl.includes('naver.com') || rawUrl.includes('naver.me') || rawUrl.includes('brandconnect') || rawUrl.includes('shoppingconnect');
 
       if (isCoupang) {
         if (document.getElementById('input-link-coupang')) document.getElementById('input-link-coupang').value = rawUrl;
       } else if (isNaver) {
         if (document.getElementById('input-link-naver')) document.getElementById('input-link-naver').value = rawUrl;
       } else {
-        if (document.getElementById('input-link-coupang')) document.getElementById('input-link-coupang').value = rawUrl;
+        if (document.getElementById('input-link-naver')) document.getElementById('input-link-naver').value = rawUrl;
       }
 
       const nextEpNum = (dbData ? dbData.products.length + 1 : 13).toString().padStart(3, '0');
