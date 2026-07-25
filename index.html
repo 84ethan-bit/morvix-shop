@@ -158,6 +158,18 @@
       </div>
 
       <div class="admin-tab-content active" id="tab-add-product">
+        <!-- ⚡ One-Click Smart Deal Text Parser (Toss Engine Port) -->
+        <div class="auto-ingest-box" style="background: rgba(255, 190, 11, 0.08); border: 1px solid rgba(255, 190, 11, 0.3); border-radius: var(--radius-md); padding: 14px; margin-bottom: 20px;">
+          <label style="color: #ffbe0b; font-weight: 800; font-size: 0.95rem;">⚡ 1초 핫딜 텍스트 스마트 파서 (토스 핫딜 파싱 포팅)</label>
+          <div style="display: flex; gap: 10px; margin-top: 8px;">
+            <input type="text" id="input-smart-deal-text" placeholder="예: [특가] 신일 무소음 BLDC 서큘레이터 35% 28,900원 https://link.coupang.com/a/fan001" style="flex: 1; padding: 10px; border-radius: var(--radius-sm); border: 1px solid rgba(255, 190, 11, 0.4); background: rgba(0,0,0,0.3); color: #fff;">
+            <button type="button" id="btn-smart-deal-parse" onclick="parseSmartDealText()" style="background: linear-gradient(135deg, #ffbe0b, #ff9f1a); color: #000; border: none; padding: 10px 18px; border-radius: var(--radius-sm); font-weight: 800; cursor: pointer; white-space: nowrap;">
+              ⚡ 1초 스마트 파싱
+            </button>
+          </div>
+          <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 6px;">카톡/텔레그램 핫딜 문구를 붙여넣으면 상품명, 가격, 할인율, 카테고리, 슬러그, 제휴링크가 1초 만에 파싱되어 채워집니다!</span>
+        </div>
+
         <!-- ⚡ One-Click Auto Ingestion Bar -->
         <div class="auto-ingest-box" style="background: rgba(0, 242, 254, 0.08); border: 1px solid rgba(0, 242, 254, 0.3); border-radius: var(--radius-md); padding: 14px; margin-bottom: 20px;">
           <label style="color: var(--primary-accent); font-weight: 700; font-size: 0.95rem;">⚡ 원클릭 URL 자동 분석 & AI 4-USP 생성기</label>

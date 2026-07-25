@@ -646,6 +646,62 @@ function switchAdminTab(targetId) {
   if (targetId === 'tab-all-products') renderAdminProductList();
 }
 
+function parseSmartDealText() {
+  const input = document.getElementById('input-smart-deal-text');
+  if (!input || !input.value.trim()) {
+    alert("⚠️ 핫딜 텍스트 문구를 입력해 주세요.");
+    return;
+  }
+
+  const rawText = input.value.trim();
+
+  // 1. Link Extraction
+  const urlMatch = rawText.match(/(https?:\/\/\S+)/);
+  const extractedUrl = urlMatch ? urlMatch[1] : '';
+  const cleanText = rawText.replace(extractedUrl, '').trim();
+
+  // 2. Price Extraction (Regex)
+  const priceMatches = cleanText.match(/([\d,]+)\s*원/g);
+  let extractedPrice = null;
+  if (priceMatches && priceMatches.length > 0) {
+    const lastPriceStr = priceMatches[priceMatches.length - 1].replace(/[^\d]/g, '');
+    extractedPrice = parseInt(lastPriceStr);
+  }
+
+  // 3. Discount Rate Extraction (Regex)
+  const discountMatch = cleanText.match(/(\d+)\s*[%％]/);
+  const extractedDiscount = discountMatch ? `${discountMatch[1]}%` : '';
+
+  // 4. Clean Title Extraction
+  let extractedTitle = cleanText.replace(/[\d,]+\s*원/g, '').replace(/\d+\s*[%％]/g, '').trim();
+  if (!extractedTitle) extractedTitle = "모르빅스 추천 검증 꿀템";
+
+  // 5. Category Auto Inference (Toss Engine Rules)
+  const inferredCat = getAutoCategory(extractedTitle);
+
+  // 6. Fill Form Fields
+  if (document.getElementById('input-name')) document.getElementById('input-name').value = extractedTitle;
+  if (document.getElementById('input-price') && extractedPrice) document.getElementById('input-price').value = extractedPrice;
+  if (document.getElementById('input-category')) document.getElementById('input-category').value = inferredCat;
+
+  if (extractedUrl) {
+    if (extractedUrl.includes('coupang')) {
+      if (document.getElementById('input-link-coupang')) document.getElementById('input-link-coupang').value = extractedUrl;
+    } else {
+      if (document.getElementById('input-link-naver')) document.getElementById('input-link-naver').value = extractedUrl;
+    }
+  }
+
+  // Auto HD Thumbnail Preset Assignment
+  const catPreset = CATEGORY_PRESETS[inferredCat] || CATEGORY_PRESETS.life;
+  if (catPreset && catPreset[0]) {
+    setImagePreset(catPreset[0]);
+  }
+
+  alert(`⚡ [1초 핫딜 텍스트 파싱 완료!]\n\n• 상품명: ${extractedTitle}\n• 실시간 가격: ${extractedPrice ? extractedPrice.toLocaleString() + '원' : '가격 확인 필요'}\n• 할인율: ${extractedDiscount || '확인 필요'}\n• 100% 자동 추론 카테고리: [${inferredCat.toUpperCase()}]`);
+}
+
+window.parseSmartDealText = parseSmartDealText;
 window.switchAdminTab = switchAdminTab;
 window.openProductDetail = openProductDetail;
 window.setImagePreset = setImagePreset;
