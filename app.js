@@ -2,21 +2,249 @@
    MORVIX SHOP OS - Application Logic & Dynamic Interactions
    ========================================================================== */
 
-let dbData = null;
+const INITIAL_DB_DATA = {
+  "store_info": {
+    "brand_name": "MORVIX SHOP OS",
+    "domain": "morvix.kr",
+    "tagline": "일상을 바꾸는 검증된 꿀템만 소개합니다.",
+    "version": "v1.2.0 (Dynamic Multi-Affiliate Array Engine)"
+  },
+  "categories": [
+    {"id": "all", "name": "모든 제품", "icon": "📦"},
+    {"id": "featured", "name": "오늘의 추천", "icon": "🌟"},
+    {"id": "summer", "name": "여름 꿀템", "icon": "❄️"},
+    {"id": "life", "name": "생활 꿀템", "icon": "🏠"},
+    {"id": "cleaning", "name": "청소/위생", "icon": "🧹"},
+    {"id": "kitchen", "name": "주방/요리", "icon": "🍳"},
+    {"id": "car", "name": "자동차", "icon": "🚗"}
+  ],
+  "products": [
+    {
+      "id": "PROD-010",
+      "slug": "fan001",
+      "short_url": "morvix.kr/fan001",
+      "name": "모르빅스 무선 파워 듀얼 서큘레이터",
+      "subtitle": "회사 책상 앞 38도 사막지대 억까 탈출 초강풍 무선 서큘레이터",
+      "category": "summer",
+      "is_featured": true,
+      "episode_id": "INTERNAL_CASE_EP010",
+      "episode_label": "🎬 EP010 숏폼 소개 제품",
+      "price": 28900,
+      "original_price": 45000,
+      "discount_rate": "35%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "강력한 듀얼 터보 모터 초강풍 쿨링",
+        "8시간 연속 사용 대용량 무선 배터리",
+        "360도 자유 회전 원하는 각도 완벽 조율",
+        "독서실급 초저소음 파워 설계"
+      ],
+      "affiliate_links": [
+        {
+          "platform": "coupang",
+          "label": "🛒 쿠팡 최저가 확인 및 구매하기 ➔",
+          "url": "https://link.coupang.com/a/morvix_fan001",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
+        },
+        {
+          "platform": "naver",
+          "label": "🟢 네이버 쇼핑커넥트 확인 및 구매 ➔",
+          "url": "https://shopping.naver.com/bridge/morvix_fan001",
+          "priority": 2,
+          "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80"
+      ],
+      "webtoon_episode_title": "S01_EP10 사막 지대 억까 탈출편",
+      "webtoon_cuts_count": 15,
+      "clicks_count": 342,
+      "platform_clicks": {
+        "coupang": 210,
+        "naver": 132
+      },
+      "conversions_count": 48
+    },
+    {
+      "id": "PROD-009",
+      "slug": "blanket001",
+      "short_url": "morvix.kr/blanket001",
+      "name": "모르빅스 초냉감 얼음 쿨링 이불",
+      "subtitle": "닿자마자 -5도 즉각 쿨링! 열대야 숙면 구원템",
+      "category": "summer",
+      "is_featured": true,
+      "episode_id": "INTERNAL_CASE_EP009",
+      "episode_label": "🎬 EP009 숏폼 소개 제품",
+      "price": 34900,
+      "original_price": 59000,
+      "discount_rate": "40%",
+      "rating": 4.95,
+      "review_count": 312,
+      "usps": [
+        "Q-MAX 0.45 닿자마자 입체 순간 즉각 쿨링",
+        "형광증백제 0% 아토피 안심 인증 원단",
+        "통세탁 가능 100회 세탁에도 쿨링 성능 유지",
+        "양면 리버서블 봄/여름 사계절 실용성"
+      ],
+      "affiliate_links": [
+        {
+          "platform": "coupang",
+          "label": "🛒 쿠팡 최저가 확인 및 구매하기 ➔",
+          "url": "https://link.coupang.com/a/morvix_blanket001",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
+        },
+        {
+          "platform": "naver",
+          "label": "🟢 네이버 쇼핑커넥트 확인 및 구매 ➔",
+          "url": "https://shopping.naver.com/bridge/morvix_blanket001",
+          "priority": 2,
+          "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&auto=format&fit=crop&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&auto=format&fit=crop&q=80"
+      ],
+      "webtoon_episode_title": "S01_EP09 열대야 억까 탈출편",
+      "webtoon_cuts_count": 15,
+      "clicks_count": 1280,
+      "platform_clicks": {
+        "coupang": 820,
+        "naver": 460
+      },
+      "conversions_count": 164
+    },
+    {
+      "id": "PROD-008",
+      "slug": "car001",
+      "short_url": "morvix.kr/car001",
+      "name": "모르빅스 3초 접이식 차광 우산 햇빛 차단막",
+      "subtitle": "여름 야외 주차 70도 찜통 차 안 3초 만에 20도로 차단",
+      "category": "car",
+      "is_featured": true,
+      "episode_id": "INTERNAL_CASE_EP008",
+      "episode_label": "🎬 EP008 숏폼 소개 제품",
+      "price": 19800,
+      "original_price": 32000,
+      "discount_rate": "38%",
+      "rating": 4.85,
+      "review_count": 89,
+      "usps": [
+        "UPF 50+ 자외선 99.9% 완벽 차단 은코팅",
+        "우산 펼치듯 3초 만에 차량 전면 유리 장착",
+        "가죽 가구 및 내장재 열화 박살 완전 차단",
+        "접었을 때 글로브박스 쏙 컴팩트 수납"
+      ],
+      "affiliate_links": [
+        {
+          "platform": "coupang",
+          "label": "🛒 쿠팡 최저가 확인 및 구매하기 ➔",
+          "url": "https://link.coupang.com/a/morvix_car001",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
+        },
+        {
+          "platform": "naver",
+          "label": "🟢 네이버 쇼핑커넥트 확인 및 구매 ➔",
+          "url": "https://shopping.naver.com/bridge/morvix_car001",
+          "priority": 2,
+          "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&auto=format&fit=crop&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&auto=format&fit=crop&q=80"
+      ],
+      "webtoon_episode_title": "S01_EP08 폭염차량 찜통 탈출편",
+      "webtoon_cuts_count": 15,
+      "clicks_count": 850,
+      "platform_clicks": {
+        "coupang": 510,
+        "naver": 340
+      },
+      "conversions_count": 92
+    },
+    {
+      "id": "PROD-002",
+      "slug": "mosquito001",
+      "short_url": "morvix.kr/mosquito001",
+      "name": "모르빅스 UV 광촉매 무소음 모기 포집기",
+      "subtitle": "새벽 귓가 윙윙 모기 1초 유인 무소음 광촉매 포집기",
+      "category": "summer",
+      "is_featured": false,
+      "episode_id": "INTERNAL_CASE_EP002",
+      "episode_label": "🎬 EP002 숏폼 소개 제품",
+      "price": 24500,
+      "original_price": 39000,
+      "discount_rate": "37%",
+      "rating": 4.88,
+      "review_count": 210,
+      "usps": [
+        "365nm UV 특수파장 모기 최적 유인",
+        "강력 흡입 팬으로 건조 탈수 박멸",
+        "화학약품 0% 아기방 안심 무향 무취",
+        "20dB 극저소음 숙면 방해 없음"
+      ],
+      "affiliate_links": [
+        {
+          "platform": "coupang",
+          "label": "🛒 쿠팡 최저가 확인 및 구매하기 ➔",
+          "url": "https://link.coupang.com/a/morvix_mosquito001",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
+        },
+        {
+          "platform": "naver",
+          "label": "🟢 네이버 쇼핑커넥트 확인 및 구매 ➔",
+          "url": "https://shopping.naver.com/bridge/morvix_mosquito001",
+          "priority": 2,
+          "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80"
+      ],
+      "webtoon_episode_title": "S01_EP02 모기 윙윙 박멸편",
+      "webtoon_cuts_count": 15,
+      "clicks_count": 640,
+      "platform_clicks": {
+        "coupang": 400,
+        "naver": 240
+      },
+      "conversions_count": 78
+    }
+  ]
+};
+
+let dbData = INITIAL_DB_DATA;
 let currentCategory = 'all';
 
 // Load Shop OS Database
 async function initShopOS() {
+  // Render immediately with initial data
+  renderCategories();
+  renderProducts();
+  setupRouting();
+  setupAdminEvents();
+
   try {
     const res = await fetch('morvix_shop_db.json');
-    dbData = await res.json();
-    
-    renderCategories();
-    renderProducts();
-    setupRouting();
-    setupAdminEvents();
+    if (res.ok) {
+      const fetched = await res.json();
+      if (fetched && fetched.products) {
+        dbData = fetched;
+        renderCategories();
+        renderProducts();
+      }
+    }
   } catch (err) {
-    console.error("Failed to load MORVIX Shop OS DB:", err);
+    console.warn("Using embedded fallback database:", err);
   }
 }
 
@@ -50,16 +278,18 @@ function renderProducts() {
   let filtered = dbData.products;
   if (currentCategory === 'featured') {
     filtered = dbData.products.filter(p => p.is_featured);
-    title.textContent = '🌟 오늘의 MORVIX 추천';
+    if (title) title.textContent = '🌟 오늘의 MORVIX 추천';
   } else if (currentCategory !== 'all') {
     filtered = dbData.products.filter(p => p.category === currentCategory);
     const catObj = dbData.categories.find(c => c.id === currentCategory);
-    title.textContent = `${catObj ? catObj.icon : ''} ${catObj ? catObj.name : '제품'} 검증 제품`;
+    if (title) title.textContent = `${catObj ? catObj.icon : ''} ${catObj ? catObj.name : '제품'} 검증 제품`;
   } else {
-    title.textContent = '🔥 지금 가장 많이 찾는 검증 제품';
+    if (title) title.textContent = '🔥 지금 가장 많이 찾는 검증 제품';
   }
 
-    grid.innerHTML = filtered.map(p => `
+  if (count) count.textContent = `총 ${filtered.length}개 검증 자산`;
+
+  grid.innerHTML = filtered.map(p => `
     <div class="product-card" onclick="openProductDetail('${p.slug}')">
       <div class="card-image-wrapper">
         <img class="card-image" src="${p.thumbnail}" alt="${p.name}">
@@ -85,13 +315,11 @@ function openProductDetail(slug) {
   const product = dbData.products.find(p => p.slug === slug);
   if (!product) return;
 
-  // Track Click Event
   trackOutboundClick(slug);
 
   const modal = document.getElementById('product-modal');
   const body = document.getElementById('modal-body');
 
-  // Support both array schema and legacy fallback object
   let linksArray = [];
   if (Array.isArray(product.affiliate_links)) {
     linksArray = product.affiliate_links.sort((a, b) => (a.priority || 99) - (b.priority || 99));
@@ -118,7 +346,7 @@ function openProductDetail(slug) {
         <p style="color: var(--text-muted); font-size: 0.95rem;">"${product.subtitle}"</p>
         
         <ul class="usps-list">
-          ${product.usps.map(u => `<li>✔ ${u}</li>`).join('')}
+          ${product.usps ? product.usps.map(u => `<li>✔ ${u}</li>`).join('') : ''}
         </ul>
 
         <div class="detail-trust-banner" style="display: flex; align-items: center; justify-content: space-between; margin-top: 16px; background: rgba(46, 213, 115, 0.1); border: 1px solid rgba(46, 213, 115, 0.3); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.88rem; color: #2ed573; font-weight: 700;">
@@ -135,50 +363,26 @@ function openProductDetail(slug) {
         </div>
       </div>
     </div>
-  `;0; text-decoration: none; display: block; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-              ${link.label}
-            </a>
-          `).join('')}
-        </div>
-      </div>
-    </div>
   `;
 
-  modal.classList.add('active');
+  if (modal) modal.classList.add('active');
 }
 
-// Track Click Event in Database
+// Track Outbound Clicks
 function trackOutboundClick(slug) {
   const prod = dbData.products.find(p => p.slug === slug);
   if (prod) {
     prod.clicks_count = (prod.clicks_count || 0) + 1;
-    dbData.click_logs.push({
-      timestamp: new Date().toISOString(),
-      slug: slug,
-      event: 'page_view',
-      referer: document.referrer || 'direct_link',
-      utm_source: prod.episode_id
-    });
-    console.log(`[PAGE VIEW TRACKED] morvix.kr/${slug} -> Total Clicks: ${prod.clicks_count}`);
   }
 }
 
+// Register Conversion Event
 function registerAffiliateConversion(slug, platform) {
   const prod = dbData.products.find(p => p.slug === slug);
   if (prod) {
-    if (!prod.platform_clicks) prod.platform_clicks = {};
+    if (!prod.platform_clicks) prod.platform_clicks = { coupang: 0, naver: 0 };
     prod.platform_clicks[platform] = (prod.platform_clicks[platform] || 0) + 1;
-    
     prod.conversions_count = (prod.conversions_count || 0) + 1;
-    dbData.click_logs.push({
-      timestamp: new Date().toISOString(),
-      slug: slug,
-      event: 'buy_click',
-      platform: platform,
-      referer: document.referrer || 'direct_link',
-      utm_source: prod.episode_id
-    });
-    console.log(`[BUY CLICK TRACKED] Platform: ${platform.toUpperCase()} | Slug: ${slug}`);
   }
 }
 
@@ -195,11 +399,10 @@ function setupAdminEvents() {
   const inputPin = document.getElementById('input-admin-pin');
   const loginErrorMsg = document.getElementById('login-error-msg');
 
-  // Verify Admin Auth PIN via In-Page Modal
   function verifyAndOpenAdmin() {
     if (sessionStorage.getItem('morvix_admin_auth') === 'true') {
       if (loginModal) loginModal.classList.remove('active');
-      modal.classList.add('active');
+      if (modal) modal.classList.add('active');
       renderAnalyticsTable();
       renderAdminProductList();
       return;
@@ -213,7 +416,6 @@ function setupAdminEvents() {
     }
   }
 
-  // Handle Admin PIN Form Submit
   if (formLogin) {
     formLogin.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -221,8 +423,8 @@ function setupAdminEvents() {
       if (pin === "2026") {
         sessionStorage.setItem('morvix_admin_auth', 'true');
         if (loginErrorMsg) loginErrorMsg.style.display = 'none';
-        loginModal.classList.remove('active');
-        modal.classList.add('active');
+        if (loginModal) loginModal.classList.remove('active');
+        if (modal) modal.classList.add('active');
         renderAnalyticsTable();
         renderAdminProductList();
       } else {
@@ -233,11 +435,10 @@ function setupAdminEvents() {
 
   if (btnCloseLogin) {
     btnCloseLogin.addEventListener('click', () => {
-      loginModal.classList.remove('active');
+      if (loginModal) loginModal.classList.remove('active');
     });
   }
 
-  // Check URL query/hash/path trigger (e.g., ?admin, #admin, /admin)
   const isAdminUrl = window.location.search.includes('admin') || window.location.hash.includes('admin') || window.location.pathname.includes('admin');
   if (isAdminUrl) {
     setTimeout(verifyAndOpenAdmin, 200);
@@ -247,7 +448,6 @@ function setupAdminEvents() {
     btnOpen.addEventListener('click', verifyAndOpenAdmin);
   }
 
-  // Secret Trigger 1: Triple-click on Brand Logo
   let clickCount = 0;
   let clickTimer = null;
   if (brandLogo) {
@@ -264,7 +464,6 @@ function setupAdminEvents() {
     });
   }
 
-  // Secret Trigger 2: Keyboard Shortcut (Ctrl + Shift + A)
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
       e.preventDefault();
@@ -278,7 +477,6 @@ function setupAdminEvents() {
     });
   }
 
-  // Product Detail Modal Close Button
   const btnCloseDetail = document.getElementById('btn-close-modal');
   if (btnCloseDetail) {
     btnCloseDetail.addEventListener('click', () => {
@@ -287,7 +485,6 @@ function setupAdminEvents() {
     });
   }
 
-  // ⚡ One-Click Auto Ingestion Handler
   const btnAutoFetch = document.getElementById('btn-auto-fetch');
   if (btnAutoFetch) {
     btnAutoFetch.addEventListener('click', () => {
@@ -300,7 +497,6 @@ function setupAdminEvents() {
       const isCoupang = rawUrl.includes('coupang.com');
       const isNaver = rawUrl.includes('naver.com');
 
-      // Auto-fill affiliate links
       if (isCoupang) {
         document.getElementById('input-link-coupang').value = rawUrl;
       } else if (isNaver) {
@@ -309,15 +505,13 @@ function setupAdminEvents() {
         document.getElementById('input-link-coupang').value = rawUrl;
       }
 
-      // Generate Auto Slug & Episode ID
       const nextEpNum = (dbData ? dbData.products.length + 1 : 11).toString().padStart(3, '0');
       const autoSlug = `item${nextEpNum}`;
       document.getElementById('input-slug').value = autoSlug;
       document.getElementById('input-episode').value = `INTERNAL_CASE_EP${nextEpNum}`;
 
-      // Auto-fill Product Metadata & AI USPs
       document.getElementById('input-name').value = "모르빅스 생활 억까 탈출 검증 꿀템";
-      document.getElementById('input-price').value = 24900;
+      if (document.getElementById('input-price')) document.getElementById('input-price').value = 24900;
       document.getElementById('input-category').value = "summer";
       document.getElementById('input-subtitle').value = "일상의 불편함을 3초 만에 완벽 해결하는 검증 솔루션";
       document.getElementById('input-usps').value = [
@@ -327,11 +521,10 @@ function setupAdminEvents() {
         "MORVIX 숏폼 에피소드 실측 검증 완료"
       ].join('\n');
 
-      alert(`⚡ [원클릭 자동 불러오기 완료!]\n단축 슬러그: morvix.kr/${autoSlug}\n에피소드: EP${nextEpNum}\n상품명/가격/AI 4-USP가 자동 채워졌습니다.`);
+      alert(`⚡ [원클릭 자동 불러오기 완료!]\n단축 슬러그: morvix.kr/${autoSlug}\n에피소드: EP${nextEpNum}\n상품명/AI 4-USP가 자동 채워졌습니다.`);
     });
   }
 
-  // Admin Tab Switcher
   document.querySelectorAll('.admin-tab').forEach(tab => {
     tab.addEventListener('click', (e) => {
       document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
@@ -339,11 +532,11 @@ function setupAdminEvents() {
 
       e.currentTarget.classList.add('active');
       const targetId = e.currentTarget.getAttribute('data-tab');
-      document.getElementById(targetId).classList.add('active');
+      const targetEl = document.getElementById(targetId);
+      if (targetEl) targetEl.classList.add('active');
     });
   });
 
-  // Form Submit Handler
   const formAddProduct = document.getElementById('form-add-product');
   if (formAddProduct) {
     formAddProduct.addEventListener('submit', (e) => {
@@ -353,68 +546,69 @@ function setupAdminEvents() {
       const category = document.getElementById('input-category') ? document.getElementById('input-category').value : 'summer';
       const episode = document.getElementById('input-episode') ? document.getElementById('input-episode').value : 'EP011';
       const rawPrice = document.getElementById('input-price') ? document.getElementById('input-price').value : '';
-      const price = rawPrice ? parseInt(rawPrice) : null;
+      const price = rawPrice ? parseInt(rawPrice) : 25000;
       const linkCoupang = document.getElementById('input-link-coupang') ? document.getElementById('input-link-coupang').value : '';
       const linkNaver = document.getElementById('input-link-naver') ? document.getElementById('input-link-naver').value : '';
       const subtitle = document.getElementById('input-subtitle') ? document.getElementById('input-subtitle').value : '';
       const uspsText = document.getElementById('input-usps') ? document.getElementById('input-usps').value : '';
 
-    const affiliateLinks = [];
-    if (linkCoupang) {
-      affiliateLinks.push({
-        platform: 'coupang',
-        label: '🛒 쿠팡 최저가 확인 및 구매하기 ➔',
-        url: linkCoupang,
-        priority: 1,
-        bg_gradient: 'linear-gradient(135deg, #ff4757, #ff6b81)'
-      });
-    }
-    if (linkNaver) {
-      affiliateLinks.push({
-        platform: 'naver',
-        label: '🟢 네이버 쇼핑커넥트 확인 및 구매 ➔',
-        url: linkNaver,
-        priority: 2,
-        bg_gradient: 'linear-gradient(135deg, #03cf5d, #02b651)'
-      });
-    }
+      const affiliateLinks = [];
+      if (linkCoupang) {
+        affiliateLinks.push({
+          platform: 'coupang',
+          label: '🛒 쿠팡 최저가 확인 및 구매하기 ➔',
+          url: linkCoupang,
+          priority: 1,
+          bg_gradient: 'linear-gradient(135deg, #ff4757, #ff6b81)'
+        });
+      }
+      if (linkNaver) {
+        affiliateLinks.push({
+          platform: 'naver',
+          label: '🟢 네이버 쇼핑커넥트 확인 및 구매 ➔',
+          url: linkNaver,
+          priority: 2,
+          bg_gradient: 'linear-gradient(135deg, #03cf5d, #02b651)'
+        });
+      }
 
-    const epNum = episode.replace(/[^0-9]/g, '') || '011';
+      const epNum = episode.replace(/[^0-9]/g, '') || '011';
 
-    const newProd = {
-      id: `PROD-${Date.now()}`,
-      slug: slug,
-      short_url: `morvix.kr/${slug}`,
-      name: name,
-      subtitle: subtitle,
-      category: category,
-      is_featured: true,
-      episode_id: episode,
-      episode_label: `🎬 EP${epNum} 숏폼 소개 제품`,
-      price: price,
-      original_price: Math.round(price * 1.5),
-      discount_rate: "33%",
-      rating: 5.0,
-      review_count: 1,
-      usps: uspsText.split('\n').filter(line => line.trim().length > 0),
-      affiliate_links: affiliateLinks,
-      thumbnail: "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80",
-      images: ["https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80"],
-      webtoon_episode_title: `${episode} 바이럴 에피소드`,
-      webtoon_cuts_count: 15,
-      clicks_count: 0,
-      platform_clicks: { coupang: 0, naver: 0 },
-      conversions_count: 0
-    };
+      const newProd = {
+        id: `PROD-${Date.now()}`,
+        slug: slug,
+        short_url: `morvix.kr/${slug}`,
+        name: name,
+        subtitle: subtitle,
+        category: category,
+        is_featured: true,
+        episode_id: episode,
+        episode_label: `🎬 EP${epNum} 숏폼 소개 제품`,
+        price: price,
+        original_price: Math.round(price * 1.5),
+        discount_rate: "33%",
+        rating: 5.0,
+        review_count: 1,
+        usps: uspsText.split('\n').filter(line => line.trim().length > 0),
+        affiliate_links: affiliateLinks,
+        thumbnail: "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80",
+        images: ["https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80"],
+        webtoon_episode_title: `${episode} 바이럴 에피소드`,
+        webtoon_cuts_count: 15,
+        clicks_count: 0,
+        platform_clicks: { coupang: 0, naver: 0 },
+        conversions_count: 0
+      };
 
-    dbData.products.unshift(newProd);
-    alert(`✅ 다중 제휴 상품등록 완료!\n단축 URL: morvix.kr/${slug}\n에피소드: EP${epNum}\n쿠팡 & 네이버 제휴 CTA가 활성화되었습니다.`);
+      dbData.products.unshift(newProd);
+      alert(`✅ 다중 제휴 상품등록 완료!\n단축 URL: morvix.kr/${slug}\n에피소드: EP${epNum}\n쿠팡 & 네이버 제휴 CTA가 활성화되었습니다.`);
 
-    renderProducts();
-    renderAnalyticsTable();
-    renderAdminProductList();
-    document.getElementById('form-add-product').reset();
-  });
+      renderProducts();
+      renderAnalyticsTable();
+      renderAdminProductList();
+      formAddProduct.reset();
+    });
+  }
 }
 
 function renderAnalyticsTable() {
@@ -445,7 +639,6 @@ function renderAnalyticsTable() {
     }
   });
 
-  // Calculate Executive KPI Metrics
   const avgCrVal = totalClicks > 0 ? ((totalConversions / totalClicks) * 100).toFixed(1) + '%' : '0.0%';
   const coupangPct = totalClicks > 0 ? ((totalCoupangClicks / (totalCoupangClicks + totalNaverClicks || 1)) * 100).toFixed(0) : '0';
 
@@ -503,7 +696,6 @@ function deleteProduct(id) {
   }
 }
 
-// URL Hash / Slug Routing Support (e.g. /fan001 or #fan001)
 function setupRouting() {
   let slug = window.location.hash.replace('#', '');
   if (!slug) {
@@ -517,5 +709,4 @@ function setupRouting() {
   }
 }
 
-// Run App on Load
 document.addEventListener('DOMContentLoaded', initShopOS);
