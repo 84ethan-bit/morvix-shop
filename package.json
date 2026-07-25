@@ -2,6 +2,10 @@
   "name": "morvix-shop-os",
   "version": "1.2.0",
   "description": "The Ultimate Shortform E-Commerce Affiliate OS & Link Hub Engine",
+  "scripts": {
+    "dev": "node server_local.js",
+    "start": "node server_local.js"
+  },
   "keywords": ["morvix", "affiliate", "shorts", "coupang", "naver"],
   "author": "NEXORA AI Group",
   "license": "MIT"
