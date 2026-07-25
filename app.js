@@ -50,13 +50,13 @@ function renderProducts() {
   let filtered = dbData.products;
   if (currentCategory === 'featured') {
     filtered = dbData.products.filter(p => p.is_featured);
-    title.textContent = '🌟 오늘의 추천 라인업';
+    title.textContent = '🌟 오늘의 MORVIX 추천';
   } else if (currentCategory !== 'all') {
     filtered = dbData.products.filter(p => p.category === currentCategory);
     const catObj = dbData.categories.find(c => c.id === currentCategory);
-    title.textContent = `${catObj ? catObj.icon : ''} ${catObj ? catObj.name : '제품'} 검증 라인업`;
+    title.textContent = `${catObj ? catObj.icon : ''} ${catObj ? catObj.name : '제품'} 검증 제품`;
   } else {
-    title.textContent = '📦 전체 MORVIX 검증 라인업';
+    title.textContent = '🔥 지금 가장 많이 찾는 검증 제품';
   }
 
   count.textContent = `총 ${filtered.length}개 검증 자산`;
@@ -76,7 +76,7 @@ function renderProducts() {
             <span class="price-discount">${p.discount_rate} OFF</span>
             <span class="price-current">${p.price.toLocaleString()}원</span>
           </div>
-          <button class="btn-card-buy">최저가 보기 ➔</button>
+          <button class="btn-card-buy">🛒 최저가 확인 ➔</button>
         </div>
       </div>
     </div>
