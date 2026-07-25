@@ -323,6 +323,28 @@ function setupAdminEvents() {
     const subtitle = document.getElementById('input-subtitle').value;
     const uspsText = document.getElementById('input-usps').value;
 
+    const affiliateLinks = [];
+    if (linkCoupang) {
+      affiliateLinks.push({
+        platform: 'coupang',
+        label: '🛒 쿠팡 최저가 확인 및 구매하기 ➔',
+        url: linkCoupang,
+        priority: 1,
+        bg_gradient: 'linear-gradient(135deg, #ff4757, #ff6b81)'
+      });
+    }
+    if (linkNaver) {
+      affiliateLinks.push({
+        platform: 'naver',
+        label: '🟢 네이버 쇼핑커넥트 확인 및 구매 ➔',
+        url: linkNaver,
+        priority: 2,
+        bg_gradient: 'linear-gradient(135deg, #03cf5d, #02b651)'
+      });
+    }
+
+    const epNum = episode.replace(/[^0-9]/g, '') || '011';
+
     const newProd = {
       id: `PROD-${Date.now()}`,
       slug: slug,
@@ -332,28 +354,25 @@ function setupAdminEvents() {
       category: category,
       is_featured: true,
       episode_id: episode,
+      episode_label: `🎬 EP${epNum} 숏폼 소개 제품`,
       price: price,
       original_price: Math.round(price * 1.5),
       discount_rate: "33%",
       rating: 5.0,
       review_count: 1,
       usps: uspsText.split('\n').filter(line => line.trim().length > 0),
-      affiliate_links: {
-        coupang: linkCoupang,
-        naver: linkNaver
-      },
-      thumbnail: "https://images.unsplash.com/photo-1618941709602-92849f611320?w=600&auto=format&fit=crop&q=80",
-      images: ["https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80"],
+      affiliate_links: affiliateLinks,
+      thumbnail: "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80",
+      images: ["https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80"],
       webtoon_episode_title: `${episode} 바이럴 에피소드`,
       webtoon_cuts_count: 15,
       clicks_count: 0,
-      clicks_coupang: 0,
-      clicks_naver: 0,
+      platform_clicks: { coupang: 0, naver: 0 },
       conversions_count: 0
     };
 
     dbData.products.unshift(newProd);
-    alert(`✅ 다중 제휴 상품등록 완료!\n단축 URL: morvix.kr/${slug}\n쿠팡 & 네이버 쇼핑커넥트 다중 CTA가 활성화되었습니다.`);
+    alert(`✅ 다중 제휴 상품등록 완료!\n단축 URL: morvix.kr/${slug}\n에피소드: EP${epNum}\n쿠팡 & 네이버 제휴 CTA가 활성화되었습니다.`);
 
     renderProducts();
     renderAnalyticsTable();
