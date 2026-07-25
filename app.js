@@ -243,7 +243,9 @@ function setupAdminEvents() {
     setTimeout(verifyAndOpenAdmin, 200);
   }
 
-  btnOpen.addEventListener('click', verifyAndOpenAdmin);
+  if (btnOpen) {
+    btnOpen.addEventListener('click', verifyAndOpenAdmin);
+  }
 
   // Secret Trigger 1: Triple-click on Brand Logo
   let clickCount = 0;
@@ -270,14 +272,20 @@ function setupAdminEvents() {
     }
   });
 
-  btnClose.addEventListener('click', () => {
-    modal.classList.remove('active');
-  });
+  if (btnClose && modal) {
+    btnClose.addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+  }
 
   // Product Detail Modal Close Button
-  document.getElementById('btn-close-modal').addEventListener('click', () => {
-    document.getElementById('product-modal').classList.remove('active');
-  });
+  const btnCloseDetail = document.getElementById('btn-close-modal');
+  if (btnCloseDetail) {
+    btnCloseDetail.addEventListener('click', () => {
+      const prodModal = document.getElementById('product-modal');
+      if (prodModal) prodModal.classList.remove('active');
+    });
+  }
 
   // ⚡ One-Click Auto Ingestion Handler
   const btnAutoFetch = document.getElementById('btn-auto-fetch');
@@ -336,17 +344,20 @@ function setupAdminEvents() {
   });
 
   // Form Submit Handler
-  document.getElementById('form-add-product').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = document.getElementById('input-name').value;
-    const slug = document.getElementById('input-slug').value;
-    const category = document.getElementById('input-category').value;
-    const episode = document.getElementById('input-episode').value;
-    const price = parseInt(document.getElementById('input-price').value);
-    const linkCoupang = document.getElementById('input-link-coupang').value;
-    const linkNaver = document.getElementById('input-link-naver').value;
-    const subtitle = document.getElementById('input-subtitle').value;
-    const uspsText = document.getElementById('input-usps').value;
+  const formAddProduct = document.getElementById('form-add-product');
+  if (formAddProduct) {
+    formAddProduct.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('input-name') ? document.getElementById('input-name').value : '';
+      const slug = document.getElementById('input-slug') ? document.getElementById('input-slug').value : '';
+      const category = document.getElementById('input-category') ? document.getElementById('input-category').value : 'summer';
+      const episode = document.getElementById('input-episode') ? document.getElementById('input-episode').value : 'EP011';
+      const rawPrice = document.getElementById('input-price') ? document.getElementById('input-price').value : '';
+      const price = rawPrice ? parseInt(rawPrice) : null;
+      const linkCoupang = document.getElementById('input-link-coupang') ? document.getElementById('input-link-coupang').value : '';
+      const linkNaver = document.getElementById('input-link-naver') ? document.getElementById('input-link-naver').value : '';
+      const subtitle = document.getElementById('input-subtitle') ? document.getElementById('input-subtitle').value : '';
+      const uspsText = document.getElementById('input-usps') ? document.getElementById('input-usps').value : '';
 
     const affiliateLinks = [];
     if (linkCoupang) {

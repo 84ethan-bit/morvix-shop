@@ -373,6 +373,18 @@ body {
   pointer-events: auto;
 }
 
+#product-modal {
+  z-index: 1000;
+}
+
+#admin-login-modal {
+  z-index: 2000 !important;
+}
+
+#admin-modal {
+  z-index: 3000 !important;
+}
+
 .modal-card, .admin-card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
