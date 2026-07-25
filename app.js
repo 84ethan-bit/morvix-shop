@@ -490,12 +490,23 @@ function setupAdminEvents() {
       let fetchedImg = "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80";
 
       try {
-        const metaRes = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(rawUrl)}`);
-        if (metaRes.ok) {
-          const metaData = await metaRes.json();
-          if (metaData && metaData.data) {
-            if (metaData.data.title) fetchedTitle = metaData.data.title;
-            if (metaData.data.image && metaData.data.image.url) fetchedImg = metaData.data.image.url;
+        // 1. Try native Serverless Extractor (/api/extract) first
+        const apiRes = await fetch(`/api/extract?url=${encodeURIComponent(rawUrl)}`);
+        if (apiRes.ok) {
+          const apiData = await apiRes.json();
+          if (apiData && apiData.success) {
+            if (apiData.title) fetchedTitle = apiData.title;
+            if (apiData.image) fetchedImg = apiData.image;
+          }
+        } else {
+          // 2. Fallback to Microlink OpenGraph API
+          const metaRes = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(rawUrl)}`);
+          if (metaRes.ok) {
+            const metaData = await metaRes.json();
+            if (metaData && metaData.data) {
+              if (metaData.data.title) fetchedTitle = metaData.data.title;
+              if (metaData.data.image && metaData.data.image.url) fetchedImg = metaData.data.image.url;
+            }
           }
         }
       } catch (err) {
