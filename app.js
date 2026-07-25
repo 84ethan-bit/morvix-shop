@@ -875,7 +875,7 @@ function renderAnalyticsTable() {
       <tr>
         <td style="font-weight: 800; color: #ffbe0b;">${rankBadge}</td>
         <td>
-          <strong style="color: #fff; font-size: 0.88rem;">${p.name}</strong>
+          <strong style="color: #00d2ff; font-size: 0.88rem; cursor: pointer; text-decoration: underline;" onclick="openProductDetail('${p.slug}')">${p.name} 🔍</strong>
           <div style="font-size: 0.75rem; color: var(--text-muted);">morvix.kr/${p.slug} | ${p.episode_label || p.episode_id}</div>
         </td>
         <td><span style="padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; background: rgba(46,213,115,0.15); color: #2ed573;">${statusVal}</span></td>
@@ -928,9 +928,9 @@ function renderAdminProductList() {
         <td style="text-align: center;"><input type="checkbox" class="admin-prod-checkbox" value="${p.id}"></td>
         <td>
           <div style="display: flex; gap: 8px; align-items: center;">
-            <img src="${p.thumbnail}" style="width: 36px; height: 36px; object-fit: cover; border-radius: 4px;">
+            <img src="${p.thumbnail}" onclick="openProductDetail('${p.slug}')" style="width: 36px; height: 36px; object-fit: cover; border-radius: 4px; cursor: pointer;">
             <div>
-              <strong style="color: #fff; font-size: 0.88rem;">${p.name}</strong>
+              <strong style="color: #00d2ff; font-size: 0.88rem; cursor: pointer; text-decoration: underline;" onclick="openProductDetail('${p.slug}')">${p.name} 🔍</strong>
               <div style="font-size: 0.75rem; color: var(--text-muted);">morvix.kr/${p.slug} | ${p.episode_label || p.episode_id}</div>
             </div>
           </div>
