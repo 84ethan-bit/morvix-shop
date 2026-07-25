@@ -107,7 +107,7 @@ body {
 /* --- Hero Banner --- */
 .hero-banner {
   background: radial-gradient(circle at 50% 0%, rgba(0, 210, 255, 0.15) 0%, transparent 70%);
-  padding: 60px 24px 40px;
+  padding: 24px 16px 16px;
   text-align: center;
 }
 
@@ -121,16 +121,16 @@ body {
   background: rgba(0, 210, 255, 0.12);
   color: var(--primary-accent);
   border: 1px solid rgba(0, 210, 255, 0.3);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  padding: 6px 14px;
+  padding: 4px 12px;
   border-radius: 20px;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .hero-title {
   font-family: var(--font-brand);
-  font-size: 2.5rem;
+  font-size: 1.6rem;
   font-weight: 900;
   line-height: 1.25;
   margin-bottom: 16px;

@@ -66,7 +66,7 @@ function renderProducts() {
       <div class="card-image-wrapper">
         <img class="card-image" src="${p.thumbnail}" alt="${p.name}">
         ${p.is_featured ? '<span class="badge-featured">🔥 HOT 꿀템</span>' : ''}
-        <span class="badge-episode">${p.episode_id}</span>
+        <span class="badge-episode">${p.episode_label || p.episode_id}</span>
       </div>
       <div class="card-content">
         <h3 class="card-title">${p.name}</h3>
@@ -76,7 +76,7 @@ function renderProducts() {
             <span class="price-discount">${p.discount_rate} OFF</span>
             <span class="price-current">${p.price.toLocaleString()}원</span>
           </div>
-          <button class="btn-card-buy">웹툰/구매 ➔</button>
+          <button class="btn-card-buy">최저가 보기 ➔</button>
         </div>
       </div>
     </div>

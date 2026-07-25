@@ -20,10 +20,11 @@
       "slug": "fan001",
       "short_url": "morvix.kr/fan001",
       "name": "모르빅스 무선 파워 듀얼 서큘레이터",
-      "subtitle": "회사 구석자리/자취방 책상 앞 38도 사막 지대 억까 탈출템",
+      "subtitle": "회사 책상 앞 38도 사막지대 억까 탈출 초강풍 무선 서큘레이터",
       "category": "summer",
       "is_featured": true,
       "episode_id": "INTERNAL_CASE_EP010",
+      "episode_label": "🎬 EP010 숏폼 소개 제품",
       "price": 28900,
       "original_price": 45000,
       "discount_rate": "35%",
@@ -51,9 +52,9 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1618941709602-92849f611320?w=600&auto=format&fit=crop&q=80",
+      "thumbnail": "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80",
       "images": [
-        "https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80"
+        "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80"
       ],
       "webtoon_episode_title": "S01_EP10 사막 지대 억까 탈출편",
       "webtoon_cuts_count": 15,
@@ -69,10 +70,11 @@
       "slug": "blanket001",
       "short_url": "morvix.kr/blanket001",
       "name": "모르빅스 초냉감 얼음 쿨링 이불",
-      "subtitle": "샤워 10분 만에 땀 범벅일 때 닿자마자 -5도 체감 쿨링",
+      "subtitle": "닿자마자 -5도 즉각 쿨링! 열대야 숙면 구원템",
       "category": "summer",
       "is_featured": true,
       "episode_id": "INTERNAL_CASE_EP009",
+      "episode_label": "🎬 EP009 숏폼 소개 제품",
       "price": 34900,
       "original_price": 59000,
       "discount_rate": "40%",
@@ -100,7 +102,7 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&auto=format&fit=crop&q=80",
+      "thumbnail": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&auto=format&fit=crop&q=80",
       "images": [
         "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&auto=format&fit=crop&q=80"
       ],
@@ -122,6 +124,7 @@
       "category": "car",
       "is_featured": true,
       "episode_id": "INTERNAL_CASE_EP008",
+      "episode_label": "🎬 EP008 숏폼 소개 제품",
       "price": 19800,
       "original_price": 32000,
       "discount_rate": "38%",
@@ -149,7 +152,7 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600&auto=format&fit=crop&q=80",
+      "thumbnail": "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&auto=format&fit=crop&q=80",
       "images": [
         "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&auto=format&fit=crop&q=80"
       ],
@@ -167,10 +170,11 @@
       "slug": "mosquito001",
       "short_url": "morvix.kr/mosquito001",
       "name": "모르빅스 UV 광촉매 무소음 모기 포집기",
-      "subtitle": "새벽 귓가 윙윙 모기 1초 만에 유인 포집 박멸",
+      "subtitle": "새벽 귓가 윙윙 모기 1초 유인 무소음 광촉매 포집기",
       "category": "summer",
       "is_featured": false,
       "episode_id": "INTERNAL_CASE_EP002",
+      "episode_label": "🎬 EP002 숏폼 소개 제품",
       "price": 24500,
       "original_price": 39000,
       "discount_rate": "37%",
@@ -198,7 +202,7 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80",
+      "thumbnail": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80",
       "images": [
         "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80"
       ],
