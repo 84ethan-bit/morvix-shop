@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MORVIX SHOP OS - 쇼츠 릴스 꿀템 모음집</title>
+  <meta name="description" content="쇼츠, 릴스, 틱톡 속 바로 그 꿀템! MORVIX 데이터 검증 커머스 모음집">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" href="favicon.svg" type="image/png">
+
+  <!-- Open Graph / Kakao & Instagram Sharing Meta Cards -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://morvix.vercel.app/">
+  <meta property="og:title" content="⚡ MORVIX SHOP OS - 쇼츠·릴스 억까 탈출 꿀템 라이브러리">
+  <meta property="og:description" content="100만 바이럴 검증 라인업! 영상 속 바로 그 꿀템, 쿠팡 & 네이버 최저가 1초 확인">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1618941709602-92849f611320?w=1200&auto=format&fit=crop&q=80">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MORVIX SHOP OS - 쇼츠 릴스 검증 꿀템 모음집">
+  <meta name="twitter:description" content="쇼츠 속 바로 그 꿀템! MORVIX 검증 라인업">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1618941709602-92849f611320?w=1200&auto=format&fit=crop&q=80">
+
+  <!-- Google Analytics 4 (GA4) Tag Placeholder -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-YOUR-GA4-ID"></script> -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-MORVIX-GA4-ID');
+  </script>
+
+  <!-- Microsoft Clarity Session Replay Tag Placeholder -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "morvix_clarity_id");
+  </script>
+
+  <!-- Google Fonts Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header / Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand-logo" id="brand-logo">
+        <span class="logo-badge">⚡ MORVIX</span>
+        <span class="logo-title">SHOP OS</span>
+      </a>
+      <div class="nav-actions">
+        <button class="btn-admin" id="btn-open-admin">⚙️ Admin OS</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-banner">
+    <div class="hero-content">
+      <span class="hero-tag">🔥 100만+ 바이럴 검증 라인업</span>
+      <h1 class="hero-title">쇼츠·릴스 속 바로 그 꿀템,<br><span class="highlight">MORVIX</span>에서 바로 확인하세요!</h1>
+      <p class="hero-subtitle">실제 수집된 데이터와 웹툰 에피소드로 검증된 생활 억까 탈출 솔루션 모음집</p>
+    </div>
+  </section>
+
+  <!-- Category Nav Bar -->
+  <nav class="category-nav">
+    <div class="category-container" id="category-container">
+      <!-- Injected by JavaScript -->
+    </div>
+  </nav>
+
+  <!-- Product Grid Section -->
+  <main class="main-container">
+    <div class="section-header">
+      <h2 class="section-title" id="section-title">🌟 오늘의 추천 검증 라인업</h2>
+      <span class="product-count" id="product-count">총 4개 검증 자산</span>
+    </div>
+
+    <div class="product-grid" id="product-grid">
+      <!-- Injected by JavaScript -->
+    </div>
+  </main>
+
+  <!-- Product Detail Modal -->
+  <div class="modal-overlay" id="product-modal">
+    <div class="modal-card">
+      <button class="modal-close" id="btn-close-modal">&times;</button>
+      <div class="modal-body" id="modal-body">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin OS Modal -->
+  <div class="modal-overlay" id="admin-modal">
+    <div class="admin-card">
+      <div class="admin-header">
+        <h2>🛠️ MORVIX SHOP OS - Admin Management System</h2>
+        <button class="modal-close" id="btn-close-admin">&times;</button>
+      </div>
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="tab-add-product">➕ 신규 상품 등록</button>
+        <button class="admin-tab" data-tab="tab-analytics">📊 클릭/전환 분석</button>
+        <button class="admin-tab" data-tab="tab-all-products">📦 등록 상품 관리</button>
+      </div>
+
+      <div class="admin-tab-content active" id="tab-add-product">
+        <form id="form-add-product" class="admin-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>상품명 (Product Name)</label>
+              <input type="text" id="input-name" placeholder="예: 모르빅스 무선 파워 듀얼 서큘레이터" required>
+            </div>
+            <div class="form-group">
+              <label>단축 슬러그 URL (Short Slug)</label>
+              <div class="slug-input-wrapper">
+                <span class="slug-prefix">morvix.kr/</span>
+                <input type="text" id="input-slug" placeholder="fan001" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>카테고리 (Category)</label>
+              <select id="input-category">
+                <option value="summer">❄️ 여름 꿀템</option>
+                <option value="life">🏠 생활 꿀템</option>
+                <option value="cleaning">🧹 청소/위생</option>
+                <option value="kitchen">🍳 주방/요리</option>
+                <option value="car">🚗 자동차</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>연동 에피소드 ID (Episode ID)</label>
+              <input type="text" id="input-episode" placeholder="INTERNAL_CASE_EP010" required>
+            </div>
+            <div class="form-group">
+              <label>판매가 (KRW)</label>
+              <input type="number" id="input-price" placeholder="28900" required>
+            </div>
+            <div class="form-group">
+              <label>쿠팡 파트너스 링크 (Coupang Partner Link)</label>
+              <input type="url" id="input-link-coupang" placeholder="https://link.coupang.com/a/..." required>
+            </div>
+            <div class="form-group">
+              <label>네이버 쇼핑커넥트 링크 (Naver Shopping Connect)</label>
+              <input type="url" id="input-link-naver" placeholder="https://shopping.naver.com/bridge/...">
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label>한 줄 킬링 서브타이틀 (Punchline Subtitle)</label>
+            <input type="text" id="input-subtitle" placeholder="회사 구석자리/자취방 책상 앞 38도 사막 지대 억까 탈출템" required>
+          </div>
+
+          <div class="form-group full-width">
+            <label>4대 핵심 USP (줄바꿈 구분)</label>
+            <textarea id="input-usps" rows="4" placeholder="강력한 듀얼 터보 모터 초강풍 쿨링&#10;8시간 연속 사용 대용량 무선 배터리&#10;360도 자유 회전 원하는 각도 완벽 조율&#10;독서실급 초저소음 파워 설계" required></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit">🚀 상품 페이지 & QR & OG 즉시 자동 생성</button>
+        </form>
+      </div>
+
+      <div class="admin-tab-content" id="tab-analytics">
+        <div class="analytics-summary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px;">
+          <div class="metric-box">
+            <span class="metric-label">총 아웃바운드 클릭</span>
+            <span class="metric-value" id="total-clicks">3,112회</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">🛒 쿠팡 파트너스 클릭</span>
+            <span class="metric-value" id="coupang-clicks" style="color: #ff4757;">1,940회</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">🟢 네이버 쇼핑 클릭</span>
+            <span class="metric-value" id="naver-clicks" style="color: #2ed573;">1,172회</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">평균 전환율 (CR)</span>
+            <span class="metric-value" id="avg-cr" style="color: var(--primary-accent);">12.3%</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">🔥 TOP 성과 상품</span>
+            <span class="metric-value highlight" id="top-product" style="font-size: 1.1rem;">초냉감 이불</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">🎬 TOP 유입 쇼츠</span>
+            <span class="metric-value" id="top-shorts" style="color: #eccc68; font-size: 1rem;">EP009</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">🏆 TOP 제휴 플랫폼</span>
+            <span class="metric-value" id="top-platform" style="color: #ff4757; font-size: 1rem;">쿠팡 (62.3%)</span>
+          </div>
+        </div>
+
+        <div class="analytics-table-wrapper">
+          <table class="analytics-table">
+            <thead>
+              <tr>
+                <th>슬러그 URL</th>
+                <th>상품명</th>
+                <th>쿠팡 클릭 (coupang)</th>
+                <th>네이버 클릭 (naver)</th>
+                <th>전환 발생수</th>
+                <th>전환율 (CR)</th>
+              </tr>
+            </thead>
+            <tbody id="analytics-tbody">
+              <!-- Injected by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="admin-tab-content" id="tab-all-products">
+        <div id="admin-product-list" class="admin-product-list">
+          <!-- Injected by JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <p>© 2026 MORVIX SHOP OS. All rights reserved. Powered by VIS Knowledge Framework Engine.</p>
+      <p class="footer-disclaimer">본 사이트는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받을 수 있습니다.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
