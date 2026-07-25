@@ -211,9 +211,12 @@ function setupAdminEvents() {
     }
   }
 
-  // Check URL query/hash trigger (e.g., ?admin or #admin)
-  const isAdminUrl = window.location.search.includes('admin') || window.location.hash.includes('admin');
-  if (isAdminUrl || sessionStorage.getItem('morvix_admin_auth') === 'true') {
+  // Check URL query/hash/path trigger (e.g., ?admin, #admin, /admin)
+  const isAdminUrl = window.location.search.includes('admin') || window.location.hash.includes('admin') || window.location.pathname.includes('admin');
+  if (isAdminUrl) {
+    btnOpen.classList.add('visible');
+    setTimeout(verifyAndOpenAdmin, 300);
+  } else if (sessionStorage.getItem('morvix_admin_auth') === 'true') {
     btnOpen.classList.add('visible');
   }
 
@@ -475,7 +478,7 @@ function setupRouting() {
       slug = pathSegments[pathSegments.length - 1];
     }
   }
-  if (slug && slug !== 'index.html' && slug !== 'index') {
+  if (slug && slug !== 'index.html' && slug !== 'index' && slug !== 'admin') {
     openProductDetail(slug);
   }
 }
