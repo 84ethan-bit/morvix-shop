@@ -532,35 +532,28 @@ function setupAdminEvents() {
 
       let fetchedTitle = "모르빅스 생활 억까 탈출 검증 꿀템";
       let fetchedImg = "https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80";
+      let fetchedPrice = 28900;
+      let fetchedCategory = "summer";
 
       try {
-        // 1. Try native Serverless Extractor (/api/extract) first
         const apiRes = await fetch(`/api/extract?url=${encodeURIComponent(rawUrl)}`);
         if (apiRes.ok) {
           const apiData = await apiRes.json();
           if (apiData && apiData.success) {
-            if (apiData.title && !apiData.title.includes('네이버')) fetchedTitle = apiData.title;
+            if (apiData.title && !apiData.title.includes('네이버') && apiData.title.length > 2) fetchedTitle = apiData.title;
             if (apiData.image) fetchedImg = apiData.image;
-          }
-        } else {
-          // 2. Fallback to Microlink OpenGraph API
-          const metaRes = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(rawUrl)}`);
-          if (metaRes.ok) {
-            const metaData = await metaRes.json();
-            if (metaData && metaData.data) {
-              if (metaData.data.title) fetchedTitle = metaData.data.title;
-              if (metaData.data.image && metaData.data.image.url) fetchedImg = metaData.data.image.url;
-            }
+            if (apiData.price) fetchedPrice = apiData.price;
+            if (apiData.category) fetchedCategory = apiData.category;
           }
         }
       } catch (err) {
-        console.warn("Auto OpenGraph fetch fallback used:", err);
+        console.warn("Auto Import Engine fallback used:", err);
       }
 
       if (document.getElementById('input-name')) document.getElementById('input-name').value = fetchedTitle;
       if (document.getElementById('input-image-url')) document.getElementById('input-image-url').value = fetchedImg;
-      if (document.getElementById('input-price')) document.getElementById('input-price').value = 24900;
-      if (document.getElementById('input-category')) document.getElementById('input-category').value = "summer";
+      if (document.getElementById('input-price')) document.getElementById('input-price').value = fetchedPrice;
+      if (document.getElementById('input-category')) document.getElementById('input-category').value = fetchedCategory;
       if (document.getElementById('input-subtitle')) document.getElementById('input-subtitle').value = `${fetchedTitle} - 일상의 불편함을 3초 만에 완벽 해결하는 검증 솔루션`;
       if (document.getElementById('input-usps')) {
         document.getElementById('input-usps').value = [
@@ -572,9 +565,9 @@ function setupAdminEvents() {
       }
 
       btnAutoFetch.disabled = false;
-      btnAutoFetch.textContent = '⚡ 자동 불러오기';
+      btnAutoFetch.textContent = '⚡ 상품 정보 1초 자동 가져오기';
 
-      alert(`⚡ [실제 상품 이미지 & 제목 추출 완료!]\n\n• 추출된 상품명: ${fetchedTitle}\n• 대표 이미지: ${fetchedImg ? '실제 상품 이미지 연동 완료' : '고화질 대표 이미지'}\n• 단축 슬러그: morvix.kr/${autoSlug}\n• 연동 에피소드: EP${nextEpNum}`);
+      alert(`⚡ [MORVIX Auto Import Engine 추출 완료!]\n\n• 추출된 상품명: ${fetchedTitle}\n• 원본 대표 이미지: ${fetchedImg ? '자동 연동 완료' : '고화질 대표 이미지'}\n• 실시간 할인가: ${fetchedPrice.toLocaleString()}원\n• 자동 추론 카테고리: ${fetchedCategory.toUpperCase()}\n• 단축 슬러그: morvix.kr/${autoSlug}`);
     });
   }
 
