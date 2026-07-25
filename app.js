@@ -404,7 +404,7 @@ function filterCuration(catId) {
 const EVENT_LOG_KEY = 'morvix_real_click_events_v1';
 
 function logRealClickEvent(slug, platform) {
-  const prod = dbData.products.find(p => p.slug === slug);
+  const prod = dbData.products.find(p => p.slug === slug || p.id === slug);
   if (!prod) return;
 
   if (!prod.analytics) {
@@ -417,6 +417,7 @@ function logRealClickEvent(slug, platform) {
   prod.analytics.clicks_count = (prod.analytics.clicks_count || 0) + 1;
   prod.analytics.platform_clicks[platform] = (prod.analytics.platform_clicks[platform] || 0) + 1;
   prod.analytics.conversions_count = (prod.analytics.conversions_count || 0) + 1;
+  prod.analytics.last_click = new Date().toISOString();
 
   // Persist Master DB state
   saveMasterDbToStorage();
@@ -427,7 +428,7 @@ function logRealClickEvent(slug, platform) {
     const logs = rawLogs ? JSON.parse(rawLogs) : [];
     logs.unshift({
       timestamp: new Date().toISOString(),
-      slug: slug,
+      slug: prod.slug,
       product_name: prod.name,
       platform: platform,
       referrer: document.referrer || 'direct'
