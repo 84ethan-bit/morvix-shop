@@ -635,8 +635,8 @@ function setupAdminEvents() {
       const rawEp = document.getElementById('input-episode') ? document.getElementById('input-episode').value.trim() : '';
       const episode = rawEp || `EP${nextNum}`;
       
-      const priceInput = document.getElementById('input-price') ? document.getElementById('input-price').value : '';
-      const price = priceInput ? parseInt(priceInput) : 28900;
+      const priceInput = document.getElementById('input-price') ? document.getElementById('input-price').value.trim() : '';
+      const price = priceInput ? parseInt(priceInput) : null;
       
       const linkCoupang = document.getElementById('input-link-coupang') ? document.getElementById('input-link-coupang').value.trim() : '';
       const linkNaver = document.getElementById('input-link-naver') ? document.getElementById('input-link-naver').value.trim() : '';
