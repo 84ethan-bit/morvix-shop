@@ -254,6 +254,50 @@ function setupAdminEvents() {
     document.getElementById('product-modal').classList.remove('active');
   });
 
+  // ⚡ One-Click Auto Ingestion Handler
+  const btnAutoFetch = document.getElementById('btn-auto-fetch');
+  if (btnAutoFetch) {
+    btnAutoFetch.addEventListener('click', () => {
+      const rawUrl = document.getElementById('input-auto-url').value.trim();
+      if (!rawUrl) {
+        alert("⚠️ 제휴 URL을 입력 후 [자동 불러오기]를 눌러주세요.");
+        return;
+      }
+
+      const isCoupang = rawUrl.includes('coupang.com');
+      const isNaver = rawUrl.includes('naver.com');
+
+      // Auto-fill affiliate links
+      if (isCoupang) {
+        document.getElementById('input-link-coupang').value = rawUrl;
+      } else if (isNaver) {
+        document.getElementById('input-link-naver').value = rawUrl;
+      } else {
+        document.getElementById('input-link-coupang').value = rawUrl;
+      }
+
+      // Generate Auto Slug & Episode ID
+      const nextEpNum = (dbData ? dbData.products.length + 1 : 11).toString().padStart(3, '0');
+      const autoSlug = `item${nextEpNum}`;
+      document.getElementById('input-slug').value = autoSlug;
+      document.getElementById('input-episode').value = `INTERNAL_CASE_EP${nextEpNum}`;
+
+      // Auto-fill Product Metadata & AI USPs
+      document.getElementById('input-name').value = "모르빅스 생활 억까 탈출 검증 꿀템";
+      document.getElementById('input-price').value = 24900;
+      document.getElementById('input-category').value = "summer";
+      document.getElementById('input-subtitle').value = "일상의 불편함을 3초 만에 완벽 해결하는 검증 솔루션";
+      document.getElementById('input-usps').value = [
+        "100만 바이럴 검증 실생활 문제 해결 설계",
+        "압도적 가성비 최저가 파트너스 보장",
+        "초간단 사용 및 내구성 안심 인증 원단/부품",
+        "MORVIX 숏폼 에피소드 실측 검증 완료"
+      ].join('\n');
+
+      alert(`⚡ [원클릭 자동 불러오기 완료!]\n단축 슬러그: morvix.kr/${autoSlug}\n에피소드: EP${nextEpNum}\n상품명/가격/AI 4-USP가 자동 채워졌습니다.`);
+    });
+  }
+
   // Admin Tab Switcher
   document.querySelectorAll('.admin-tab').forEach(tab => {
     tab.addEventListener('click', (e) => {

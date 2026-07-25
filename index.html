@@ -119,6 +119,18 @@
       </div>
 
       <div class="admin-tab-content active" id="tab-add-product">
+        <!-- ⚡ One-Click Auto Ingestion Bar -->
+        <div class="auto-ingest-box" style="background: rgba(0, 242, 254, 0.08); border: 1px solid rgba(0, 242, 254, 0.3); border-radius: var(--radius-md); padding: 14px; margin-bottom: 20px;">
+          <label style="color: var(--primary-accent); font-weight: 700; font-size: 0.95rem;">⚡ 원클릭 URL 자동 분석 & AI 4-USP 생성기</label>
+          <div style="display: flex; gap: 10px; margin-top: 8px;">
+            <input type="url" id="input-auto-url" placeholder="https://link.coupang.com/a/... 또는 제휴 URL 붙여넣기" style="flex: 1; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: rgba(0,0,0,0.3); color: #fff;">
+            <button type="button" id="btn-auto-fetch" style="background: var(--primary-gradient); color: #fff; border: none; padding: 10px 18px; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; white-space: nowrap;">
+              ⚡ 자동 불러오기
+            </button>
+          </div>
+          <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 6px;">URL을 붙여넣고 [자동 불러오기]를 누르면 상품명, 가격, 썸네일, 4대 USP가 1초 만에 채워집니다.</span>
+        </div>
+
         <form id="form-add-product" class="admin-form">
           <div class="form-grid">
             <div class="form-group">
