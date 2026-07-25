@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MORVIX SHOP OS v2.2 - High-Res Product Imagery & Manual Image Input
+   MORVIX SHOP OS v2.3 - Permanent Valid Naver Shopping Link Integration
    ========================================================================== */
 
 const INITIAL_DB_DATA = {
@@ -7,7 +7,7 @@ const INITIAL_DB_DATA = {
     "brand_name": "MORVIX SHOP OS",
     "domain": "morvix.kr",
     "tagline": "일상을 바꾸는 검증된 꿀템만 소개합니다.",
-    "version": "v2.2 (High-Res Accurate Product Imagery)"
+    "version": "v2.3 (Permanent Naver SmartStore & Shopping Links)"
   },
   "categories": [
     {"id": "all", "name": "모든 제품", "icon": "📦"},
@@ -53,8 +53,8 @@ const INITIAL_DB_DATA = {
         },
         {
           "platform": "naver",
-          "label": "🟢 네이버 쇼핑커넥트 실시간 가격 확인 ➔",
-          "url": "https://cr3.shopping.naver.com/v2/bridge/searchGate?nv_mid=87871668680&cat_id=50008981&query=%EC%84%9C%ED%81%98%EB%A0%88%EC%9D%B4%ED%84%B0&t=mrvvlt2w&h=4f594005b0bc1d3300679dbc246c07b907bde5fd&frm=NVSCDIG",
+          "label": "🟢 네이버 쇼핑커넥트 최저가 확인 ➔",
+          "url": "https://search.shopping.naver.com/search/all?query=%EC%8B%A0%EC%9D%BC%20%EC%84%9C%ED%81%98%EB%A0%88%EC%9D%B4%ED%84%B0%20BLDC",
           "priority": 2,
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
@@ -97,8 +97,8 @@ const INITIAL_DB_DATA = {
         },
         {
           "platform": "naver",
-          "label": "🟢 네이버 쇼핑커넥트 실시간 가격 확인 ➔",
-          "url": "https://cr3.shopping.naver.com/v2/bridge/searchGate?nv_mid=86257630082&cat_id=50008981&query=%EC%84%9C%ED%81%98%EB%A0%88%EC%9D%B4%ED%84%B0&t=mrvvlt1l&h=976a4b447043a6a191cc3156c652eeb00325dfee&frm=NVSCSPE",
+          "label": "🟢 네이버 쇼핑커넥트 최저가 확인 ➔",
+          "url": "https://search.shopping.naver.com/search/all?query=%EC%B4%88%EB%83%89%EA%B0%90%20%EC%96%BC%EC%9D%8C%20%EC%BF%8B%EB%A7%81%20%EC%9D%B4%B6%88",
           "priority": 2,
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
@@ -141,8 +141,8 @@ const INITIAL_DB_DATA = {
         },
         {
           "platform": "naver",
-          "label": "🟢 네이버 쇼핑커넥트 실시간 가격 확인 ➔",
-          "url": "https://cr3.shopping.naver.com/v2/bridge/searchGate?nv_mid=84090700375&cat_id=50001985&query=%EB%AA%A8%EA%B8%B0%ED%87%B4%EC%B9%98%EA%B8%B0&t=mrvvltpm&h=593129dc25c3e4b5a6da446bf1ff080499f28e71&frm=NVSCDIG",
+          "label": "🟢 네이버 쇼핑커넥트 최저가 확인 ➔",
+          "url": "https://search.shopping.naver.com/search/all?query=%EB%93%8D%ED%94%8C%EB%A0%89%EC%8A%A4%20%EB%AA%A8%EA%B8%B0%ED%87%B4%EC%B9%98%EA%B8%B0",
           "priority": 2,
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
@@ -185,8 +185,8 @@ const INITIAL_DB_DATA = {
         },
         {
           "platform": "naver",
-          "label": "🟢 네이버 쇼핑커넥트 실시간 가격 확인 ➔",
-          "url": "https://cr3.shopping.naver.com/v2/bridge/searchGate?nv_mid=87871668680&cat_id=50008981&query=%EC%84%9C%ED%81%98%EB%A0%88%EC%9D%B4%ED%84%B0&t=mrvvlt2w&h=4f594005b0bc1d3300679dbc246c07b907bde5fd&frm=NVSCDIG",
+          "label": "🟢 네이버 쇼핑커넥트 최저가 확인 ➔",
+          "url": "https://search.shopping.naver.com/search/all?query=3in1%20%EB%A7%A5%EC%84%B8%EC%9D%B4%ED%94%84%20%EB%8D%B0%EC%8A%A4%ED%81%98%20%EA%B1%B0%EC%B9%98%EB%8C%80",
           "priority": 2,
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
