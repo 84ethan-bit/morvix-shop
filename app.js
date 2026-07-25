@@ -471,14 +471,14 @@ function renderAdminProductList() {
   if (!container || !dbData) return;
 
   container.innerHTML = dbData.products.map(p => `
-    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 10px;">
       <div>
-        <strong style="color: #fff; font-size: 1rem;">${p.name}</strong>
-        <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">
-          morvix.kr/${p.slug} | ${p.episode_id} | ${p.price.toLocaleString()}원
+        <strong style="color: #fff; font-size: 0.98rem; display: block; margin-bottom: 4px;">${p.name}</strong>
+        <div style="font-size: 0.82rem; color: var(--text-muted);">
+          morvix.kr/${p.slug} | ${p.episode_label || p.episode_id} | ${p.price ? p.price.toLocaleString() + '원' : '실시간 최저가 연동'}
         </div>
       </div>
-      <button style="background: #ff4757; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;" onclick="deleteProduct('${p.id}')">삭제</button>
+      <button style="background: rgba(255, 71, 87, 0.2); color: #ff4757; border: 1px solid rgba(255, 71, 87, 0.4); padding: 6px 14px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.82rem; font-weight: 700; white-space: nowrap;" onclick="deleteProduct('${p.id}')">삭제</button>
     </div>
   `).join('');
 }
