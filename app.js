@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MORVIX SHOP OS v2.1 - Real Naver Shopping Connect Live Link Integration
+   MORVIX SHOP OS v2.2 - High-Res Product Imagery & Manual Image Input
    ========================================================================== */
 
 const INITIAL_DB_DATA = {
@@ -7,7 +7,7 @@ const INITIAL_DB_DATA = {
     "brand_name": "MORVIX SHOP OS",
     "domain": "morvix.kr",
     "tagline": "일상을 바꾸는 검증된 꿀템만 소개합니다.",
-    "version": "v2.1 (Real Naver Shopping Connect Live Links)"
+    "version": "v2.2 (High-Res Accurate Product Imagery)"
   },
   "categories": [
     {"id": "all", "name": "모든 제품", "icon": "📦"},
@@ -59,8 +59,8 @@ const INITIAL_DB_DATA = {
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80",
-      "images": ["https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80"],
+      "thumbnail": "https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80",
+      "images": ["https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80"],
       "clicks_count": 342,
       "platform_clicks": {"coupang": 210, "naver": 132},
       "conversions_count": 48
@@ -103,8 +103,8 @@ const INITIAL_DB_DATA = {
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&auto=format&fit=crop&q=80",
-      "images": ["https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&auto=format&fit=crop&q=80"],
+      "thumbnail": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&auto=format&fit=crop&q=80",
+      "images": ["https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&auto=format&fit=crop&q=80"],
       "clicks_count": 1280,
       "platform_clicks": {"coupang": 820, "naver": 460},
       "conversions_count": 164
@@ -116,7 +116,7 @@ const INITIAL_DB_DATA = {
       "name": "듀플렉스 19W 캠핑 무소음 모기 포충기",
       "subtitle": "새벽 귓가 윙윙 모기 1초 유인 무소음 광촉매 포집기",
       "category": "cleaning",
-      "is_featured": false,
+      "is_featured": true,
       "episode_id": "INTERNAL_CASE_EP002",
       "episode_label": "🎬 EP002 숏폼 소개 제품",
       "price": 24500,
@@ -147,11 +147,55 @@ const INITIAL_DB_DATA = {
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80",
-      "images": ["https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80"],
+      "thumbnail": "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?w=800&auto=format&fit=crop&q=80",
+      "images": ["https://images.unsplash.com/photo-1595152772835-219674b2a8a6?w=800&auto=format&fit=crop&q=80"],
       "clicks_count": 640,
       "platform_clicks": {"coupang": 400, "naver": 240},
       "conversions_count": 78
+    },
+    {
+      "id": "PROD-011",
+      "slug": "magsafe001",
+      "short_url": "morvix.kr/magsafe001",
+      "name": "모르빅스 3in1 초고속 마그네틱 데스크 거치대",
+      "subtitle": "아이폰+스마트워치+무선이어폰 책상 위선 3초 깔끔 정리템",
+      "category": "it",
+      "is_featured": true,
+      "episode_id": "INTERNAL_CASE_EP011",
+      "episode_label": "🎬 EP011 숏폼 소개 제품",
+      "price": 29800,
+      "rating": 4.92,
+      "review_count": 178,
+      "usps": [
+        "15W 초고속 맥세이프 1초 자력 착붙 충전",
+        "지저분한 충전선 3개 깔끔 단 1선 통합",
+        "알루미늄 럭셔리 다크 그레이 디자인",
+        "스마트 과열/과전압 6중 안전 보호 회로"
+      ],
+      "reels_script_idea": "🔥 [15초 릴스 콘티] '책상 뱀처럼 엉킨 충전선 싹 쳐내고 마그네틱 거치대 1초 착붙 데스크테리어 쾌감'",
+      "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 선 꼬임 스트레스 -> 2컷: 고양이 선 잘라먹음 -> 3컷: 3in1 거치대 -> 4컷: 감성 데스크 완성",
+      "seo_copy": "📝 [SEO 리뷰] 애플 3in1 맥세이프 충전 거치대 책상 선 정리 추천 비교 실사용 후기",
+      "affiliate_links": [
+        {
+          "platform": "coupang",
+          "label": "🛒 쿠팡 파트너스 최저가 확인 ➔",
+          "url": "https://link.coupang.com/a/morvix_magsafe001",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
+        },
+        {
+          "platform": "naver",
+          "label": "🟢 네이버 쇼핑커넥트 실시간 가격 확인 ➔",
+          "url": "https://cr3.shopping.naver.com/v2/bridge/searchGate?nv_mid=87871668680&cat_id=50008981&query=%EC%84%9C%ED%81%98%EB%A0%88%EC%9D%B4%ED%84%B0&t=mrvvlt2w&h=4f594005b0bc1d3300679dbc246c07b907bde5fd&frm=NVSCDIG",
+          "priority": 2,
+          "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&auto=format&fit=crop&q=80",
+      "images": ["https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&auto=format&fit=crop&q=80"],
+      "clicks_count": 420,
+      "platform_clicks": {"coupang": 310, "naver": 110},
+      "conversions_count": 52
     }
   ]
 };
@@ -487,7 +531,7 @@ function setupAdminEvents() {
       if (document.getElementById('input-episode')) document.getElementById('input-episode').value = `INTERNAL_CASE_EP${nextEpNum}`;
 
       let fetchedTitle = "모르빅스 생활 억까 탈출 검증 꿀템";
-      let fetchedImg = "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80";
+      let fetchedImg = "https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80";
 
       try {
         // 1. Try native Serverless Extractor (/api/extract) first
@@ -495,7 +539,7 @@ function setupAdminEvents() {
         if (apiRes.ok) {
           const apiData = await apiRes.json();
           if (apiData && apiData.success) {
-            if (apiData.title) fetchedTitle = apiData.title;
+            if (apiData.title && !apiData.title.includes('네이버')) fetchedTitle = apiData.title;
             if (apiData.image) fetchedImg = apiData.image;
           }
         } else {
@@ -514,6 +558,7 @@ function setupAdminEvents() {
       }
 
       if (document.getElementById('input-name')) document.getElementById('input-name').value = fetchedTitle;
+      if (document.getElementById('input-image-url')) document.getElementById('input-image-url').value = fetchedImg;
       if (document.getElementById('input-price')) document.getElementById('input-price').value = 24900;
       if (document.getElementById('input-category')) document.getElementById('input-category').value = "summer";
       if (document.getElementById('input-subtitle')) document.getElementById('input-subtitle').value = `${fetchedTitle} - 일상의 불편함을 3초 만에 완벽 해결하는 검증 솔루션`;
@@ -526,14 +571,10 @@ function setupAdminEvents() {
         ].join('\n');
       }
 
-      // Store fetchedImg on form element dataset for submission
-      const formEl = document.getElementById('form-add-product');
-      if (formEl) formEl.dataset.fetchedImg = fetchedImg;
-
       btnAutoFetch.disabled = false;
       btnAutoFetch.textContent = '⚡ 자동 불러오기';
 
-      alert(`⚡ [실제 상품 이미지 & 제목 추출 완료!]\n\n• 추출된 상품명: ${fetchedTitle}\n• 대표 이미지: ${fetchedImg ? '실제 상품 이미지 연동 완료' : '기본 고화질 이미지'}\n• 단축 슬러그: morvix.kr/${autoSlug}\n• 연동 에피소드: EP${nextEpNum}`);
+      alert(`⚡ [실제 상품 이미지 & 제목 추출 완료!]\n\n• 추출된 상품명: ${fetchedTitle}\n• 대표 이미지: ${fetchedImg ? '실제 상품 이미지 연동 완료' : '고화질 대표 이미지'}\n• 단축 슬러그: morvix.kr/${autoSlug}\n• 연동 에피소드: EP${nextEpNum}`);
     });
   }
 
@@ -561,6 +602,7 @@ function setupAdminEvents() {
       const price = rawPrice ? parseInt(rawPrice) : 25000;
       const linkCoupang = document.getElementById('input-link-coupang') ? document.getElementById('input-link-coupang').value : '';
       const linkNaver = document.getElementById('input-link-naver') ? document.getElementById('input-link-naver').value : '';
+      const imageUrl = document.getElementById('input-image-url') ? document.getElementById('input-image-url').value : 'https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80';
       const subtitle = document.getElementById('input-subtitle') ? document.getElementById('input-subtitle').value : '';
       const uspsText = document.getElementById('input-usps') ? document.getElementById('input-usps').value : '';
 
@@ -585,7 +627,6 @@ function setupAdminEvents() {
       }
 
       const epNum = episode.replace(/[^0-9]/g, '') || '013';
-      const thumbnailImg = formAddProduct.dataset.fetchedImg || "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=800&auto=format&fit=crop&q=80";
 
       const newProd = {
         id: `PROD-${Date.now()}`,
@@ -607,8 +648,8 @@ function setupAdminEvents() {
         webtoon_idea: `🎨 [4컷 웹툰] 1컷: 불편함 -> 2컷: 분통 -> 3컷: ${name} 장착 -> 4컷: 상쾌한 해결`,
         seo_copy: `📝 [SEO 리뷰] ${name} 실사용 솔직 후기 및 파트너스 최저가 구매 가이드`,
         affiliate_links: affiliateLinks,
-        thumbnail: thumbnailImg,
-        images: [thumbnailImg],
+        thumbnail: imageUrl,
+        images: [imageUrl],
         webtoon_episode_title: `${episode} 바이럴 에피소드`,
         webtoon_cuts_count: 15,
         clicks_count: 0,
