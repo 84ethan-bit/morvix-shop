@@ -308,36 +308,54 @@ function renderProducts() {
 
 // Open Product Detail Modal
 function openProductDetail(slug) {
-  const product = dbData.products.find(p => p.slug === slug);
-  if (!product) return;
+  if (!dbData || !dbData.products) return;
+  const product = dbData.products.find(p => p.slug === slug || p.id === slug);
+  if (!product) {
+    console.warn("Product not found for slug:", slug);
+    return;
+  }
 
-  trackOutboundClick(slug);
+  try {
+    trackOutboundClick(slug);
+  } catch (e) {
+    console.warn("trackOutboundClick warning:", e);
+  }
 
   const modal = document.getElementById('product-modal');
   const body = document.getElementById('modal-body');
+  if (!modal || !body) return;
 
   let linksArray = [];
-  if (Array.isArray(product.affiliate_links)) {
-    linksArray = product.affiliate_links.sort((a, b) => (a.priority || 99) - (b.priority || 99));
+  if (Array.isArray(product.affiliate_links) && product.affiliate_links.length > 0) {
+    linksArray = product.affiliate_links.slice().sort((a, b) => (a.priority || 99) - (b.priority || 99));
   } else if (product.coupang_link) {
     linksArray.push({ platform: 'coupang', label: '🛒 쿠팡 파트너스 최저가 확인 ➔', url: product.coupang_link, bg_gradient: 'linear-gradient(135deg, #ff4757, #ff6b81)' });
+  } else {
+    linksArray.push({ platform: 'naver', label: '🟢 네이버 쇼핑커넥트 최저가 확인 ➔', url: 'https://m.shopping.naver.com', bg_gradient: 'linear-gradient(135deg, #03cf5d, #02b651)' });
   }
 
-  const relatedProds = dbData.products.filter(p => p.slug !== slug && (p.status === 'ACTIVE' || !p.status)).slice(0, 3);
+  let uspsList = [];
+  if (Array.isArray(product.usps)) {
+    uspsList = product.usps;
+  } else if (typeof product.usps === 'string') {
+    uspsList = product.usps.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  const relatedProds = dbData.products.filter(p => p.slug !== slug && p.id !== product.id && (p.status === 'ACTIVE' || !p.status)).slice(0, 3);
 
   body.innerHTML = `
     <div class="detail-grid">
       <div class="detail-left">
-        <img class="detail-image" src="${product.thumbnail}" alt="${product.name}">
+        <img class="detail-image" src="${product.thumbnail || 'https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80'}" alt="${product.name}">
       </div>
       <div class="detail-right">
         <span class="detail-slug-box">morvix.kr/${product.slug}</span>
         <h2 class="detail-title">${product.name}</h2>
         <div class="detail-rating">★★★★★ ${product.rating || 4.9} / 5.0 (실사용 만족도 검증 완료)</div>
-        <p style="color: var(--text-muted); font-size: 0.95rem;">"${product.subtitle}"</p>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">"${product.subtitle || ''}"</p>
         
         <ul class="usps-list">
-          ${product.usps ? product.usps.map(u => `<li>✔ ${u}</li>`).join('') : ''}
+          ${uspsList.map(u => `<li>✔ ${u}</li>`).join('')}
         </ul>
 
         <div class="affiliate-cta-group" style="display: flex; flex-direction: column; gap: 10px; margin-top: 18px;">
@@ -365,7 +383,8 @@ function openProductDetail(slug) {
     </div>
   `;
 
-  if (modal) modal.classList.add('active');
+  modal.style.display = 'flex';
+  modal.classList.add('active');
 }
 
 // Curation Quick Filter
