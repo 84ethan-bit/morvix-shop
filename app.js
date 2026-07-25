@@ -815,15 +815,61 @@ window.verifyAndOpenAdmin = verifyAndOpenAdmin;
   }
 }
 
+function resetAnalyticsData() {
+  if (confirm("🧹 실측 클릭 데이터 수집 기록을 모두 0으로 초기화하시겠습니까?")) {
+    try {
+      localStorage.removeItem(EVENT_LOG_KEY);
+    } catch (e) {}
+    
+    if (dbData && dbData.products) {
+      dbData.products.forEach(p => {
+        if (p.analytics) {
+          p.analytics.clicks_count = 0;
+          p.analytics.platform_clicks = { coupang: 0, naver: 0 };
+          p.analytics.conversions_count = 0;
+        }
+      });
+    }
+    saveMasterDbToStorage();
+    renderAnalyticsTable();
+    renderAdminProductList();
+    alert("🧹 [실측 클릭 수집 데이터가 성공적으로 0으로 초기화되었습니다!]");
+  }
+}
+
+window.resetAnalyticsData = resetAnalyticsData;
+
 function renderAnalyticsTable() {
   const tbody = document.getElementById('analytics-tbody');
   if (!tbody || !dbData || !dbData.products) return;
+
+  const dataMode = document.getElementById('kpi-data-mode')?.value || 'REAL_ONLY';
 
   // 1. Calculate Live Operational Inventory KPIs
   let activeCount = 0;
   let expiredCount = 0;
   let stockoutCount = 0;
   let hiddenCount = 0;
+
+  dbData.products.forEach(p => {
+    const status = p.status || 'ACTIVE';
+    if (status === 'ACTIVE') activeCount++;
+    else if (status === 'EXPIRED') expiredCount++;
+    else if (status === 'OUT_OF_STOCK') stockoutCount++;
+    else if (status === 'HIDDEN') hiddenCount++;
+  });
+
+  if (document.getElementById('kpi-active-count')) document.getElementById('kpi-active-count').textContent = `${activeCount}개`;
+  if (document.getElementById('kpi-expired-count')) document.getElementById('kpi-expired-count').textContent = `${expiredCount}개`;
+  if (document.getElementById('kpi-stockout-count')) document.getElementById('kpi-stockout-count').textContent = `${stockoutCount}개`;
+  if (document.getElementById('kpi-hidden-count')) document.getElementById('kpi-hidden-count').textContent = `${hiddenCount}개`;
+
+  // 2. Parse Real Events if in REAL_ONLY mode
+  let realEvents = [];
+  try {
+    const raw = localStorage.getItem(EVENT_LOG_KEY);
+    if (raw) realEvents = JSON.parse(raw);
+  } catch (e) {}
 
   let totalClicks = 0;
   let totalCoupangClicks = 0;
@@ -834,16 +880,28 @@ function renderAnalyticsTable() {
   let maxClicks = -1;
 
   dbData.products.forEach(p => {
-    const status = p.status || 'ACTIVE';
-    if (status === 'ACTIVE') activeCount++;
-    else if (status === 'EXPIRED') expiredCount++;
-    else if (status === 'OUT_OF_STOCK') stockoutCount++;
-    else if (status === 'HIDDEN') hiddenCount++;
+    let clicks = 0;
+    let cClicks = 0;
+    let nClicks = 0;
+    let convs = 0;
 
-    const clicks = p.analytics ? (p.analytics.clicks_count || 0) : (p.clicks_count || 0);
-    const cClicks = p.analytics?.platform_clicks?.coupang || 0;
-    const nClicks = p.analytics?.platform_clicks?.naver || 0;
-    const convs = p.analytics ? (p.analytics.conversions_count || 0) : 0;
+    if (dataMode === 'REAL_ONLY') {
+      const prodLogs = realEvents.filter(e => e.slug === p.slug);
+      clicks = prodLogs.length;
+      cClicks = prodLogs.filter(e => e.platform === 'coupang').length;
+      nClicks = prodLogs.filter(e => e.platform === 'naver').length;
+      convs = clicks; // Outbound redirect event = conversion
+    } else {
+      clicks = p.analytics ? (p.analytics.clicks_count || 0) : (p.clicks_count || 0);
+      cClicks = p.analytics?.platform_clicks?.coupang || 0;
+      nClicks = p.analytics?.platform_clicks?.naver || 0;
+      convs = p.analytics ? (p.analytics.conversions_count || 0) : 0;
+    }
+
+    p._curr_clicks = clicks;
+    p._curr_cClicks = cClicks;
+    p._curr_nClicks = nClicks;
+    p._curr_convs = convs;
 
     totalClicks += clicks;
     totalCoupangClicks += cClicks;
@@ -856,11 +914,6 @@ function renderAnalyticsTable() {
     }
   });
 
-  if (document.getElementById('kpi-active-count')) document.getElementById('kpi-active-count').textContent = `${activeCount}개`;
-  if (document.getElementById('kpi-expired-count')) document.getElementById('kpi-expired-count').textContent = `${expiredCount}개`;
-  if (document.getElementById('kpi-stockout-count')) document.getElementById('kpi-stockout-count').textContent = `${stockoutCount}개`;
-  if (document.getElementById('kpi-hidden-count')) document.getElementById('kpi-hidden-count').textContent = `${hiddenCount}개`;
-
   if (document.getElementById('total-clicks')) document.getElementById('total-clicks').textContent = `${totalClicks.toLocaleString()}회`;
   if (document.getElementById('coupang-clicks')) document.getElementById('coupang-clicks').textContent = `${totalCoupangClicks.toLocaleString()}회`;
   if (document.getElementById('naver-clicks')) document.getElementById('naver-clicks').textContent = `${totalNaverClicks.toLocaleString()}회`;
@@ -868,24 +921,20 @@ function renderAnalyticsTable() {
   const avgCr = totalClicks > 0 ? ((totalConversions / totalClicks) * 100).toFixed(1) + '%' : '0.0%';
   if (document.getElementById('avg-cr')) document.getElementById('avg-cr').textContent = avgCr;
 
-  if (document.getElementById('top-product')) document.getElementById('top-product').textContent = topProd ? topProd.name : 'N/A';
-  if (document.getElementById('top-shorts')) document.getElementById('top-shorts').textContent = topProd ? (topProd.episode_label || topProd.episode_id) : 'EP009';
+  if (document.getElementById('top-product')) document.getElementById('top-product').textContent = (topProd && maxClicks > 0) ? topProd.name : '⚡ 실측 데이터 수집 대기 중';
+  if (document.getElementById('top-shorts')) document.getElementById('top-shorts').textContent = (topProd && maxClicks > 0) ? (topProd.episode_label || topProd.episode_id) : '-';
 
   const coupangPct = totalClicks > 0 ? ((totalCoupangClicks / (totalCoupangClicks + totalNaverClicks || 1)) * 100).toFixed(0) : '0';
-  if (document.getElementById('top-platform')) document.getElementById('top-platform').textContent = totalCoupangClicks >= totalNaverClicks ? `🛒 쿠팡 (${coupangPct}%)` : `🟢 네이버 (${100 - parseInt(coupangPct)}%)`;
+  if (document.getElementById('top-platform')) document.getElementById('top-platform').textContent = totalClicks === 0 ? '⚡ 수집 대기 중' : totalCoupangClicks >= totalNaverClicks ? `🛒 쿠팡 (${coupangPct}%)` : `🟢 네이버 (${100 - parseInt(coupangPct)}%)`;
 
-  // 2. Render TOP 10 Master Performance Ranking Table
-  const sortedProds = dbData.products.slice().sort((a, b) => {
-    const cA = a.analytics ? (a.analytics.clicks_count || 0) : (a.clicks_count || 0);
-    const cB = b.analytics ? (b.analytics.clicks_count || 0) : (b.clicks_count || 0);
-    return cB - cA;
-  }).slice(0, 10);
+  // 3. Render TOP 10 Master Performance Ranking Table
+  const sortedProds = dbData.products.slice().sort((a, b) => (b._curr_clicks || 0) - (a._curr_clicks || 0)).slice(0, 10);
 
   tbody.innerHTML = sortedProds.map((p, idx) => {
-    const cClicks = p.analytics?.platform_clicks?.coupang || 0;
-    const nClicks = p.analytics?.platform_clicks?.naver || 0;
-    const clicks = p.analytics ? (p.analytics.clicks_count || 0) : (p.clicks_count || 0);
-    const convs = p.analytics ? (p.analytics.conversions_count || 0) : 0;
+    const cClicks = p._curr_cClicks || 0;
+    const nClicks = p._curr_nClicks || 0;
+    const clicks = p._curr_clicks || 0;
+    const convs = p._curr_convs || 0;
     const statusVal = p.status || 'ACTIVE';
 
     const rankBadge = idx === 0 ? '🥇 1위' : idx === 1 ? '🥈 2위' : idx === 2 ? '🥉 3위' : `${idx + 1}위`;
