@@ -211,14 +211,15 @@
             </div>
           </div>
 
-          <div class="form-group full-width" style="background: rgba(255, 255, 255, 0.03); border: 1px dashed var(--primary-accent); padding: 14px; border-radius: var(--radius-sm);">
-            <label style="color: var(--primary-accent); font-weight: 700;">📷 #1 최우선 병목 해결: 대표 상품 이미지 URL & 실시간 프리뷰</label>
+          <div class="form-group full-width" id="image-drop-zone" style="background: rgba(255, 255, 255, 0.03); border: 2px dashed var(--primary-accent); padding: 14px; border-radius: var(--radius-sm); transition: all 0.2s ease;">
+            <label style="color: var(--primary-accent); font-weight: 700;">📷 이미지 등록 (URL / Ctrl+V 이미지 붙여넣기 / 드래그 앤 드롭)</label>
             <div style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
-              <div style="width: 70px; height: 70px; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+              <div id="thumb-container" style="width: 80px; height: 80px; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer;" title="클릭하여 파일 선택 또는 이미지 드래그">
                 <img id="image-preview-thumb" src="https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80" style="width: 100%; height: 100%; object-fit: cover;">
               </div>
               <div style="flex: 1;">
-                <input type="url" id="input-image-url" placeholder="https://images.unsplash.com/... 또는 네이버/쿠팡 이미지 주소 붙여넣기" required style="width: 100%;">
+                <input type="url" id="input-image-url" placeholder="이미지 URL 붙여넣기 또는 화면 어디서든 Ctrl+V로 이미지 클립보드 붙여넣기" required style="width: 100%;">
+                <input type="file" id="input-image-file" accept="image/*" style="display: none;">
                 <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; font-size: 0.75rem;">
                   <span style="color: var(--text-muted); font-weight: 600;">⚡ 1초 고화질 프리셋:</span>
                   <button type="button" class="preset-btn" onclick="setImagePreset('https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80')">❄️ 서큘레이터</button>

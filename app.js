@@ -200,6 +200,7 @@ function updateProductLifecycleStates() {
 // Initialize MORVIX SHOP OS
 // --------------------------------------------------------------------------
 async function initShopOS() {
+  loadMasterDbFromStorage();
   renderCategories();
   renderProducts();
   setupRouting();
@@ -210,7 +211,11 @@ async function initShopOS() {
     if (res.ok) {
       const fetched = await res.json();
       if (fetched && fetched.products) {
-        dbData = fetched;
+        // Merge fetched products with local DB without overwriting user added items
+        const existingIds = new Set(dbData.products.map(p => p.id));
+        fetched.products.forEach(fp => {
+          if (!existingIds.has(fp.id)) dbData.products.push(fp);
+        });
         updateProductLifecycleStates();
         renderCategories();
         renderProducts();
@@ -398,14 +403,116 @@ function setImagePreset(url) {
   if (thumb) thumb.src = url;
 }
 
-// Admin OS Setup & Auto-Ingestion Handlers
+// Stage 1: Product Master DB LocalStorage Persistence Engine
+const DB_STORAGE_KEY = 'morvix_master_db_products_v3';
+
+function saveMasterDbToStorage() {
+  if (!dbData || !dbData.products) return;
+  try {
+    localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(dbData.products));
+  } catch (e) {
+    console.warn("LocalStorage save warning:", e);
+  }
+}
+
+function loadMasterDbFromStorage() {
+  try {
+    const saved = localStorage.getItem(DB_STORAGE_KEY);
+    if (saved) {
+      const parsedProds = JSON.parse(saved);
+      if (Array.isArray(parsedProds) && parsedProds.length > 0) {
+        // Merge saved local products with embedded defaults without duplicates
+        const existingIds = new Set(parsedProds.map(p => p.id));
+        INITIAL_DB_DATA.products.forEach(p => {
+          if (!existingIds.has(p.id)) parsedProds.push(p);
+        });
+        dbData.products = parsedProds;
+      }
+    }
+  } catch (e) {
+    console.warn("LocalStorage load warning:", e);
+  }
+}
+
+// Stage 2: Admin OS Setup, Image Clipboard Paste & Drag-and-Drop Handlers
 function setupAdminEvents() {
   const inputImg = document.getElementById('input-image-url');
   const thumbImg = document.getElementById('image-preview-thumb');
+  const dropZone = document.getElementById('image-drop-zone');
+  const thumbContainer = document.getElementById('thumb-container');
+  const fileInput = document.getElementById('input-image-file');
+
   if (inputImg && thumbImg) {
     inputImg.addEventListener('input', (e) => {
       const val = e.target.value.trim();
       if (val) thumbImg.src = val;
+    });
+  }
+
+  // Ctrl+V Clipboard Image Paste Listener
+  document.addEventListener('paste', (e) => {
+    const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+    for (let item of items) {
+      if (item.type.indexOf('image') === 0) {
+        const file = item.getAsFile();
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const dataUrl = event.target.result;
+          setImagePreset(dataUrl);
+          alert("📋 [이미지 클립보드(Ctrl+V) 1초 자동 연동 완료!]");
+        };
+        reader.readAsDataURL(file);
+        break;
+      }
+    }
+  });
+
+  // File Input Click Trigger
+  if (thumbContainer && fileInput) {
+    thumbContainer.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          setImagePreset(event.target.result);
+        };
+        reader.readAsDataURL(e.target.files[0]);
+      }
+    });
+  }
+
+  // Drag and Drop Zone Listeners
+  if (dropZone) {
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }, false);
+    });
+
+    dropZone.addEventListener('dragover', () => {
+      dropZone.style.borderColor = '#00f2fe';
+      dropZone.style.background = 'rgba(0, 242, 254, 0.1)';
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.style.borderColor = 'var(--primary-accent)';
+      dropZone.style.background = 'rgba(255, 255, 255, 0.03)';
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      dropZone.style.borderColor = 'var(--primary-accent)';
+      dropZone.style.background = 'rgba(255, 255, 255, 0.03)';
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      if (files && files[0]) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          setImagePreset(event.target.result);
+          alert("📥 [드래그 앤 드롭 이미지 연동 완료!]");
+        };
+        reader.readAsDataURL(files[0]);
+      }
     });
   }
   const btnOpen = document.getElementById('btn-open-admin');
@@ -553,7 +660,8 @@ function setupAdminEvents() {
       };
 
       dbData.products.unshift(newProd);
-      alert(`✅ Product Master DB (State: ACTIVE) 등록 완료!`);
+      saveMasterDbToStorage();
+      alert(`✅ Product Master DB (State: ACTIVE) 등록 완료! (새로고침 후에도 영구 저장됨)`);
 
       renderProducts();
       renderAnalyticsTable();
@@ -599,6 +707,7 @@ function renderAdminProductList() {
 function deleteProduct(id) {
   if (confirm("이 상품을 삭제하시겠습니까?")) {
     dbData.products = dbData.products.filter(p => p.id !== id);
+    saveMasterDbToStorage();
     renderProducts();
     renderAnalyticsTable();
     renderAdminProductList();
