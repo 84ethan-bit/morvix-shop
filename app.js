@@ -354,11 +354,17 @@ function deleteProduct(id) {
   }
 }
 
-// URL Hash / Slug Routing Support (e.g. #fan001)
+// URL Hash / Slug Routing Support (e.g. /fan001 or #fan001)
 function setupRouting() {
-  const hash = window.location.hash.replace('#', '');
-  if (hash) {
-    openProductDetail(hash);
+  let slug = window.location.hash.replace('#', '');
+  if (!slug) {
+    const pathSegments = window.location.pathname.split('/').filter(Boolean);
+    if (pathSegments.length > 0) {
+      slug = pathSegments[pathSegments.length - 1];
+    }
+  }
+  if (slug && slug !== 'index.html' && slug !== 'index') {
+    openProductDetail(slug);
   }
 }
 
