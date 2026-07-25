@@ -480,6 +480,28 @@ function loadMasterDbFromStorage() {
   }
 }
 
+function verifyAndOpenAdmin() {
+  const modal = document.getElementById('admin-modal');
+  const loginModal = document.getElementById('admin-login-modal');
+  const loginErrorMsg = document.getElementById('login-error-msg');
+  const inputPin = document.getElementById('input-admin-pin');
+
+  if (sessionStorage.getItem('morvix_admin_auth') === 'true') {
+    if (loginModal) loginModal.classList.remove('active');
+    if (modal) modal.classList.add('active');
+    renderAnalyticsTable();
+    renderAdminProductList();
+    return;
+  }
+
+  if (loginModal) {
+    if (loginErrorMsg) loginErrorMsg.style.display = 'none';
+    if (inputPin) inputPin.value = '';
+    loginModal.classList.add('active');
+    setTimeout(() => { if (inputPin) inputPin.focus(); }, 100);
+  }
+}
+
 // Stage 2: Admin OS Setup, Image Clipboard Paste & Drag-and-Drop Handlers
 function setupAdminEvents() {
   bindAdminFilterEvents();
@@ -488,6 +510,15 @@ function setupAdminEvents() {
   const dropZone = document.getElementById('image-drop-zone');
   const thumbContainer = document.getElementById('thumb-container');
   const fileInput = document.getElementById('input-image-file');
+
+  const btnOpen = document.getElementById('btn-open-admin');
+  const btnClose = document.getElementById('btn-close-admin');
+  const modal = document.getElementById('admin-modal');
+  const loginModal = document.getElementById('admin-login-modal');
+  const btnCloseLogin = document.getElementById('btn-close-login-modal');
+  const formLogin = document.getElementById('form-admin-login');
+  const inputPin = document.getElementById('input-admin-pin');
+  const loginErrorMsg = document.getElementById('login-error-msg');
 
   if (inputImg && thumbImg) {
     inputImg.addEventListener('input', (e) => {
@@ -562,36 +593,11 @@ function setupAdminEvents() {
       }
     });
   }
-  const btnOpen = document.getElementById('btn-open-admin');
-  const btnClose = document.getElementById('btn-close-admin');
-  const modal = document.getElementById('admin-modal');
-  const loginModal = document.getElementById('admin-login-modal');
-  const btnCloseLogin = document.getElementById('btn-close-login-modal');
-  const formLogin = document.getElementById('form-admin-login');
-  const inputPin = document.getElementById('input-admin-pin');
-  const loginErrorMsg = document.getElementById('login-error-msg');
-
-  function verifyAndOpenAdmin() {
-    if (sessionStorage.getItem('morvix_admin_auth') === 'true') {
-      if (loginModal) loginModal.classList.remove('active');
-      if (modal) modal.classList.add('active');
-      renderAnalyticsTable();
-      renderAdminProductList();
-      return;
-    }
-
-    if (loginModal) {
-      if (loginErrorMsg) loginErrorMsg.style.display = 'none';
-      if (inputPin) inputPin.value = '';
-      loginModal.classList.add('active');
-      setTimeout(() => { if (inputPin) inputPin.focus(); }, 100);
-    }
-  }
 
   if (formLogin) {
     formLogin.addEventListener('submit', (e) => {
       e.preventDefault();
-      if (inputPin.value.trim() === "2026") {
+      if (inputPin && inputPin.value.trim() === "2026") {
         sessionStorage.setItem('morvix_admin_auth', 'true');
         if (loginErrorMsg) loginErrorMsg.style.display = 'none';
         if (loginModal) loginModal.classList.remove('active');
@@ -601,6 +607,36 @@ function setupAdminEvents() {
       } else {
         if (loginErrorMsg) loginErrorMsg.style.display = 'block';
       }
+    });
+  }
+
+  // Admin Tab Switching Listener
+  const adminTabs = document.querySelectorAll('.admin-tab');
+  adminTabs.forEach(tab => {
+    tab.addEventListener('click', (e) => {
+      adminTabs.forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active'));
+      
+      const btn = e.currentTarget;
+      btn.classList.add('active');
+      const targetId = btn.getAttribute('data-tab');
+      const content = document.getElementById(targetId);
+      if (content) content.classList.add('active');
+
+      if (targetId === 'tab-analytics') renderAnalyticsTable();
+      if (targetId === 'tab-all-products') renderAdminProductList();
+    });
+  });
+
+  // Product Modal Close Listeners
+  const btnCloseProductModal = document.getElementById('btn-close-modal');
+  const productModal = document.getElementById('product-modal');
+  if (btnCloseProductModal && productModal) {
+    btnCloseProductModal.addEventListener('click', () => productModal.classList.remove('active'));
+  }
+  if (productModal) {
+    productModal.addEventListener('click', (e) => {
+      if (e.target === productModal) productModal.classList.remove('active');
     });
   }
 
@@ -978,12 +1014,21 @@ function deleteProduct(id) {
 
 function setupRouting() {
   handleGoRedirectRoute();
-  let slug = window.location.hash.replace('#', '');
-  if (slug && slug !== 'admin' && !slug.startsWith('go/')) openProductDetail(slug);
+  const search = window.location.search;
+  const hash = window.location.hash.replace('#', '');
+
+  if (search.includes('admin') || hash === 'admin') {
+    verifyAndOpenAdmin();
+  } else if (hash && !hash.startsWith('go/')) {
+    openProductDetail(hash);
+  }
 }
 
 window.addEventListener('hashchange', () => {
   handleGoRedirectRoute();
+  const hash = window.location.hash.replace('#', '');
+  if (hash === 'admin') verifyAndOpenAdmin();
+  else if (hash && !hash.startsWith('go/')) openProductDetail(hash);
 });
 
 document.addEventListener('DOMContentLoaded', initShopOS);
