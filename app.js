@@ -531,6 +531,41 @@ async function loadMasterDbFromStorage() {
   }
 }
 
+async function loadSystemHealthManifest() {
+  try {
+    const res = await fetch('system_health.json');
+    if (res.ok) {
+      const health = await res.json();
+      const container = document.getElementById('system-health-dashboard-banner');
+      if (container && health) {
+        container.innerHTML = `
+          <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px;">
+            <div style="font-size: 0.85rem; color: #94a3b8;">
+              <strong style="color: #6366f1;">🩺 MORVIX Exception-Based Operational Health:</strong>
+            </div>
+            <div style="display: flex; gap: 12px; font-size: 0.8rem;">
+              <span style="color: ${health.coupang && health.coupang.session === 'AUTHENTICATED_ACTIVE' ? '#10b981' : '#f59e0b'};">
+                🛒 쿠팡 세션: <strong>${health.coupang ? health.coupang.session : 'PENDING'}</strong>
+              </span>
+              <span style="color: ${health.naver && health.naver.session === 'AUTHENTICATED_ACTIVE' ? '#10b981' : '#f59e0b'};">
+                🟢 네이버 세션: <strong>${health.naver ? health.naver.session : 'PENDING'}</strong>
+              </span>
+              <span style="color: #38bdf8;">
+                📡 텔레그램: <strong>${health.telegram ? health.telegram.status : 'READY'}</strong>
+              </span>
+              <span style="color: #a855f7;">
+                ⚙️ 클라우드 워커: <strong>${health.worker ? health.worker.status : 'RUNNING'}</strong>
+              </span>
+            </div>
+          </div>
+        `;
+      }
+    }
+  } catch (e) {
+    console.warn("System health manifest load notice:", e);
+  }
+}
+
 function verifyAndOpenAdmin() {
   const modal = document.getElementById('admin-modal');
   const loginModal = document.getElementById('admin-login-modal');
@@ -542,6 +577,7 @@ function verifyAndOpenAdmin() {
     if (modal) modal.classList.add('active');
     renderAnalyticsTable();
     renderAdminProductList();
+    loadSystemHealthManifest();
     return;
   }
 

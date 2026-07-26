@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-07-26T19:38:44.838674",
+  "coupang": {
+    "session": "AUTHENTICATED_ACTIVE",
+    "last_check": "2026-07-26T19:38:44.838674",
+    "link_generation": "PENDING_VERIFICATION"
+  },
+  "naver": {
+    "session": "LOGIN_REQUIRED",
+    "last_check": "2026-07-26T19:38:44.838674",
+    "link_generation": "PENDING_VERIFICATION"
+  },
+  "telegram": {
+    "status": "READY_TOKEN_PENDING",
+    "last_alert": null
+  },
+  "worker": {
+    "status": "RUNNING",
+    "auto_commit_enabled": true,
+    "vercel_deploy_enabled": true
+  }
+}
