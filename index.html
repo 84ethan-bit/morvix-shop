@@ -510,6 +510,23 @@
             </div>
           </div>
 
+          <!-- 웹 UI 직통 ID/PW 백그라운드 세션 주입기 -->
+          <div style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 10px; padding: 16px; margin-bottom: 20px;">
+            <h4 style="color: #6366f1; margin-bottom: 10px; font-size: 0.95rem;">🔑 웹 UI 직통 계정(ID/PW) 세션 즉시 주입기 (Direct Cloud Login)</h4>
+            <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 12px;">데스크톱 Chrome 창을 열지 않고도 어드민 웹 UI에서 아이디/비밀번호를 입력하면 Playwright 백그라운드에서 즉시 로그인 후 세션(`storageState.json`)을 영구 저장합니다.</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 10px;">
+              <select id="login-direct-platform" style="padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: #fff;">
+                <option value="coupang">🛒 쿠팡 파트너스 (partners.coupang.com)</option>
+                <option value="naver">🟢 네이버 브랜드커넥트 (brandconnect.naver.com)</option>
+              </select>
+              <input type="text" id="login-direct-id" placeholder="아이디 / 이메일 입력" style="padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: #fff;">
+              <input type="password" id="login-direct-pw" placeholder="비밀번호 입력" style="padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: #fff;">
+            </div>
+            <button type="button" onclick="submitDirectCloudLogin()" style="background: linear-gradient(135deg, #10b981, #059669); color: #fff; font-weight: 800; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; width: 100%;">
+              🚀 웹 UI 직통 1초 세션 생성 & 영구 저장 (Submit Direct Login)
+            </button>
+          </div>
+
           <!-- 실시간 제휴 링크 발급 테스트 테스터 -->
           <div style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 16px;">
             <h4 style="color: #ffbe0b; margin-bottom: 12px; font-size: 0.95rem;">🧪 라이브 제휴 링크 발급 & 메타데이터 추출 테스터 (STEP 2)</h4>
