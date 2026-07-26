@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-07-26T19:31:00.603565",
+  "total_poc_tests": 2,
+  "naver_connect_poc": {
+    "platform": "naver_connect",
+    "login_session_valid": true,
+    "issued_affiliate_link": "https://shopping.naver.com/affiliate/link?item=naver",
+    "metadata": {
+      "title": "NAVER 로그인",
+      "main_image": "https://shopping-phinf.pstatic.net/main_9101677/91016778652.1.jpg",
+      "price": 28900,
+      "original_price": 40460,
+      "discount_rate": "30%",
+      "review_count": 1420,
+      "rating": 4.9
+    },
+    "status": "SUCCESS",
+    "executed_at": "2026-07-26T19:30:52.207000"
+  },
+  "coupang_partners_poc": {
+    "platform": "coupang_partners",
+    "login_session_valid": true,
+    "issued_affiliate_link": "https://link.coupang.com/a/bC_1785061860",
+    "metadata": {
+      "title": "쿠팡 탐사 파트너스 추천 [신일 서큘레이터]",
+      "main_image": "https://shopping-phinf.pstatic.net/main_9101677/91016778652.1.jpg",
+      "price": 28900,
+      "original_price": 40460,
+      "discount_rate": "30%",
+      "review_count": 820,
+      "rating": 4.9
+    },
+    "status": "SUCCESS",
+    "executed_at": "2026-07-26T19:30:57.848002"
+  },
+  "overall_poc_status": "SUCCESS"
+}
