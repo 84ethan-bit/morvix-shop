@@ -5,6 +5,7 @@ import time
 import requests
 from datetime import datetime
 
+# Force UTF-8 stdout encoding for Windows console
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
@@ -13,10 +14,27 @@ from logger import append_sync_log
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(BASE_DIR, "morvix_shop_db.json")
 
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
+
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
     "Accept-Language": "ko-KR,ko;q=0.9"
 }
+
+def send_telegram_notification(message):
+    """Operator Notification Channel (Decoupled Alert Bot)"""
+    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
+        print("[TELEGRAM] Notification skipped (Token/ChatID not set in ENV).")
+        return False
+    try:
+        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+        payload = {"chat_id": TELEGRAM_CHAT_ID, "text": message, "parse_mode": "Markdown"}
+        res = requests.post(url, json=payload, timeout=5)
+        return res.status_code == 200
+    except Exception as e:
+        print(f"[TELEGRAM] Notification send error: {e}")
+        return False
 
 def run_worker_sync():
     start_time = time.time()
@@ -97,7 +115,6 @@ def run_worker_sync():
     duration = f"{time.time() - start_time:.1f}초"
     success_rate_pct = f"{((success_count / total_count) * 100):.1f}%" if total_count > 0 else "100.0%"
     
-    # Precise Distinction: Process Execution vs External Scrape Harvest
     process_status = "PROCESS_SUCCESS"
     harvest_status = "SCRAPE_BLOCKED (403/418 Shield)" if len(error_logs) > 0 else "HARVEST_SUCCESS"
 
@@ -111,6 +128,10 @@ def run_worker_sync():
         duration_str=duration,
         error_details=error_logs
     )
+
+    # 3. Send Decoupled Telegram Operator Notification
+    tele_msg = f"🤖 *[MORVIX OS Worker Sync Alert]*\n\n• *Process:* `{process_status}`\n• *Harvest:* `{harvest_status}`\n• *Products Synced:* `{total_count}개`\n• *Success Rate:* `{success_rate_pct}`\n• *Duration:* `{duration}`\n• *Timestamp:* `{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}`"
+    send_telegram_notification(tele_msg)
 
     print("\n=======================================================")
     print("WORKER EXECUTION COMPLETED EMPIRICALLY:")

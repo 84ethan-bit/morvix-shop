@@ -1,5 +1,19 @@
 [
   {
+    "timestamp": "2026-07-26T12:46:23.681999",
+    "status": "PARTIAL_SHIELD",
+    "count": 4,
+    "success_rate": "100.0%",
+    "log": "[Process: PROCESS_SUCCESS | Harvest: SCRAPE_BLOCKED (403/418 Shield)] Master DB 4개 상품 동기화 스캔 완료",
+    "duration": "6.0초",
+    "error_details": [
+      "fan001 [naver]: Status 418 (Anti-bot Shield)",
+      "blanket001 [naver]: Status 418 (Anti-bot Shield)",
+      "mosquito001 [naver]: Status 418 (Anti-bot Shield)",
+      "magsafe001 [naver]: Status 418 (Anti-bot Shield)"
+    ]
+  },
+  {
     "timestamp": "2026-07-26T12:42:41.381652",
     "status": "PARTIAL_SHIELD",
     "count": 4,
