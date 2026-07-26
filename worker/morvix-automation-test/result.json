@@ -1,0 +1,16 @@
+{
+  "coupang": {
+    "platform": "coupang",
+    "timestamp": "2026-07-26T14:05:20.346850",
+    "status": "FAILED",
+    "reason": "HTTP 403 Akamai Edge Shield (Cloudflare/Akamai Bot Shield)",
+    "link": null
+  },
+  "naver_connect": {
+    "platform": "naver_connect",
+    "timestamp": "2026-07-26T14:05:21.828065",
+    "status": "FAILED",
+    "reason": "Requires Naver OAuth NID Session Cookie & 2FA Approval in browser_profile/",
+    "link": null
+  }
+}

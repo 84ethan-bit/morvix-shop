@@ -1,0 +1,6 @@
+[0726/140522.970:INFO:CONSOLE:1] "setPolicyInfo [object Object]", source: https://ssl.pstatic.net/tveta/libs/glad/prod/gfp-core.js (1)
+[0726/140522.970:INFO:CONSOLE:1] "true", source: https://ssl.pstatic.net/tveta/libs/glad/prod/gfp-core.js (1)
+[0726/140523.832:INFO:CONSOLE:2] "Error", source: https://wtm.pstatic.net/fce46da/3e66f2f66f0a10a01bbd.js (2)
+[0726/140523.853:INFO:CONSOLE:0] "[.WebGL-0x5d9c01c51e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels", source: https://nid.naver.com/nidlogin.login?url=https%3A%2F%2Fshopping.naver.com%2Fns%2Fhome (0)
+[0726/140523.853:INFO:CONSOLE:0] "[.WebGL-0x5d9c01c53000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels", source: https://nid.naver.com/nidlogin.login?url=https%3A%2F%2Fshopping.naver.com%2Fns%2Fhome (0)
+[0726/140523.853:INFO:CONSOLE:0] "[.WebGL-0x5d9c01c53000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels", source: https://nid.naver.com/nidlogin.login?url=https%3A%2F%2Fshopping.naver.com%2Fns%2Fhome (0)
