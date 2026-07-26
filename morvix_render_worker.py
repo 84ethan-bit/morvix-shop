@@ -3,6 +3,7 @@ import json
 import sys
 import time
 import subprocess
+import threading
 from datetime import datetime
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
@@ -10,27 +11,36 @@ if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
 # ─────────────────────────────────────────────────
-# AUTO-INSTALL PLAYWRIGHT CHROMIUM ON RENDER STARTUP
+# AUTO-INSTALL PLAYWRIGHT CHROMIUM IN BACKGROUND
+# (Server starts immediately, Chromium installs async)
 # ─────────────────────────────────────────────────
-def ensure_chromium():
+CHROMIUM_READY = False
+
+def install_chromium_background():
+    global CHROMIUM_READY
     try:
         from playwright.sync_api import sync_playwright
         with sync_playwright() as p:
             b = p.chromium.launch(headless=True, args=["--no-sandbox"])
             b.close()
-        print("✅ Playwright Chromium: READY")
-        return True
+        print("✅ Playwright Chromium: READY (already installed)")
+        CHROMIUM_READY = True
     except Exception:
-        print("⚠️ Chromium not found — auto-installing now...")
+        print("⚠️ Chromium not found — installing in background...")
         result = subprocess.run(
             [sys.executable, "-m", "playwright", "install", "chromium"],
             capture_output=False
         )
-        print(f"✅ Chromium install complete (exit={result.returncode})")
-        return result.returncode == 0
+        if result.returncode == 0:
+            print("✅ Chromium background install: COMPLETE")
+            CHROMIUM_READY = True
+        else:
+            print("❌ Chromium install failed")
 
-ensure_chromium()
+threading.Thread(target=install_chromium_background, daemon=True).start()
 # ─────────────────────────────────────────────────
+
+
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -190,6 +200,7 @@ class MorvixBridgeHandler(BaseHTTPRequestHandler):
             coupang_cnt, coupang_auth = inspect_session('coupang')
             self._respond(200, {
                 "status": "MORVIX_RENDER_WORKER_ONLINE",
+                "chromium_ready": CHROMIUM_READY,
                 "timestamp": datetime.now().isoformat(),
                 "sessions": {
                     "naver": {"cookie_count": naver_cnt, "authenticated": naver_auth},
