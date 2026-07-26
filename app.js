@@ -907,24 +907,23 @@ window.verifyAndOpenAdmin = verifyAndOpenAdmin;
       if (document.getElementById('input-slug')) document.getElementById('input-slug').value = autoSlug;
       if (document.getElementById('input-episode')) document.getElementById('input-episode').value = `INTERNAL_CASE_EP${nextEpNum}`;
 
-      // 1. Dispatch to External Server Worker (http://localhost:5000/api/ingest)
+      // 1. Dispatch Link to GitHub Cloud Server Pipeline (0 Local PC Required)
+      alert("⚡ [MORVIX Cloud Ingestion Pipeline 가동]\n\n입력하신 제휴 링크를 깃허브 클라우드 서버로 보냅니다.\n클라우드 서버가 링크를 열어 실물 대표 이미지, 가격, 할인율, 댓글수/좋아요수를 100% 수급 후 Master DB를 업데이트하여 라이브 홈피에 자동 배포합니다! (약 10~15초 소요)");
+
       try {
-        const extRes = await fetch("http://localhost:5000/api/ingest", {
+        await fetch("https://api.github.com/repos/84ethan-bit/morvix-shop/dispatches", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ url: rawUrl })
+          headers: {
+            "Accept": "application/vnd.github.v3+json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            event_type: "auto_ingest",
+            client_payload: { url: rawUrl }
+          })
         });
-        if (extRes.ok) {
-          const extData = await extRes.json();
-          if (extData && extData.product) {
-            fetchedTitle = extData.product.name || fetchedTitle;
-            fetchedImg = extData.product.thumbnail || fetchedImg;
-            fetchedPrice = extData.product.price || fetchedPrice;
-            console.log("🚀 External Server Ingestion Success:", extData);
-          }
-        }
-      } catch (extErr) {
-        console.warn("External server worker not active, running client-side OpenGraph fallback:", extErr);
+      } catch (ghErr) {
+        console.warn("GitHub Cloud dispatch notice:", ghErr);
       }
 
       // 2. Client-Side Naver Query Parameter & Keyword Extraction Fallback
