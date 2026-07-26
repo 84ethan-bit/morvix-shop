@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-07-26T19:36:30.270820",
+  "coupang_session": {
+    "platform": "coupang_partners",
+    "session_status": "AUTHENTICATED_ACTIVE",
+    "real_link_extracted": null,
+    "is_real_empirical": false,
+    "checked_at": "2026-07-26T19:36:14.792762"
+  },
+  "naver_session": {
+    "platform": "naver_connect",
+    "session_status": "AUTHENTICATED_ACTIVE",
+    "real_link_extracted": null,
+    "is_real_empirical": false,
+    "checked_at": "2026-07-26T19:36:19.667077"
+  }
+}
