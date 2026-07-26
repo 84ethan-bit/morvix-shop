@@ -5,8 +5,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const DB_PATH = path.join(__dirname, 'morvix_shop_db.json');
-const LOG_PATH = path.join(__dirname, 'worker', 'sync_history.json');
+const DB_PATH = path.join(__dirname, '..', 'morvix_shop_db.json');
+const LOG_PATH = path.join(__dirname, 'sync_history.json');
 
 function runE2ETests() {
   console.log("=======================================================");
@@ -76,10 +76,10 @@ function runE2ETests() {
   }
 
   // 5. Verify Optimistic Locking Conflict Shield Logic & Backup Recovery Engine
-  const apiHandler = require('./worker/api_archive/products.js');
+  const apiHandler = require('./api_archive/products.js');
   assert(typeof apiHandler === 'function', "Test 13: Server API Route Function Presence & Optimistic Locking Shield", "api/products.js ready");
 
-  const backupDir = path.join(__dirname, 'backups');
+  const backupDir = path.join(__dirname, '..', 'backups');
   assert(fs.existsSync(backupDir) && fs.readdirSync(backupDir).length > 0, "Test 14: Automated Master DB Snapshot Backup Engine", "backups/ created");
 
   console.log("\n=======================================================");
