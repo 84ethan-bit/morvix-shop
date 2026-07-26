@@ -484,7 +484,7 @@ function handleImageFileUpload(event) {
 window.handleImageFileUpload = handleImageFileUpload;
 
 // Stage 1: Product Master DB Server-Backed & LocalStorage Dual Persistence Engine
-const DB_STORAGE_KEY = 'morvix_master_db_products_v13';
+const DB_STORAGE_KEY = 'morvix_master_db_products_v14';
 
 async function saveMasterDbToStorage() {
   if (!dbData || !dbData.products) return;

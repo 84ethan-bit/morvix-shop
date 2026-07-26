@@ -50,9 +50,9 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://shopping-phinf.pstatic.net/main_9101677/91016778652.1.jpg",
+      "thumbnail": "images/fan001.jpg",
       "images": [
-        "https://shopping-phinf.pstatic.net/main_9101677/91016778652.1.jpg"
+        "images/fan001.jpg"
       ],
       "analytics": {
         "clicks_count": 342,
@@ -72,9 +72,9 @@
           "date": "2026-07-26T04:46:53.326874"
         }
       ],
-      "version": 11,
+      "version": 12,
       "last_synced_at": "2026-07-26T15:44:58.670589",
-      "image_status": "Verified_Real_Phinf_CDN",
+      "image_status": "Verified_Local_CDN_Asset",
       "status": "ACTIVE"
     },
     {
@@ -127,9 +127,9 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://shopping-phinf.pstatic.net/main_9120534/91205348781.jpg",
+      "thumbnail": "images/blanket001.jpg",
       "images": [
-        "https://shopping-phinf.pstatic.net/main_9120534/91205348781.jpg"
+        "images/blanket001.jpg"
       ],
       "analytics": {
         "clicks_count": 1280,
@@ -149,9 +149,9 @@
           "date": "2026-07-26T04:46:54.886221"
         }
       ],
-      "version": 10,
+      "version": 11,
       "last_synced_at": "2026-07-26T16:40:29.430422",
-      "image_status": "Verified_Real_Phinf_CDN",
+      "image_status": "Verified_Local_CDN_Asset",
       "status": "ACTIVE"
     },
     {
@@ -204,9 +204,9 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://shopping-phinf.pstatic.net/main_8414203/84142031850.jpg",
+      "thumbnail": "images/mosquito001.jpg",
       "images": [
-        "https://shopping-phinf.pstatic.net/main_8414203/84142031850.jpg"
+        "images/mosquito001.jpg"
       ],
       "analytics": {
         "clicks_count": 640,
@@ -226,9 +226,9 @@
           "date": "2026-07-26T04:46:56.359846"
         }
       ],
-      "version": 10,
+      "version": 11,
       "last_synced_at": "2026-07-26T16:40:33.075237",
-      "image_status": "Verified_Real_Phinf_CDN",
+      "image_status": "Verified_Local_CDN_Asset",
       "status": "ACTIVE"
     },
     {
@@ -281,9 +281,9 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://shopping-phinf.pstatic.net/main_9087580/90875801491.1.jpg",
+      "thumbnail": "images/magsafe001.jpg",
       "images": [
-        "https://shopping-phinf.pstatic.net/main_9087580/90875801491.1.jpg"
+        "images/magsafe001.jpg"
       ],
       "analytics": {
         "clicks_count": 420,
@@ -303,9 +303,9 @@
           "date": "2026-07-26T04:46:57.761330"
         }
       ],
-      "version": 10,
+      "version": 11,
       "last_synced_at": "2026-07-26T16:40:35.699831",
-      "image_status": "Verified_Real_Phinf_CDN",
+      "image_status": "Verified_Local_CDN_Asset",
       "status": "ACTIVE"
     }
   ],
