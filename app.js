@@ -68,7 +68,7 @@ const INITIAL_DB_DATA = {
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "images/fan001.jpg",
+      "thumbnail": "https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=800&auto=format&fit=crop&q=80",
       "analytics": {
         "clicks_count": 342,
         "platform_clicks": { "coupang": 210, "naver": 132 },
@@ -123,7 +123,7 @@ const INITIAL_DB_DATA = {
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "images/blanket001.jpg",
+      "thumbnail": "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=800&auto=format&fit=crop&q=80",
       "analytics": {
         "clicks_count": 1280,
         "platform_clicks": { "coupang": 820, "naver": 460 },

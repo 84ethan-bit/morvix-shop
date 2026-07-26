@@ -50,8 +50,9 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "images/fan001.jpg",
+      "thumbnail": "https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=800&auto=format&fit=crop&q=80",
       "images": [
+        "https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=800&auto=format&fit=crop&q=80",
         "images/fan001.jpg"
       ],
       "analytics": {
@@ -74,7 +75,7 @@
       ],
       "version": 9,
       "last_synced_at": "2026-07-26T15:44:58.670589",
-      "image_status": "Verified_Local",
+      "image_status": "Verified_Live_CDN",
       "status": "ACTIVE"
     },
     {
@@ -127,8 +128,9 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "images/blanket001.jpg",
+      "thumbnail": "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=800&auto=format&fit=crop&q=80",
       "images": [
+        "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=800&auto=format&fit=crop&q=80",
         "images/blanket001.jpg"
       ],
       "analytics": {
@@ -151,7 +153,7 @@
       ],
       "version": 9,
       "last_synced_at": "2026-07-26T15:07:53.611095",
-      "image_status": "Verified_Local",
+      "image_status": "Verified_Live_CDN",
       "status": "ACTIVE"
     },
     {
@@ -204,8 +206,9 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "images/mosquito001.jpg",
+      "thumbnail": "https://images.unsplash.com/photo-1585338107529-13afc5f02586?w=800&auto=format&fit=crop&q=80",
       "images": [
+        "https://images.unsplash.com/photo-1585338107529-13afc5f02586?w=800&auto=format&fit=crop&q=80",
         "images/mosquito001.jpg"
       ],
       "analytics": {
@@ -228,7 +231,7 @@
       ],
       "version": 9,
       "last_synced_at": "2026-07-26T15:07:55.103052",
-      "image_status": "Verified_Local",
+      "image_status": "Verified_Live_CDN",
       "status": "ACTIVE"
     },
     {
@@ -281,8 +284,9 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "images/magsafe001.jpg",
+      "thumbnail": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&auto=format&fit=crop&q=80",
       "images": [
+        "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&auto=format&fit=crop&q=80",
         "images/magsafe001.jpg"
       ],
       "analytics": {
@@ -305,7 +309,7 @@
       ],
       "version": 9,
       "last_synced_at": "2026-07-26T15:07:56.515216",
-      "image_status": "Verified_Local",
+      "image_status": "Verified_Live_CDN",
       "status": "ACTIVE"
     }
   ],
