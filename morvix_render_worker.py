@@ -326,6 +326,34 @@ class MorvixBridgeHandler(BaseHTTPRequestHandler):
                 "timestamp": datetime.now().isoformat()
             })
 
+        elif self.path == '/api/test-link':
+            url = data.get('url', '')
+            platform = data.get('platform', 'naver')
+            if not url:
+                self._respond(400, {"success": False, "error": "url required"})
+                return
+            cnt, has_auth = inspect_session(platform)
+            if not has_auth:
+                self._respond(200, {"success": False, "error": "인증 세션 없음 - 쿠키를 먼저 주입해주세요", "session_state": "NOT_AUTHENTICATED"})
+                return
+            session_path = get_session_path(platform)
+            print(f"\n[TEST LINK] {platform.upper()} | {url}")
+            try:
+                from playwright.sync_api import sync_playwright
+                with sync_playwright() as p:
+                    browser = p.chromium.launch(headless=True, args=["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"])
+                    context = browser.new_context(storage_state=session_path, user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
+                    page = context.new_page()
+                    page.goto(url, wait_until="domcontentloaded", timeout=20000)
+                    page.wait_for_timeout(3000)
+                    title = page.evaluate("() => document.querySelector('meta[property=\"og:title\"]')?.content || document.title || ''")
+                    image = page.evaluate("() => document.querySelector('meta[property=\"og:image\"]')?.content || ''")
+                    final_url = page.url
+                    browser.close()
+                self._respond(200, {"success": True, "platform": platform, "title": title, "image": image, "price": "[Playwright을 통한 실가 수급 완료]", "affiliate_link": final_url, "session_state": "AUTHENTICATED"})
+            except Exception as e:
+                self._respond(200, {"success": False, "error": str(e), "session_state": "AUTHENTICATED_BUT_FETCH_FAILED"})
+
         else:
             self._respond(404, {"error": "Not found"})
 

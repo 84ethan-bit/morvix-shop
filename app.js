@@ -679,50 +679,30 @@ async function testAffiliateLinkIssuance(platform) {
 
   if (outEl) {
     outEl.style.display = 'block';
-    outEl.innerText = `⏳ [STEP 2 라이브 메타데이터 수급 및 제휴 링크 생성 중...]\n\n• Target Platform: ${platform.toUpperCase()}\n• Target URL: ${url}\n• OpenGraph & Live Scraper Fetching...`;
-    
-    try {
-      const urlSlug = url.split('/').pop().split('?')[0] || 'LIVE';
-      let realTitle = `${platform === 'coupang' ? '쿠팡 파트너스' : '네이버 브랜드커넥트'} 상품 [${urlSlug}]`;
-      let realImage = "[라이브 이미지 수급 중]";
-      let realPriceStr = "[실계정 세션 수급 실측 필요]";
-      let discountStr = "[실계정 세션 수급 실측 필요]";
-      let reviewStr = "[실계정 세션 수급 실측 필요]";
+    outEl.innerText = `⏳ [Render 서버 실세션으로 수급 중...]\n\n• Platform: ${platform.toUpperCase()}\n• URL: ${url}\n• Render 서버에서 실계정 세션으로 접속 중...`;
+  }
 
-      // Live OpenGraph fetch via Microlink API
-      const res = await fetch(`https://api.microlink.io?url=${encodeURIComponent(url)}`);
+  try {
+    const RENDER_API = 'https://morvix-shop.onrender.com';
+    const res = await fetch(`${RENDER_API}/api/test-link`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url, platform })
+    });
 
-      if (res.ok) {
-        const json = await res.json();
-        if (json && json.data) {
-          if (json.data.title && !json.data.title.includes('네이버 브랜드 커넥트') && !json.data.title.includes('로그인')) {
-            realTitle = json.data.title;
-          }
-          if (json.data.image && json.data.image.url && !json.data.image.url.includes('data:image/svg')) {
-            realImage = json.data.image.url;
-          }
-        }
-      }
+    const data = await res.json();
 
-      // Live price & discount parser from title if available
-      const priceMatch = (realTitle + " " + url).match(/([\d,]+)\s*원/);
-      if (priceMatch) {
-        const pNum = parseInt(priceMatch[1].replace(/[^0-9]/g, ''));
-        if (pNum >= 500) realPriceStr = `${pNum.toLocaleString()}원`;
-      }
+    if (!outEl) return;
 
-      const discMatch = (realTitle + " " + url).match(/(\d+)\s*[%％]/);
-      if (discMatch) {
-        discountStr = `${discMatch[1]}%`;
-      }
-
-      const generatedLink = url;
-
-      outEl.innerText = `✅ [TEST RESULT - LIVE EXTRACTION STATUS]\n\n• Target Platform:       ${platform.toUpperCase()}\n• Product Title:         ${realTitle}\n• Issued Affiliate Link: ${generatedLink}\n• Real Product Image:   ${realImage}\n• Real Price:            ${realPriceStr} (할인율: ${discountStr})\n• Review Count / Score: ${reviewStr}\n• Session State:         PENDING_REAL_ACCOUNT_LOGIN (STEP 1)`;
-    } catch (e) {
-      console.warn("Live test fetch notice:", e);
-      outEl.innerText = `✅ [TEST RESULT - LIVE URL FETCHED]\n\n• Target Platform: ${platform.toUpperCase()}\n• Input URL: ${url}\n• Issued Link: ${url}`;
+    if (data.success) {
+      outEl.innerText = `✅ [TEST RESULT - LIVE EXTRACTION STATUS]\n\n• Target Platform:       ${platform.toUpperCase()}\n• Product Title:         ${data.title || '[수급 실패]'}\n• Issued Affiliate Link: ${data.affiliate_link || url}\n• Real Product Image:    ${data.image || '[이미지 없음]'}\n• Real Price:            ${data.price || '[가격 수급 실패]'}\n• Session State:         ${data.session_state}`;
+    } else {
+      outEl.innerText = `❌ [FETCH FAILED]\n\n• Platform: ${platform.toUpperCase()}\n• Error: ${data.error}\n• Session State: ${data.session_state || 'UNKNOWN'}\n\n→ 세션이 없거나 만료됐습니다. 쿠키를 다시 주입해주세요.`;
     }
+  } catch (e) {
+    if (outEl) outEl.innerText = `⚠️ Render 서버 연결 실패\n\n서버가 잠자기 상태일 수 있습니다.\n30초 후 다시 시도해주세요.\n\nError: ${e.message}`;
+  }
+
   }
 }
 
