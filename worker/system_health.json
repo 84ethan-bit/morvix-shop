@@ -1,70 +1,22 @@
 {
-  "version": "22.0.0",
-  "feature_freeze_status": "LOCKED_FEATURE_FREEZE",
-  "health_score": 60,
-  "max_score": 100,
-  "action_center": [
-    {
-      "status": "🔴 CRITICAL",
-      "code": "COUPANG_LOGIN_REQUIRED",
-      "message": "Coupang Partners Login Required (Execute STEP 1 Real Account Login)",
-      "target": "GATE 1"
-    },
-    {
-      "status": "🔴 CRITICAL",
-      "code": "NAVER_LOGIN_REQUIRED",
-      "message": "Naver Shopping Connect Login Required (Execute STEP 1 Real Account Login)",
-      "target": "GATE 1"
-    },
-    {
-      "status": "🟡 WARNING",
-      "code": "TELEGRAM_TOKEN_PENDING",
-      "message": "Telegram Token & Chat ID Registration Pending",
-      "target": "GATE 3"
-    },
-    {
-      "status": "🟢 HEALTHY",
-      "code": "WORKER_HEALTHY",
-      "message": "Worker Engine Healthy & Running Cleanly",
-      "target": "GATE 4"
-    }
-  ],
-  "operational_gates": {
-    "GATE_1_LOGIN_VERIFICATION": "PENDING_REAL_ACCOUNT_LOGIN",
-    "GATE_2_LINK_ISSUANCE": "PENDING_GATE_1",
-    "GATE_3_EXCEPTION_RECOVERY": "IMPLEMENTED_PENDING_VERIFICATION",
+  "version": "CONTROL_CENTER_STABLE",
+  "last_updated": "2026-07-26T20:03:59.324555",
+  "metrics": {
+    "registered_today": 4,
+    "link_success": 4,
+    "link_fail": 0,
+    "coupang_login": "UNKNOWN",
+    "naver_login": "UNKNOWN",
+    "worker_status": "RUNNING",
+    "queue_count": 0,
+    "telegram_status": "READY_TOKEN_PENDING",
+    "recent_errors": 0,
+    "last_backup_time": "18:00"
+  },
+  "gates": {
+    "GATE_1_REAL_LOGIN": "PENDING_MANUAL_LOGIN_PAIRING",
+    "GATE_2_REAL_LINK_ISSUANCE": "PENDING_GATE_1",
+    "GATE_3_EXCEPTION_TELEGRAM": "IMPLEMENTED_READY",
     "GATE_4_24H_BURN_IN": "UNVERIFIED"
-  },
-  "last_updated": "2026-07-26T19:58:41.797187",
-  "queue": {
-    "waiting": 0,
-    "processing": 0,
-    "completed_today": 4,
-    "failed": 0
-  },
-  "worker": {
-    "status": "RUNNING",
-    "last_run": "2026-07-26T19:58:41.797187",
-    "next_run": "Cron every 6 hours",
-    "last_duration_sec": 4.2
-  },
-  "github": {
-    "status": "SUCCESS",
-    "last_success": "2026-07-26T19:58:41.797187"
-  },
-  "vercel": {
-    "status": "SUCCESS",
-    "last_deploy": "2026-07-26T19:58:41.797187"
-  },
-  "coupang": {
-    "session": "UNKNOWN",
-    "last_verified": "2026-07-26T19:58:41.797187"
-  },
-  "naver": {
-    "session": "UNKNOWN",
-    "last_verified": "2026-07-26T19:58:41.797187"
-  },
-  "telegram": {
-    "status": "READY_TOKEN_PENDING"
   }
 }
