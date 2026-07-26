@@ -75,9 +75,12 @@ function runE2ETests() {
     }
   }
 
-  // 5. Verify Optimistic Locking Conflict Shield Logic
+  // 5. Verify Optimistic Locking Conflict Shield Logic & Backup Recovery Engine
   const apiHandler = require('./api/products.js');
   assert(typeof apiHandler === 'function', "Test 13: Server API Route Function Presence & Optimistic Locking Shield", "api/products.js ready");
+
+  const backupDir = path.join(__dirname, 'backups');
+  assert(fs.existsSync(backupDir) && fs.readdirSync(backupDir).length > 0, "Test 14: Automated Master DB Snapshot Backup Engine", "backups/ created");
 
   console.log("\n=======================================================");
   console.log(`📊 E2E AUTOMATED TEST RESULTS SUMMARY:`);

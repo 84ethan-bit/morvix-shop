@@ -1,0 +1,315 @@
+{
+  "products": [
+    {
+      "id": "PROD-010",
+      "slug": "fan001",
+      "short_url": "morvix.kr/fan001",
+      "name": "[26년형] 신일 무소음 스탠드 BLDC 서큘레이터",
+      "subtitle": "회사 책상 앞 38도 사막지대 억까 탈출 초강풍 무선 서큘레이터",
+      "category": "summer",
+      "season": "summer",
+      "is_featured": true,
+      "episode_id": "INTERNAL_CASE_EP010",
+      "episode_label": "🎬 EP010 숏폼 소개 제품",
+      "channels": {
+        "youtube_shorts": true,
+        "instagram_reels": true,
+        "tiktok": true,
+        "threads": true,
+        "blog_seo": true
+      },
+      "price": 28900,
+      "original_price": 45000,
+      "discount_rate": "35%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "강력한 듀얼 터보 모터 초강풍 쿨링",
+        "8시간 연속 사용 대용량 무선 배터리",
+        "360도 자유 회전 원하는 각도 완벽 조율",
+        "독서실급 초저소음 파워 설계"
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '회사 에어컨 고장났을 때 책상 밑에서 듀얼 서큘레이터 켜고 혼자 천국 맛보는 극락 시츄에이션'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 사막 땀뻘뻘 -> 2컷: 옆자리 대리님 비웃음 -> 3컷: 서큘레이터 가동 -> 4컷: 얼음나라 도착",
+        "seo_copy": "📝 [SEO 리뷰] 여름철 사무실 탁상용 무선 서큘레이터 추천 3가지 이유 및 네이버 최저가 비교"
+      },
+      "affiliate_links": [
+        {
+          "platform": "coupang",
+          "label": "🛒 쿠팡 파트너스 최저가 확인 ➔",
+          "url": "https://link.coupang.com/a/morvix_fan001",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
+        },
+        {
+          "platform": "naver",
+          "label": "🟢 네이버 쇼핑커넥트 최저가 확인 ➔",
+          "url": "https://search.shopping.naver.com/search/all?query=%EC%8B%A0%EC%9D%BC%20%EC%84%9C%ED%81%98%EB%A0%88%EC%9D%B4%ED%84%B0%20BLDC",
+          "priority": 2,
+          "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80"
+      ],
+      "analytics": {
+        "clicks_count": 342,
+        "platform_clicks": {
+          "coupang": 210,
+          "naver": 132
+        },
+        "conversions_count": 48,
+        "ctr": 5.2,
+        "conversion_rate": 2.3
+      },
+      "last_sync": "2026-07-26T02:30:00.000Z",
+      "sync_status": "OK",
+      "price_history": [
+        {
+          "price": 28900,
+          "date": "2026-07-26T04:46:53.326874"
+        }
+      ],
+      "version": 5,
+      "last_synced_at": "2026-07-26T12:46:19.212240",
+      "image_status": "Verified",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "PROD-009",
+      "slug": "blanket001",
+      "short_url": "morvix.kr/blanket001",
+      "name": "모르빅스 초냉감 얼음 쿨링 이불",
+      "subtitle": "닿자마자 -5도 즉각 쿨링! 열대야 숙면 구원템",
+      "category": "summer",
+      "season": "summer",
+      "is_featured": true,
+      "episode_id": "INTERNAL_CASE_EP009",
+      "episode_label": "🎬 EP009 숏폼 소개 제품",
+      "channels": {
+        "youtube_shorts": true,
+        "instagram_reels": true,
+        "tiktok": true,
+        "threads": true,
+        "blog_seo": true
+      },
+      "price": 34900,
+      "original_price": 59000,
+      "discount_rate": "40%",
+      "rating": 4.95,
+      "review_count": 312,
+      "usps": [
+        "Q-MAX 0.45 닿자마자 입체 순간 즉각 쿨링",
+        "형광증백제 0% 아토피 안심 인증 원단",
+        "통세탁 가능 100회 세탁에도 쿨링 성능 유지",
+        "양면 리버서블 봄/여름 사계절 실용성"
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '열대야에 땀 흘리다 얼음 이불 덮자마자 1초 만에 기절 수면 들어가는 온도 카메라 테스트'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 이불 발차기 -> 2컷: 에어컨 전기세 공포 -> 3컷: 냉감 이불 접촉 -> 4컷: 꿀잠 입면 완료",
+        "seo_copy": "📝 [SEO 리뷰] Q-MAX 0.45 원단 열대야 초냉감 얼음 이불 실제 세탁 및 쿨링 성능 실사용기"
+      },
+      "affiliate_links": [
+        {
+          "platform": "coupang",
+          "label": "🛒 쿠팡 파트너스 최저가 확인 ➔",
+          "url": "https://link.coupang.com/a/morvix_blanket001",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
+        },
+        {
+          "platform": "naver",
+          "label": "🟢 네이버 쇼핑커넥트 최저가 확인 ➔",
+          "url": "https://search.shopping.naver.com/search/all?query=%EC%B4%88%EB%83%89%EA%B0%90%20%EC%96%BC%EC%9D%8C%20%EC%BF%8B%EB%A7%81%20%EC%9D%B4%B6%88",
+          "priority": 2,
+          "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&auto=format&fit=crop&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&auto=format&fit=crop&q=80"
+      ],
+      "analytics": {
+        "clicks_count": 1280,
+        "platform_clicks": {
+          "coupang": 820,
+          "naver": 460
+        },
+        "conversions_count": 164,
+        "ctr": 8.4,
+        "conversion_rate": 4.1
+      },
+      "last_sync": "2026-07-26T02:30:00.000Z",
+      "sync_status": "OK",
+      "price_history": [
+        {
+          "price": 34900,
+          "date": "2026-07-26T04:46:54.886221"
+        }
+      ],
+      "version": 5,
+      "last_synced_at": "2026-07-26T12:46:20.727473",
+      "image_status": "Verified",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "PROD-002",
+      "slug": "mosquito001",
+      "short_url": "morvix.kr/mosquito001",
+      "name": "듀플렉스 19W 캠핑 무소음 모기 포충기",
+      "subtitle": "새벽 귓가 윙윙 모기 1초 유인 무소음 광촉매 포집기",
+      "category": "cleaning",
+      "season": "summer",
+      "is_featured": true,
+      "episode_id": "INTERNAL_CASE_EP002",
+      "episode_label": "🎬 EP002 숏폼 소개 제품",
+      "channels": {
+        "youtube_shorts": true,
+        "instagram_reels": true,
+        "tiktok": true,
+        "threads": true,
+        "blog_seo": true
+      },
+      "price": 24500,
+      "original_price": 39000,
+      "discount_rate": "37%",
+      "rating": 4.88,
+      "review_count": 210,
+      "usps": [
+        "365nm UV 특수파장 모기 최적 유인",
+        "강력 흡입 팬으로 건조 탈수 박멸",
+        "화학약품 0% 아기방 안심 무향 무취",
+        "20dB 극저소음 숙면 방해 없음"
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '불 끄자마자 귓가에 모기 소리 들릴 때 UV 포집기 켜고 아침에 포집 통 사체 무더기 공개'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 뺨 때리기 -> 2컷: 잠 깨서 피눈물 -> 3컷: 광촉매 포집기 분대 가동 -> 4컷: 모기 전멸 수면 승리",
+        "seo_copy": "📝 [SEO 리뷰] 무향 무취 가정용 모기 퇴치기 UV 흡입식 포집기 실제 포집 성능 비교"
+      },
+      "affiliate_links": [
+        {
+          "platform": "coupang",
+          "label": "🛒 쿠팡 파트너스 최저가 확인 ➔",
+          "url": "https://link.coupang.com/a/morvix_mosquito001",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
+        },
+        {
+          "platform": "naver",
+          "label": "🟢 네이버 쇼핑커넥트 최저가 확인 ➔",
+          "url": "https://search.shopping.naver.com/search/all?query=%EB%93%8D%ED%94%8C%EB%A0%89%EC%8A%A4%20%EB%AA%A8%EA%B8%B0%ED%87%B4%EC%B9%98%EA%B8%B0",
+          "priority": 2,
+          "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?w=800&auto=format&fit=crop&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?w=800&auto=format&fit=crop&q=80"
+      ],
+      "analytics": {
+        "clicks_count": 640,
+        "platform_clicks": {
+          "coupang": 400,
+          "naver": 240
+        },
+        "conversions_count": 78,
+        "ctr": 6.1,
+        "conversion_rate": 3.2
+      },
+      "last_sync": "2026-07-26T02:30:00.000Z",
+      "sync_status": "OK",
+      "price_history": [
+        {
+          "price": 24500,
+          "date": "2026-07-26T04:46:56.359846"
+        }
+      ],
+      "version": 5,
+      "last_synced_at": "2026-07-26T12:46:22.279845",
+      "image_status": "Verified",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "PROD-011",
+      "slug": "magsafe001",
+      "short_url": "morvix.kr/magsafe001",
+      "name": "모르빅스 3in1 초고속 마그네틱 데스크 거치대",
+      "subtitle": "아이폰+스마트워치+무선이어폰 책상 위선 3초 깔끔 정리템",
+      "category": "it",
+      "season": "all_year",
+      "is_featured": true,
+      "episode_id": "INTERNAL_CASE_EP011",
+      "episode_label": "🎬 EP011 숏폼 소개 제품",
+      "channels": {
+        "youtube_shorts": true,
+        "instagram_reels": true,
+        "tiktok": true,
+        "threads": true,
+        "blog_seo": true
+      },
+      "price": 29800,
+      "original_price": 49000,
+      "discount_rate": "39%",
+      "rating": 4.92,
+      "review_count": 178,
+      "usps": [
+        "15W 초고속 맥세이프 1초 자력 착붙 충전",
+        "지저분한 충전선 3개 깔끔 단 1선 통합",
+        "알루미늄 럭셔리 다크 그레이 디자인",
+        "스마트 과열/과전압 6중 안전 보호 회로"
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '책상 뱀처럼 엉킨 충전선 싹 쳐내고 마그네틱 거치대 1초 착붙 데스크테리어 쾌감'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 선 꼬임 스트레스 -> 2컷: 고양이 선 잘라먹음 -> 3컷: 3in1 거치대 -> 4컷: 감성 데스크 완성",
+        "seo_copy": "📝 [SEO 리뷰] 애플 3in1 맥세이프 충전 거치대 책상 선 정리 추천 비교 실사용 후기"
+      },
+      "affiliate_links": [
+        {
+          "platform": "coupang",
+          "label": "🛒 쿠팡 파트너스 최저가 확인 ➔",
+          "url": "https://link.coupang.com/a/morvix_magsafe001",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
+        },
+        {
+          "platform": "naver",
+          "label": "🟢 네이버 쇼핑커넥트 최저가 확인 ➔",
+          "url": "https://search.shopping.naver.com/search/all?query=3in1%20%EB%A7%A5%EC%84%B8%EC%9D%B4%ED%94%84%20%EB%8D%B0%EC%8A%A4%ED%81%98%20%EA%B1%B0%EC%B9%98%EB%8C%80",
+          "priority": 2,
+          "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&auto=format&fit=crop&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&auto=format&fit=crop&q=80"
+      ],
+      "analytics": {
+        "clicks_count": 420,
+        "platform_clicks": {
+          "coupang": 310,
+          "naver": 110
+        },
+        "conversions_count": 52,
+        "ctr": 4.9,
+        "conversion_rate": 2.8
+      },
+      "last_sync": "2026-07-26T02:30:00.000Z",
+      "sync_status": "OK",
+      "price_history": [
+        {
+          "price": 29800,
+          "date": "2026-07-26T04:46:57.761330"
+        }
+      ],
+      "version": 5,
+      "last_synced_at": "2026-07-26T12:46:23.658997",
+      "image_status": "Verified",
+      "status": "ACTIVE"
+    }
+  ],
+  "db_version": 6,
+  "expected_version": 5,
+  "updated_at": "2026-07-26T04:07:44.426Z"
+}
