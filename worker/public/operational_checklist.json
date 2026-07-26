@@ -1,0 +1,37 @@
+{
+  "title": "MORVIX Operational Verification Progress",
+  "progress_fraction": "1/5",
+  "progress_percentage": "20%",
+  "last_updated": "2026-07-26T20:51:04.485217",
+  "steps": [
+    {
+      "step_id": "STEP_1",
+      "name": "실제 계정 로그인 완료 & 인증 쿠키 수급",
+      "passed": false,
+      "coupang_cookies": 0,
+      "naver_cookies": 0,
+      "coupang_auth_cookie_valid": false,
+      "naver_auth_cookie_valid": false
+    },
+    {
+      "step_id": "STEP_2",
+      "name": "24시간 세션 유지 검증",
+      "passed": false
+    },
+    {
+      "step_id": "STEP_3",
+      "name": "실제 제휴 링크 발급 성공",
+      "passed": false
+    },
+    {
+      "step_id": "STEP_4",
+      "name": "LOGIN_REQUIRED 알림 수신 검증",
+      "passed": true
+    },
+    {
+      "step_id": "STEP_5",
+      "name": "24시간 무인 운영 성공 (Burn-in Test)",
+      "passed": false
+    }
+  ]
+}
