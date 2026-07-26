@@ -75,9 +75,11 @@ def inspect_session(platform):
 
 def try_playwright_login(platform, username, password):
     """
-    Real Playwright headless login attempt.
+    Real Playwright headless login attempt with stealth.
     Returns: (success: bool, cookie_count: int, message: str)
     """
+    import random
+
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
@@ -95,39 +97,78 @@ def try_playwright_login(platform, username, password):
                     "--disable-setuid-sandbox",
                     "--disable-blink-features=AutomationControlled",
                     "--disable-dev-shm-usage",
+                    "--disable-web-security",
+                    "--disable-features=IsolateOrigins,site-per-process",
                 ]
             )
             context = browser.new_context(
-                viewport={"width": 1400, "height": 900},
-                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+                viewport={"width": 1366, "height": 768},
+                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+                locale="ko-KR",
+                timezone_id="Asia/Seoul",
             )
+
+            # Stealth: Remove webdriver flag
+            context.add_init_script("""
+                Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
+                Object.defineProperty(navigator, 'plugins', { get: () => [1,2,3,4,5] });
+                Object.defineProperty(navigator, 'languages', { get: () => ['ko-KR','ko','en-US','en'] });
+                window.chrome = { runtime: {} };
+            """)
+
             page = context.new_page()
 
             print(f"[LOGIN] Navigating to {login_url}")
-            page.goto(login_url, wait_until="domcontentloaded", timeout=20000)
-            page.wait_for_timeout(2000)
+            page.goto(login_url, wait_until="domcontentloaded", timeout=25000)
+            page.wait_for_timeout(random.randint(1500, 2500))
 
             if platform == 'naver':
-                # Naver login form
-                id_field = page.query_selector("#id") or page.query_selector("input[name='id']")
-                pw_field = page.query_selector("#pw") or page.query_selector("input[name='pw']")
+                # Click ID field and type like a human
+                id_sel = "#id"
+                pw_sel = "#pw"
 
-                if id_field and pw_field:
-                    id_field.fill(username)
-                    page.wait_for_timeout(500)
-                    pw_field.fill(password)
-                    page.wait_for_timeout(500)
-                    
-                    login_btn = page.query_selector("#log\\.login") or page.query_selector("button[type='submit']") or page.query_selector(".btn_login")
-                    if login_btn:
-                        login_btn.click()
-                    else:
-                        pw_field.press("Enter")
-                    
-                    page.wait_for_timeout(4000)
-                else:
+                page.click(id_sel)
+                page.wait_for_timeout(random.randint(300, 600))
+                # Type character by character with random delay
+                for ch in username:
+                    page.keyboard.type(ch)
+                    page.wait_for_timeout(random.randint(60, 160))
+
+                page.wait_for_timeout(random.randint(300, 700))
+
+                page.click(pw_sel)
+                page.wait_for_timeout(random.randint(300, 600))
+                for ch in password:
+                    page.keyboard.type(ch)
+                    page.wait_for_timeout(random.randint(60, 160))
+
+                page.wait_for_timeout(random.randint(400, 800))
+
+                # Click login button
+                try:
+                    page.click("#log\\.login")
+                except Exception:
+                    try:
+                        page.click("button[type='submit']")
+                    except Exception:
+                        page.keyboard.press("Enter")
+
+                page.wait_for_timeout(5000)
+
+                # Check for CAPTCHA or 2FA
+                current_url = page.url
+                page_text = page.inner_text("body") if page.query_selector("body") else ""
+                print(f"[LOGIN] After login URL: {current_url}")
+
+                if "captcha" in current_url.lower() or "captcha" in page_text.lower():
+                    context.storage_state(path=session_path)
                     browser.close()
-                    return False, 0, "Naver login form fields not found (possible bot detection or page change)"
+                    return False, 0, "CAPTCHA detected — manual login required"
+
+                if "otp" in current_url.lower() or "인증" in page_text:
+                    context.storage_state(path=session_path)
+                    browser.close()
+                    return False, 0, "2FA/OTP required — check your phone for verification"
 
             elif platform == 'coupang':
                 id_field = page.query_selector("#username") or page.query_selector("input[name='email']") or page.query_selector("input[type='email']")
