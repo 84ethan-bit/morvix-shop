@@ -270,8 +270,33 @@ class MorvixBridgeHandler(BaseHTTPRequestHandler):
                 "status": "AUTHENTICATED" if auth else "NOT_AUTHENTICATED",
                 "session_file_exists": os.path.exists(get_session_path(platform))
             })
+        elif self.path.startswith('/api/diagnostic-screenshot'):
+            platform = 'naver' if 'naver' in self.path else 'coupang'
+            diag_png_path = os.path.join(SESSION_DIR, f"diagnostic_{platform}.png")
+            if os.path.exists(diag_png_path):
+                self.send_response(200)
+                self._cors()
+                self.send_header('Content-Type', 'image/png')
+                self.end_headers()
+                with open(diag_png_path, 'rb') as f:
+                    self.wfile.write(f.read())
+            else:
+                self._respond(404, {"error": "No screenshot evidence found yet."})
+        elif self.path.startswith('/api/diagnostic-html'):
+            platform = 'naver' if 'naver' in self.path else 'coupang'
+            diag_html_path = os.path.join(SESSION_DIR, f"diagnostic_{platform}.html")
+            if os.path.exists(diag_html_path):
+                self.send_response(200)
+                self._cors()
+                self.send_header('Content-Type', 'text/html; charset=utf-8')
+                self.end_headers()
+                with open(diag_html_path, 'rb') as f:
+                    self.wfile.write(f.read())
+            else:
+                self._respond(404, {"error": "No HTML evidence found yet."})
         else:
             self._respond(404, {"error": "Not found"})
+
 
     def do_POST(self):
         data = self._read_body()
@@ -400,20 +425,58 @@ class MorvixBridgeHandler(BaseHTTPRequestHandler):
                         log_step("STEP 4 WARN", f"Goto warning: {goto_err}")
 
                     status_code = response.status if response else "UNKNOWN"
-                    log_step("STEP 5", f"HTTP Response Status Code: {status_code} | Landed URL: {page.url}")
-
-                    # Check for bot detection or login redirect
-                    landed_url = page.url.lower()
-                    if "login" in landed_url or "nidlogin" in landed_url:
-                        log_step("STEP 5 WARN", "Redirected to LOGIN page! Session cookie may have expired or is invalid for this subdomain.")
-
-                    if status_code in [403, 418]:
-                        log_step("STEP 5 ERROR", f"Anti-bot blocked! Received HTTP {status_code}")
+                    log_step("STEP 5", f"HTTP Response Status Code: {status_code}")
 
                     page.wait_for_timeout(2500)
 
+                    # ──────────────────────────────────────────────────────────
+                    # STEP 5.5: EVIDENCE-FIRST PAGE INSPECTION & ARTIFACT DUMP
+                    # ──────────────────────────────────────────────────────────
+                    applied_cookies = context.cookies()
+                    cookies_count = len(applied_cookies)
+                    page_title = page.title()
+                    html_content = page.content()
+                    html_size = len(html_content.encode('utf-8'))
+                    
+                    has_login_form = bool(page.query_selector('input[type="password"], #id, #pw, #username, input[name="id"]'))
+                    has_captcha = "captcha" in html_content.lower() or "recaptcha" in html_content.lower() or "bot" in html_content.lower()
+
+                    log_step("STEP 5.5a", f"Applied Cookies Count in Browser Context: {cookies_count}")
+                    log_step("STEP 5.5b", f"Landed Final URL: {page.url}")
+                    log_step("STEP 5.5c", f"Document Title: '{page.title()}'")
+                    log_step("STEP 5.5d", f"Contains Login Form: {'YES (Redirected/Not Logged In)' if has_login_form else 'NO'}")
+                    log_step("STEP 5.5e", f"Contains CAPTCHA/Anti-Bot: {'YES (Bot Blocked)' if has_captcha else 'NO'}")
+                    log_step("STEP 5.5f", f"HTML Content Size: {html_size:,} bytes")
+
+                    # Save Evidence Artifacts
+                    diag_png_path = os.path.join(SESSION_DIR, f"diagnostic_{platform}.png")
+                    diag_html_path = os.path.join(SESSION_DIR, f"diagnostic_{platform}.html")
+                    
+                    try:
+                        page.screenshot(path=diag_png_path, full_page=False)
+                        log_step("STEP 5.5g", f"Screenshot Evidence Saved: {diag_png_path}")
+                    except Exception as ss_err:
+                        log_step("STEP 5.5g WARN", f"Screenshot save error: {ss_err}")
+
+                    try:
+                        with open(diag_html_path, "w", encoding="utf-8") as hf:
+                            hf.write(html_content)
+                        log_step("STEP 5.5h", f"HTML Evidence Saved: {diag_html_path}")
+                    except Exception as html_err:
+                        log_step("STEP 5.5h WARN", f"HTML save error: {html_err}")
+                    # ──────────────────────────────────────────────────────────
+
+                    # Check for bot detection or login redirect
+                    landed_url = page.url.lower()
+                    if has_login_form or "login" in landed_url or "nidlogin" in landed_url:
+                        log_step("STEP 5 WARN", "🚨 로그인 폼 감지됨: 쿠키 세션이 유효하지 않거나 적용되지 않았습니다.")
+
+                    if status_code in [403, 418] or has_captcha:
+                        log_step("STEP 5 ERROR", f"🚨 봇 차단/캡차 감지됨! HTTP {status_code}")
+
                     # STEP 6: Metadata & Link extraction
                     log_step("STEP 6", "Extracting OpenGraph metadata and Product details...")
+
                     try:
                         title = page.evaluate("() => document.querySelector('meta[property=\"og:title\"]')?.content || document.title || ''")
                     except Exception:

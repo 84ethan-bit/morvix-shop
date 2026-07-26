@@ -694,8 +694,10 @@ async function testAffiliateLinkIssuance(platform) {
 
     if (!outEl) return;
 
+    const evidenceLinks = `\n\n📸 [증거 자료 (Evidence Artifacts)]\n• 스크린샷: https://morvix-shop.onrender.com/api/diagnostic-screenshot?platform=${platform}\n• HTML 원본: https://morvix-shop.onrender.com/api/diagnostic-html?platform=${platform}`;
+
     const logsFormatted = Array.isArray(data.logs) && data.logs.length > 0
-      ? `\n\n--- 🔍 [진단 로그 (Diagnostic Steps)] ---\n` + data.logs.join('\n')
+      ? `\n\n--- 🔍 [진단 로그 (Diagnostic Steps)] ---\n` + data.logs.join('\n') + evidenceLinks
       : '';
 
     if (data.success) {
@@ -707,6 +709,7 @@ async function testAffiliateLinkIssuance(platform) {
     if (outEl) outEl.innerText = `⚠️ Render 서버 연결 실패\n\n서버가 잠자기 상태일 수 있습니다.\n30초 후 다시 시도해주세요.\n\nError: ${e.message}`;
   }
 }
+
 
 
 
