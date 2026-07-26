@@ -469,29 +469,43 @@ function setImagePreset(url) {
   if (thumb) thumb.src = url;
 }
 
-// Stage 1: Product Master DB LocalStorage Persistence Engine
+// Stage 1: Product Master DB Server-Backed & LocalStorage Dual Persistence Engine
 const DB_STORAGE_KEY = 'morvix_master_db_products_v3';
 
-function saveMasterDbToStorage() {
+async function saveMasterDbToStorage() {
   if (!dbData || !dbData.products) return;
   try {
     localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(dbData.products));
+    fetch('/api/products', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dbData)
+    }).catch(err => console.warn("Server DB sync notice:", err));
   } catch (e) {
     console.warn("LocalStorage save warning:", e);
   }
 }
 
-function loadMasterDbFromStorage() {
+async function loadMasterDbFromStorage() {
+  try {
+    const res = await fetch('/api/products');
+    if (res.ok) {
+      const serverData = await res.json();
+      if (serverData && Array.isArray(serverData.products) && serverData.products.length > 0) {
+        dbData = serverData;
+        localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(dbData.products));
+        return;
+      }
+    }
+  } catch (err) {
+    console.warn("Server DB fetch notice, falling back to LocalStorage:", err);
+  }
+
   try {
     const saved = localStorage.getItem(DB_STORAGE_KEY);
     if (saved) {
       const parsedProds = JSON.parse(saved);
       if (Array.isArray(parsedProds) && parsedProds.length > 0) {
-        // Merge saved local products with embedded defaults without duplicates
-        const existingIds = new Set(parsedProds.map(p => p.id));
-        INITIAL_DB_DATA.products.forEach(p => {
-          if (!existingIds.has(p.id)) parsedProds.push(p);
-        });
         dbData.products = parsedProds;
       }
     }
