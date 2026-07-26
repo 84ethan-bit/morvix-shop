@@ -1,23 +1,37 @@
 {
-  "version": "1.0.0",
-  "last_updated": "2026-07-26T19:38:44.838674",
+  "version": "2.0.0",
+  "health_score": 60,
+  "max_score": 100,
+  "last_updated": "2026-07-26T19:52:26.030091",
+  "worker": {
+    "status": "RUNNING",
+    "last_run": "2026-07-26T19:52:26.030091",
+    "next_run": "Cron every 6 hours",
+    "last_duration_sec": 4.2,
+    "auto_commit_enabled": true,
+    "vercel_deploy_enabled": true
+  },
+  "github": {
+    "status": "SUCCESS",
+    "last_push": "2026-07-26T19:52:26.030091"
+  },
+  "vercel": {
+    "status": "SUCCESS",
+    "last_deploy": "2026-07-26T19:52:26.030091"
+  },
   "coupang": {
-    "session": "AUTHENTICATED_ACTIVE",
-    "last_check": "2026-07-26T19:38:44.838674",
-    "link_generation": "PENDING_VERIFICATION"
+    "session": "UNKNOWN",
+    "last_verified": "2026-07-26T19:52:26.030091",
+    "last_link_issue": "PENDING_VERIFICATION"
   },
   "naver": {
-    "session": "LOGIN_REQUIRED",
-    "last_check": "2026-07-26T19:38:44.838674",
-    "link_generation": "PENDING_VERIFICATION"
+    "session": "UNKNOWN",
+    "last_verified": "2026-07-26T19:52:26.030091",
+    "last_link_issue": "PENDING_VERIFICATION"
   },
   "telegram": {
     "status": "READY_TOKEN_PENDING",
-    "last_alert": null
-  },
-  "worker": {
-    "status": "RUNNING",
-    "auto_commit_enabled": true,
-    "vercel_deploy_enabled": true
+    "last_alert": null,
+    "last_success": "2026-07-26T19:52:26.030091"
   }
 }
