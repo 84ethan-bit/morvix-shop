@@ -335,46 +335,99 @@ class MorvixBridgeHandler(BaseHTTPRequestHandler):
         elif self.path == '/api/test-link':
             url = data.get('url', '')
             platform = data.get('platform', 'naver')
+            step_logs = []
+
+            def log_step(step_name, detail):
+                msg = f"[{step_name}] {detail}"
+                print(msg, flush=True)
+                step_logs.append(msg)
+
             if not url:
-                self._respond(400, {"success": False, "error": "url required"})
+                self._respond(400, {"success": False, "error": "url required", "logs": step_logs})
                 return
-            cnt, has_auth = inspect_session(platform)
-            if not has_auth:
-                self._respond(200, {"success": False, "error": "인증 세션 없음 - 쿠키를 먼저 주입해주세요", "session_state": "NOT_AUTHENTICATED"})
-                return
+
+            log_step("STEP 1", f"Target Platform: {platform.upper()} | Input URL: {url}")
+            
+            # Verify session file
             session_path = get_session_path(platform)
-            print(f"\n[TEST LINK] {platform.upper()} | {url}")
+            cnt, has_auth = inspect_session(platform)
+            log_step("STEP 2", f"StorageState check: File Exists={os.path.exists(session_path)}, Cookies Count={cnt}, Auth Valid={has_auth}")
+
+            if not os.path.exists(session_path) or cnt == 0:
+                log_step("STEP 2 FAIL", "No session file found on Render ephemeral disk. Please re-inject cookies in Admin UI.")
+                self._respond(200, {
+                    "success": False,
+                    "error": "세션 파일이 없습니다 (Render 서버가 재시작되었을 수 있습니다). 쿠키를 어드민에서 다시 저장해 주세요.",
+                    "session_state": "NOT_AUTHENTICATED",
+                    "logs": step_logs
+                })
+                return
+
             try:
                 from playwright.sync_api import sync_playwright
+                log_step("STEP 3", "Launching Playwright Chromium (Stealth mode)...")
                 with sync_playwright() as p:
-                    browser = p.chromium.launch(headless=True, args=["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"])
+                    browser = p.chromium.launch(
+                        headless=True,
+                        args=[
+                            "--no-sandbox",
+                            "--disable-setuid-sandbox",
+                            "--disable-blink-features=AutomationControlled",
+                            "--disable-dev-shm-usage"
+                        ]
+                    )
                     context = browser.new_context(
                         storage_state=session_path,
-                        user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+                        viewport={"width": 1366, "height": 768},
+                        user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+                        locale="ko-KR",
+                        timezone_id="Asia/Seoul"
                     )
+
+                    # Remove webdriver flag for anti-bot
+                    context.add_init_script("""
+                        Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
+                        window.chrome = { runtime: {} };
+                    """)
+
                     page = context.new_page()
 
-                    # Wait for full load including redirects (naver.me → actual URL)
+                    log_step("STEP 4", f"Navigating to URL: {url}")
+                    response = None
                     try:
-                        page.goto(url, wait_until="networkidle", timeout=25000)
-                    except Exception:
-                        page.wait_for_timeout(3000)
+                        response = page.goto(url, wait_until="domcontentloaded", timeout=25000)
+                    except Exception as goto_err:
+                        log_step("STEP 4 WARN", f"Goto warning: {goto_err}")
 
-                    # Extra wait after redirect settles
-                    page.wait_for_timeout(2000)
-                    final_url = page.url
+                    status_code = response.status if response else "UNKNOWN"
+                    log_step("STEP 5", f"HTTP Response Status Code: {status_code} | Landed URL: {page.url}")
 
-                    # Safely extract metadata after redirect
+                    # Check for bot detection or login redirect
+                    landed_url = page.url.lower()
+                    if "login" in landed_url or "nidlogin" in landed_url:
+                        log_step("STEP 5 WARN", "Redirected to LOGIN page! Session cookie may have expired or is invalid for this subdomain.")
+
+                    if status_code in [403, 418]:
+                        log_step("STEP 5 ERROR", f"Anti-bot blocked! Received HTTP {status_code}")
+
+                    page.wait_for_timeout(2500)
+
+                    # STEP 6: Metadata & Link extraction
+                    log_step("STEP 6", "Extracting OpenGraph metadata and Product details...")
                     try:
                         title = page.evaluate("() => document.querySelector('meta[property=\"og:title\"]')?.content || document.title || ''")
                     except Exception:
                         title = "[제목 수급 실패]"
+
                     try:
                         image = page.evaluate("() => document.querySelector('meta[property=\"og:image\"]')?.content || ''")
                     except Exception:
                         image = ""
 
+                    final_url = page.url
+                    log_step("STEP 7", f"SUCCESS | Title: '{title[:30]}...' | Final Link: {final_url}")
                     browser.close()
+
                 self._respond(200, {
                     "success": True,
                     "platform": platform,
@@ -382,10 +435,18 @@ class MorvixBridgeHandler(BaseHTTPRequestHandler):
                     "image": image,
                     "price": "[실가 수급 완료 - Playwright]",
                     "affiliate_link": final_url,
-                    "session_state": "AUTHENTICATED"
+                    "session_state": "AUTHENTICATED",
+                    "logs": step_logs
                 })
             except Exception as e:
-                self._respond(200, {"success": False, "error": str(e), "session_state": "AUTHENTICATED_BUT_FETCH_FAILED"})
+                log_step("STEP 7 ERROR", f"Execution Exception: {str(e)}")
+                self._respond(200, {
+                    "success": False,
+                    "error": str(e),
+                    "session_state": "AUTHENTICATED_BUT_FETCH_FAILED",
+                    "logs": step_logs
+                })
+
 
 
         else:

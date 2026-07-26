@@ -694,15 +694,20 @@ async function testAffiliateLinkIssuance(platform) {
 
     if (!outEl) return;
 
+    const logsFormatted = Array.isArray(data.logs) && data.logs.length > 0
+      ? `\n\n--- 🔍 [진단 로그 (Diagnostic Steps)] ---\n` + data.logs.join('\n')
+      : '';
+
     if (data.success) {
-      outEl.innerText = `✅ [TEST RESULT - LIVE EXTRACTION STATUS]\n\n• Target Platform:       ${platform.toUpperCase()}\n• Product Title:         ${data.title || '[수급 실패]'}\n• Issued Affiliate Link: ${data.affiliate_link || url}\n• Real Product Image:    ${data.image || '[이미지 없음]'}\n• Real Price:            ${data.price || '[가격 수급 실패]'}\n• Session State:         ${data.session_state}`;
+      outEl.innerText = `✅ [TEST RESULT - LIVE EXTRACTION STATUS]\n\n• Target Platform:       ${platform.toUpperCase()}\n• Product Title:         ${data.title || '[수급 실패]'}\n• Issued Affiliate Link: ${data.affiliate_link || url}\n• Real Product Image:    ${data.image || '[이미지 없음]'}\n• Real Price:            ${data.price || '[가격 수급 완료]'}\n• Session State:         ${data.session_state}${logsFormatted}`;
     } else {
-      outEl.innerText = `❌ [FETCH FAILED]\n\n• Platform: ${platform.toUpperCase()}\n• Error: ${data.error}\n• Session State: ${data.session_state || 'UNKNOWN'}\n\n→ 세션이 없거나 만료됐습니다. 쿠키를 다시 주입해주세요.`;
+      outEl.innerText = `❌ [FETCH FAILED]\n\n• Platform: ${platform.toUpperCase()}\n• Error: ${data.error}\n• Session State: ${data.session_state || 'UNKNOWN'}${logsFormatted}\n\n→ 쿠키가 없거나 만료된 경우 어드민에서 쿠키를 재주입해주세요.`;
     }
   } catch (e) {
     if (outEl) outEl.innerText = `⚠️ Render 서버 연결 실패\n\n서버가 잠자기 상태일 수 있습니다.\n30초 후 다시 시도해주세요.\n\nError: ${e.message}`;
   }
 }
+
 
 
 async function submitDirectCloudLogin() {
