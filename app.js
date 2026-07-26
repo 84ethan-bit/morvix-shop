@@ -681,17 +681,20 @@ async function testAffiliateLinkIssuance(platform) {
     outEl.innerText = `⏳ [STEP 2 라이브 메타데이터 수급 및 제휴 링크 생성 중...]\n\n• Target Platform: ${platform.toUpperCase()}\n• Target URL: ${url}\n• OpenGraph & Live Scraper Fetching...`;
     
     try {
+      const urlSlug = url.split('/').pop().split('?')[0] || 'LIVE';
+      let realTitle = `${platform === 'coupang' ? '쿠팡 파트너스' : '네이버 브랜드커넥트'} 상품 [${urlSlug}]`;
+      let realImage = "[라이브 이미지 수급 중]";
+      let realPriceStr = "[실계정 세션 수급 실측 필요]";
+      let discountStr = "[실계정 세션 수급 실측 필요]";
+      let reviewStr = "[실계정 세션 수급 실측 필요]";
+
       // Live OpenGraph fetch via Microlink API
       const res = await fetch(`https://api.microlink.io?url=${encodeURIComponent(url)}`);
-      let realTitle = "네이버 브랜드커넥트 라이브 제휴 상품";
-      let realImage = "images/fan001.jpg";
-      let realPrice = 28900;
-      let discountRate = "30%";
 
       if (res.ok) {
         const json = await res.json();
         if (json && json.data) {
-          if (json.data.title && json.data.title !== '네이버 브랜드커넥트') {
+          if (json.data.title && !json.data.title.includes('네이버 브랜드 커넥트') && !json.data.title.includes('로그인')) {
             realTitle = json.data.title;
           }
           if (json.data.image && json.data.image.url && !json.data.image.url.includes('data:image/svg')) {
@@ -700,22 +703,21 @@ async function testAffiliateLinkIssuance(platform) {
         }
       }
 
-      // Live price & discount parser from title / URL
+      // Live price & discount parser from title if available
       const priceMatch = (realTitle + " " + url).match(/([\d,]+)\s*원/);
       if (priceMatch) {
         const pNum = parseInt(priceMatch[1].replace(/[^0-9]/g, ''));
-        if (pNum >= 1000) realPrice = pNum;
+        if (pNum >= 500) realPriceStr = `${pNum.toLocaleString()}원`;
       }
+
       const discMatch = (realTitle + " " + url).match(/(\d+)\s*[%％]/);
       if (discMatch) {
-        discountRate = discMatch[1] + "%";
+        discountStr = `${discMatch[1]}%`;
       }
 
-      const generatedLink = platform === 'coupang' 
-        ? (url.includes('coupang.com') ? url : `https://link.coupang.com/a/bC_${Date.now()}`)
-        : (url.includes('naver') || url.includes('naver.me') ? url : `https://shopping.naver.com/affiliate/link?item=${encodeURIComponent(url.slice(-10))}`);
+      const generatedLink = url;
 
-      outEl.innerText = `✅ [TEST RESULT - 100% EMPIRICAL LIVE EXTRACTION OK]\n\n• Target Platform:       ${platform.toUpperCase()}\n• Product Title:         ${realTitle}\n• Issued Affiliate Link: ${generatedLink}\n• Real Product Image:   ${realImage}\n• Real Price:            ${realPrice.toLocaleString()}원 (할인율: ${discountRate})\n• Review Count / Score: 리뷰 1,420개 / 평점 4.9★\n• Session State:         AUTHENTICATED_ACTIVE`;
+      outEl.innerText = `✅ [TEST RESULT - LIVE EXTRACTION STATUS]\n\n• Target Platform:       ${platform.toUpperCase()}\n• Product Title:         ${realTitle}\n• Issued Affiliate Link: ${generatedLink}\n• Real Product Image:   ${realImage}\n• Real Price:            ${realPriceStr} (할인율: ${discountStr})\n• Review Count / Score: ${reviewStr}\n• Session State:         PENDING_REAL_ACCOUNT_LOGIN (STEP 1)`;
     } catch (e) {
       console.warn("Live test fetch notice:", e);
       outEl.innerText = `✅ [TEST RESULT - LIVE URL FETCHED]\n\n• Target Platform: ${platform.toUpperCase()}\n• Input URL: ${url}\n• Issued Link: ${url}`;
