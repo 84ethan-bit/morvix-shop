@@ -3,7 +3,7 @@
   "version": "1.2.0",
   "description": "The Ultimate Shortform E-Commerce Affiliate OS & Link Hub Engine",
   "scripts": {
-    "build": "echo 'Static Deployment Build Passed'"
+    "build": "node worker/build_static.js"
   },
   "keywords": ["morvix", "affiliate", "shorts", "coupang", "naver"],
   "author": "NEXORA AI Group",
