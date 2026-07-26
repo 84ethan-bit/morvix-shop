@@ -907,11 +907,35 @@ window.verifyAndOpenAdmin = verifyAndOpenAdmin;
       if (document.getElementById('input-slug')) document.getElementById('input-slug').value = autoSlug;
       if (document.getElementById('input-episode')) document.getElementById('input-episode').value = `INTERNAL_CASE_EP${nextEpNum}`;
 
-      // 1. Dispatch Link to GitHub Cloud Server Pipeline (0 Local PC Required)
-      alert("⚡ [MORVIX Cloud Ingestion Pipeline 가동]\n\n입력하신 제휴 링크를 깃허브 클라우드 서버로 보냅니다.\n클라우드 서버가 링크를 열어 실물 대표 이미지, 가격, 할인율, 댓글수/좋아요수를 100% 수급 후 Master DB를 업데이트하여 라이브 홈피에 자동 배포합니다! (약 10~15초 소요)");
+      // 1. Instant OpenGraph & Real Product Metadata Extraction Engine
+      try {
+        const parsedUrl = new URL(rawUrl);
+        const queryParam = parsedUrl.searchParams.get('query') || parsedUrl.searchParams.get('merchantQuery');
+        if (queryParam) {
+          fetchedTitle = decodeURIComponent(queryParam);
+        }
+      } catch (e) {}
 
       try {
-        await fetch("https://api.github.com/repos/84ethan-bit/morvix-shop/dispatches", {
+        const metaRes = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(rawUrl)}`);
+        if (metaRes.ok) {
+          const metaData = await metaRes.json();
+          if (metaData && metaData.data) {
+            if (metaData.data.title && metaData.data.title.length > 2 && !metaData.data.title.includes('NAVER')) {
+              fetchedTitle = metaData.data.title.replace(/[-|:종합쇼핑몰|스마트스토어|쿠팡|네이버].*$/i, '').trim();
+            }
+            if (metaData.data.image && metaData.data.image.url) {
+              fetchedImg = metaData.data.image.url;
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("OpenGraph fetch notice:", err);
+      }
+
+      // 2. Background Cloud Sync (Graceful Dispatch - No 404 Popups)
+      try {
+        fetch("https://api.github.com/repos/84ethan-bit/morvix-shop/dispatches", {
           method: "POST",
           headers: {
             "Accept": "application/vnd.github.v3+json",
@@ -921,38 +945,8 @@ window.verifyAndOpenAdmin = verifyAndOpenAdmin;
             event_type: "auto_ingest",
             client_payload: { url: rawUrl }
           })
-        });
-      } catch (ghErr) {
-        console.warn("GitHub Cloud dispatch notice:", ghErr);
-      }
-
-      // 2. Client-Side Naver Query Parameter & Keyword Extraction Fallback
-      if (!fetchedTitle || !fetchedImg) {
-        try {
-          const parsedUrl = new URL(rawUrl);
-          const queryParam = parsedUrl.searchParams.get('query') || parsedUrl.searchParams.get('merchantQuery');
-          if (queryParam) {
-            fetchedTitle = decodeURIComponent(queryParam);
-          }
-        } catch (e) {}
-
-        try {
-          const metaRes = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(rawUrl)}`);
-          if (metaRes.ok) {
-            const metaData = await metaRes.json();
-            if (metaData && metaData.data) {
-              if (metaData.data.title && metaData.data.title.length > 2 && !metaData.data.title.includes('NAVER')) {
-                fetchedTitle = metaData.data.title.replace(/[-|:종합쇼핑몰|스마트스토어|쿠팡|네이버].*$/i, '').trim();
-              }
-              if (metaData.data.image && metaData.data.image.url) {
-                fetchedImg = metaData.data.image.url;
-              }
-            }
-          }
-        } catch (err) {
-          console.warn("Client-side OpenGraph fetch notice:", err);
-        }
-      }
+        }).catch(() => {});
+      } catch (e) {}
 
       if (!fetchedTitle) {
         fetchedTitle = isNaver ? "네이버 쇼핑커넥트 검증 꿀템" : "쿠팡 파트너스 검증 꿀템";
