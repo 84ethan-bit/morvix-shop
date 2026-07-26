@@ -726,7 +726,7 @@ async function testAffiliateLinkIssuance(platform) {
   }
 }
 
-function submitDirectCloudLogin() {
+async function submitDirectCloudLogin() {
   const platform = document.getElementById('login-direct-platform').value;
   const username = document.getElementById('login-direct-id').value.trim();
   const password = document.getElementById('login-direct-pw').value.trim();
@@ -740,24 +740,49 @@ function submitDirectCloudLogin() {
   const timeEl = document.getElementById(`affiliate-time-${platform}`);
 
   if (statusEl) {
-    statusEl.innerHTML = '⚡ 1초 세션 생성 중...';
+    statusEl.innerHTML = '⚡ Render 서버 로그인 중... (최대 30초)';
     statusEl.style.background = 'rgba(56, 189, 248, 0.2)';
     statusEl.style.color = '#38bdf8';
   }
 
-  setTimeout(() => {
-    if (statusEl) {
-      statusEl.innerHTML = '🟢 세션 영구 저장 완료 (storageState.json)';
-      statusEl.style.background = 'rgba(16, 185, 129, 0.2)';
-      statusEl.style.color = '#10b981';
+  try {
+    const RENDER_API = 'https://morvix-shop.onrender.com';
+    const res = await fetch(`${RENDER_API}/api/direct-login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ platform, username, password })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      if (statusEl) {
+        statusEl.innerHTML = `🟢 로그인 완료 (쿠키 ${data.cookie_count}개 저장)`;
+        statusEl.style.background = 'rgba(16, 185, 129, 0.2)';
+        statusEl.style.color = '#10b981';
+      }
+      if (timeEl) timeEl.innerText = new Date().toLocaleString();
+      alert(`✅ [Render 서버 실제 로그인 완료]\n\n• 플랫폼: ${platform.toUpperCase()}\n• 저장된 쿠키: ${data.cookie_count}개\n• ${data.message}`);
+    } else {
+      if (statusEl) {
+        statusEl.innerHTML = `🔴 로그인 실패 (${data.cookie_count}개 쿠키)`;
+        statusEl.style.background = 'rgba(239, 68, 68, 0.2)';
+        statusEl.style.color = '#ef4444';
+      }
+      alert(`❌ [로그인 실패]\n\n${data.message}\n\n아이디/비밀번호를 확인해주세요.`);
     }
-    if (timeEl) timeEl.innerText = new Date().toLocaleString();
-    alert(`✅ [웹 UI 직통 계정 세션 영구 저장 완료]\n\n${platform === 'coupang' ? '쿠팡 파트너스' : '네이버 브랜드커넥트'} (${username}) 계정의 세션이 Playwright 백그라운드 워커에 100% 영구 등록되었습니다!`);
-    
-    // Clear inputs for security
-    document.getElementById('login-direct-id').value = '';
+  } catch (e) {
+    console.warn("Render login API error:", e);
+    alert(`⚠️ Render 서버 연결 실패\n\n서버가 잠자기 상태일 수 있습니다. 30초 후 다시 시도해주세요.`);
+    if (statusEl) {
+      statusEl.innerHTML = '🟡 서버 연결 재시도 필요';
+      statusEl.style.background = 'rgba(255, 190, 11, 0.2)';
+      statusEl.style.color = '#ffbe0b';
+    }
+  } finally {
+    // Clear password for security
     document.getElementById('login-direct-pw').value = '';
-  }, 1000);
+  }
 }
 
 window.submitDirectCloudLogin = submitDirectCloudLogin;
