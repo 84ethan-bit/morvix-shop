@@ -1,18 +1,6 @@
 {
   "version": 2,
-  "framework": null,
-  "buildCommand": null,
-  "devCommand": null,
-  "installCommand": null,
-  "builds": [
-    {
-      "src": "index.html",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "."
-      }
-    }
-  ],
+  "cleanUrls": true,
   "routes": [
     {
       "handle": "filesystem"
