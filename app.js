@@ -68,7 +68,7 @@ const INITIAL_DB_DATA = {
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80",
+      "thumbnail": "https://img.danawa.com/prod_img/500000/039/971/img/19971039_1.jpg?shrink=500:500",
       "analytics": {
         "clicks_count": 342,
         "platform_clicks": { "coupang": 210, "naver": 132 },
@@ -211,11 +211,7 @@ async function initShopOS() {
     if (res.ok) {
       const fetched = await res.json();
       if (fetched && fetched.products) {
-        // Merge fetched products with local DB without overwriting user added items
-        const existingIds = new Set(dbData.products.map(p => p.id));
-        fetched.products.forEach(fp => {
-          if (!existingIds.has(fp.id)) dbData.products.push(fp);
-        });
+        dbData.products = fetched.products;
         updateProductLifecycleStates();
         renderCategories();
         renderProducts();
