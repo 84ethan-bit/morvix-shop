@@ -68,7 +68,7 @@ const INITIAL_DB_DATA = {
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://img.danawa.com/prod_img/500000/039/971/img/19971039_1.jpg?shrink=500:500",
+      "thumbnail": "images/fan001.jpg",
       "analytics": {
         "clicks_count": 342,
         "platform_clicks": { "coupang": 210, "naver": 132 },
@@ -123,7 +123,7 @@ const INITIAL_DB_DATA = {
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&auto=format&fit=crop&q=80",
+      "thumbnail": "images/blanket001.jpg",
       "analytics": {
         "clicks_count": 1280,
         "platform_clicks": { "coupang": 820, "naver": 460 },
@@ -276,7 +276,7 @@ function renderProducts() {
   grid.innerHTML = filtered.map(p => `
     <div class="product-card" onclick="openProductDetail('${p.slug}')">
       <div class="card-image-wrapper">
-        <img class="card-image" src="${p.thumbnail}" alt="${p.name}">
+        <img class="card-image" src="${p.thumbnail}" alt="${p.name}" referrerpolicy="no-referrer">
         ${p.is_featured ? '<span class="badge-featured">🔥 HOT 꿀템</span>' : ''}
         <span class="badge-episode">${p.episode_label || p.episode_id}</span>
       </div>
@@ -342,7 +342,7 @@ function openProductDetail(slug) {
   body.innerHTML = `
     <div class="detail-grid">
       <div class="detail-left">
-        <img class="detail-image" src="${product.thumbnail || 'https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80'}" alt="${product.name}">
+        <img class="detail-image" src="${product.thumbnail || 'images/fan001.jpg'}" alt="${product.name}" referrerpolicy="no-referrer">
       </div>
       <div class="detail-right">
         <span class="detail-slug-box">morvix.kr/${product.slug}</span>

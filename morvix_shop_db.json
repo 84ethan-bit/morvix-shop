@@ -50,9 +50,9 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://img.danawa.com/prod_img/500000/039/971/img/19971039_1.jpg?shrink=500:500",
+      "thumbnail": "images/fan001.jpg",
       "images": [
-        "https://img.danawa.com/prod_img/500000/039/971/img/19971039_1.jpg?shrink=500:500"
+        "images/fan001.jpg"
       ],
       "analytics": {
         "clicks_count": 342,
@@ -74,7 +74,7 @@
       ],
       "version": 9,
       "last_synced_at": "2026-07-26T15:07:52.058292",
-      "image_status": "Verified_Real",
+      "image_status": "Verified_Local",
       "status": "ACTIVE"
     },
     {
@@ -127,9 +127,9 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://img.danawa.com/prod_img/500000/624/187/img/20187624_1.jpg?shrink=500:500",
+      "thumbnail": "images/blanket001.jpg",
       "images": [
-        "https://img.danawa.com/prod_img/500000/624/187/img/20187624_1.jpg?shrink=500:500"
+        "images/blanket001.jpg"
       ],
       "analytics": {
         "clicks_count": 1280,
@@ -151,7 +151,7 @@
       ],
       "version": 9,
       "last_synced_at": "2026-07-26T15:07:53.611095",
-      "image_status": "Verified_Real",
+      "image_status": "Verified_Local",
       "status": "ACTIVE"
     },
     {
@@ -204,9 +204,9 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://img.danawa.com/prod_img/500000/841/552/img/14552841_1.jpg?shrink=500:500",
+      "thumbnail": "images/mosquito001.jpg",
       "images": [
-        "https://img.danawa.com/prod_img/500000/841/552/img/14552841_1.jpg?shrink=500:500"
+        "images/mosquito001.jpg"
       ],
       "analytics": {
         "clicks_count": 640,
@@ -228,7 +228,7 @@
       ],
       "version": 9,
       "last_synced_at": "2026-07-26T15:07:55.103052",
-      "image_status": "Verified_Real",
+      "image_status": "Verified_Local",
       "status": "ACTIVE"
     },
     {
@@ -281,9 +281,9 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://img.danawa.com/prod_img/500000/129/734/img/17734129_1.jpg?shrink=500:500",
+      "thumbnail": "images/magsafe001.jpg",
       "images": [
-        "https://img.danawa.com/prod_img/500000/129/734/img/17734129_1.jpg?shrink=500:500"
+        "images/magsafe001.jpg"
       ],
       "analytics": {
         "clicks_count": 420,
@@ -305,7 +305,7 @@
       ],
       "version": 9,
       "last_synced_at": "2026-07-26T15:07:56.515216",
-      "image_status": "Verified_Real",
+      "image_status": "Verified_Local",
       "status": "ACTIVE"
     }
   ],
