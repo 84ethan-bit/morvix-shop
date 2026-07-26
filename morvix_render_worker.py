@@ -292,11 +292,37 @@ class MorvixBridgeHandler(BaseHTTPRequestHandler):
 
         elif self.path == '/api/trigger-affiliate-login':
             platform = data.get('platform', 'coupang')
-            print(f"\n⚡ [TRIGGER LOGIN] Platform={platform} (no credentials - manual needed)")
+            print(f"\n⚡ [TRIGGER LOGIN] Platform={platform}")
             self._respond(200, {
                 "status": "QUEUED",
                 "platform": platform,
-                "message": f"Login request received for {platform}. Use /api/direct-login with credentials.",
+                "message": f"Login request received for {platform}.",
+                "timestamp": datetime.now().isoformat()
+            })
+
+        elif self.path == '/api/inject-cookies':
+            # ✅ Manual cookie injection from browser DevTools
+            platform = data.get('platform', 'naver')
+            cookies_raw = data.get('cookies', [])
+
+            if not cookies_raw:
+                self._respond(400, {"success": False, "error": "cookies array is required"})
+                return
+
+            session_path = get_session_path(platform)
+            storage_state = {"cookies": cookies_raw, "origins": []}
+            with open(session_path, "w", encoding="utf-8") as f:
+                json.dump(storage_state, f, ensure_ascii=False, indent=2)
+
+            cnt, has_auth = inspect_session(platform)
+            print(f"[COOKIE INJECT] {platform}: {cnt} cookies saved, auth={has_auth}")
+
+            self._respond(200, {
+                "success": has_auth,
+                "platform": platform,
+                "cookie_count": cnt,
+                "authenticated": has_auth,
+                "message": f"{'✅ 인증 쿠키 저장 완료!' if has_auth else '⚠️ 쿠키 저장됨 - 인증 쿠키 없음 (NID_AUT/NID_SES 확인 필요)'}",
                 "timestamp": datetime.now().isoformat()
             })
 
@@ -309,8 +335,9 @@ def run():
     print("=" * 60)
     print(f"🚀 MORVIX RENDER CLOUD WORKER ONLINE — PORT {port}")
     print(f"📡 https://morvix-shop.onrender.com")
-    print(f"🔐 POST /api/direct-login  (real Playwright login)")
-    print(f"✅ GET  /api/verify-session (check auth cookies)")
+    print(f"🔐 POST /api/direct-login     (Playwright auto login)")
+    print(f"🍪 POST /api/inject-cookies   (manual cookie bridge)")
+    print(f"✅ GET  /api/verify-session   (check auth cookies)")
     print("=" * 60)
     httpd = HTTPServer(('', port), MorvixBridgeHandler)
     httpd.serve_forever()

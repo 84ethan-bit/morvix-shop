@@ -527,7 +527,35 @@
             </button>
           </div>
 
+          <!-- 🍪 수동 쿠키 브릿지 (가장 안정적인 방법) -->
+          <div style="background: rgba(16, 185, 129, 0.08); border: 1.5px solid rgba(16, 185, 129, 0.4); border-radius: 10px; padding: 16px; margin-bottom: 20px;">
+            <h4 style="color: #10b981; margin-bottom: 8px; font-size: 0.95rem;">🍪 수동 쿠키 브릿지 (봇감지 없음 · 가장 안정적)</h4>
+            <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 14px;">① 아래 버튼으로 로그인 새탭 열기 → ② F12 → Application → Cookies → 값 복사 → ③ 붙여넣기 후 저장</p>
+            <!-- 네이버 -->
+            <div style="border:1px solid rgba(16,185,129,0.2); border-radius:8px; padding:12px; margin-bottom:10px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+                <span style="color:#10b981; font-weight:700;">🟢 네이버 브랜드커넥트</span>
+                <button type="button" onclick="openNaverLogin()" style="background:#10b981; color:#000; font-weight:700; padding:7px 14px; border:none; border-radius:6px; cursor:pointer; font-size:0.82rem;">🔗 네이버 로그인 (새탭)</button>
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+                <input type="text" id="cookie-nid-aut-naver" placeholder="NID_AUT 값 붙여넣기" style="padding:8px; border-radius:6px; background:rgba(0,0,0,0.4); border:1px solid rgba(16,185,129,0.3); color:#fff; font-size:0.8rem; font-family:monospace;">
+                <input type="text" id="cookie-nid-ses-naver" placeholder="NID_SES 값 붙여넣기" style="padding:8px; border-radius:6px; background:rgba(0,0,0,0.4); border:1px solid rgba(16,185,129,0.3); color:#fff; font-size:0.8rem; font-family:monospace;">
+              </div>
+              <button type="button" onclick="injectManualCookies('naver')" style="background:linear-gradient(135deg,#10b981,#059669); color:#fff; font-weight:800; padding:9px 18px; border:none; border-radius:6px; cursor:pointer; width:100%;">💾 네이버 세션 Render에 저장</button>
+            </div>
+            <!-- 쿠팡 -->
+            <div style="border:1px solid rgba(56,189,248,0.2); border-radius:8px; padding:12px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+                <span style="color:#38bdf8; font-weight:700;">🛒 쿠팡 파트너스</span>
+                <button type="button" onclick="openCoupangLogin()" style="background:#38bdf8; color:#000; font-weight:700; padding:7px 14px; border:none; border-radius:6px; cursor:pointer; font-size:0.82rem;">🔗 쿠팡 로그인 (새탭)</button>
+              </div>
+              <input type="text" id="cookie-cauth-coupang" placeholder="CAUTH 값 붙여넣기 (partners.coupang.com)" style="padding:8px; border-radius:6px; background:rgba(0,0,0,0.4); border:1px solid rgba(56,189,248,0.3); color:#fff; font-size:0.8rem; font-family:monospace; width:100%; box-sizing:border-box; margin-bottom:8px; display:block;">
+              <button type="button" onclick="injectManualCookies('coupang')" style="background:linear-gradient(135deg,#38bdf8,#0ea5e9); color:#000; font-weight:800; padding:9px 18px; border:none; border-radius:6px; cursor:pointer; width:100%;">💾 쿠팡 세션 Render에 저장</button>
+            </div>
+          </div>
+
           <!-- 실시간 제휴 링크 발급 테스트 테스터 -->
+
           <div style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 16px;">
             <h4 style="color: #ffbe0b; margin-bottom: 12px; font-size: 0.95rem;">🧪 라이브 제휴 링크 발급 & 메타데이터 추출 테스터 (STEP 2)</h4>
             <div style="display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap;">

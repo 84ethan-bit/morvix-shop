@@ -787,6 +787,84 @@ async function submitDirectCloudLogin() {
 
 window.submitDirectCloudLogin = submitDirectCloudLogin;
 
+// ──────────────────────────────────────────────────
+// 🍪 MANUAL COOKIE BRIDGE (Most Reliable Method)
+// User logs in via real browser → copies cookies → saves to Render
+// ──────────────────────────────────────────────────
+function openNaverLogin() {
+  window.open('https://nid.naver.com/nidlogin.login', '_blank');
+}
+
+function openCoupangLogin() {
+  window.open('https://partners.coupang.com/', '_blank');
+}
+
+async function injectManualCookies(platform) {
+  const nidAut = document.getElementById(`cookie-nid-aut-${platform}`)?.value?.trim();
+  const nidSes = document.getElementById(`cookie-nid-ses-${platform}`)?.value?.trim();
+  const cauth  = document.getElementById(`cookie-cauth-${platform}`)?.value?.trim();
+
+  let cookies = [];
+
+  if (platform === 'naver') {
+    if (!nidAut || !nidSes) {
+      alert('NID_AUT 와 NID_SES 값을 모두 입력해주세요.\n\n브라우저에서 네이버 로그인 후\nF12 → Application → Cookies → nid.naver.com 에서 복사');
+      return;
+    }
+    cookies = [
+      { name: 'NID_AUT', value: nidAut, domain: '.naver.com', path: '/', httpOnly: false, secure: true, sameSite: 'None' },
+      { name: 'NID_SES', value: nidSes, domain: '.naver.com', path: '/', httpOnly: false, secure: true, sameSite: 'None' },
+    ];
+  } else if (platform === 'coupang') {
+    if (!cauth) {
+      alert('CAUTH 값을 입력해주세요.\n\n브라우저에서 쿠팡파트너스 로그인 후\nF12 → Application → Cookies → partners.coupang.com 에서 복사');
+      return;
+    }
+    cookies = [
+      { name: 'CAUTH', value: cauth, domain: '.coupang.com', path: '/', httpOnly: false, secure: true, sameSite: 'None' },
+    ];
+  }
+
+  const statusEl = document.getElementById(`affiliate-status-${platform}`);
+  if (statusEl) {
+    statusEl.innerHTML = '⚡ Render 서버에 저장 중...';
+    statusEl.style.background = 'rgba(56, 189, 248, 0.2)';
+    statusEl.style.color = '#38bdf8';
+  }
+
+  try {
+    const RENDER_API = 'https://morvix-shop.onrender.com';
+    const res = await fetch(`${RENDER_API}/api/inject-cookies`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ platform, cookies })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      if (statusEl) {
+        statusEl.innerHTML = `🟢 세션 저장 완료 (쿠키 ${data.cookie_count}개)`;
+        statusEl.style.background = 'rgba(16, 185, 129, 0.2)';
+        statusEl.style.color = '#10b981';
+      }
+      alert(`✅ ${platform.toUpperCase()} 세션 저장 완료!\n\n쿠키 ${data.cookie_count}개 저장\n${data.message}`);
+    } else {
+      if (statusEl) {
+        statusEl.innerHTML = '🔴 인증 쿠키 없음 - 값 확인 필요';
+        statusEl.style.background = 'rgba(239, 68, 68, 0.2)';
+        statusEl.style.color = '#ef4444';
+      }
+      alert(`❌ ${data.message}`);
+    }
+  } catch (e) {
+    alert('⚠️ Render 서버 연결 실패. 30초 후 다시 시도해주세요.');
+  }
+}
+
+window.openNaverLogin = openNaverLogin;
+window.openCoupangLogin = openCoupangLogin;
+window.injectManualCookies = injectManualCookies;
+
 function verifyAndOpenAdmin() {
   const modal = document.getElementById('admin-modal');
   const loginModal = document.getElementById('admin-login-modal');
