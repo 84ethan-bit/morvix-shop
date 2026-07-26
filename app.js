@@ -702,9 +702,8 @@ async function testAffiliateLinkIssuance(platform) {
   } catch (e) {
     if (outEl) outEl.innerText = `⚠️ Render 서버 연결 실패\n\n서버가 잠자기 상태일 수 있습니다.\n30초 후 다시 시도해주세요.\n\nError: ${e.message}`;
   }
-
-  }
 }
+
 
 async function submitDirectCloudLogin() {
   const platform = document.getElementById('login-direct-platform').value;
