@@ -907,35 +907,52 @@ window.verifyAndOpenAdmin = verifyAndOpenAdmin;
       if (document.getElementById('input-slug')) document.getElementById('input-slug').value = autoSlug;
       if (document.getElementById('input-episode')) document.getElementById('input-episode').value = `INTERNAL_CASE_EP${nextEpNum}`;
 
-      let fetchedTitle = "";
-      let fetchedPrice = 28900;
-      let fetchedImg = "";
-
-      // 1. Client-Side Naver Query Parameter & Keyword Extraction
+      // 1. Dispatch to External Server Worker (http://localhost:5000/api/ingest)
       try {
-        const parsedUrl = new URL(rawUrl);
-        const queryParam = parsedUrl.searchParams.get('query') || parsedUrl.searchParams.get('merchantQuery');
-        if (queryParam) {
-          fetchedTitle = decodeURIComponent(queryParam);
-        }
-      } catch (e) {}
-
-      // 2. Fetch OpenGraph Metadata via Public CORS Metadata Service
-      try {
-        const metaRes = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(rawUrl)}`);
-        if (metaRes.ok) {
-          const metaData = await metaRes.json();
-          if (metaData && metaData.data) {
-            if (metaData.data.title && metaData.data.title.length > 2 && !metaData.data.title.includes('NAVER')) {
-              fetchedTitle = metaData.data.title.replace(/[-|:종합쇼핑몰|스마트스토어|쿠팡|네이버].*$/i, '').trim();
-            }
-            if (metaData.data.image && metaData.data.image.url) {
-              fetchedImg = metaData.data.image.url;
-            }
+        const extRes = await fetch("http://localhost:5000/api/ingest", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: rawUrl })
+        });
+        if (extRes.ok) {
+          const extData = await extRes.json();
+          if (extData && extData.product) {
+            fetchedTitle = extData.product.name || fetchedTitle;
+            fetchedImg = extData.product.thumbnail || fetchedImg;
+            fetchedPrice = extData.product.price || fetchedPrice;
+            console.log("🚀 External Server Ingestion Success:", extData);
           }
         }
-      } catch (err) {
-        console.warn("Client-side OpenGraph fetch notice:", err);
+      } catch (extErr) {
+        console.warn("External server worker not active, running client-side OpenGraph fallback:", extErr);
+      }
+
+      // 2. Client-Side Naver Query Parameter & Keyword Extraction Fallback
+      if (!fetchedTitle || !fetchedImg) {
+        try {
+          const parsedUrl = new URL(rawUrl);
+          const queryParam = parsedUrl.searchParams.get('query') || parsedUrl.searchParams.get('merchantQuery');
+          if (queryParam) {
+            fetchedTitle = decodeURIComponent(queryParam);
+          }
+        } catch (e) {}
+
+        try {
+          const metaRes = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(rawUrl)}`);
+          if (metaRes.ok) {
+            const metaData = await metaRes.json();
+            if (metaData && metaData.data) {
+              if (metaData.data.title && metaData.data.title.length > 2 && !metaData.data.title.includes('NAVER')) {
+                fetchedTitle = metaData.data.title.replace(/[-|:종합쇼핑몰|스마트스토어|쿠팡|네이버].*$/i, '').trim();
+              }
+              if (metaData.data.image && metaData.data.image.url) {
+                fetchedImg = metaData.data.image.url;
+              }
+            }
+          }
+        } catch (err) {
+          console.warn("Client-side OpenGraph fetch notice:", err);
+        }
       }
 
       if (!fetchedTitle) {
