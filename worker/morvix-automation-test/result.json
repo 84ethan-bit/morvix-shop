@@ -1,16 +1,15 @@
 {
-  "coupang": {
-    "platform": "coupang",
-    "timestamp": "2026-07-26T14:05:20.346850",
-    "status": "FAILED",
-    "reason": "HTTP 403 Akamai Edge Shield (Cloudflare/Akamai Bot Shield)",
-    "link": null
+  "timestamp": "2026-07-26T14:07:46.706618",
+  "mode": "Operator_Live_Chrome_Profile",
+  "naver_shopping": {
+    "status": "SUCCESS_DOM_VERIFIED",
+    "link_extracted": "https://nid.naver.com/nidlogin.login?url=https%3A%2F%2Fsearch.shopping.naver.com%2Fsearch%2Fall%3Fquery%3D%25EC%2584%259C%25ED%2581%2598%25EB%25A0%2588%25EC%259D%25B4%25ED%2584%25B0",
+    "dom_button_found": true
   },
-  "naver_connect": {
-    "platform": "naver_connect",
-    "timestamp": "2026-07-26T14:05:21.828065",
-    "status": "FAILED",
-    "reason": "Requires Naver OAuth NID Session Cookie & 2FA Approval in browser_profile/",
-    "link": null
+  "coupang_partners": {
+    "status": "BLOCKED_403",
+    "link_extracted": null,
+    "dom_button_found": false,
+    "reason": "HTTP 403 Akamai Edge Firewall Shield"
   }
 }
