@@ -2,12 +2,13 @@ const fs = require('fs');
 const path = require('path');
 
 const DB_PATH = path.join(process.cwd(), 'morvix_shop_db.json');
+const DEFAULT_ADMIN_PIN = process.env.ADMIN_PIN || '7777';
 
 module.exports = async (req, res) => {
   // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-admin-pin');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -28,12 +29,23 @@ module.exports = async (req, res) => {
 
   if (req.method === 'POST') {
     try {
-      const payload = req.body;
-      if (!payload || !payload.products) {
+      const payload = req.body || {};
+      const reqPin = req.headers['x-admin-pin'] || payload.admin_pin;
+
+      // 1. Admin Authentication Security Shield
+      if (reqPin !== DEFAULT_ADMIN_PIN) {
+        return res.status(401).json({
+          success: false,
+          error: "UNAUTHORIZED",
+          message: "🔐 [Admin Security Shield] Unauthorized API modification attempt blocked. Valid Admin PIN required."
+        });
+      }
+
+      if (!payload.products) {
         return res.status(400).json({ success: false, message: "Invalid product master payload" });
       }
 
-      // Optimistic Locking & Version Conflict Verification
+      // 2. Optimistic Locking & Version Conflict Shield
       if (fs.existsSync(DB_PATH)) {
         const currentRaw = fs.readFileSync(DB_PATH, 'utf-8');
         const currentDb = JSON.parse(currentRaw);
@@ -43,7 +55,7 @@ module.exports = async (req, res) => {
             return res.status(409).json({
               success: false,
               conflict: true,
-              message: `⚠️ [Version Conflict] Master DB has been updated by another operator/worker (Server v${currentDb.db_version} vs Expected v${payload.expected_version}). Please refresh before saving.`
+              message: `⚠️ [Version Conflict] Master DB has been updated by another operator/worker (Server v${currentDb.db_version} vs Expected v${payload.expected_version}). Please refresh.`
             });
           }
         }

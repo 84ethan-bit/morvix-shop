@@ -478,7 +478,10 @@ async function saveMasterDbToStorage() {
     localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(dbData.products));
     fetch('/api/products', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-pin': '7777'
+      },
       body: JSON.stringify(dbData)
     }).catch(err => console.warn("Server DB sync notice:", err));
   } catch (e) {
