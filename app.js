@@ -541,42 +541,30 @@ async function loadSystemHealthManifest() {
         const score = health.health_score !== undefined ? health.health_score : 60;
         const scoreColor = score >= 80 ? '#10b981' : score >= 50 ? '#f59e0b' : '#ef4444';
         
-        let deductionsHtml = '';
-        if (Array.isArray(health.deductions_breakdown) && health.deductions_breakdown.length > 0) {
-          deductionsHtml = health.deductions_breakdown.map(d => `<span style="background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">${d.points}pt (${d.component}): ${d.reason}</span>`).join(' ');
+        let actionItemsHtml = '';
+        if (Array.isArray(health.action_center) && health.action_center.length > 0) {
+          actionItemsHtml = health.action_center.map(act => `
+            <div style="background: rgba(30,41,59,0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 6px 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;">
+              <span>${act.status} <strong>${act.message}</strong></span>
+              <span style="background: rgba(99,102,241,0.2); color: #818cf8; padding: 2px 8px; border-radius: 12px; font-weight: 700; font-size: 0.75rem;">${act.target}</span>
+            </div>
+          `).join('');
         }
 
-        const queueText = health.queue ? `| 📊 Queue: [완료 ${health.queue.completed_today}건 / 대기 ${health.queue.waiting}건]` : '';
-
         container.innerHTML = `
-          <div style="background: rgba(15, 23, 42, 0.92); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.35);">
-            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px;">
+          <div style="background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.4);">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
               <div style="display: flex; align-items: center; gap: 12px;">
                 <span style="background: ${scoreColor}; color: #0f172a; font-weight: 800; font-size: 0.95rem; padding: 4px 12px; border-radius: 20px;">
                   Health Score ${score} / 100 pt
                 </span>
-                <strong style="color: #6366f1; font-size: 0.95rem;">🩺 MORVIX Exception & Queue Control Dashboard v21.0</strong>
-                <span style="color: #94a3b8; font-size: 0.8rem;">${queueText}</span>
+                <strong style="color: #6366f1; font-size: 0.95rem;">🚨 MORVIX Action Center v22.0 (Feature Freeze Mode)</strong>
               </div>
-              <div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.8rem;">
-                <span style="color: ${health.coupang && health.coupang.session === 'AUTHENTICATED_ACTIVE' ? '#10b981' : '#f59e0b'};">
-                  🛒 쿠팡: <strong>${health.coupang ? health.coupang.session : 'UNKNOWN'}</strong>
-                </span>
-                <span style="color: ${health.naver && health.naver.session === 'AUTHENTICATED_ACTIVE' ? '#10b981' : '#f59e0b'};">
-                  🟢 네이버: <strong>${health.naver ? health.naver.session : 'UNKNOWN'}</strong>
-                </span>
-                <span style="color: #38bdf8;">
-                  🐙 GitHub: <strong>${health.github ? health.github.status : 'SUCCESS'}</strong>
-                </span>
-                <span style="color: #a855f7;">
-                  🔺 Vercel: <strong>${health.vercel ? health.vercel.status : 'SUCCESS'}</strong>
-                </span>
-                <span style="color: #ec4899;">
-                  📡 텔레그램: <strong>${health.telegram ? health.telegram.status : 'READY'}</strong>
-                </span>
+              <div style="font-size: 0.8rem; color: #10b981; font-weight: 700;">
+                🔒 4 OPERATIONAL GATES ACTIVE
               </div>
             </div>
-            ${deductionsHtml ? `<div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;"><strong style="font-size: 0.75rem; color: #94a3b8; margin-right: 4px;">🔻 감점 사유 (Score Deductions):</strong> ${deductionsHtml}</div>` : ''}
+            ${actionItemsHtml ? `<div style="display: flex; flex-direction: column; gap: 6px;">${actionItemsHtml}</div>` : ''}
           </div>
         `;
       }
