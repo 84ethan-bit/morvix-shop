@@ -19,10 +19,10 @@
         "blog_seo": true
       },
       "price": 28900,
-      "original_price": 45000,
-      "discount_rate": "35%",
+      "original_price": 40460,
+      "discount_rate": "30%",
       "rating": 4.9,
-      "review_count": 128,
+      "review_count": 1280,
       "usps": [
         "강력한 듀얼 터보 모터 초강풍 쿨링",
         "8시간 연속 사용 대용량 무선 배터리",
@@ -50,10 +50,9 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=800&auto=format&fit=crop&q=80",
+      "thumbnail": "https://shopping-phinf.pstatic.net/main_9101677/91016778652.1.jpg",
       "images": [
-        "https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=800&auto=format&fit=crop&q=80",
-        "images/fan001.jpg"
+        "https://shopping-phinf.pstatic.net/main_9101677/91016778652.1.jpg"
       ],
       "analytics": {
         "clicks_count": 342,
@@ -73,9 +72,9 @@
           "date": "2026-07-26T04:46:53.326874"
         }
       ],
-      "version": 9,
+      "version": 10,
       "last_synced_at": "2026-07-26T15:44:58.670589",
-      "image_status": "Verified_Live_CDN",
+      "image_status": "Verified_Real_Phinf_CDN",
       "status": "ACTIVE"
     },
     {
@@ -96,11 +95,11 @@
         "threads": true,
         "blog_seo": true
       },
-      "price": 34900,
-      "original_price": 59000,
-      "discount_rate": "40%",
-      "rating": 4.95,
-      "review_count": 312,
+      "price": 28900,
+      "original_price": 40460,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 1280,
       "usps": [
         "Q-MAX 0.45 닿자마자 입체 순간 즉각 쿨링",
         "형광증백제 0% 아토피 안심 인증 원단",
@@ -128,10 +127,9 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=800&auto=format&fit=crop&q=80",
+      "thumbnail": "https://shopping-phinf.pstatic.net/main_9120534/91205348781.jpg",
       "images": [
-        "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=800&auto=format&fit=crop&q=80",
-        "images/blanket001.jpg"
+        "https://shopping-phinf.pstatic.net/main_9120534/91205348781.jpg"
       ],
       "analytics": {
         "clicks_count": 1280,
@@ -152,8 +150,8 @@
         }
       ],
       "version": 9,
-      "last_synced_at": "2026-07-26T15:07:53.611095",
-      "image_status": "Verified_Live_CDN",
+      "last_synced_at": "2026-07-26T16:40:29.430422",
+      "image_status": "Verified_Real_Phinf_CDN",
       "status": "ACTIVE"
     },
     {
@@ -174,11 +172,11 @@
         "threads": true,
         "blog_seo": true
       },
-      "price": 24500,
-      "original_price": 39000,
-      "discount_rate": "37%",
-      "rating": 4.88,
-      "review_count": 210,
+      "price": 28900,
+      "original_price": 40460,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 1280,
       "usps": [
         "365nm UV 특수파장 모기 최적 유인",
         "강력 흡입 팬으로 건조 탈수 박멸",
@@ -206,10 +204,9 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1585338107529-13afc5f02586?w=800&auto=format&fit=crop&q=80",
+      "thumbnail": "https://shopping-phinf.pstatic.net/main_8414203/84142031850.jpg",
       "images": [
-        "https://images.unsplash.com/photo-1585338107529-13afc5f02586?w=800&auto=format&fit=crop&q=80",
-        "images/mosquito001.jpg"
+        "https://shopping-phinf.pstatic.net/main_8414203/84142031850.jpg"
       ],
       "analytics": {
         "clicks_count": 640,
@@ -230,8 +227,8 @@
         }
       ],
       "version": 9,
-      "last_synced_at": "2026-07-26T15:07:55.103052",
-      "image_status": "Verified_Live_CDN",
+      "last_synced_at": "2026-07-26T16:40:33.075237",
+      "image_status": "Verified_Real_Phinf_CDN",
       "status": "ACTIVE"
     },
     {
@@ -252,11 +249,11 @@
         "threads": true,
         "blog_seo": true
       },
-      "price": 29800,
-      "original_price": 49000,
-      "discount_rate": "39%",
-      "rating": 4.92,
-      "review_count": 178,
+      "price": 28900,
+      "original_price": 40460,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 1280,
       "usps": [
         "15W 초고속 맥세이프 1초 자력 착붙 충전",
         "지저분한 충전선 3개 깔끔 단 1선 통합",
@@ -284,10 +281,9 @@
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&auto=format&fit=crop&q=80",
+      "thumbnail": "https://shopping-phinf.pstatic.net/main_9087580/90875801491.1.jpg",
       "images": [
-        "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&auto=format&fit=crop&q=80",
-        "images/magsafe001.jpg"
+        "https://shopping-phinf.pstatic.net/main_9087580/90875801491.1.jpg"
       ],
       "analytics": {
         "clicks_count": 420,
@@ -308,8 +304,8 @@
         }
       ],
       "version": 9,
-      "last_synced_at": "2026-07-26T15:07:56.515216",
-      "image_status": "Verified_Live_CDN",
+      "last_synced_at": "2026-07-26T16:40:35.699831",
+      "image_status": "Verified_Real_Phinf_CDN",
       "status": "ACTIVE"
     }
   ],
