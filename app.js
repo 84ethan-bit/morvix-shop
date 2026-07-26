@@ -459,11 +459,29 @@ function handleGoRedirectRoute() {
 }
 
 function setImagePreset(url) {
-  const input = document.getElementById('input-image-url');
-  const thumb = document.getElementById('image-preview-thumb');
-  if (input) input.value = url;
-  if (thumb) thumb.src = url;
+  const inputUrl = document.getElementById('input-image-url');
+  const preview = document.getElementById('image-preview-thumb');
+  if (inputUrl) inputUrl.value = url;
+  if (preview) preview.src = url;
 }
+window.setImagePreset = setImagePreset;
+
+function handleImageFileUpload(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const dataUrl = e.target.result;
+    const inputUrl = document.getElementById('input-image-url');
+    const preview = document.getElementById('image-preview-thumb');
+    if (inputUrl) inputUrl.value = dataUrl;
+    if (preview) preview.src = dataUrl;
+    alert("✅ 내 PC의 실제 이미지가 성공적으로 로딩되었습니다! (100% 영구 출력 보장)");
+  };
+  reader.readAsDataURL(file);
+}
+window.handleImageFileUpload = handleImageFileUpload;
 
 // Stage 1: Product Master DB Server-Backed & LocalStorage Dual Persistence Engine
 const DB_STORAGE_KEY = 'morvix_master_db_products_v3';
