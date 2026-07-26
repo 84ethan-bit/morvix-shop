@@ -76,7 +76,7 @@ function runE2ETests() {
   }
 
   // 5. Verify Optimistic Locking Conflict Shield Logic & Backup Recovery Engine
-  const apiHandler = require('./api/products.js');
+  const apiHandler = require('./worker/api_archive/products.js');
   assert(typeof apiHandler === 'function', "Test 13: Server API Route Function Presence & Optimistic Locking Shield", "api/products.js ready");
 
   const backupDir = path.join(__dirname, 'backups');

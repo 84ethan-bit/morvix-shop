@@ -1,13 +1,3 @@
 {
-  "cleanUrls": true,
-  "rewrites": [
-    {
-      "source": "/(summer|kitchen|clean|car|life)/(.*)",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/(fan001|blanket001|car001|mosquito001)",
-      "destination": "/index.html"
-    }
-  ]
+  "cleanUrls": true
 }
