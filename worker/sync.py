@@ -10,6 +10,8 @@ if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
 from logger import append_sync_log
+from affiliate_worker import process_product_affiliates
+from publishing_worker import generate_publishing_assets
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(BASE_DIR, "morvix_shop_db.json")
@@ -98,6 +100,11 @@ def run_worker_sync():
                 print(f"  [WARN] Exception checking [{platform}]: {e}")
                 error_logs.append(f"{slug} [{platform}]: {str(e)[:60]}")
 
+        # 3. Sub-Worker Processing: Affiliate & Publishing Assets
+        p = process_product_affiliates(p)
+        p = generate_publishing_assets(p)
+
+        # 4. Master Version Increment & Image Status Audit
         if prod_success:
             success_count += 1
         else:
