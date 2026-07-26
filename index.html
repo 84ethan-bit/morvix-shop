@@ -156,6 +156,7 @@
         <button class="admin-tab" data-tab="tab-analytics" onclick="switchAdminTab('tab-analytics')">📊 클릭/전환 분석</button>
         <button class="admin-tab" data-tab="tab-all-products" onclick="switchAdminTab('tab-all-products')">📦 등록 상품 관리</button>
         <button class="admin-tab" data-tab="tab-worker-monitor" onclick="switchAdminTab('tab-worker-monitor')">🤖 Worker 모니터링</button>
+        <button class="admin-tab" data-tab="tab-affiliate-center" onclick="switchAdminTab('tab-affiliate-center')">🔐 Affiliate Session Center</button>
       </div>
 
       <div class="admin-tab-content active" id="tab-add-product">
@@ -465,6 +466,60 @@
               <!-- Injected by JavaScript -->
             </tbody>
           </table>
+        </div>
+      </div>
+
+      <!-- 🔐 Affiliate Session Center Tab (CTO Operational Module) -->
+      <div class="admin-tab-content" id="tab-affiliate-center">
+        <div style="background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.4);">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px; margin-bottom: 16px;">
+            <h3 style="color: #6366f1; margin: 0; font-size: 1.1rem;">🔐 Affiliate Session Center (제휴 계정 관제 센터)</h3>
+            <span style="background: rgba(255,190,11,0.15); color: #ffbe0b; border: 1px solid rgba(255,190,11,0.3); padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">🔑 STEP 1 LOGIN PAIRING MODULE</span>
+          </div>
+
+          <!-- 계정 관리 2대 카드 -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px;">
+            <!-- 쿠팡 카드 -->
+            <div style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <strong style="color: #38bdf8; font-size: 1rem;">🛒 Coupang Partners</strong>
+                <span id="affiliate-status-coupang" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b; padding: 3px 10px; border-radius: 12px; font-weight: 700; font-size: 0.8rem;">🔴 로그인 필요 (STEP 1)</span>
+              </div>
+              <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 14px;">
+                마지막 세션 검증: <span id="affiliate-time-coupang">2026-07-26 19:32</span>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="preset-btn" onclick="triggerAffiliateLogin('coupang')" style="background: var(--primary-gradient); color: #fff; font-weight: 800; padding: 8px 14px;">🔐 STEP 1 대화형 로그인</button>
+                <button type="button" class="preset-btn" onclick="checkAffiliateSession('coupang')" style="background: rgba(255,255,255,0.1); color: #fff;">🔄 세션 검증</button>
+              </div>
+            </div>
+
+            <!-- 네이버 카드 -->
+            <div style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <strong style="color: #10b981; font-size: 1rem;">🟢 Naver Shopping Connect</strong>
+                <span id="affiliate-status-naver" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b; padding: 3px 10px; border-radius: 12px; font-weight: 700; font-size: 0.8rem;">🔴 로그인 필요 (STEP 1)</span>
+              </div>
+              <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 14px;">
+                마지막 세션 검증: <span id="affiliate-time-naver">2026-07-26 19:32</span>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="preset-btn" onclick="triggerAffiliateLogin('naver')" style="background: var(--primary-gradient); color: #fff; font-weight: 800; padding: 8px 14px;">🔐 STEP 1 대화형 로그인</button>
+                <button type="button" class="preset-btn" onclick="checkAffiliateSession('naver')" style="background: rgba(255,255,255,0.1); color: #fff;">🔄 세션 검증</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 실시간 제휴 링크 발급 테스트 테스터 -->
+          <div style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 16px;">
+            <h4 style="color: #ffbe0b; margin-bottom: 12px; font-size: 0.95rem;">🧪 라이브 제휴 링크 발급 & 메타데이터 추출 테스터 (STEP 2)</h4>
+            <div style="display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap;">
+              <input type="url" id="test-affiliate-url" placeholder="상품 URL 입력 (예: https://www.coupang.com/vp/products/...)" style="flex: 1; padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #fff; min-width: 240px;">
+              <button type="button" onclick="testAffiliateLinkIssuance('coupang')" style="background: #38bdf8; color: #000; font-weight: 800; padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer;">🧪 쿠팡 발급 테스트</button>
+              <button type="button" onclick="testAffiliateLinkIssuance('naver')" style="background: #10b981; color: #000; font-weight: 800; padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer;">🧪 네이버 발급 테스트</button>
+            </div>
+            <div id="test-affiliate-output" style="background: rgba(0,0,0,0.6); padding: 14px; border-radius: 6px; font-family: monospace; font-size: 0.82rem; color: #38bdf8; display: none; white-space: pre-wrap; word-break: break-all;"></div>
+          </div>
         </div>
       </div>
     </div>
