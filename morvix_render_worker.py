@@ -2,11 +2,36 @@ import os
 import json
 import sys
 import time
+import subprocess
 from datetime import datetime
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
+
+# ─────────────────────────────────────────────────
+# AUTO-INSTALL PLAYWRIGHT CHROMIUM ON RENDER STARTUP
+# ─────────────────────────────────────────────────
+def ensure_chromium():
+    try:
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as p:
+            b = p.chromium.launch(headless=True, args=["--no-sandbox"])
+            b.close()
+        print("✅ Playwright Chromium: READY")
+        return True
+    except Exception:
+        print("⚠️ Chromium not found — auto-installing now...")
+        result = subprocess.run(
+            [sys.executable, "-m", "playwright", "install", "chromium"],
+            capture_output=False
+        )
+        print(f"✅ Chromium install complete (exit={result.returncode})")
+        return result.returncode == 0
+
+ensure_chromium()
+# ─────────────────────────────────────────────────
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SESSION_DIR = os.path.join(BASE_DIR, "sessions")
