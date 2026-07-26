@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const DB_PATH = path.join(process.cwd(), 'morvix_shop_db.json');
-const AUDIT_PATH = path.join(process.cwd(), 'worker', 'security_audit.json');
+const AUDIT_PATH = process.env.VERCEL ? path.join('/tmp', 'security_audit.json') : path.join(process.cwd(), 'worker', 'security_audit.json');
 
 const DEFAULT_ADMIN_PIN = process.env.ADMIN_PIN || '7777';
 
