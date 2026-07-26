@@ -907,27 +907,45 @@ window.verifyAndOpenAdmin = verifyAndOpenAdmin;
       if (document.getElementById('input-slug')) document.getElementById('input-slug').value = autoSlug;
       if (document.getElementById('input-episode')) document.getElementById('input-episode').value = `INTERNAL_CASE_EP${nextEpNum}`;
 
-      let fetchedTitle = "모르빅스 검증 꿀템";
+      let fetchedTitle = "";
       let fetchedPrice = 28900;
-      let fetchedImg = "images/fan001.jpg";
+      let fetchedImg = "";
 
+      // 1. Client-Side Naver Query Parameter & Keyword Extraction
       try {
-        const apiRes = await fetch(`/api/extract?url=${encodeURIComponent(rawUrl)}`);
-        if (apiRes.ok) {
-          const apiData = await apiRes.json();
-          if (apiData && apiData.success) {
-            if (apiData.title && apiData.title.length > 2) fetchedTitle = apiData.title;
-            if (apiData.image) fetchedImg = apiData.image;
-            if (apiData.price) fetchedPrice = apiData.price;
+        const parsedUrl = new URL(rawUrl);
+        const queryParam = parsedUrl.searchParams.get('query') || parsedUrl.searchParams.get('merchantQuery');
+        if (queryParam) {
+          fetchedTitle = decodeURIComponent(queryParam);
+        }
+      } catch (e) {}
+
+      // 2. Fetch OpenGraph Metadata via Public CORS Metadata Service
+      try {
+        const metaRes = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(rawUrl)}`);
+        if (metaRes.ok) {
+          const metaData = await metaRes.json();
+          if (metaData && metaData.data) {
+            if (metaData.data.title && metaData.data.title.length > 2 && !metaData.data.title.includes('NAVER')) {
+              fetchedTitle = metaData.data.title.replace(/[-|:종합쇼핑몰|스마트스토어|쿠팡|네이버].*$/i, '').trim();
+            }
+            if (metaData.data.image && metaData.data.image.url) {
+              fetchedImg = metaData.data.image.url;
+            }
           }
         }
       } catch (err) {
-        console.warn("Auto Ingestion Engine fallback:", err);
+        console.warn("Client-side OpenGraph fetch notice:", err);
+      }
+
+      if (!fetchedTitle) {
+        fetchedTitle = isNaver ? "네이버 쇼핑커넥트 검증 꿀템" : "쿠팡 파트너스 검증 꿀템";
       }
 
       const inferredCat = getAutoCategory(fetchedTitle);
 
-      if (fetchedImg.includes("unsplash") || !fetchedImg || fetchedImg.length < 5) {
+      // Only assign fallback image if NO real image was found
+      if (!fetchedImg || fetchedImg.length < 5) {
         if (inferredCat === "summer") fetchedImg = "images/fan001.jpg";
         else if (inferredCat === "it") fetchedImg = "images/magsafe001.jpg";
         else if (inferredCat === "cleaning") fetchedImg = "images/mosquito001.jpg";
@@ -939,11 +957,14 @@ window.verifyAndOpenAdmin = verifyAndOpenAdmin;
       if (document.getElementById('input-price')) document.getElementById('input-price').value = fetchedPrice;
       if (document.getElementById('input-category')) document.getElementById('input-category').value = inferredCat;
       if (document.getElementById('input-subtitle')) document.getElementById('input-subtitle').value = `${fetchedTitle} - 일상의 불편함을 3초 만에 완벽 해결하는 솔루션`;
+      
+      const previewThumb = document.getElementById('image-preview-thumb');
+      if (previewThumb) previewThumb.src = fetchedImg;
 
       btnAutoFetch.disabled = false;
       btnAutoFetch.textContent = '⚡ 상품 정보 1초 자동 가져오기';
 
-      alert(`⚡ [MORVIX Auto Import Engine 분류 완료!]\n\n• 상품명: ${fetchedTitle}\n• 실시간 가격: ${fetchedPrice.toLocaleString()}원\n• 100% 자동 추론 카테고리: [${inferredCat.toUpperCase()}]\n• 단축 슬러그: morvix.kr/${autoSlug}`);
+      alert(`⚡ [MORVIX Auto Import Engine 분류 완료!]\n\n• 상품명: ${fetchedTitle}\n• 실시간 가격: ${fetchedPrice.toLocaleString()}원\n• 카테고리: [${inferredCat.toUpperCase()}]\n• 대표 이미지: ${fetchedImg.substring(0, 40)}...\n• 단축 슬러그: morvix.kr/${autoSlug}`);
     });
   }
 
@@ -979,7 +1000,7 @@ window.verifyAndOpenAdmin = verifyAndOpenAdmin;
       const linkNaver = document.getElementById('input-link-naver') ? document.getElementById('input-link-naver').value.trim() : '';
       
       const rawImg = document.getElementById('input-image-url') ? document.getElementById('input-image-url').value.trim() : '';
-      const imageUrl = rawImg || 'https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80';
+      const imageUrl = rawImg || 'images/fan001.jpg';
       const imgStatus = rawImg ? 'Verified' : 'Manual';
 
       const rawSub = document.getElementById('input-subtitle') ? document.getElementById('input-subtitle').value.trim() : '';
