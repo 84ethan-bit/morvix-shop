@@ -1,9 +1,0 @@
-# MORVIX SHOP OS - Robots Exclusion Protocol
-User-agent: *
-Allow: /
-Allow: /fan001
-Allow: /blanket001
-Allow: /car001
-Allow: /mosquito001
-
-Sitemap: https://morvix.vercel.app/sitemap.xml
