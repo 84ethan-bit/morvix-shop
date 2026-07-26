@@ -43,7 +43,10 @@ def run_worker_sync():
         name = p.get("name", "Unnamed")
         print(f"\n[LOG] [{idx}/{total_count}] Checking Product: {name} (morvix.kr/{slug})")
 
-        # 1. Price History Audit
+        # 1. Status & Price History Audit
+        if not p.get("status"):
+            p["status"] = "ACTIVE"
+
         current_price = p.get("price")
         history = p.get("price_history", [])
         if not history and current_price:
