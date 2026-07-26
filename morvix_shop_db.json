@@ -38,14 +38,14 @@
         {
           "platform": "coupang",
           "label": "🛒 쿠팡 파트너스 최저가 확인 ➔",
-          "url": "https://link.coupang.com/a/morvix_fan001",
+          "url": "https://link.coupang.com/a/bC01fan",
           "priority": 1,
           "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
         },
         {
           "platform": "naver",
           "label": "🟢 네이버 쇼핑커넥트 최저가 확인 ➔",
-          "url": "https://search.shopping.naver.com/search/all?query=%EC%8B%A0%EC%9D%BC%20%EC%84%9C%ED%81%98%EB%A0%88%EC%9D%B4%ED%84%B0%20BLDC",
+          "url": "https://search.shopping.naver.com/search/all?query=신일%20서큘레이터%20BLDC",
           "priority": 2,
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
@@ -72,7 +72,7 @@
           "date": "2026-07-26T04:46:53.326874"
         }
       ],
-      "version": 10,
+      "version": 11,
       "last_synced_at": "2026-07-26T15:44:58.670589",
       "image_status": "Verified_Real_Phinf_CDN",
       "status": "ACTIVE"
@@ -115,14 +115,14 @@
         {
           "platform": "coupang",
           "label": "🛒 쿠팡 파트너스 최저가 확인 ➔",
-          "url": "https://link.coupang.com/a/morvix_blanket001",
+          "url": "https://link.coupang.com/a/bC02blanket",
           "priority": 1,
           "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
         },
         {
           "platform": "naver",
           "label": "🟢 네이버 쇼핑커넥트 최저가 확인 ➔",
-          "url": "https://search.shopping.naver.com/search/all?query=%EC%B4%88%EB%83%89%EA%B0%90%20%EC%96%BC%EC%9D%8C%20%EC%BF%8B%EB%A7%81%20%EC%9D%B4%B6%88",
+          "url": "https://search.shopping.naver.com/search/all?query=모르빅스%20초냉감%20얼음%20이불",
           "priority": 2,
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
@@ -149,7 +149,7 @@
           "date": "2026-07-26T04:46:54.886221"
         }
       ],
-      "version": 9,
+      "version": 10,
       "last_synced_at": "2026-07-26T16:40:29.430422",
       "image_status": "Verified_Real_Phinf_CDN",
       "status": "ACTIVE"
@@ -192,14 +192,14 @@
         {
           "platform": "coupang",
           "label": "🛒 쿠팡 파트너스 최저가 확인 ➔",
-          "url": "https://link.coupang.com/a/morvix_mosquito001",
+          "url": "https://link.coupang.com/a/bC03mosquito",
           "priority": 1,
           "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
         },
         {
           "platform": "naver",
           "label": "🟢 네이버 쇼핑커넥트 최저가 확인 ➔",
-          "url": "https://search.shopping.naver.com/search/all?query=%EB%93%8D%ED%94%8C%EB%A0%89%EC%8A%A4%20%EB%AA%A8%EA%B8%B0%ED%87%B4%EC%B9%98%EA%B8%B0",
+          "url": "https://search.shopping.naver.com/search/all?query=듀플렉스%2019W%20모기%20포충기",
           "priority": 2,
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
@@ -226,7 +226,7 @@
           "date": "2026-07-26T04:46:56.359846"
         }
       ],
-      "version": 9,
+      "version": 10,
       "last_synced_at": "2026-07-26T16:40:33.075237",
       "image_status": "Verified_Real_Phinf_CDN",
       "status": "ACTIVE"
@@ -269,14 +269,14 @@
         {
           "platform": "coupang",
           "label": "🛒 쿠팡 파트너스 최저가 확인 ➔",
-          "url": "https://link.coupang.com/a/morvix_magsafe001",
+          "url": "https://link.coupang.com/a/bC04magsafe",
           "priority": 1,
           "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
         },
         {
           "platform": "naver",
           "label": "🟢 네이버 쇼핑커넥트 최저가 확인 ➔",
-          "url": "https://search.shopping.naver.com/search/all?query=3in1%20%EB%A7%A5%EC%84%B8%EC%9D%B4%ED%94%84%20%EB%8D%B0%EC%8A%A4%ED%81%98%20%EA%B1%B0%EC%B9%98%EB%8C%80",
+          "url": "https://search.shopping.naver.com/search/all?query=3in1%20마그네틱%20데스크%20거치대",
           "priority": 2,
           "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
         }
@@ -303,7 +303,7 @@
           "date": "2026-07-26T04:46:57.761330"
         }
       ],
-      "version": 9,
+      "version": 10,
       "last_synced_at": "2026-07-26T16:40:35.699831",
       "image_status": "Verified_Real_Phinf_CDN",
       "status": "ACTIVE"
