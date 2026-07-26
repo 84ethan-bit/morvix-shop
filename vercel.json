@@ -1,35 +1,13 @@
 {
-  "version": 2,
   "cleanUrls": true,
-  "trailingSlash": false,
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "source": "/(summer|kitchen|clean|car|life)/(.*)",
+      "destination": "/index.html"
     },
     {
-      "src": "/images/(.*)",
-      "dest": "/images/$1"
-    },
-    {
-      "src": "/public/(.*)",
-      "dest": "/public/$1"
-    },
-    {
-      "src": "/(.*)\\.(jpg|jpeg|png|gif|svg|webp|ico|css|js|json)",
-      "dest": "/$1.$2"
-    },
-    {
-      "src": "/(summer|kitchen|clean|car|life)/(.*)",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/(fan001|blanket001|car001|mosquito001)",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(fan001|blanket001|car001|mosquito001)",
+      "destination": "/index.html"
     }
   ]
 }
