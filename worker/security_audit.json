@@ -1,0 +1,20 @@
+[
+  {
+    "timestamp": "2026-07-26T04:12:22.912Z",
+    "type": "VERSION_CONFLICT_409",
+    "client_ip": "127.0.0.1",
+    "details": {
+      "server_version": 6,
+      "requested_version": 5
+    }
+  },
+  {
+    "timestamp": "2026-07-26T04:12:22.909Z",
+    "type": "UNAUTHORIZED_ATTEMPT_401",
+    "client_ip": "127.0.0.1",
+    "details": {
+      "endpoint": "/api/products",
+      "method": "POST"
+    }
+  }
+]
