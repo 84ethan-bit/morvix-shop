@@ -908,8 +908,8 @@ window.verifyAndOpenAdmin = verifyAndOpenAdmin;
       if (document.getElementById('input-episode')) document.getElementById('input-episode').value = `INTERNAL_CASE_EP${nextEpNum}`;
 
       let fetchedTitle = "모르빅스 검증 꿀템";
-      let fetchedImg = "https://images.unsplash.com/photo-1618941709602-92849f611320?w=800&auto=format&fit=crop&q=80";
       let fetchedPrice = 28900;
+      let fetchedImg = "images/fan001.jpg";
 
       try {
         const apiRes = await fetch(`/api/extract?url=${encodeURIComponent(rawUrl)}`);
@@ -926,6 +926,13 @@ window.verifyAndOpenAdmin = verifyAndOpenAdmin;
       }
 
       const inferredCat = getAutoCategory(fetchedTitle);
+
+      if (fetchedImg.includes("unsplash") || !fetchedImg || fetchedImg.length < 5) {
+        if (inferredCat === "summer") fetchedImg = "images/fan001.jpg";
+        else if (inferredCat === "it") fetchedImg = "images/magsafe001.jpg";
+        else if (inferredCat === "cleaning") fetchedImg = "images/mosquito001.jpg";
+        else fetchedImg = "images/blanket001.jpg";
+      }
 
       if (document.getElementById('input-name')) document.getElementById('input-name').value = fetchedTitle;
       if (document.getElementById('input-image-url')) document.getElementById('input-image-url').value = fetchedImg;
