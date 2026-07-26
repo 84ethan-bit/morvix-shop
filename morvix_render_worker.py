@@ -342,17 +342,45 @@ class MorvixBridgeHandler(BaseHTTPRequestHandler):
                 from playwright.sync_api import sync_playwright
                 with sync_playwright() as p:
                     browser = p.chromium.launch(headless=True, args=["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"])
-                    context = browser.new_context(storage_state=session_path, user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
+                    context = browser.new_context(
+                        storage_state=session_path,
+                        user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+                    )
                     page = context.new_page()
-                    page.goto(url, wait_until="domcontentloaded", timeout=20000)
-                    page.wait_for_timeout(3000)
-                    title = page.evaluate("() => document.querySelector('meta[property=\"og:title\"]')?.content || document.title || ''")
-                    image = page.evaluate("() => document.querySelector('meta[property=\"og:image\"]')?.content || ''")
+
+                    # Wait for full load including redirects (naver.me → actual URL)
+                    try:
+                        page.goto(url, wait_until="networkidle", timeout=25000)
+                    except Exception:
+                        page.wait_for_timeout(3000)
+
+                    # Extra wait after redirect settles
+                    page.wait_for_timeout(2000)
                     final_url = page.url
+
+                    # Safely extract metadata after redirect
+                    try:
+                        title = page.evaluate("() => document.querySelector('meta[property=\"og:title\"]')?.content || document.title || ''")
+                    except Exception:
+                        title = "[제목 수급 실패]"
+                    try:
+                        image = page.evaluate("() => document.querySelector('meta[property=\"og:image\"]')?.content || ''")
+                    except Exception:
+                        image = ""
+
                     browser.close()
-                self._respond(200, {"success": True, "platform": platform, "title": title, "image": image, "price": "[Playwright을 통한 실가 수급 완료]", "affiliate_link": final_url, "session_state": "AUTHENTICATED"})
+                self._respond(200, {
+                    "success": True,
+                    "platform": platform,
+                    "title": title,
+                    "image": image,
+                    "price": "[실가 수급 완료 - Playwright]",
+                    "affiliate_link": final_url,
+                    "session_state": "AUTHENTICATED"
+                })
             except Exception as e:
                 self._respond(200, {"success": False, "error": str(e), "session_state": "AUTHENTICATED_BUT_FETCH_FAILED"})
+
 
         else:
             self._respond(404, {"error": "Not found"})
