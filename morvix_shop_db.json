@@ -311,5 +311,21 @@
   ],
   "db_version": 6,
   "expected_version": 5,
-  "updated_at": "2026-07-26T04:07:44.426Z"
+  "updated_at": "2026-07-26T04:07:44.426Z",
+  "poc_browser_automation": {
+    "timestamp": "2026-07-26T13:56:57.636523",
+    "coupang_partners": {
+      "status": "FAIL",
+      "steps": {},
+      "block_reason": "HTTP 403 Akamai Bot Shield (Cloudflare/Akamai Edge Firewall)"
+    },
+    "naver_connect": {
+      "status": "FAIL",
+      "steps": {
+        "landing": "PASS",
+        "dom_audit": "PASS"
+      },
+      "block_reason": "Requires Naver OAuth NID Session Cookie Authentication"
+    }
+  }
 }
