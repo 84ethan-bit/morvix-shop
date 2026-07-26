@@ -11,9 +11,13 @@ if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
 # ─────────────────────────────────────────────────
-# AUTO-INSTALL PLAYWRIGHT CHROMIUM IN BACKGROUND
-# (Server starts immediately, Chromium installs async)
+# FORCE PLAYWRIGHT BROWSERS INTO PROJECT DIRECTORY
+# So Chromium persists across Render deploys
 # ─────────────────────────────────────────────────
+PLAYWRIGHT_CACHE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.playwright-cache')
+os.environ['PLAYWRIGHT_BROWSERS_PATH'] = PLAYWRIGHT_CACHE
+print(f"📦 PLAYWRIGHT_BROWSERS_PATH = {PLAYWRIGHT_CACHE}")
+
 CHROMIUM_READY = False
 
 def install_chromium_background():
@@ -39,6 +43,8 @@ def install_chromium_background():
 
 threading.Thread(target=install_chromium_background, daemon=True).start()
 # ─────────────────────────────────────────────────
+
+
 
 
 
