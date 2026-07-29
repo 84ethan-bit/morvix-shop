@@ -196,7 +196,7 @@ def harvest_sharelink_portal():
         update_db_with_deals(harvested_deals)
 
 def update_db_with_deals(deals):
-    """수집된 핫딜을 morvix_shop_db.json에 반영"""
+    """수집된 핫딜을 morvix_shop_db.json에 반영 (5대 항목 100% 무결성 검증 게이트적용)"""
     if not os.path.exists(DB_PATH):
         db = {"products": []}
     else:
@@ -207,11 +207,31 @@ def update_db_with_deals(deals):
     now = datetime.now()
 
     count_added = 0
+    rejected_count = 0
+
     for d in deals:
-        if not d['name']: continue
-        
+        name = d.get('name', '').strip()
+        price = d.get('price', 0)
+        discount = d.get('discount_rate', '')
+        thumb = d.get('thumbnail', '')
+        share_link = d.get('share_link', '')
+
+        # ------------------------------------------------------------------
+        # 5대 무결성 검증 게이트 (Validation Gate Keeper)
+        # ------------------------------------------------------------------
+        is_valid_name = len(name) >= 3 and not re.match(r'^\d+(\.\d+)?\s*\(', name) # "4.7 (499)" 같은 평점 텍스트 오파싱 차단
+        is_valid_price = isinstance(price, int) and price >= 500
+        is_valid_discount = bool(re.search(r'\d+[%％]', discount))
+        is_valid_thumb = bool(thumb and thumb.startswith('http') and ('toss.im' in thumb or 'pstatic' in thumb))
+        is_valid_link = bool(share_link and share_link.startswith('https://toss.im/_m/'))
+
+        if not (is_valid_name and is_valid_price and is_valid_discount and is_valid_thumb and is_valid_link):
+            rejected_count += 1
+            print_log(f"🛑 [검증 실패 차단] {name[:25]} (사유: Name:{is_valid_name}, Price:{is_valid_price}, Disc:{is_valid_discount}, Thumb:{is_valid_thumb}, Link:{is_valid_link})")
+            continue
+
         # 중복 체크 (상품명 기준)
-        if any(p.get('name') == d['name'] for p in existing):
+        if any(p.get('name') == name for p in existing):
             continue
 
         slug = f"toss_{int(time.time())}_{count_added}"
@@ -221,14 +241,14 @@ def update_db_with_deals(deals):
             "id": f"TOSS-AUTO-{int(time.time())}-{count_added}",
             "slug": slug,
             "short_url": f"morvix.kr/{slug}",
-            "name": d['name'],
-            "subtitle": f"토스 파트너 특가 {d['discount_rate']} 적용",
+            "name": name,
+            "subtitle": f"토스 파트너 특가 {discount} 적용",
             "category": "life",
             "status": "ACTIVE",
             "is_featured": True,
-            "price": d['price'],
-            "original_price": int(d['price'] * 1.35),
-            "discount_rate": d['discount_rate'],
+            "price": price,
+            "original_price": int(price * 1.35),
+            "discount_rate": discount,
             "rating": 4.9,
             "review_count": 128,
             "usps": ["토스 쉐어링크 공식 제휴 특가", "실사용자 만족도 1위"],
@@ -236,12 +256,12 @@ def update_db_with_deals(deals):
                 {
                     "platform": "toss",
                     "label": "💙 토스할인가 확인 ➔",
-                    "url": d['share_link'],
+                    "url": share_link,
                     "priority": 1,
                     "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
                 }
             ],
-            "thumbnail": d['thumbnail'],
+            "thumbnail": thumb,
             "analytics": {"clicks_count": 1, "platform_clicks": {"toss": 1}, "conversions_count": 0, "ctr": 5.0},
             "added_date": now.isoformat(),
             "expiry_date": expiry_date
@@ -249,12 +269,12 @@ def update_db_with_deals(deals):
         existing.insert(0, prod_entry)
         count_added += 1
 
-    db["products"] = existing[:50] # 최신 50개 유지
+    db["products"] = existing[:40]
 
     with open(DB_PATH, "w", encoding="utf-8") as f:
         json.dump(db, f, ensure_ascii=False, indent=2)
 
-    print_log(f"🎉 morvix_shop_db.json {count_added}개 신규 핫딜 등록 완료!")
+    print_log(f"🎉 morvix_shop_db.json {count_added}개 신규 정상 핫딜 등록 완료! (불량 차단: {rejected_count}개)")
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--save-session":
