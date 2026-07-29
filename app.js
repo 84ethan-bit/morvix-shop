@@ -2,6 +2,19 @@
    MORVIX SHOP OS v3.1 - Master DB Lifecycle Engine & Smart Auto Classifier
    ========================================================================== */
 
+function openTossMobileView(url, e) {
+  if (!url) return;
+  // If user is on Desktop PC (screen width > 768px), open in a smartphone-shaped window to bypass PC desktop blocks
+  if (window.innerWidth > 768) {
+    if (e) e.preventDefault();
+    const width = 440;
+    const height = 860;
+    const left = Math.round((window.screen.width / 2) - (width / 2));
+    const top = Math.round((window.screen.height / 2) - (height / 2));
+    window.open(url, 'TossMobileShopping', `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,resizable=yes`);
+  }
+}
+
 const INITIAL_DB_DATA = {
   "store_info": {
     "brand_name": "MORVIX SHOP OS",
@@ -321,7 +334,7 @@ function openProductDetail(slug) {
 
         <div class="affiliate-cta-group" style="display: flex; flex-direction: column; gap: 10px; margin-top: 18px;">
           ${linksArray.map(link => `
-            <a href="${link.url}" target="_blank" class="btn-affiliate-cta" onclick="registerAffiliateConversion('${product.slug}', '${link.platform}')" style="background: ${link.bg_gradient || 'linear-gradient(135deg, #00f2fe, #4facfe)'}; color: #fff; text-align: center; padding: 14px; border-radius: var(--radius-md); font-weight: 700; text-decoration: none; display: block; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+            <a href="${link.url}" target="_blank" class="btn-affiliate-cta" onclick="openTossMobileView('${link.url}', event); registerAffiliateConversion('${product.slug}', '${link.platform}')" style="background: ${link.bg_gradient || 'linear-gradient(135deg, #00f2fe, #4facfe)'}; color: #fff; text-align: center; padding: 14px; border-radius: var(--radius-md); font-weight: 700; text-decoration: none; display: block; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
               ${link.label}
             </a>
           `).join('')}
