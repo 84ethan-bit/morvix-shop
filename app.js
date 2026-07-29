@@ -182,13 +182,13 @@ function renderCategories() {
   container.innerHTML = categories.map(cat => {
     const isActive = currentCategory === cat.id;
     return `
-      <button class="category-btn ${isActive ? 'active' : ''}" data-cat="${cat.id}" style="padding: 8px 16px; border-radius: 14px; font-size: 0.82rem; font-weight: 800; white-space: nowrap; cursor: pointer; transition: all 0.2s; ${isActive ? 'background: #333D4B; color: #ffffff; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.15);' : 'background: #ffffff; color: #6B7684; border: 1px solid #E5E8EB;'}">
+      <button class="cat-pill ${isActive ? 'active' : ''}" data-cat="${cat.id}">
         ${cat.name}
       </button>
     `;
   }).join('');
 
-  container.querySelectorAll('.category-btn').forEach(btn => {
+  container.querySelectorAll('.cat-pill').forEach(btn => {
     btn.addEventListener('click', (e) => {
       currentCategory = e.currentTarget.getAttribute('data-cat');
       renderCategories();
@@ -246,29 +246,35 @@ function renderProducts() {
     const isMega = parseInt(p.discount_rate) >= 90;
     const priceStr = p.price ? p.price.toLocaleString() + '원' : '특가 확인';
     const origPriceStr = p.original_price ? p.original_price.toLocaleString() + '원' : '';
+    const catName = p.category ? p.category.toUpperCase() : 'HOTDEAL';
 
     return `
-      <div class="product-card" onclick="openProductDetail('${p.slug}')" style="${isMega ? 'background: linear-gradient(135deg, rgba(255, 120, 0, 0.12), rgba(255, 0, 0, 0.08)); border: 2px solid #ff7800;' : ''}">
-        <div class="card-image-wrapper">
-          <img class="card-image" src="${p.thumbnail}" alt="${p.name}" referrerpolicy="no-referrer">
-          ${isMega ? '<span class="badge-featured" style="background: linear-gradient(135deg, #ff4757, #ff6b81); color:#fff;">🔥 MEGA 90%+</span>' : (p.is_featured ? '<span class="badge-featured">🔥 HOT 핫딜</span>' : '')}
-          <span class="badge-episode" style="background: rgba(0, 82, 204, 0.8); color: #fff;">${p.category ? p.category.toUpperCase() : 'HOTDEAL'}</span>
+      <div class="product-card-v2" onclick="openProductDetail('${p.slug}')">
+        <!-- 1. Pure Image Frame with Inner Padding & Soft Background (Max 1 Badge) -->
+        <div class="card-thumb-frame">
+          <img class="card-thumb-img" src="${p.thumbnail}" alt="${p.name}" referrerpolicy="no-referrer">
+          ${isMega ? '<span class="badge-minimal">🔥 MEGA 90%+</span>' : (p.is_featured ? '<span class="badge-minimal">🔥 HOT 핫딜</span>' : '')}
         </div>
-        <div class="card-content" style="padding-top: 10px;">
-          <div style="font-size: 0.75rem; color: #8B95A1; font-weight: 600; margin-bottom: 4px;">
-            <span style="font-weight: 700; color: #333D4B;">토스쇼핑</span> • <span>${p.category ? p.category.toUpperCase() : '꿀템'}</span>
-          </div>
-          <h3 class="card-title" style="font-size: 0.92rem; font-weight: 800; color: #191F28; line-height: 1.35; height: 2.5rem; overflow: hidden; margin-bottom: 6px;">${p.name}</h3>
-          
-          <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px;">
-            <span style="font-size: 1.05rem; font-weight: 900; color: #F04452;">${p.discount_rate || '30%'}</span>
-            <span style="font-size: 1.05rem; font-weight: 900; color: #191F28;">${priceStr}</span>
-            ${origPriceStr ? `<span style="font-size: 0.78rem; color: #B0B8C1; text-decoration: line-through;">${origPriceStr}</span>` : ''}
+
+        <!-- 2. Text Section with Top Sub-Tag Line -->
+        <div class="card-info-wrap">
+          <div class="card-top-tagline">
+            <span>토스쇼핑</span>
+            <span class="category-name">• ${catName}</span>
           </div>
 
-          <div class="card-meta">
-            <button class="btn-card-buy" onclick="event.stopPropagation(); openProductDetail('${p.slug}');" style="background: linear-gradient(135deg, #0052cc, #2684ff); color: #fff; font-weight: 800; width: 100%; border-radius: 8px; padding: 10px;">💙 토스할인가 확인 ➔</button>
+          <h3 class="card-item-title">${p.name}</h3>
+
+          <div class="card-price-row">
+            <span class="card-discount-text">${p.discount_rate || '30%'}</span>
+            <span class="card-price-text">${priceStr}</span>
+            ${origPriceStr ? `<span class="card-orig-price">${origPriceStr}</span>` : ''}
           </div>
+
+          <!-- 3. Subtle Ghost Outline Hover Button (Sleek & Clean) -->
+          <button class="btn-card-ghost" onclick="event.stopPropagation(); openProductDetail('${p.slug}');">
+            토스할인가 확인 ➔
+          </button>
         </div>
       </div>
     `;
