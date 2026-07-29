@@ -1336,8 +1336,11 @@ function parseAndAutoPublishDealText() {
 
   const inferredCat = getAutoCategory(extractedTitle);
   const timeSlug = `toss_${Date.now().toString(36)}`;
-  const catPreset = CATEGORY_PRESETS[inferredCat] || CATEGORY_PRESETS.life;
-  const imageThumb = (catPreset && catPreset[0]) ? catPreset[0] : 'images/fan001.jpg';
+  let imageThumb = "images/fan001.jpg";
+  if (inferredCat === "summer") imageThumb = "images/fan001.jpg";
+  else if (inferredCat === "it") imageThumb = "images/magsafe001.jpg";
+  else if (inferredCat === "cleaning") imageThumb = "images/mosquito001.jpg";
+  else imageThumb = "images/blanket001.jpg";
 
   const newProduct = {
     id: `PROD-${Date.now()}`,
