@@ -129,24 +129,8 @@ async function initShopOS() {
     if (res.ok) {
       const fetched = await res.json();
       if (fetched && Array.isArray(fetched.products)) {
-        // Merge fetched products with local storage products to prevent overwriting user-added products
-        const localProds = dbData.products || [];
-        const mergedMap = new Map();
-        
-        // Add fetched items first
-        fetched.products.forEach(p => mergedMap.set(p.slug || p.id, p));
-        // Add/overwrite with local user items (filtering out only legacy mock test items)
-        const legacyTestSlugs = ['fan001', 'blanket001', 'mosquito001', 'magsafe001'];
-        const legacyTestIds = ['PROD-010', 'PROD-009', 'PROD-008', 'PROD-007'];
-
-        localProds.forEach(p => {
-          const key = p.slug || p.id;
-          if (!legacyTestSlugs.includes(key) && !legacyTestIds.includes(p.id)) {
-            mergedMap.set(key, p);
-          }
-        });
-        
-        dbData.products = Array.from(mergedMap.values()).filter(p => !legacyTestSlugs.includes(p.slug) && !legacyTestIds.includes(p.id));
+        // Use fetched server products directly as authoritative source of truth
+        dbData.products = fetched.products;
         saveMasterDbToStorage();
       }
     }
