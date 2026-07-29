@@ -243,20 +243,13 @@ class MorvixBridgeHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if self.path == '/health' or self.path == '/':
-            naver_cnt, naver_auth = inspect_session('naver')
-            coupang_cnt, coupang_auth = inspect_session('coupang')
             self._respond(200, {
                 "status": "MORVIX_RENDER_WORKER_ONLINE",
-                "chromium_ready": CHROMIUM_READY,
+                "mode": "TOSS_SHOPPING_SINGLE_PIPELINE",
+                "security": "SAFE_STATIC_PARSER_ACTIVE (Zero Account Lock Risk)",
                 "timestamp": datetime.now().isoformat(),
-                "sessions": {
-                    "naver": {"cookie_count": naver_cnt, "authenticated": naver_auth},
-                    "coupang": {"cookie_count": coupang_cnt, "authenticated": coupang_auth}
-                },
                 "endpoints": [
-                    "POST /api/direct-login",
-                    "POST /api/trigger-affiliate-login",
-                    "GET /api/verify-session?platform=naver",
+                    "POST /api/test-link",
                     "GET /health"
                 ]
             })

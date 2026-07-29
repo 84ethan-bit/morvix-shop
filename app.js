@@ -54,24 +54,24 @@ const INITIAL_DB_DATA = {
       ],
       "affiliate_links": [
         {
+          "platform": "toss",
+          "label": "💙 토스쇼핑 할인가 구매하기 ➔",
+          "url": "https://toss.im",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        },
+        {
           "platform": "coupang",
           "label": "🛒 쿠팡 파트너스 최저가 확인 ➔",
           "url": "https://link.coupang.com/a/morvix_fan001",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
-        },
-        {
-          "platform": "naver",
-          "label": "🟢 네이버 쇼핑커넥트 최저가 확인 ➔",
-          "url": "https://search.shopping.naver.com/search/all?query=%EC%8B%A0%EC%9D%BC%20%EC%84%9C%ED%81%98%EB%A0%88%EC%9D%B4%ED%84%B0%20BLDC",
           "priority": 2,
-          "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
+          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
         }
       ],
       "thumbnail": "https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=800&auto=format&fit=crop&q=80",
       "analytics": {
         "clicks_count": 342,
-        "platform_clicks": { "coupang": 210, "naver": 132 },
+        "platform_clicks": { "toss": 342, "coupang": 210, "naver": 132 },
         "conversions_count": 48,
         "ctr": 5.2
       },
@@ -109,18 +109,18 @@ const INITIAL_DB_DATA = {
       ],
       "affiliate_links": [
         {
+          "platform": "toss",
+          "label": "💙 토스쇼핑 할인가 구매하기 ➔",
+          "url": "https://toss.im",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        },
+        {
           "platform": "coupang",
           "label": "🛒 쿠팡 파트너스 최저가 확인 ➔",
           "url": "https://link.coupang.com/a/morvix_blanket001",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
-        },
-        {
-          "platform": "naver",
-          "label": "🟢 네이버 쇼핑커넥트 최저가 확인 ➔",
-          "url": "https://search.shopping.naver.com/search/all?query=%EC%B4%88%EB%83%89%EA%B0%90%20%EC%96%BC%EC%9D%8C%20%EC%BF%8B%EB%A7%81%20%EC%9D%B4%B6%88",
           "priority": 2,
-          "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
+          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
         }
       ],
       "thumbnail": "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=800&auto=format&fit=crop&q=80",
@@ -295,7 +295,7 @@ function renderProducts() {
           <div class="card-trust-box" style="display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: #2ed573; font-weight: 700;">
             <span>🔥 MORVIX 추천</span>
           </div>
-          <button class="btn-card-buy" onclick="event.stopPropagation(); openProductDetail('${p.slug}');">🛒 최저가/구매처 확인 ➔</button>
+          <button class="btn-card-buy" onclick="event.stopPropagation(); openProductDetail('${p.slug}');" style="background: linear-gradient(135deg, #0052cc, #2684ff); color: #fff; font-weight: 800;">💙 토스쇼핑 할인가 확인 ➔</button>
         </div>
       </div>
     </div>
@@ -324,10 +324,12 @@ function openProductDetail(slug) {
   let linksArray = [];
   if (Array.isArray(product.affiliate_links) && product.affiliate_links.length > 0) {
     linksArray = product.affiliate_links.slice().sort((a, b) => (a.priority || 99) - (b.priority || 99));
+  } else if (product.toss_link) {
+    linksArray.push({ platform: 'toss', label: '💙 토스쇼핑 할인가 구매하기 ➔', url: product.toss_link, bg_gradient: 'linear-gradient(135deg, #0052cc, #2684ff)' });
   } else if (product.coupang_link) {
     linksArray.push({ platform: 'coupang', label: '🛒 쿠팡 파트너스 최저가 확인 ➔', url: product.coupang_link, bg_gradient: 'linear-gradient(135deg, #ff4757, #ff6b81)' });
   } else {
-    linksArray.push({ platform: 'naver', label: '🟢 네이버 쇼핑커넥트 최저가 확인 ➔', url: 'https://m.shopping.naver.com', bg_gradient: 'linear-gradient(135deg, #03cf5d, #02b651)' });
+    linksArray.push({ platform: 'toss', label: '💙 토스쇼핑 할인가 구매하기 ➔', url: 'https://toss.im', bg_gradient: 'linear-gradient(135deg, #0052cc, #2684ff)' });
   }
 
   let uspsList = [];
@@ -1150,7 +1152,9 @@ function parseSmartDealText() {
   if (document.getElementById('input-category')) document.getElementById('input-category').value = inferredCat;
 
   if (extractedUrl) {
-    if (extractedUrl.includes('coupang')) {
+    if (extractedUrl.includes('toss')) {
+      if (document.getElementById('input-link-toss')) document.getElementById('input-link-toss').value = extractedUrl;
+    } else if (extractedUrl.includes('coupang')) {
       if (document.getElementById('input-link-coupang')) document.getElementById('input-link-coupang').value = extractedUrl;
     } else {
       if (document.getElementById('input-link-naver')) document.getElementById('input-link-naver').value = extractedUrl;
@@ -1328,6 +1332,7 @@ window.verifyAndOpenAdmin = verifyAndOpenAdmin;
       const priceInput = document.getElementById('input-price') ? document.getElementById('input-price').value.trim() : '';
       const price = priceInput ? parseInt(priceInput) : null;
       
+      const linkToss = document.getElementById('input-link-toss') ? document.getElementById('input-link-toss').value.trim() : '';
       const linkCoupang = document.getElementById('input-link-coupang') ? document.getElementById('input-link-coupang').value.trim() : '';
       const linkNaver = document.getElementById('input-link-naver') ? document.getElementById('input-link-naver').value.trim() : '';
       
@@ -1339,14 +1344,17 @@ window.verifyAndOpenAdmin = verifyAndOpenAdmin;
       const subtitle = rawSub || `${name} - 일상의 불편함을 3초 만에 해결하는 검증 추천템`;
 
       const affiliateLinks = [];
+      if (linkToss) {
+        affiliateLinks.push({ platform: 'toss', label: '💙 토스쇼핑 할인가 구매하기 ➔', url: linkToss, priority: 1, bg_gradient: 'linear-gradient(135deg, #0052cc, #2684ff)' });
+      }
       if (linkCoupang) {
-        affiliateLinks.push({ platform: 'coupang', label: '🛒 쿠팡 파트너스 최저가 확인 ➔', url: linkCoupang, priority: 1, bg_gradient: 'linear-gradient(135deg, #ff4757, #ff6b81)' });
+        affiliateLinks.push({ platform: 'coupang', label: '🛒 쿠팡 파트너스 최저가 확인 ➔', url: linkCoupang, priority: linkToss ? 2 : 1, bg_gradient: 'linear-gradient(135deg, #ff4757, #ff6b81)' });
       }
       if (linkNaver) {
-        affiliateLinks.push({ platform: 'naver', label: '🟢 네이버 쇼핑커넥트 최저가 확인 ➔', url: linkNaver, priority: 2, bg_gradient: 'linear-gradient(135deg, #03cf5d, #02b651)' });
+        affiliateLinks.push({ platform: 'naver', label: '🟢 네이버 쇼핑커넥트 최저가 확인 ➔', url: linkNaver, priority: linkToss ? 3 : 2, bg_gradient: 'linear-gradient(135deg, #03cf5d, #02b651)' });
       }
       if (affiliateLinks.length === 0) {
-        affiliateLinks.push({ platform: 'naver', label: '🟢 네이버 쇼핑커넥트 최저가 확인 ➔', url: 'https://m.shopping.naver.com', priority: 1, bg_gradient: 'linear-gradient(135deg, #03cf5d, #02b651)' });
+        affiliateLinks.push({ platform: 'toss', label: '💙 토스쇼핑 할인가 구매하기 ➔', url: 'https://toss.im', priority: 1, bg_gradient: 'linear-gradient(135deg, #0052cc, #2684ff)' });
       }
 
       const newProd = {

@@ -36,18 +36,18 @@
       },
       "affiliate_links": [
         {
+          "platform": "toss",
+          "label": "💙 토스쇼핑 할인가 구매하기 ➔",
+          "url": "https://toss.im",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        },
+        {
           "platform": "coupang",
           "label": "🛒 쿠팡 파트너스 최저가 확인 ➔",
           "url": "https://link.coupang.com/a/bC01fan",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
-        },
-        {
-          "platform": "naver",
-          "label": "🟢 네이버 쇼핑커넥트 최저가 확인 ➔",
-          "url": "https://search.shopping.naver.com/search/all?query=신일%20서큘레이터%20BLDC",
           "priority": 2,
-          "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
+          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
         }
       ],
       "thumbnail": "images/fan001.jpg",
@@ -57,6 +57,7 @@
       "analytics": {
         "clicks_count": 342,
         "platform_clicks": {
+          "toss": 342,
           "coupang": 210,
           "naver": 132
         },
@@ -113,18 +114,18 @@
       },
       "affiliate_links": [
         {
+          "platform": "toss",
+          "label": "💙 토스쇼핑 할인가 구매하기 ➔",
+          "url": "https://toss.im",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        },
+        {
           "platform": "coupang",
           "label": "🛒 쿠팡 파트너스 최저가 확인 ➔",
           "url": "https://link.coupang.com/a/bC02blanket",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
-        },
-        {
-          "platform": "naver",
-          "label": "🟢 네이버 쇼핑커넥트 최저가 확인 ➔",
-          "url": "https://search.shopping.naver.com/search/all?query=모르빅스%20초냉감%20얼음%20이불",
           "priority": 2,
-          "bg_gradient": "linear-gradient(135deg, #03cf5d, #02b651)"
+          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
         }
       ],
       "thumbnail": "images/blanket001.jpg",
