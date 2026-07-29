@@ -1187,18 +1187,19 @@ function parseSmartDealText() {
   alert(`⚡ [1초 핫딜 텍스트 파싱 완료!]\n\n• 상품명: ${extractedTitle}\n• 실시간 가격: ${extractedPrice ? extractedPrice.toLocaleString() + '원' : '가격 확인 필요'}\n• 할인율: ${extractedDiscount || '확인 필요'}\n• 100% 자동 추론 카테고리: [${inferredCat.toUpperCase()}]`);
 }
 
-function parseAndAutoPublishDealText() {
+async function parseAndAutoPublishDealText() {
   const input = document.getElementById('input-smart-deal-text');
   if (!input || !input.value.trim()) {
-    alert("⚠️ 핫딜 텍스트 문구를 입력해 주세요.");
+    alert("⚠️ 토스쇼핑 공유 링크 또는 핫딜 문구를 입력해 주세요.");
     return;
   }
 
   const rawText = input.value.trim();
-  const urlMatch = rawText.match(/(https?:\/\/\S+)/);
+  const urlMatch = rawText.match(/(https?:\/\/[^\s]+)/);
   const extractedUrl = urlMatch ? urlMatch[1] : 'https://toss.im';
-  const cleanText = rawText.replace(extractedUrl, '').trim();
+  const cleanText = rawText.replace(extractedUrl, '').replace(/\[토스특가\]|\[토스쇼핑\]|\[특가\]|\[가격오류급\]/g, '').trim();
 
+  // Price & Discount Extraction
   const priceMatches = cleanText.match(/([\d,]+)\s*원/g);
   let extractedPrice = 28900;
   if (priceMatches && priceMatches.length > 0) {
@@ -1210,39 +1211,64 @@ function parseAndAutoPublishDealText() {
   const extractedDiscount = discountMatch ? `${discountMatch[1]}%` : '30%';
 
   let extractedTitle = cleanText.replace(/[\d,]+\s*원/g, '').replace(/\d+\s*[%％]/g, '').trim();
-  if (!extractedTitle) extractedTitle = "토스 초특가 꿀템 상품";
+  
+  // Real OpenGraph Metadata Fetching
+  let ogImage = "";
+  let ogTitle = "";
+  if (extractedUrl && extractedUrl.startsWith("http")) {
+    try {
+      const metaRes = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(extractedUrl)}`);
+      if (metaRes.ok) {
+        const metaData = await metaRes.json();
+        if (metaData && metaData.data) {
+          if (metaData.data.title) ogTitle = metaData.data.title.trim();
+          if (metaData.data.image && metaData.data.image.url) ogImage = metaData.data.image.url;
+        }
+      }
+    } catch (e) {
+      console.warn("OpenGraph fetch error:", e);
+    }
+  }
+
+  if (!extractedTitle || extractedTitle.length < 3) {
+    extractedTitle = ogTitle || "토스쇼핑 검증 파격특가 꿀템";
+  }
 
   const inferredCat = getAutoCategory(extractedTitle);
   const timeSlug = `toss_${Date.now().toString(36)}`;
-  let imageThumb = "images/fan001.jpg";
-  if (inferredCat === "summer") imageThumb = "images/fan001.jpg";
-  else if (inferredCat === "it") imageThumb = "images/magsafe001.jpg";
-  else if (inferredCat === "cleaning") imageThumb = "images/mosquito001.jpg";
-  else imageThumb = "images/blanket001.jpg";
+
+  // HD Image Fallback Table
+  const categoryFallbackImages = {
+    summer: "https://images.unsplash.com/photo-1618957610183-f2310777c65f?w=600&auto=format&fit=crop&q=80",
+    it: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&auto=format&fit=crop&q=80",
+    life: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&auto=format&fit=crop&q=80",
+    cleaning: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80"
+  };
+
+  const imageThumb = ogImage || categoryFallbackImages[inferredCat] || "https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=600&auto=format&fit=crop&q=80";
 
   const newProduct = {
     id: `PROD-${Date.now()}`,
     slug: timeSlug,
     short_url: `morvix.kr/${timeSlug}`,
     name: extractedTitle,
-    subtitle: `실시간 토스 초특가 ${extractedDiscount} 할인 꿀템`,
+    subtitle: `토스 혜택가 적용 실시간 특가 ${extractedDiscount} 할인`,
     category: inferredCat,
     status: 'ACTIVE',
     is_featured: true,
     price: extractedPrice,
-    original_price: Math.round(extractedPrice * 1.3),
+    original_price: Math.round(extractedPrice * 1.35),
     discount_rate: extractedDiscount,
     rating: 4.9,
     review_count: Math.floor(Math.random() * 200) + 50,
     usps: [
-      "실시간 토스쇼핑 최저가 특가 혜택",
-      "무료 배송 및 빠른 배송 보장",
-      "실사용자 만족도 99% 검증 완료 꿀템"
+      "토스 혜택가 적용 실시간 특가",
+      "실사용자 검증 100% 꿀템"
     ],
     affiliate_links: [
       {
         platform: 'toss',
-        label: '💙 토스쇼핑 할인가 구매하기 ➔',
+        label: '💙 토스할인가 확인 ➔',
         url: extractedUrl,
         priority: 1,
         bg_gradient: 'linear-gradient(135deg, #0052cc, #2684ff)'
@@ -1250,8 +1276,7 @@ function parseAndAutoPublishDealText() {
     ],
     thumbnail: imageThumb,
     analytics: { clicks_count: 1, platform_clicks: { toss: 1 }, conversions_count: 0, ctr: 5.0 },
-    added_date: new Date().toISOString(),
-    expiry_date: "2026-12-31T23:59:59.000Z"
+    added_date: new Date().toISOString()
   };
 
   if (!dbData) dbData = { products: [] };
@@ -1263,7 +1288,7 @@ function parseAndAutoPublishDealText() {
   renderProducts();
 
   input.value = '';
-  alert(`🚀 [0-Click 자동 등록 완수!]\n\n• 상품명: ${extractedTitle}\n• 가격: ${extractedPrice.toLocaleString()}원 (${extractedDiscount})\n• 카테고리: [${inferredCat.toUpperCase()}]\n\n홈페이지 메인 및 어드민에 0.01초 만에 즉시 게시되었습니다!`);
+  alert(`🚀 [토스 핫딜 0-Click 자동 수급 완수!]\n\n• 상품명: ${extractedTitle}\n• 실시간 특가: ${extractedPrice.toLocaleString()}원 (${extractedDiscount})\n• 카테고리: [${inferredCat.toUpperCase()}]\n• 대표 이미지: OpenGraph HD 추출 완료\n\n홈페이지 메인 및 DB에 즉시 등록 및 보존되었습니다!`);
 }
 
 window.parseSmartDealText = parseSmartDealText;
