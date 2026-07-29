@@ -1,6 +1,45 @@
 {
   "products": [
     {
+      "id": "TOSS-AUTO-1785328482",
+      "slug": "toss_1785328481",
+      "short_url": "morvix.kr/toss_1785328481",
+      "name": "모나리자 스마트 다용도 키친타올, 250매, 12롤, 1팩 할인,  2348874941",
+      "subtitle": "토스 혜택가 적용 실시간 특가 71% 할인",
+      "category": "cleaning",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 6900,
+      "original_price": 9315,
+      "discount_rate": "71%",
+      "rating": 4.9,
+      "review_count": 127,
+      "usps": [
+        "토스 혜택가 적용 실시간 특가",
+        "실사용자 검증 100% 꿀템"
+      ],
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.shopping/t/",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-29T21:34:42.086571",
+      "expiry_date": "2026-07-31T21:34:42.086571"
+    },
+    {
       "id": "TOSS-AUTO-1785324334",
       "slug": "toss_1785324334",
       "short_url": "morvix.kr/toss_1785324334",
