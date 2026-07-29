@@ -56,7 +56,7 @@ const INITIAL_DB_DATA = {
         {
           "platform": "toss",
           "label": "💙 토스쇼핑 할인가 구매하기 ➔",
-          "url": "https://toss.im",
+          "url": "https://toss.im/_m/fan001_deal",
           "priority": 1,
           "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
         },
@@ -68,10 +68,10 @@ const INITIAL_DB_DATA = {
           "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
         }
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=800&auto=format&fit=crop&q=80",
+      "thumbnail": "images/fan001.jpg",
       "analytics": {
         "clicks_count": 342,
-        "platform_clicks": { "toss": 342, "coupang": 210, "naver": 132 },
+        "platform_clicks": { "toss": 342, "coupang": 210 },
         "conversions_count": 48,
         "ctr": 5.2
       },
@@ -89,16 +89,9 @@ const INITIAL_DB_DATA = {
       "is_featured": true,
       "episode_id": "INTERNAL_CASE_EP009",
       "episode_label": "🎬 EP009 숏폼 소개 제품",
-      "channels": {
-        "youtube_shorts": true,
-        "instagram_reels": true,
-        "tiktok": true,
-        "threads": true,
-        "blog_seo": true
-      },
-      "price": 34900,
-      "original_price": 59000,
-      "discount_rate": "40%",
+      "price": 28900,
+      "original_price": 40460,
+      "discount_rate": "30%",
       "rating": 4.95,
       "review_count": 312,
       "usps": [
@@ -111,25 +104,88 @@ const INITIAL_DB_DATA = {
         {
           "platform": "toss",
           "label": "💙 토스쇼핑 할인가 구매하기 ➔",
-          "url": "https://toss.im",
+          "url": "https://toss.im/_m/blanket001_deal",
           "priority": 1,
           "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        },
-        {
-          "platform": "coupang",
-          "label": "🛒 쿠팡 파트너스 최저가 확인 ➔",
-          "url": "https://link.coupang.com/a/morvix_blanket001",
-          "priority": 2,
-          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
         }
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=800&auto=format&fit=crop&q=80",
+      "thumbnail": "images/blanket001.jpg",
       "analytics": {
         "clicks_count": 1280,
-        "platform_clicks": { "coupang": 820, "naver": 460 },
+        "platform_clicks": { "toss": 1280 },
         "conversions_count": 164,
         "ctr": 8.4
       },
+      "added_date": "2026-07-25T10:00:00.000Z",
+      "expiry_date": "2026-12-31T23:59:59.000Z"
+    },
+    {
+      "id": "PROD-008",
+      "slug": "mosquito001",
+      "short_url": "morvix.kr/mosquito001",
+      "name": "듀플렉스 19W 캠핑 무소음 모기 포충기",
+      "subtitle": "야외 캠핑 및 실내 유해 곤충 360도 강력 포집",
+      "category": "cleaning",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "episode_id": "INTERNAL_CASE_EP008",
+      "episode_label": "🎬 EP008 숏폼 소개 제품",
+      "price": 28900,
+      "original_price": 40460,
+      "discount_rate": "30%",
+      "rating": 4.8,
+      "review_count": 94,
+      "usps": [
+        "19W 강력한 368nm UV 광원으로 모기 완벽 유인",
+        "캠핑장 및 침실 겸용 무소음 인버터 모터",
+        "위생적 잔여물 분리 세척 케이지 구조"
+      ],
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스쇼핑 할인가 구매하기 ➔",
+          "url": "https://toss.im/_m/mosquito001_deal",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "images/mosquito001.jpg",
+      "analytics": { "clicks_count": 210, "platform_clicks": { "toss": 210 }, "conversions_count": 19, "ctr": 4.1 },
+      "added_date": "2026-07-25T10:00:00.000Z",
+      "expiry_date": "2026-12-31T23:59:59.000Z"
+    },
+    {
+      "id": "PROD-007",
+      "slug": "magsafe001",
+      "short_url": "morvix.kr/magsafe001",
+      "name": "모르빅스 3in1 초고속 마그네틱 데스크 거치대",
+      "subtitle": "아이폰/에어팟/워치 동시에 1초 접촉 고속 충전",
+      "category": "it",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "episode_id": "INTERNAL_CASE_EP007",
+      "episode_label": "🎬 EP007 숏폼 소개 제품",
+      "price": 28900,
+      "original_price": 40460,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 450,
+      "usps": [
+        "강력한 15W 맥세이프 초고속 무선 충전",
+        "3개 디바이스 동시 충전 데스크 테리어 완성",
+        "알루미늄 풀바디 발열 방지 설계"
+      ],
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스쇼핑 할인가 구매하기 ➔",
+          "url": "https://toss.im/_m/magsafe001_deal",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "images/magsafe001.jpg",
+      "analytics": { "clicks_count": 480, "platform_clicks": { "toss": 480 }, "conversions_count": 62, "ctr": 6.8 },
       "added_date": "2026-07-25T10:00:00.000Z",
       "expiry_date": "2026-12-31T23:59:59.000Z"
     }
@@ -201,25 +257,34 @@ function updateProductLifecycleStates() {
 // --------------------------------------------------------------------------
 async function initShopOS() {
   loadMasterDbFromStorage();
-  renderCategories();
-  renderProducts();
-  setupRouting();
-  setupAdminEvents();
 
   try {
     const res = await fetch('morvix_shop_db.json');
     if (res.ok) {
       const fetched = await res.json();
-      if (fetched && fetched.products) {
-        dbData.products = fetched.products;
-        updateProductLifecycleStates();
-        renderCategories();
-        renderProducts();
+      if (fetched && Array.isArray(fetched.products)) {
+        // Merge fetched products with local storage products to prevent overwriting user-added products
+        const localProds = dbData.products || [];
+        const mergedMap = new Map();
+        
+        // Add fetched items first
+        fetched.products.forEach(p => mergedMap.set(p.slug || p.id, p));
+        // Add/overwrite with local user items
+        localProds.forEach(p => mergedMap.set(p.slug || p.id, p));
+        
+        dbData.products = Array.from(mergedMap.values());
+        saveMasterDbToStorage();
       }
     }
   } catch (err) {
     console.warn("Using embedded fallback database:", err);
   }
+
+  updateProductLifecycleStates();
+  renderCategories();
+  renderProducts();
+  setupRouting();
+  setupAdminEvents();
 }
 
 // Render Categories
