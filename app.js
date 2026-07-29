@@ -22,140 +22,7 @@ const INITIAL_DB_DATA = {
     {"id": "car", "name": "자동차", "icon": "🚗"},
     {"id": "pet", "name": "반려동물", "icon": "🐾"}
   ],
-  "products": [
-    {
-      "id": "TOSS-DEAL-001",
-      "slug": "toss_circulator_001",
-      "short_url": "toss.im/_m/duplex_bldc_circulator",
-      "name": "[토스쇼핑] 파격특가 듀플렉스 초강풍 무소음 BLDC 탁상용 서큘레이터",
-      "subtitle": "실시간 토스 특가 35% 할인! 탁상용 초강풍 서큘레이터",
-      "category": "it",
-      "status": "ACTIVE",
-      "is_featured": true,
-      "episode_id": "TOSS_SHARE_001",
-      "episode_label": "🔥 토스 파격특가",
-      "price": 28900,
-      "original_price": 45000,
-      "discount_rate": "35%",
-      "rating": 4.9,
-      "review_count": 1420,
-      "usps": [
-        "토스 혜택가 적용 실시간 특가",
-        "BLDC 무소음 초강풍 모터"
-      ],
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스 할인가 확인 ➔",
-          "url": "https://toss.im/_m/duplex_bldc_circulator",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://images.unsplash.com/photo-1618957610183-f2310777c65f?w=600&auto=format&fit=crop&q=80",
-      "analytics": { "clicks_count": 520, "platform_clicks": { "toss": 520 }, "conversions_count": 64, "ctr": 12.3 },
-      "added_date": "2026-07-29T10:00:00.000Z"
-    },
-    {
-      "id": "TOSS-DEAL-002",
-      "slug": "toss_cooling_pad_002",
-      "short_url": "toss.im/_m/toss_ice_cooling_blanket",
-      "name": "[토스쇼핑] 2026 초냉감 얼음 쿨링 여름 이불 패드 세트",
-      "subtitle": "닿자마자 -5도 쿨링! 열대야 숙면 토스 단독 특가",
-      "category": "life",
-      "status": "ACTIVE",
-      "is_featured": true,
-      "episode_id": "TOSS_SHARE_002",
-      "episode_label": "🔥 토스 인기상품",
-      "price": 24900,
-      "original_price": 39900,
-      "discount_rate": "38%",
-      "rating": 4.95,
-      "review_count": 980,
-      "usps": [
-        "Q-MAX 0.45 닿자마자 쿨링",
-        "100% 통세탁 마이크로 파이버"
-      ],
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스 할인가 확인 ➔",
-          "url": "https://toss.im/_m/toss_ice_cooling_blanket",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&auto=format&fit=crop&q=80",
-      "analytics": { "clicks_count": 890, "platform_clicks": { "toss": 890 }, "conversions_count": 112, "ctr": 14.1 },
-      "added_date": "2026-07-29T10:00:00.000Z"
-    },
-    {
-      "id": "TOSS-DEAL-003",
-      "slug": "toss_magnetic_charger_003",
-      "short_url": "toss.im/_m/toss_3in1_magnetic_charger",
-      "name": "[토스쇼핑] 3in1 초고속 마그네틱 맥세이프 무선 충전 거치대",
-      "subtitle": "스마트폰 + 워치 + 이어폰 동시 15W 초고속 충전",
-      "category": "it",
-      "status": "ACTIVE",
-      "is_featured": true,
-      "episode_id": "TOSS_SHARE_003",
-      "episode_label": "🔥 데스크 테리어",
-      "price": 19800,
-      "original_price": 35000,
-      "discount_rate": "43%",
-      "rating": 4.88,
-      "review_count": 650,
-      "usps": [
-        "강력한 자력 안심 고정",
-        "15W 스마트 멀티 충전"
-      ],
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스 할인가 확인 ➔",
-          "url": "https://toss.im/_m/toss_3in1_magnetic_charger",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&auto=format&fit=crop&q=80",
-      "analytics": { "clicks_count": 410, "platform_clicks": { "toss": 410 }, "conversions_count": 49, "ctr": 11.9 },
-      "added_date": "2026-07-29T10:00:00.000Z"
-    },
-    {
-      "id": "TOSS-DEAL-004",
-      "slug": "toss_bug_killer_004",
-      "short_url": "toss.im/_m/toss_bug_killer_duplex",
-      "name": "[토스쇼핑] [가격오류급] 360도 무소음 포충기 모기 퇴치기",
-      "subtitle": "캠핑/실내 겸용 유해 곤충 360도 광원 강력 포집",
-      "category": "life",
-      "status": "ACTIVE",
-      "is_featured": true,
-      "episode_id": "TOSS_SHARE_004",
-      "episode_label": "🔥 [가격오류급]",
-      "price": 14900,
-      "original_price": 49900,
-      "discount_rate": "70%",
-      "rating": 4.92,
-      "review_count": 2100,
-      "usps": [
-        "70% 가격오류급 수량 한정",
-        "무소음 인버터 살충 포충"
-      ],
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스 할인가 확인 ➔",
-          "url": "https://toss.im/_m/toss_bug_killer_duplex",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80",
-      "analytics": { "clicks_count": 1450, "platform_clicks": { "toss": 1450 }, "conversions_count": 230, "ctr": 15.8 },
-      "added_date": "2026-07-29T10:00:00.000Z"
-    }
-  ]
+  "products": []
 };
 
 let dbData = INITIAL_DB_DATA;
@@ -326,7 +193,21 @@ function renderProducts() {
     if (title) title.textContent = '🔥 지금 가장 많이 찾는 검증 제품';
   }
 
-  if (count) count.textContent = `총 ${filtered.length}개 검증 자산`;
+  if (count) count.textContent = `총 ${filtered.length}개 핫딜 노출 중`;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
+        <div style="font-size: 2.8rem; margin-bottom: 12px;">🛒</div>
+        <h3 style="font-size: 1.2rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">현재 등록된 핫딜이 없습니다</h3>
+        <p style="color: #64748b; font-size: 0.88rem; margin-bottom: 18px;">어드민(⚙️ Admin)에서 토스쇼핑 핫딜 문구나 공유 링크를 입력하시면 1초 만에 메인에 즉시 노출됩니다!</p>
+        <button onclick="document.getElementById('btn-open-admin').click()" style="background: linear-gradient(135deg, #0052cc, #2684ff); color: #fff; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 0.88rem; box-shadow: 0 4px 12px rgba(0,82,204,0.25);">
+          ⚙️ 1초 만에 핫딜 등록하기
+        </button>
+      </div>
+    `;
+    return;
+  }
 
   grid.innerHTML = filtered.map(p => {
     const isMega = parseInt(p.discount_rate) >= 90;
