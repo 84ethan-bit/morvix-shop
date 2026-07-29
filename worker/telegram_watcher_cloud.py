@@ -127,14 +127,27 @@ def process_deal_text(text):
     category = get_auto_category(title)
     time_slug = f"toss_{int(time.time())}"
 
-    # HD Fallback Images
-    category_fallback_images = {
-        "summer": "https://images.unsplash.com/photo-1618957610183-f2310777c65f?w=600&auto=format&fit=crop&q=80",
-        "it": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&auto=format&fit=crop&q=80",
-        "life": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&auto=format&fit=crop&q=80",
-        "cleaning": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80"
-    }
-    image_thumb = category_fallback_images.get(category, "https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=600&auto=format&fit=crop&q=80")
+    # Auto Harvest Real Product Image from Naver Shopping
+    image_thumb = None
+    try:
+        from urllib.parse import quote
+        search_query = re.sub(r'\[.*?\]', '', title).strip()
+        s_url = f"https://search.shopping.naver.com/search/all?query={quote(search_query)}"
+        h_res = requests.get(s_url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}, timeout=4).text
+        m_img = re.search(r'https://shopping-phinf\.pstatic\.net/main_[^\"]+', h_res)
+        if m_img:
+            image_thumb = m_img.group(0)
+    except Exception as e:
+        print(f"⚠️ Real image harvest exception: {e}")
+
+    if not image_thumb:
+        category_fallback_images = {
+            "summer": "https://images.unsplash.com/photo-1618957610183-f2310777c65f?w=600&auto=format&fit=crop&q=80",
+            "it": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&auto=format&fit=crop&q=80",
+            "life": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&auto=format&fit=crop&q=80",
+            "cleaning": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80"
+        }
+        image_thumb = category_fallback_images.get(category, "https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=600&auto=format&fit=crop&q=80")
 
     now = datetime.now()
     ttl_hours = 24 if any(x in title for x in ["1일", "단하루", "오늘만", "타임어택", "한정", "가격오류"]) else 48

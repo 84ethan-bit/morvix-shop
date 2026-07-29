@@ -27,7 +27,7 @@
           "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
         }
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&auto=format&fit=crop&q=80",
+      "thumbnail": "https://shopping-phinf.pstatic.net/main_3246473/32464738618.20220527112345.jpg",
       "analytics": {
         "clicks_count": 1,
         "platform_clicks": {
@@ -37,7 +37,8 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-29T19:08:07.022679",
-      "expiry_date": "2026-07-31T19:08:07.022679"
+      "expiry_date": "2026-07-31T19:08:07.022679",
+      "image_status": "Verified_Real_Monalisa_Photo"
     }
   ]
 }
