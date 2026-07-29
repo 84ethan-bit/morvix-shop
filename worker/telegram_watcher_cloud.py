@@ -113,25 +113,35 @@ def cleanup_expired_deals():
 def process_deal_text(text, attached_image_url=None):
     if "http" not in text: return False
 
-    url_match = re.search(r'(https?://\S+)', text)
+    # Support both toss.im/_m/XXXX and toss.shopping/t/XXXX links (full URL including numeric ID)
+    url_match = re.search(r'(https?://toss\.(?:im/_m/[A-Za-z0-9]+|shopping/t/\d+|[^\s]+))', text)
     if not url_match: return False
 
-    link = url_match.group(1).split('?')[0]
-    clean_text = text.replace(link, "").replace('[토스특가]', '').replace('[토스쇼핑]', '').replace('[특가]', '').replace('[가격오류급]', '').strip()
+    link = url_match.group(1).split('?')[0].rstrip(')')
+    clean_text = text.replace(link, "")
 
-    # Extract Price & Discount Rate from text
-    discount_match = re.search(r'(\d+)\s*[%％]', clean_text)
+    # Remove affiliate disclaimer patterns
+    clean_text = re.sub(r'[\*✱]?\s*이\s*포스팅은\s*토스쇼핑\s*쉐어링크[^\n]*\n?', '', clean_text, flags=re.IGNORECASE)
+    clean_text = re.sub(r'[\*✱]?\s*이\s*포스팅은[^\n]*제공받습니다\.?\n?', '', clean_text, flags=re.IGNORECASE)
+    clean_text = clean_text.replace('[토스특가]', '').replace('[토스쇼핑]', '').replace('[특가]', '').replace('[가격오류급]', '').strip()
+
+    # Extract Discount Rate FIRST (e.g. "71%할인" or "71% 할인")
+    discount_match = re.search(r'(\d+)\s*[%％]\s*할인?', clean_text) or re.search(r'(\d+)\s*[%％]', clean_text)
     discount_rate = f"{discount_match.group(1)}%" if discount_match else None
 
+    # Extract Price (e.g. "6,900원")
     price_matches = re.findall(r'([\d,]+)\s*원', clean_text)
     prices = [int(p.replace(',', '')) for p in price_matches if p.replace(',', '').isdigit()]
-    price = prices[-1] if prices else None
+    price = min(prices) if prices else None  # 최저가 선택 (할인가)
 
     title = clean_text
     title = re.sub(r'[\*✱]?\s*이\s*포스팅은\s*토스쇼핑\s*쉐어링크[^\n]*\n?', '', title, flags=re.IGNORECASE)
     title = re.sub(r'[\*✱]?\s*이\s*포스팅은[^\n]*제공받습니다\.?\n?', '', title, flags=re.IGNORECASE)
     title = re.sub(r'[\d,]+\s*원', '', title)
-    title = re.sub(r'\d+\s*[%％]', '', title).strip()
+    title = re.sub(r'\d+\s*[%％]\s*할인?', '', title)  # "71%할인" 제거
+    title = re.sub(r'\d+\s*[%％]', '', title)           # 잔여 % 제거
+    title = re.sub(r'\b\d{7,}\b', '', title)            # 긴 숫자 ID 제거 (상품 ID 등)
+    title = re.sub(r'[,]\s*$', '', title.strip())       # 끝 쉼표 제거
     title = title.strip()
     if len(title) < 3:
         title = "토스쇼핑 파격특가 추천 꿀템"
