@@ -1,19 +1,19 @@
 {
   "products": [
     {
-      "id": "TOSS-AUTO-1785328536",
-      "slug": "toss_1785328535",
-      "short_url": "morvix.kr/toss_1785328535",
+      "id": "TOSS-AUTO-1785349421",
+      "slug": "toss_1785349421",
+      "short_url": "morvix.kr/toss_1785349421",
       "name": "모나리자 스마트 다용도 키친타올, 250매, 12롤, 1팩",
       "subtitle": "토스 혜택가 적용 실시간 특가 71% 할인",
       "category": "cleaning",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
       "price": 6900,
       "original_price": 9315,
       "discount_rate": "71%",
       "rating": 4.9,
-      "review_count": 85,
+      "review_count": 79,
       "usps": [
         "토스 혜택가 적용 실시간 특가",
         "실사용자 검증 100% 꿀템"
@@ -27,7 +27,7 @@
           "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
         }
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80",
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=800,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-03-09%2F1ca62748-4d8c-4131-a992-6f968acf7829.jpeg",
       "analytics": {
         "clicks_count": 1,
         "platform_clicks": {
@@ -36,22 +36,8 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-29T21:35:36.063447",
-      "expiry_date": "2026-07-31T21:35:36.063447",
-      "price_history": [
-        {
-          "price": 6900,
-          "date": "2026-07-29T14:05:37.148936"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '모나리자 스마트 다용도 키친타올, 250매, 12롤, 1팩 71%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 6900원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 모나리자 스마트 다용도 키친타올, 250매, 12롤, 1팩 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-29T14:05:38.170169",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T03:23:41.249673",
+      "expiry_date": "2026-08-01T03:23:41.249673"
     },
     {
       "id": "TOSS-AUTO-1785328482",
