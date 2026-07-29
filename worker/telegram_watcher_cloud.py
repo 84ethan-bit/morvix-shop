@@ -116,8 +116,11 @@ def process_deal_text(text):
     price = prices[-1] if prices else 28900
 
     title = clean_text
+    title = re.sub(r'\*?\s*이\s*포스팅은\s*토스쇼핑\s*쉐어링크.*원\b', '', title, flags=re.IGNORECASE)
+    title = re.sub(r'\*?\s*이\s*포스팅은\s*.*수수료를\s*제공받습니다\.?', '', title, flags=re.IGNORECASE)
     title = re.sub(r'[\d,]+\s*원', '', title)
     title = re.sub(r'\d+\s*[%％]', '', title).strip()
+    title = re.sub(r'^\s*\*?\s*', '', title).strip()
     if len(title) < 3:
         title = "토스쇼핑 파격특가 추천 꿀템"
 
