@@ -1,3 +1,128 @@
 {
-  "products": []
+  "products": [
+    {
+      "id": "TOSS-LIVE-001",
+      "slug": "toss_circulator_001",
+      "short_url": "morvix.kr/toss_circulator_001",
+      "name": "[토스쇼핑] 파격특가 듀플렉스 초강풍 무소음 BLDC 탁상용 서큘레이터",
+      "subtitle": "실시간 토스 특가 35% 할인! 탁상용 초강풍 서큘레이터",
+      "category": "summer",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 28900,
+      "original_price": 45000,
+      "discount_rate": "35%",
+      "rating": 4.9,
+      "review_count": 1420,
+      "usps": [
+        "토스 혜택가 적용 실시간 특가",
+        "BLDC 무소음 초강풍 모터"
+      ],
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/duplex_bldc_circulator",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1618957610183-f2310777c65f?w=600&auto=format&fit=crop&q=80",
+      "analytics": { "clicks_count": 520, "platform_clicks": { "toss": 520 }, "conversions_count": 64, "ctr": 12.3 },
+      "added_date": "2026-07-29T10:00:00.000Z"
+    },
+    {
+      "id": "TOSS-LIVE-002",
+      "slug": "toss_cooling_pad_002",
+      "short_url": "morvix.kr/toss_cooling_pad_002",
+      "name": "[토스쇼핑] 2026 초냉감 얼음 쿨링 여름 이불 패드 세트",
+      "subtitle": "닿자마자 -5도 쿨링! 열대야 숙면 토스 단독 특가",
+      "category": "summer",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 24900,
+      "original_price": 39900,
+      "discount_rate": "38%",
+      "rating": 4.95,
+      "review_count": 980,
+      "usps": [
+        "Q-MAX 0.45 닿자마자 쿨링",
+        "100% 통세탁 마이크로 파이버"
+      ],
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/toss_ice_cooling_blanket",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&auto=format&fit=crop&q=80",
+      "analytics": { "clicks_count": 890, "platform_clicks": { "toss": 890 }, "conversions_count": 112, "ctr": 14.1 },
+      "added_date": "2026-07-29T10:00:00.000Z"
+    },
+    {
+      "id": "TOSS-LIVE-003",
+      "slug": "toss_magnetic_charger_003",
+      "short_url": "morvix.kr/toss_magnetic_charger_003",
+      "name": "[토스쇼핑] 3in1 초고속 마그네틱 맥세이프 무선 충전 거치대",
+      "subtitle": "스마트폰 + 워치 + 이어폰 동시 15W 초고속 충전",
+      "category": "it",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 19800,
+      "original_price": 35000,
+      "discount_rate": "43%",
+      "rating": 4.88,
+      "review_count": 650,
+      "usps": [
+        "강력한 자력 안심 고정",
+        "15W 스마트 멀티 충전"
+      ],
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/toss_3in1_magnetic_charger",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&auto=format&fit=crop&q=80",
+      "analytics": { "clicks_count": 410, "platform_clicks": { "toss": 410 }, "conversions_count": 49, "ctr": 11.9 },
+      "added_date": "2026-07-29T10:00:00.000Z"
+    },
+    {
+      "id": "TOSS-LIVE-004",
+      "slug": "toss_bug_killer_004",
+      "short_url": "morvix.kr/toss_bug_killer_004",
+      "name": "[토스쇼핑] [가격오류급] 360도 무소음 포충기 모기 퇴치기",
+      "subtitle": "캠핑/실내 겸용 유해 곤충 360도 광원 강력 포집",
+      "category": "cleaning",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 14900,
+      "original_price": 49900,
+      "discount_rate": "70%",
+      "rating": 4.92,
+      "review_count": 2100,
+      "usps": [
+        "70% 가격오류급 수량 한정",
+        "무소음 인버터 살충 포충"
+      ],
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/toss_bug_killer_duplex",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80",
+      "analytics": { "clicks_count": 1450, "platform_clicks": { "toss": 1450 }, "conversions_count": 230, "ctr": 15.8 },
+      "added_date": "2026-07-29T10:00:00.000Z"
+    }
+  ]
 }
