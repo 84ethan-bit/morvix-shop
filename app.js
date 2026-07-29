@@ -169,13 +169,14 @@ function renderCategories() {
   const categories = [
     { id: 'all', name: '전체' },
     { id: 'summer', name: '여름용품' },
+    { id: 'cleaning', name: '청소/위생' },
+    { id: 'kitchen', name: '주방용품' },
+    { id: 'it', name: '전자제품' },
     { id: 'food', name: '식품' },
     { id: 'life', name: '생활용품' },
     { id: 'beauty', name: '뷰티' },
     { id: 'fashion', name: '패션' },
     { id: 'interior', name: '홈인테리어' },
-    { id: 'kitchen', name: '주방용품' },
-    { id: 'it', name: '전자제품' },
     { id: 'pet', name: '반려동물' },
     { id: 'car', name: '자동차용품' },
     { id: 'hobby', name: '취미' }
