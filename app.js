@@ -287,16 +287,34 @@ async function initShopOS() {
   setupAdminEvents();
 }
 
-// Render Categories
+// Render Categories (Original Hot Deal Studio Toss Pill Style)
 function renderCategories() {
   const container = document.getElementById('category-container');
-  if (!container || !dbData) return;
+  if (!container) return;
 
-  container.innerHTML = dbData.categories.map(cat => `
-    <button class="category-btn ${cat.id === currentCategory ? 'active' : ''}" data-cat="${cat.id}">
-      ${cat.icon} ${cat.name}
-    </button>
-  `).join('');
+  const categories = [
+    { id: 'all', name: '전체' },
+    { id: 'summer', name: '여름용품' },
+    { id: 'food', name: '식품' },
+    { id: 'life', name: '생활용품' },
+    { id: 'beauty', name: '뷰티' },
+    { id: 'fashion', name: '패션' },
+    { id: 'interior', name: '홈인테리어' },
+    { id: 'kitchen', name: '주방용품' },
+    { id: 'it', name: '전자제품' },
+    { id: 'pet', name: '반려동물' },
+    { id: 'car', name: '자동차용품' },
+    { id: 'hobby', name: '취미' }
+  ];
+
+  container.innerHTML = categories.map(cat => {
+    const isActive = currentCategory === cat.id;
+    return `
+      <button class="category-btn ${isActive ? 'active' : ''}" data-cat="${cat.id}" style="padding: 8px 16px; border-radius: 14px; font-size: 0.82rem; font-weight: 800; white-space: nowrap; cursor: pointer; transition: all 0.2s; ${isActive ? 'background: #333D4B; color: #ffffff; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.15);' : 'background: #ffffff; color: #6B7684; border: 1px solid #E5E8EB;'}">
+        ${cat.name}
+      </button>
+    `;
+  }).join('');
 
   container.querySelectorAll('.category-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -351,15 +369,15 @@ function renderProducts() {
           <span class="badge-episode" style="background: rgba(0, 82, 204, 0.8); color: #fff;">${p.category ? p.category.toUpperCase() : 'HOTDEAL'}</span>
         </div>
         <div class="card-content" style="padding-top: 10px;">
-          <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 600; margin-bottom: 4px;">
-            <span>토스쇼핑</span> • <span>${p.category ? p.category.toUpperCase() : '꿀템'}</span>
+          <div style="font-size: 0.75rem; color: #8B95A1; font-weight: 600; margin-bottom: 4px;">
+            <span style="font-weight: 700; color: #333D4B;">토스쇼핑</span> • <span>${p.category ? p.category.toUpperCase() : '꿀템'}</span>
           </div>
-          <h3 class="card-title" style="font-size: 0.92rem; font-weight: 800; color: #fff; line-height: 1.35; height: 2.5rem; overflow: hidden; margin-bottom: 6px;">${p.name}</h3>
+          <h3 class="card-title" style="font-size: 0.92rem; font-weight: 800; color: #191F28; line-height: 1.35; height: 2.5rem; overflow: hidden; margin-bottom: 6px;">${p.name}</h3>
           
           <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px;">
-            <span style="font-size: 1.05rem; font-weight: 900; color: ${isMega ? '#ff4757' : '#ff4757'};">${p.discount_rate || '30%'}</span>
-            <span style="font-size: 1.05rem; font-weight: 900; color: #fff;">${priceStr}</span>
-            ${origPriceStr ? `<span style="font-size: 0.78rem; color: #64748b; text-decoration: line-through;">${origPriceStr}</span>` : ''}
+            <span style="font-size: 1.05rem; font-weight: 900; color: #F04452;">${p.discount_rate || '30%'}</span>
+            <span style="font-size: 1.05rem; font-weight: 900; color: #191F28;">${priceStr}</span>
+            ${origPriceStr ? `<span style="font-size: 0.78rem; color: #B0B8C1; text-decoration: line-through;">${origPriceStr}</span>` : ''}
           </div>
 
           <div class="card-meta">

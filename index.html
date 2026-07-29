@@ -42,62 +42,52 @@
   <!-- Google Fonts Inter & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <!-- Header / Navigation Bar -->
-  <header class="navbar">
-    <div class="nav-container">
-      <a href="#" class="brand-logo" id="brand-logo">
-        <span class="logo-badge" style="background: linear-gradient(135deg, #0052cc, #2684ff); color: #fff; padding: 4px 8px; border-radius: 4px; font-weight: 800;">🔥 HOT DEAL</span>
-        <span class="logo-title" style="color: #38bdf8; font-weight: 800;">STUDIO V2</span>
-      </a>
-      <div class="nav-actions">
-        <button class="btn-admin" id="btn-open-admin">⚙️ Admin OS</button>
-      </div>
+  <link href="https://fonts.googleapis  <!-- Original Hot Deal Studio Header -->
+  <header style="background: rgba(255, 255, 255, 0.95); position: sticky; top: 0; z-index: 50; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #E5E8EB; backdrop-filter: blur(10px); box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+    <div style="display: flex; align-items: center; gap: 10px; cursor: pointer;" onclick="document.getElementById('btn-open-admin').click()">
+      <div style="width: 34px; height: 34px; background: #000; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1rem; font-weight: 900; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">🛍️</div>
+      <span style="font-size: 1.18rem; font-weight: 900; color: #191F28; letter-spacing: -0.5px;">핫딜 스튜디오</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 6px;">
+      <button onclick="alert('💬 피드백이 정상 접수되었습니다.')" style="padding: 6px 12px; border-radius: 20px; background: #F2F4F6; color: #4E5968; font-size: 0.78rem; font-weight: 700; border: none; cursor: pointer;">💬 피드백</button>
+      <button onclick="alert('📱 [홈 화면에 추가] 더 빠르게 핫딜을 확인하세요!')" style="padding: 6px 12px; border-radius: 20px; background: #0052cc; color: #fff; font-size: 0.78rem; font-weight: 700; border: none; cursor: pointer;">📱 설치</button>
+      <button onclick="navigator.clipboard.writeText(window.location.href); alert('🔗 핫딜 공유 링크가 복사되었습니다!');" style="width: 32px; height: 32px; border-radius: 50%; background: #F2F4F6; color: #4E5968; font-size: 0.85rem; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;">🔗</button>
+      <button class="btn-admin" id="btn-open-admin" style="padding: 6px 12px; border-radius: 20px; background: #191F28; color: #fff; font-size: 0.78rem; font-weight: 700; border: none; cursor: pointer;">⚙️ Admin</button>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero-banner">
-    <div class="hero-content">
-      <span class="hero-tag">🔥 100만+ 바이럴 검증 라인업</span>
-      <h1 class="hero-title">일상을 바꾸는 <span class="highlight">검증된 꿀템</span>만 소개합니다</h1>
-      <p class="hero-subtitle">숏츠와 웹툰에서 직접 소개한 생활 문제 해결 제품만 모았습니다.</p>
-      <div class="trust-bar" style="display: flex; justify-content: center; gap: 16px; margin-top: 12px; font-size: 0.85rem; color: var(--text-muted); flex-wrap: wrap;">
-        <span>✔ 실제 콘텐츠에서 사용</span>
-        <span>✔ 생활 문제 해결 중심</span>
-        <span>✔ 믿을 수 있는 제휴 쇼핑</span>
-      </div>
-      <div class="brand-philosophy" style="margin-top: 14px; font-size: 0.8rem; color: var(--primary-accent); font-weight: 600; letter-spacing: 0.3px;">
-        "좋은 제품을 소개하는 것이 아니라, 일상의 문제를 해결하는 제품을 소개합니다."
+  <!-- Original Hot Deal Studio Hero Banner -->
+  <div style="padding: 16px 20px 8px; max-width: 1200px; margin: 0 auto;">
+    <div style="background: linear-gradient(135deg, #191F28, #2d3a4f); border-radius: 20px; padding: 20px; color: #fff; position: relative; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.15);">
+      <div style="position: absolute; top: -20px; right: -20px; width: 110px; height: 110px; background: #ff7800; border-radius: 50%; filter: blur(45px); opacity: 0.35;"></div>
+      <div style="display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 10;">
+        <div>
+          <p style="color: rgba(255,255,255,0.7); font-size: 0.75rem; font-weight: 600; margin-bottom: 4px;">🔥 실시간 업데이트</p>
+          <h2 style="font-size: 1.4rem; font-weight: 900; line-height: 1.2;">오늘의 초특가 핫딜</h2>
+          <p style="color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-top: 4px;" id="product-count">현재 4개 상품 노출 중</p>
+        </div>
+        <button onclick="filterCuration('mega')" style="background: linear-gradient(135deg, #ff4757, #ff6b81); color: #fff; font-size: 0.8rem; font-weight: 800; padding: 10px 16px; border-radius: 14px; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(255,71,87,0.4); display: flex; align-items: center; gap: 4px;">🔥 가격오류급!</button>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- AI Curation Discovery Quick Bar -->
-  <section class="curation-bar" style="background: rgba(255, 255, 255, 0.02); border-bottom: 1px solid var(--border-color); padding: 12px 16px;">
-    <div style="max-width: 1200px; margin: 0 auto; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;">
-      <button class="curation-pill active" onclick="filterCuration('all')" style="background: rgba(0, 242, 254, 0.15); border: 1px solid var(--primary-accent); color: var(--primary-accent); padding: 6px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 700; cursor: pointer; white-space: nowrap;">
-        🥇 인기/할인 TOP 랭킹
-      </button>
-      <button class="curation-pill" onclick="filterCuration('summer')" style="background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; cursor: pointer; white-space: nowrap;">
-        🦟 여름/열대야 억까 탈출
-      </button>
-      <button class="curation-pill" onclick="filterCuration('it')" style="background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; cursor: pointer; white-space: nowrap;">
-        💻 직장인 데스크테리어
-      </button>
-      <button class="curation-pill" onclick="filterCuration('pet')" style="background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; cursor: pointer; white-space: nowrap;">
-        🐾 집사 필수 힐링템
-      </button>
-      <button class="curation-pill" onclick="filterCuration('car')" style="background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; cursor: pointer; white-space: nowrap;">
-        🚗 드라이버 차량 구원템
-      </button>
+  <!-- Original Hot Deal Studio Category Bar -->
+  <nav style="padding: 10px 20px; max-width: 1200px; margin: 0 auto; overflow-x: auto; scrollbar-width: none;">
+    <div style="display: flex; gap: 8px; flex-wrap: nowrap;" id="category-container">
+      <!-- Injected by JavaScript -->
     </div>
-  </section>
+  </nav>
 
-  <!-- Category Nav Bar -->
+  <!-- Product Grid Section -->
+  <main style="max-width: 1200px; margin: 10px auto 40px; padding: 0 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+      <h2 style="font-size: 1.15rem; font-weight: 900; color: #191F28;" id="section-title">🔥 실시간 핫딜 추천</h2>
+    </div>
+
+    <div class="product-grid" id="product-grid">
+      <!-- Injected by JavaScript -->
+    </div>
+  </main>-- Category Nav Bar -->
   <nav class="category-nav">
     <div class="category-container" id="category-container">
       <!-- Injected by JavaScript -->

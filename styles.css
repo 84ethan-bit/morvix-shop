@@ -34,8 +34,8 @@
 }
 
 body {
-  background-color: var(--bg-dark);
-  color: var(--text-main);
+  background-color: #F2F4F6;
+  color: #191F28;
   font-family: var(--font-main);
   line-height: 1.6;
   min-height: 100vh;
@@ -230,8 +230,8 @@ body {
 
 /* Toss Style Card Design */
 .product-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #ffffff;
+  border: 1px solid #E5E8EB;
   border-radius: 18px;
   overflow: hidden;
   display: flex;
@@ -240,6 +240,7 @@ body {
   cursor: pointer;
   padding: 12px;
   position: relative;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
 .product-card:hover {
