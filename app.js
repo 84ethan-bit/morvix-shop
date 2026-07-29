@@ -135,20 +135,19 @@ function updateProductLifecycleStates() {
 // Initialize MORVIX SHOP OS
 // --------------------------------------------------------------------------
 async function initShopOS() {
-  loadMasterDbFromStorage();
-
+  // 1. Fetch static morvix_shop_db.json with cache-busting timestamp as Primary Source of Truth
   try {
-    const res = await fetch('morvix_shop_db.json');
+    const res = await fetch('morvix_shop_db.json?t=' + Date.now(), { cache: 'no-store' });
     if (res.ok) {
       const fetched = await res.json();
-      if (fetched && Array.isArray(fetched.products)) {
-        // Use fetched server products directly as authoritative source of truth
+      if (fetched && Array.isArray(fetched.products) && fetched.products.length > 0) {
         dbData.products = fetched.products;
-        saveMasterDbToStorage();
+        try { localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(dbData.products)); } catch(e){}
       }
     }
   } catch (err) {
-    console.warn("Using embedded fallback database:", err);
+    console.warn("Primary DB fetch warning, checking LocalStorage fallback:", err);
+    loadMasterDbFromStorage();
   }
 
   updateProductLifecycleStates();
