@@ -400,10 +400,13 @@ function openProductDetail(slug) {
 
   const relatedProds = dbData.products.filter(p => p.slug !== slug && p.id !== product.id && (p.status === 'ACTIVE' || !p.status)).slice(0, 3);
 
+  const fallbackImg = "https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=600&auto=format&fit=crop&q=80";
+  const imgSrc = (product.thumbnail && !product.thumbnail.startsWith('images/')) ? product.thumbnail : fallbackImg;
+
   body.innerHTML = `
     <div class="detail-grid">
       <div class="detail-left">
-        <img class="detail-image" src="${product.thumbnail || 'images/fan001.jpg'}" alt="${product.name}" referrerpolicy="no-referrer">
+        <img class="detail-image" src="${imgSrc}" alt="${product.name}" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='${fallbackImg}';">
       </div>
       <div class="detail-right">
         <span class="detail-slug-box">morvix.kr/${product.slug}</span>

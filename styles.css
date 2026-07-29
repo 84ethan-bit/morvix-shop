@@ -397,16 +397,17 @@ body {
 }
 
 .modal-card, .admin-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
   width: 90%;
   max-width: 900px;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
   padding: 30px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+  color: #f8fafc;
 }
 
 .modal-close {
@@ -415,7 +416,7 @@ body {
   right: 24px;
   background: transparent;
   border: none;
-  color: var(--text-muted);
+  color: #94a3b8;
   font-size: 2rem;
   cursor: pointer;
 }
@@ -439,8 +440,9 @@ body {
 
 .detail-image {
   width: 100%;
-  border-radius: var(--radius-md);
+  border-radius: 16px;
   object-fit: cover;
+  aspect-ratio: 1 / 1;
 }
 
 .detail-slug-box {
@@ -459,6 +461,7 @@ body {
   font-size: 1.6rem;
   font-weight: 800;
   margin-bottom: 8px;
+  color: #ffffff !important;
 }
 
 .detail-rating {
@@ -474,12 +477,14 @@ body {
 }
 
 .usps-list li {
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border-color);
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 0.95rem;
   display: flex;
   align-items: center;
   gap: 8px;
+  color: #f1f5f9 !important;
+  font-weight: 600;
 }
 
 .btn-coupang-cta {
