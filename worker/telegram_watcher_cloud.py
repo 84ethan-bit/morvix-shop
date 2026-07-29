@@ -6,6 +6,9 @@ import re
 import random
 import requests
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Force UTF-8 encoding
 if hasattr(sys.stdout, 'reconfigure'):
