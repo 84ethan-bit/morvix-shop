@@ -256,7 +256,7 @@ function renderProducts() {
           ${isMega ? '<span class="badge-minimal">🔥 MEGA 90%+</span>' : (p.is_featured ? '<span class="badge-minimal">🔥 HOT 핫딜</span>' : '')}
         </div>
 
-        <!-- 2. Text Section with Top Sub-Tag Line -->
+        <!-- 2. Top-Down High Converting Information Hierarchy -->
         <div class="card-info-wrap">
           <div class="card-top-tagline">
             <span>토스쇼핑</span>
@@ -271,9 +271,9 @@ function renderProducts() {
             ${origPriceStr ? `<span class="card-orig-price">${origPriceStr}</span>` : ''}
           </div>
 
-          <!-- 3. Subtle Ghost Outline Hover Button (Sleek & Clean) -->
+          <!-- 3. Actionable Outbound Link CTA Button with Diagonal Arrow (↗) -->
           <button class="btn-card-ghost" onclick="event.stopPropagation(); openProductDetail('${p.slug}');">
-            토스할인가 확인 ➔
+            토스 최저가 구매하기 ↗
           </button>
         </div>
       </div>
@@ -304,11 +304,11 @@ function openProductDetail(slug) {
   if (Array.isArray(product.affiliate_links) && product.affiliate_links.length > 0) {
     linksArray = product.affiliate_links.slice().sort((a, b) => (a.priority || 99) - (b.priority || 99));
   } else if (product.toss_link) {
-    linksArray.push({ platform: 'toss', label: '💙 토스쇼핑 할인가 구매하기 ➔', url: product.toss_link, bg_gradient: 'linear-gradient(135deg, #0052cc, #2684ff)' });
+    linksArray.push({ platform: 'toss', label: '💙 토스 최저가 구매하기 ↗', url: product.toss_link, bg_gradient: 'linear-gradient(135deg, #0052cc, #2684ff)' });
   } else if (product.coupang_link) {
-    linksArray.push({ platform: 'coupang', label: '🛒 쿠팡 파트너스 최저가 확인 ➔', url: product.coupang_link, bg_gradient: 'linear-gradient(135deg, #ff4757, #ff6b81)' });
+    linksArray.push({ platform: 'coupang', label: '🛒 쿠팡 파트너스 최저가 확인 ↗', url: product.coupang_link, bg_gradient: 'linear-gradient(135deg, #ff4757, #ff6b81)' });
   } else {
-    linksArray.push({ platform: 'toss', label: '💙 토스쇼핑 할인가 구매하기 ➔', url: 'https://toss.im', bg_gradient: 'linear-gradient(135deg, #0052cc, #2684ff)' });
+    linksArray.push({ platform: 'toss', label: '💙 토스 최저가 구매하기 ↗', url: 'https://toss.im', bg_gradient: 'linear-gradient(135deg, #0052cc, #2684ff)' });
   }
 
   let uspsList = [];
