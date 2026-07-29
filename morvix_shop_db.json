@@ -7,7 +7,7 @@
       "name": "알참참 구운계란, 중란, 30구, 2개",
       "subtitle": "토스 파트너 특가 28% 특가 적용",
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 21900,
       "original_price": 29565,
@@ -37,7 +37,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-30T03:55:48.402664",
-      "expiry_date": "2026-08-01T03:55:48.402664"
+      "expiry_date": "2026-08-01T03:55:48.402664",
+      "price_history": [
+        {
+          "price": 21900,
+          "date": "2026-07-29T19:12:38.359205"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '알참참 구운계란, 중란, 30구, 2개 28% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 21900원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 알참참 구운계란, 중란, 30구, 2개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-29T19:12:40.544592",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785351348-7",
@@ -46,7 +60,7 @@
       "name": "페이보잇 치즈폭탄 스파게티 미트토마토, 340g, 4개",
       "subtitle": "토스 파트너 특가 49% 특가 적용",
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 19900,
       "original_price": 26865,
@@ -76,7 +90,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-30T03:55:48.402664",
-      "expiry_date": "2026-08-01T03:55:48.402664"
+      "expiry_date": "2026-08-01T03:55:48.402664",
+      "price_history": [
+        {
+          "price": 19900,
+          "date": "2026-07-29T19:12:40.544610"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '페이보잇 치즈폭탄 스파게티 미트토마토, 340g, 4개 49% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 19900원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 페이보잇 치즈폭탄 스파게티 미트토마토, 340g, 4개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-29T19:12:42.244818",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785351348-6",
@@ -85,7 +113,7 @@
       "name": "전남 세척 베니하루카 꿀고구마, 2kg, 특, 1개",
       "subtitle": "토스 파트너 특가 47% 특가 적용",
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 9900,
       "original_price": 13365,
@@ -115,7 +143,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-30T03:55:48.402664",
-      "expiry_date": "2026-08-01T03:55:48.402664"
+      "expiry_date": "2026-08-01T03:55:48.402664",
+      "price_history": [
+        {
+          "price": 9900,
+          "date": "2026-07-29T19:12:42.244836"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '전남 세척 베니하루카 꿀고구마, 2kg, 특, 1개 47% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 9900원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 전남 세척 베니하루카 꿀고구마, 2kg, 특, 1개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-29T19:12:43.890332",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785351348-5",
@@ -124,7 +166,7 @@
       "name": "POLIIN 전기면도기 KS0262, CP5801, 블루, 1개",
       "subtitle": "토스 파트너 특가 61% 특가 적용",
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 25900,
       "original_price": 34965,
@@ -154,7 +196,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-30T03:55:48.402664",
-      "expiry_date": "2026-08-01T03:55:48.402664"
+      "expiry_date": "2026-08-01T03:55:48.402664",
+      "price_history": [
+        {
+          "price": 25900,
+          "date": "2026-07-29T19:12:43.890347"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] 'POLIIN 전기면도기 KS0262, CP5801, 블루, 1개 61% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 25900원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] POLIIN 전기면도기 KS0262, CP5801, 블루, 1개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-29T19:12:45.753659",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785351348-4",
@@ -163,7 +219,7 @@
       "name": "듀플렉스 공기순환 저소음 에어써큘레이터, 1개",
       "subtitle": "토스 파트너 특가 44% 특가 적용",
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 19900,
       "original_price": 26865,
@@ -193,7 +249,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-30T03:55:48.402664",
-      "expiry_date": "2026-08-01T03:55:48.402664"
+      "expiry_date": "2026-08-01T03:55:48.402664",
+      "price_history": [
+        {
+          "price": 19900,
+          "date": "2026-07-29T19:12:45.753678"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '듀플렉스 공기순환 저소음 에어써큘레이터, 1개 44% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 19900원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 듀플렉스 공기순환 저소음 에어써큘레이터, 1개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-29T19:12:47.573373",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785351348-3",
@@ -202,7 +272,7 @@
       "name": "자케 미니 브라우니, 150g, 3개",
       "subtitle": "토스 파트너 특가 34% 특가 적용",
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 8900,
       "original_price": 12015,
@@ -232,7 +302,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-30T03:55:48.402664",
-      "expiry_date": "2026-08-01T03:55:48.402664"
+      "expiry_date": "2026-08-01T03:55:48.402664",
+      "price_history": [
+        {
+          "price": 8900,
+          "date": "2026-07-29T19:12:47.573390"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '자케 미니 브라우니, 150g, 3개 34% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 8900원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 자케 미니 브라우니, 150g, 3개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-29T19:12:49.740913",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785351348-2",
@@ -241,7 +325,7 @@
       "name": "CJ제일제당 햇반 라이스플랜, 렌틸콩 현미밥 190g 8개 + 파로 통곡물밥 190g 8개 + 루피니빈 잡곡밥 190g 8개, 1세트",
       "subtitle": "토스 파트너 특가 42% 특가 적용",
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 39900,
       "original_price": 53865,
@@ -271,7 +355,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-30T03:55:48.402664",
-      "expiry_date": "2026-08-01T03:55:48.402664"
+      "expiry_date": "2026-08-01T03:55:48.402664",
+      "price_history": [
+        {
+          "price": 39900,
+          "date": "2026-07-29T19:12:49.740930"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] 'CJ제일제당 햇반 라이스플랜, 렌틸콩 현미밥 190g 8개 + 파로 통곡물밥 190g 8개 + 루피니빈 잡곡밥 190g 8개, 1세트 42% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 39900원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] CJ제일제당 햇반 라이스플랜, 렌틸콩 현미밥 190g 8개 + 파로 통곡물밥 190g 8개 + 루피니빈 잡곡밥 190g 8개, 1세트 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-29T19:12:51.791269",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785351348-1",
@@ -280,7 +378,7 @@
       "name": "미르바네스 썸머 배기 팬츠, 블랙 1개 + 카키 1개 + 베이지 1개, 66, 3개",
       "subtitle": "토스 파트너 특가 90% 특가 적용",
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 14900,
       "original_price": 20115,
@@ -310,7 +408,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-30T03:55:48.402664",
-      "expiry_date": "2026-08-01T03:55:48.402664"
+      "expiry_date": "2026-08-01T03:55:48.402664",
+      "price_history": [
+        {
+          "price": 14900,
+          "date": "2026-07-29T19:12:51.791285"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '미르바네스 썸머 배기 팬츠, 블랙 1개 + 카키 1개 + 베이지 1개, 66, 3개 90% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 14900원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 미르바네스 썸머 배기 팬츠, 블랙 1개 + 카키 1개 + 베이지 1개, 66, 3개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-29T19:12:53.361766",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785351348-0",
@@ -319,7 +431,7 @@
       "name": "미니 고데기 MDJ-001M, 화이트, 1개",
       "subtitle": "토스 파트너 특가 67% 특가 적용",
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 14900,
       "original_price": 20115,
@@ -349,7 +461,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-30T03:55:48.402664",
-      "expiry_date": "2026-08-01T03:55:48.402664"
+      "expiry_date": "2026-08-01T03:55:48.402664",
+      "price_history": [
+        {
+          "price": 14900,
+          "date": "2026-07-29T19:12:53.361783"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '미니 고데기 MDJ-001M, 화이트, 1개 67% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 14900원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 미니 고데기 MDJ-001M, 화이트, 1개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-29T19:12:55.240717",
+      "image_status": "Verified"
     }
   ]
 }
