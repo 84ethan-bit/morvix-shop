@@ -160,16 +160,22 @@
       </div>
 
       <div class="admin-tab-content active" id="tab-add-product">
-        <!-- ⚡ One-Click Smart Deal Text Parser (Toss Engine Port) -->
-        <div class="auto-ingest-box" style="background: rgba(255, 190, 11, 0.08); border: 1px solid rgba(255, 190, 11, 0.3); border-radius: var(--radius-md); padding: 14px; margin-bottom: 20px;">
-          <label style="color: #ffbe0b; font-weight: 800; font-size: 0.95rem;">⚡ 1초 핫딜 텍스트 스마트 파서 (토스 핫딜 파싱 포팅)</label>
-          <div style="display: flex; gap: 10px; margin-top: 8px;">
-            <input type="text" id="input-smart-deal-text" placeholder="예: [특가] 신일 무소음 BLDC 서큘레이터 35% 28,900원 https://link.coupang.com/a/fan001" style="flex: 1; padding: 10px; border-radius: var(--radius-sm); border: 1px solid rgba(255, 190, 11, 0.4); background: rgba(0,0,0,0.3); color: #fff;">
-            <button type="button" id="btn-smart-deal-parse" onclick="parseSmartDealText()" style="background: linear-gradient(135deg, #ffbe0b, #ff9f1a); color: #000; border: none; padding: 10px 18px; border-radius: var(--radius-sm); font-weight: 800; cursor: pointer; white-space: nowrap;">
-              ⚡ 1초 스마트 파싱
+        <!-- ⚡ 1초 핫딜 텍스트 파서 & 0-Click 자동 게시 -->
+        <div class="auto-ingest-box" style="background: rgba(0, 82, 204, 0.12); border: 1.5px solid rgba(38, 132, 255, 0.4); border-radius: var(--radius-md); padding: 16px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <label style="color: #38bdf8; font-weight: 800; font-size: 0.98rem;">⚡ 1초 핫딜 파서 & 0-Click 자동 게시 (토스 핫딜 파이프라인)</label>
+            <span style="background: rgba(16, 185, 129, 0.2); color: #10b981; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">0-MANUAL ENERGY</span>
+          </div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <input type="text" id="input-smart-deal-text" placeholder="예: [특가] 신일 무소음 BLDC 서큘레이터 35% 28,900원 https://toss.im/_m/fan001" style="flex: 1; min-width: 260px; padding: 10px; border-radius: var(--radius-sm); border: 1px solid rgba(56, 189, 248, 0.4); background: rgba(0,0,0,0.4); color: #fff;">
+            <button type="button" id="btn-smart-deal-parse" onclick="parseSmartDealText()" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 10px 14px; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; white-space: nowrap;">
+              ⚡ 1초 폼 채우기
+            </button>
+            <button type="button" id="btn-smart-deal-autopublish" onclick="parseAndAutoPublishDealText()" style="background: linear-gradient(135deg, #0052cc, #2684ff); color: #fff; border: none; padding: 10px 18px; border-radius: var(--radius-sm); font-weight: 800; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 15px rgba(0,82,204,0.4);">
+              🚀 1초 자동 파싱 & 즉시 게시 (0-Click)
             </button>
           </div>
-          <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 6px;">카톡/텔레그램 핫딜 문구를 붙여넣으면 상품명, 가격, 할인율, 카테고리, 슬러그, 제휴링크가 1초 만에 파싱되어 채워집니다!</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 8px;">핫딜 문구나 링크를 넣고 [🚀 1초 자동 파싱 & 즉시 게시]를 누르면 상품명, 가격, 할인율, 카테고리, 썸네일이 1초 만에 자동 생성되어 **홈페이지 메인에 즉시 노출**됩니다!</span>
         </div>
 
         <!-- ⚡ One-Click Auto Ingestion Bar -->
