@@ -231,22 +231,50 @@ body {
 /* Sleek Product Card Design */
 .product-card {
   background: #ffffff;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e5e8eb;
   border-radius: 20px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
   cursor: pointer;
   padding: 14px;
   position: relative;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.03);
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
-  border-color: #2684ff;
-  box-shadow: 0 12px 30px rgba(0, 82, 204, 0.15);
+  transform: translateY(-6px);
+  border-color: #3182f6;
+  box-shadow: 0 16px 36px rgba(49, 130, 246, 0.16);
+}
+
+/* Skeleton Loading Animation for Phase 2 */
+@keyframes skeletonPulse {
+  0% { background-color: #e2e8f0; }
+  50% { background-color: #f1f5f9; }
+  100% { background-color: #e2e8f0; }
+}
+
+.skeleton-card {
+  border-radius: 20px;
+  padding: 14px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+.skeleton-img {
+  width: 100%;
+  padding-top: 100%;
+  border-radius: 14px;
+  animation: skeletonPulse 1.5s infinite ease-in-out;
+}
+
+.skeleton-line {
+  height: 14px;
+  border-radius: 6px;
+  margin-top: 10px;
+  animation: skeletonPulse 1.5s infinite ease-in-out;
 }
 
 .card-image-wrapper {
