@@ -24,170 +24,136 @@ const INITIAL_DB_DATA = {
   ],
   "products": [
     {
-      "id": "PROD-010",
-      "slug": "fan001",
-      "short_url": "morvix.kr/fan001",
-      "name": "[26년형] 신일 무소음 스탠드 BLDC 서큘레이터",
-      "subtitle": "회사 책상 앞 38도 사막지대 억까 탈출 초강풍 무선 서큘레이터",
-      "category": "summer",
+      "id": "TOSS-DEAL-001",
+      "slug": "toss_circulator_001",
+      "short_url": "toss.im/_m/duplex_bldc_circulator",
+      "name": "[토스쇼핑] 파격특가 듀플렉스 초강풍 무소음 BLDC 탁상용 서큘레이터",
+      "subtitle": "실시간 토스 특가 35% 할인! 탁상용 초강풍 서큘레이터",
+      "category": "it",
       "status": "ACTIVE",
       "is_featured": true,
-      "episode_id": "INTERNAL_CASE_EP010",
-      "episode_label": "🎬 EP010 숏폼 소개 제품",
-      "channels": {
-        "youtube_shorts": true,
-        "instagram_reels": true,
-        "tiktok": true,
-        "threads": true,
-        "blog_seo": true
-      },
+      "episode_id": "TOSS_SHARE_001",
+      "episode_label": "🔥 토스 파격특가",
       "price": 28900,
       "original_price": 45000,
       "discount_rate": "35%",
       "rating": 4.9,
-      "review_count": 128,
+      "review_count": 1420,
       "usps": [
-        "강력한 듀얼 터보 모터 초강풍 쿨링",
-        "8시간 연속 사용 대용량 무선 배터리",
-        "360도 자유 회전 원하는 각도 완벽 조율",
-        "독서실급 초저소음 파워 설계"
+        "토스 혜택가 적용 실시간 특가",
+        "BLDC 무소음 초강풍 모터"
       ],
       "affiliate_links": [
         {
           "platform": "toss",
-          "label": "💙 토스쇼핑 할인가 구매하기 ➔",
-          "url": "https://toss.im/_m/fan001_deal",
+          "label": "💙 토스 할인가 확인 ➔",
+          "url": "https://toss.im/_m/duplex_bldc_circulator",
           "priority": 1,
           "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        },
-        {
-          "platform": "coupang",
-          "label": "🛒 쿠팡 파트너스 최저가 확인 ➔",
-          "url": "https://link.coupang.com/a/morvix_fan001",
-          "priority": 2,
-          "bg_gradient": "linear-gradient(135deg, #ff4757, #ff6b81)"
         }
       ],
-      "thumbnail": "images/fan001.jpg",
-      "analytics": {
-        "clicks_count": 342,
-        "platform_clicks": { "toss": 342, "coupang": 210 },
-        "conversions_count": 48,
-        "ctr": 5.2
-      },
-      "added_date": "2026-07-25T10:00:00.000Z",
-      "expiry_date": "2026-12-31T23:59:59.000Z"
+      "thumbnail": "https://images.unsplash.com/photo-1618957610183-f2310777c65f?w=600&auto=format&fit=crop&q=80",
+      "analytics": { "clicks_count": 520, "platform_clicks": { "toss": 520 }, "conversions_count": 64, "ctr": 12.3 },
+      "added_date": "2026-07-29T10:00:00.000Z"
     },
     {
-      "id": "PROD-009",
-      "slug": "blanket001",
-      "short_url": "morvix.kr/blanket001",
-      "name": "모르빅스 초냉감 얼음 쿨링 이불",
-      "subtitle": "닿자마자 -5도 즉각 쿨링! 열대야 숙면 구원템",
-      "category": "summer",
+      "id": "TOSS-DEAL-002",
+      "slug": "toss_cooling_pad_002",
+      "short_url": "toss.im/_m/toss_ice_cooling_blanket",
+      "name": "[토스쇼핑] 2026 초냉감 얼음 쿨링 여름 이불 패드 세트",
+      "subtitle": "닿자마자 -5도 쿨링! 열대야 숙면 토스 단독 특가",
+      "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "episode_id": "INTERNAL_CASE_EP009",
-      "episode_label": "🎬 EP009 숏폼 소개 제품",
-      "price": 28900,
-      "original_price": 40460,
-      "discount_rate": "30%",
+      "episode_id": "TOSS_SHARE_002",
+      "episode_label": "🔥 토스 인기상품",
+      "price": 24900,
+      "original_price": 39900,
+      "discount_rate": "38%",
       "rating": 4.95,
-      "review_count": 312,
+      "review_count": 980,
       "usps": [
-        "Q-MAX 0.45 닿자마자 입체 순간 즉각 쿨링",
-        "형광증백제 0% 아토피 안심 인증 원단",
-        "통세탁 가능 100회 세탁에도 쿨링 성능 유지",
-        "양면 리버서블 봄/여름 사계절 실용성"
+        "Q-MAX 0.45 닿자마자 쿨링",
+        "100% 통세탁 마이크로 파이버"
       ],
       "affiliate_links": [
         {
           "platform": "toss",
-          "label": "💙 토스쇼핑 할인가 구매하기 ➔",
-          "url": "https://toss.im/_m/blanket001_deal",
+          "label": "💙 토스 할인가 확인 ➔",
+          "url": "https://toss.im/_m/toss_ice_cooling_blanket",
           "priority": 1,
           "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
         }
       ],
-      "thumbnail": "images/blanket001.jpg",
-      "analytics": {
-        "clicks_count": 1280,
-        "platform_clicks": { "toss": 1280 },
-        "conversions_count": 164,
-        "ctr": 8.4
-      },
-      "added_date": "2026-07-25T10:00:00.000Z",
-      "expiry_date": "2026-12-31T23:59:59.000Z"
+      "thumbnail": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&auto=format&fit=crop&q=80",
+      "analytics": { "clicks_count": 890, "platform_clicks": { "toss": 890 }, "conversions_count": 112, "ctr": 14.1 },
+      "added_date": "2026-07-29T10:00:00.000Z"
     },
     {
-      "id": "PROD-008",
-      "slug": "mosquito001",
-      "short_url": "morvix.kr/mosquito001",
-      "name": "듀플렉스 19W 캠핑 무소음 모기 포충기",
-      "subtitle": "야외 캠핑 및 실내 유해 곤충 360도 강력 포집",
-      "category": "cleaning",
-      "status": "ACTIVE",
-      "is_featured": true,
-      "episode_id": "INTERNAL_CASE_EP008",
-      "episode_label": "🎬 EP008 숏폼 소개 제품",
-      "price": 28900,
-      "original_price": 40460,
-      "discount_rate": "30%",
-      "rating": 4.8,
-      "review_count": 94,
-      "usps": [
-        "19W 강력한 368nm UV 광원으로 모기 완벽 유인",
-        "캠핑장 및 침실 겸용 무소음 인버터 모터",
-        "위생적 잔여물 분리 세척 케이지 구조"
-      ],
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스쇼핑 할인가 구매하기 ➔",
-          "url": "https://toss.im/_m/mosquito001_deal",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "images/mosquito001.jpg",
-      "analytics": { "clicks_count": 210, "platform_clicks": { "toss": 210 }, "conversions_count": 19, "ctr": 4.1 },
-      "added_date": "2026-07-25T10:00:00.000Z",
-      "expiry_date": "2026-12-31T23:59:59.000Z"
-    },
-    {
-      "id": "PROD-007",
-      "slug": "magsafe001",
-      "short_url": "morvix.kr/magsafe001",
-      "name": "모르빅스 3in1 초고속 마그네틱 데스크 거치대",
-      "subtitle": "아이폰/에어팟/워치 동시에 1초 접촉 고속 충전",
+      "id": "TOSS-DEAL-003",
+      "slug": "toss_magnetic_charger_003",
+      "short_url": "toss.im/_m/toss_3in1_magnetic_charger",
+      "name": "[토스쇼핑] 3in1 초고속 마그네틱 맥세이프 무선 충전 거치대",
+      "subtitle": "스마트폰 + 워치 + 이어폰 동시 15W 초고속 충전",
       "category": "it",
       "status": "ACTIVE",
       "is_featured": true,
-      "episode_id": "INTERNAL_CASE_EP007",
-      "episode_label": "🎬 EP007 숏폼 소개 제품",
-      "price": 28900,
-      "original_price": 40460,
-      "discount_rate": "30%",
-      "rating": 4.9,
-      "review_count": 450,
+      "episode_id": "TOSS_SHARE_003",
+      "episode_label": "🔥 데스크 테리어",
+      "price": 19800,
+      "original_price": 35000,
+      "discount_rate": "43%",
+      "rating": 4.88,
+      "review_count": 650,
       "usps": [
-        "강력한 15W 맥세이프 초고속 무선 충전",
-        "3개 디바이스 동시 충전 데스크 테리어 완성",
-        "알루미늄 풀바디 발열 방지 설계"
+        "강력한 자력 안심 고정",
+        "15W 스마트 멀티 충전"
       ],
       "affiliate_links": [
         {
           "platform": "toss",
-          "label": "💙 토스쇼핑 할인가 구매하기 ➔",
-          "url": "https://toss.im/_m/magsafe001_deal",
+          "label": "💙 토스 할인가 확인 ➔",
+          "url": "https://toss.im/_m/toss_3in1_magnetic_charger",
           "priority": 1,
           "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
         }
       ],
-      "thumbnail": "images/magsafe001.jpg",
-      "analytics": { "clicks_count": 480, "platform_clicks": { "toss": 480 }, "conversions_count": 62, "ctr": 6.8 },
-      "added_date": "2026-07-25T10:00:00.000Z",
-      "expiry_date": "2026-12-31T23:59:59.000Z"
+      "thumbnail": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&auto=format&fit=crop&q=80",
+      "analytics": { "clicks_count": 410, "platform_clicks": { "toss": 410 }, "conversions_count": 49, "ctr": 11.9 },
+      "added_date": "2026-07-29T10:00:00.000Z"
+    },
+    {
+      "id": "TOSS-DEAL-004",
+      "slug": "toss_bug_killer_004",
+      "short_url": "toss.im/_m/toss_bug_killer_duplex",
+      "name": "[토스쇼핑] [가격오류급] 360도 무소음 포충기 모기 퇴치기",
+      "subtitle": "캠핑/실내 겸용 유해 곤충 360도 광원 강력 포집",
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "episode_id": "TOSS_SHARE_004",
+      "episode_label": "🔥 [가격오류급]",
+      "price": 14900,
+      "original_price": 49900,
+      "discount_rate": "70%",
+      "rating": 4.92,
+      "review_count": 2100,
+      "usps": [
+        "70% 가격오류급 수량 한정",
+        "무소음 인버터 살충 포충"
+      ],
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스 할인가 확인 ➔",
+          "url": "https://toss.im/_m/toss_bug_killer_duplex",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80",
+      "analytics": { "clicks_count": 1450, "platform_clicks": { "toss": 1450 }, "conversions_count": 230, "ctr": 15.8 },
+      "added_date": "2026-07-29T10:00:00.000Z"
     }
   ]
 };
@@ -269,10 +235,16 @@ async function initShopOS() {
         
         // Add fetched items first
         fetched.products.forEach(p => mergedMap.set(p.slug || p.id, p));
-        // Add/overwrite with local user items
-        localProds.forEach(p => mergedMap.set(p.slug || p.id, p));
+        // Add/overwrite with local user items (filtering out legacy test items)
+        const legacyTestSlugs = ['fan001', 'blanket001', 'mosquito001', 'magsafe001'];
+        localProds.forEach(p => {
+          const key = p.slug || p.id;
+          if (!legacyTestSlugs.includes(key) && !key.startsWith('PROD-')) {
+            mergedMap.set(key, p);
+          }
+        });
         
-        dbData.products = Array.from(mergedMap.values());
+        dbData.products = Array.from(mergedMap.values()).filter(p => !legacyTestSlugs.includes(p.slug) && !p.id.startsWith('PROD-'));
         saveMasterDbToStorage();
       }
     }
