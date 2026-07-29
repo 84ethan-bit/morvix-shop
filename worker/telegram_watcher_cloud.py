@@ -110,7 +110,7 @@ def cleanup_expired_deals():
 # --------------------------------------------------------------------------
 # 3. Message Processing Engine (0-Human Autonomous Parsing)
 # --------------------------------------------------------------------------
-def process_deal_text(text):
+def process_deal_text(text, attached_image_url=None):
     if "http" not in text: return False
 
     url_match = re.search(r'(https?://\S+)', text)
@@ -157,18 +157,22 @@ def process_deal_text(text):
     category = get_auto_category(title)
     time_slug = f"toss_{int(time.time())}"
 
-    # Auto Harvest Real Product Image from Naver Shopping
-    image_thumb = None
-    try:
-        from urllib.parse import quote
-        search_query = re.sub(r'\[.*?\]', '', title).strip()
-        s_url = f"https://search.shopping.naver.com/search/all?query={quote(search_query)}"
-        h_res = requests.get(s_url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}, timeout=4).text
-        m_img = re.search(r'https://shopping-phinf\.pstatic\.net/main_[^\"]+', h_res)
-        if m_img:
-            image_thumb = m_img.group(0)
-    except Exception as e:
-        print(f"⚠️ Real image harvest exception: {e}")
+    # Priority 1: Direct Attached Photo from Telegram Message
+    image_thumb = attached_image_url
+    if image_thumb:
+        print(f"✅ Using Direct Telegram Attached Product Image: {image_thumb}")
+    else:
+        # Priority 2: Harvest from Naver Shopping
+        try:
+            from urllib.parse import quote
+            search_query = re.sub(r'\[.*?\]', '', title).strip()
+            s_url = f"https://search.shopping.naver.com/search/all?query={quote(search_query)}"
+            h_res = requests.get(s_url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}, timeout=4).text
+            m_img = re.search(r'https://shopping-phinf\.pstatic\.net/main_[^\"]+', h_res)
+            if m_img:
+                image_thumb = m_img.group(0)
+        except Exception as e:
+            print(f"⚠️ Real image harvest exception: {e}")
 
     if not image_thumb:
         category_fallback_images = {
@@ -267,6 +271,20 @@ def process_deal_text(text):
 
     return True
 
+def download_telegram_photo(file_id):
+    """Download attached photo from Telegram API directly"""
+    if not BOT_TOKEN or not file_id: return None
+    try:
+        f_res = requests.get(f"https://api.telegram.org/bot{BOT_TOKEN}/getFile?file_id={file_id}", timeout=5).json()
+        file_path = f_res.get("result", {}).get("file_path")
+        if file_path:
+            photo_url = f"https://api.telegram.org/file/bot{BOT_TOKEN}/{file_path}"
+            print(f"📸 Telegram Attached Photo Downloaded:\n   {photo_url}")
+            return photo_url
+    except Exception as e:
+        print(f"⚠️ Telegram photo download error: {e}")
+    return None
+
 # --------------------------------------------------------------------------
 # 4. Polling Watcher Loop
 # --------------------------------------------------------------------------
@@ -280,7 +298,7 @@ def run_watcher():
         return
 
     offset = 0
-    print("📡 Watching 24/7 for Telegram deal messages...")
+    print("📡 Watching 24/7 for Telegram deal messages & attached photos...")
 
     while True:
         try:
@@ -289,8 +307,18 @@ def run_watcher():
             for u in res.get("result", []):
                 offset = u["update_id"]
                 if 'message' in u:
-                    text = u['message'].get('text', '')
-                    process_deal_text(text)
+                    msg = u['message']
+                    # Text can be in 'text' or 'caption' (if photo attached)
+                    text = msg.get('text') or msg.get('caption') or ''
+                    
+                    # Extract attached photo if present
+                    attached_photo_url = None
+                    if 'photo' in msg and isinstance(msg['photo'], list) and len(msg['photo']) > 0:
+                        largest_photo = msg['photo'][-1]
+                        attached_photo_url = download_telegram_photo(largest_photo.get('file_id'))
+
+                    if text:
+                        process_deal_text(text, attached_image_url=attached_photo_url)
             time.sleep(1)
         except Exception as e:
             time.sleep(5)
