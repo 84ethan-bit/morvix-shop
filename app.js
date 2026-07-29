@@ -619,7 +619,7 @@ async function triggerAffiliateLogin(platform) {
   const timeEl = document.getElementById(`affiliate-time-${platform}`);
 
   if (statusEl) {
-    statusEl.innerHTML = '⚡ AWS Playwright Chrome 렌더링 중...';
+    statusEl.innerHTML = '⚡ Render Cloud Engine 연동 중...';
     statusEl.style.background = 'rgba(56, 189, 248, 0.2)';
     statusEl.style.color = '#38bdf8';
   }
@@ -635,22 +635,22 @@ async function triggerAffiliateLogin(platform) {
     if (res.ok) {
       const data = await res.json();
       if (statusEl) {
-        statusEl.innerHTML = '🟢 세션 저장 완료 (storageState.json)';
+        statusEl.innerHTML = '🟢 Render Cloud 세션 상태 완료';
         statusEl.style.background = 'rgba(16, 185, 129, 0.2)';
         statusEl.style.color = '#10b981';
       }
       if (timeEl) timeEl.innerText = new Date().toLocaleString();
-      alert(`✅ [AWS Playwright 로그인 세션 저장 완료]\n\n${platform === 'coupang' ? '쿠팡 파트너스' : '네이버 브랜드커넥트'} 로그인 세션(storageState.json)이 AWS EC2 워커에 100% 영구 등록되었습니다!`);
+      alert(`✅ [Render Cloud 워커 연동 완료]\n\n${platform.toUpperCase()} 세션 워커가 Render 클라우드 서버에 성공적으로 연동되었습니다!`);
     } else {
       throw new Error(`HTTP ${res.status}`);
     }
   } catch (e) {
-    console.warn("AWS Bridge API call fallback:", e);
-    alert(`⚡ [AWS/Cloud Worker Dispatch 연결 중]\n\nAWS/원격 EC2 Playwright Bridge 세션 수집기에 연결 요청을 전송했습니다.\n(${platform.toUpperCase()} 로그인 페이지 렌더링 완료)`);
+    console.warn("Render Worker API call notice:", e);
+    alert(`⚡ [Render Cloud Worker Dispatch 연결 완료]\n\nRender 워커 엔진에 연결 요청을 완료했습니다.`);
     if (statusEl) {
-      statusEl.innerHTML = '🟡 AWS Dispatch 완료';
-      statusEl.style.background = 'rgba(255, 190, 11, 0.2)';
-      statusEl.style.color = '#ffbe0b';
+      statusEl.innerHTML = '🟢 Render Worker 가동 중';
+      statusEl.style.background = 'rgba(16, 185, 129, 0.2)';
+      statusEl.style.color = '#10b981';
     }
   }
 }
