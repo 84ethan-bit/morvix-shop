@@ -1,6 +1,45 @@
 {
   "products": [
     {
+      "id": "TOSS-AUTO-1785324214",
+      "slug": "toss_1785324214",
+      "short_url": "morvix.kr/toss_1785324214",
+      "name": "테스트 자동 답장 꿀템",
+      "subtitle": "토스 혜택가 적용 실시간 특가 30% 할인",
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 15000,
+      "original_price": 20250,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 239,
+      "usps": [
+        "토스 혜택가 적용 실시간 특가",
+        "실사용자 검증 100% 꿀템"
+      ],
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/auto_reply_test",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&auto=format&fit=crop&q=80",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-29T20:23:34.810706",
+      "expiry_date": "2026-07-31T20:23:34.810706"
+    },
+    {
       "id": "TOSS-AUTO-1785324094",
       "slug": "toss_1785324094",
       "short_url": "morvix.kr/toss_1785324094",

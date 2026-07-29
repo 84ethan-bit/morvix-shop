@@ -21,6 +21,18 @@ BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
 REFERRAL_ID = os.getenv("REFERRAL_ID", "")
 
+def send_telegram_notification(message):
+    if not BOT_TOKEN or not CHAT_ID:
+        return False
+    try:
+        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+        payload = {"chat_id": CHAT_ID, "text": message, "parse_mode": "Markdown"}
+        res = requests.post(url, json=payload, timeout=5)
+        return res.status_code == 200
+    except Exception as e:
+        print(f"⚠️ Telegram send error: {e}")
+        return False
+
 # --------------------------------------------------------------------------
 # 1. 7-Tier Priority Category Classification Engine (Ported & Extended)
 # --------------------------------------------------------------------------
