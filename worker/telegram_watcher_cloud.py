@@ -113,12 +113,19 @@ def cleanup_expired_deals():
 def process_deal_text(text, attached_image_url=None):
     if "http" not in text: return False
 
-    # Support both toss.im/_m/XXXX and toss.shopping/t/XXXX links (full URL including numeric ID)
-    url_match = re.search(r'(https?://toss\.(?:im/_m/[A-Za-z0-9]+|shopping/t/\d+|[^\s]+))', text)
+    # Support both toss.im/_m/XXXX and toss.shopping/t/XXXX links
+    url_match = re.search(r'(https?://toss\.(?:im/_m/[A-Za-z0-9]+|shopping/t/[^\s]+))', text)
     if not url_match: return False
 
-    link = url_match.group(1).split('?')[0].rstrip(')')
-    clean_text = text.replace(link, "")
+    raw_link = url_match.group(1).rstrip(')').rstrip('.')
+    if 'toss.im/_m/' in raw_link:
+        link = raw_link.split('?')[0]  # toss.im/_m/XXXX 쉐어링크 보존
+    elif 'k=' in raw_link:
+        link = raw_link               # 제휴 추적 키(k=) 보존
+    else:
+        link = raw_link.split('?')[0]
+
+    clean_text = text.replace(raw_link, "").replace(link, "")
 
     # Remove affiliate disclaimer patterns
     clean_text = re.sub(r'[\*✱]?\s*이\s*포스팅은\s*토스쇼핑\s*쉐어링크[^\n]*\n?', '', clean_text, flags=re.IGNORECASE)
