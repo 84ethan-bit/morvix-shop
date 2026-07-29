@@ -221,6 +221,21 @@ def process_deal_text(text):
     with open(DB_PATH, "w", encoding="utf-8") as f:
         json.dump(db_data, f, ensure_ascii=False, indent=2)
 
+    # Send Instant Reply Notification back to Telegram User
+    try:
+        reply_msg = (
+            f"🎉 *[MORVIX OS 핫딜 1초 라이브 등록 완료!]*\n\n"
+            f"• *상품명:* `{title}`\n"
+            f"• *실시간 시세:* `{price:,}원` (할인율 `{discount_rate}`)\n"
+            f"• *자동 분류:* `[{category.upper()}]` 탭\n"
+            f"• *토스 쉐어링크:* {link}\n\n"
+            f"🌐 *라이브 홈페이지:* https://morvix-shop.vercel.app\n"
+            f"✨ 컴퓨터를 끄셔도 라이브 서버에 즉시 게재되었습니다!"
+        )
+        send_telegram_notification(reply_msg)
+    except Exception as e:
+        print(f"⚠️ Telegram reply notification error: {e}")
+
     print(f"✅ [AUTONOMOUS INGESTION COMPLETE]")
     print(f"   • Title: '{title}'")
     print(f"   • Price: {price:,}원 ({discount_rate})")
