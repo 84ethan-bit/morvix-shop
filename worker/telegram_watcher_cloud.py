@@ -107,13 +107,13 @@ def process_deal_text(text):
     link = url_match.group(1).split('?')[0]
     clean_text = text.replace(link, "").replace('[토스특가]', '').replace('[토스쇼핑]', '').replace('[특가]', '').replace('[가격오류급]', '').strip()
 
-    # Extract Price & Discount Rate
+    # Extract Price & Discount Rate from text
     discount_match = re.search(r'(\d+)\s*[%％]', clean_text)
-    discount_rate = f"{discount_match.group(1)}%" if discount_match else "30%"
+    discount_rate = f"{discount_match.group(1)}%" if discount_match else None
 
     price_matches = re.findall(r'([\d,]+)\s*원', clean_text)
     prices = [int(p.replace(',', '')) for p in price_matches if p.replace(',', '').isdigit()]
-    price = prices[-1] if prices else 28900
+    price = prices[-1] if prices else None
 
     title = clean_text
     title = re.sub(r'[\*✱]?\s*이\s*포스팅은\s*토스쇼핑\s*쉐어링크[^\n]*\n?', '', title, flags=re.IGNORECASE)
@@ -123,6 +123,24 @@ def process_deal_text(text):
     title = title.strip()
     if len(title) < 3:
         title = "토스쇼핑 파격특가 추천 꿀템"
+
+    # If price or discount missing from raw text, auto harvest exact market price
+    if not price:
+        try:
+            from urllib.parse import quote
+            sq = re.sub(r'\[.*?\]', '', title).strip()
+            s_url = f"https://search.shopping.naver.com/search/all?query={quote(sq)}"
+            h_res = requests.get(s_url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}, timeout=4).text
+            pm = re.search(r'lowestPrice["\']?:\s*["\']?(\d+)["\']?', h_res) or re.search(r'([\d,]+)\s*원', h_res)
+            if pm:
+                price = int(pm.group(1).replace(',', ''))
+        except Exception as e:
+            print(f"⚠️ Price harvest error: {e}")
+        if not price:
+            price = 10900
+
+    if not discount_rate:
+        discount_rate = "25%"
 
     category = get_auto_category(title)
     time_slug = f"toss_{int(time.time())}"

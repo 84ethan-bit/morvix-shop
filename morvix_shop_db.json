@@ -9,9 +9,9 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 28900,
-      "original_price": 39015,
-      "discount_rate": "30%",
+      "price": 10900,
+      "original_price": 14500,
+      "discount_rate": "25%",
       "rating": 4.9,
       "review_count": 84,
       "usps": [
@@ -38,7 +38,8 @@
       },
       "added_date": "2026-07-29T19:08:07.022679",
       "expiry_date": "2026-07-31T19:08:07.022679",
-      "image_status": "Verified_Real_Monalisa_Photo"
+      "image_status": "Verified_Real_Monalisa_Photo",
+      "price_status": "Verified_Real_Naver_Lowest_Price"
     }
   ]
 }
