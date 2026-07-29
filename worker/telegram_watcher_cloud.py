@@ -233,6 +233,16 @@ def process_deal_text(text):
     with open(DB_PATH, "w", encoding="utf-8") as f:
         json.dump(db_data, f, ensure_ascii=False, indent=2)
 
+    # Automatically Push to GitHub Main Branch to trigger live Vercel deployment
+    try:
+        from subprocess import run
+        run(["git", "add", "morvix_shop_db.json"], cwd=BASE_DIR)
+        run(["git", "commit", "-m", f"auto: ⚡ Telegram 0-Human Deal Ingestion [{title[:20]}]"], cwd=BASE_DIR)
+        run(["git", "push", "origin", "main"], cwd=BASE_DIR)
+        print("🚀 Successfully pushed to GitHub Main Branch & Vercel live site!")
+    except Exception as e:
+        print(f"⚠️ Git push error: {e}")
+
     # Send Instant Reply Notification back to Telegram User
     try:
         reply_msg = (
