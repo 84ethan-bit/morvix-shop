@@ -366,15 +366,37 @@ function openProductDetail(slug) {
       </div>
     </div>
 
+    <!-- ⚡ Hot Deal Studio V2 Content Generator Suite (Blog, Threads, Shorts Script) -->
+    <div style="margin-top: 24px; background: rgba(0, 82, 204, 0.08); border: 1px solid rgba(38, 132, 255, 0.3); border-radius: 12px; padding: 18px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h4 style="color: #38bdf8; font-size: 0.98rem; font-weight: 800; margin: 0;">🔥 Hot Deal Studio V2 - AI 바이럴 콘텐츠 자동 생성 엔진</h4>
+        <span style="background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">100% AUTO COPY</span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 12px;">
+        <button type="button" onclick="generateContentDraft('${product.slug}', 'blog')" style="background: linear-gradient(135deg, #0052cc, #2684ff); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 0.85rem;">
+          📝 SEO 블로그 원고 1초 복사
+        </button>
+        <button type="button" onclick="generateContentDraft('${product.slug}', 'threads')" style="background: linear-gradient(135deg, #a855f7, #ec4899); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 0.85rem;">
+          💬 스레드(Threads) 원고 1초 복사
+        </button>
+        <button type="button" onclick="generateContentDraft('${product.slug}', 'shorts')" style="background: linear-gradient(135deg, #ff4757, #ff6b81); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 0.85rem;">
+          🎬 15초 릴스/쇼츠 콘티 1초 복사
+        </button>
+      </div>
+
+      <div id="content-generator-preview" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px; font-size: 0.83rem; color: #38bdf8; font-family: monospace; white-space: pre-wrap; word-break: break-all; display: none;"></div>
+    </div>
+
     <!-- Related Cross-Selling Cluster -->
-    <div style="margin-top: 28px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+    <div style="margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 18px;">
       <h4 style="color: var(--primary-accent); font-size: 0.98rem; font-weight: 800; margin-bottom: 12px;">🔗 함께 둘러보면 일상의 억까가 풀리는 연관 추천 클러스터</h4>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
         ${relatedProds.map(rp => `
           <div onclick="openProductDetail('${rp.slug}')" style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 10px; cursor: pointer; transition: transform 0.2s;">
             <img src="${rp.thumbnail}" style="width: 100%; height: 90px; object-fit: cover; border-radius: 4px; margin-bottom: 6px;">
             <div style="font-size: 0.82rem; font-weight: 700; color: #fff; line-height: 1.2; height: 2rem; overflow: hidden;">${rp.name}</div>
-            <div style="font-size: 0.78rem; color: #2ed573; margin-top: 6px; font-weight: 600;">🛒 최저가 확인 ➔</div>
+            <div style="font-size: 0.78rem; color: #2684ff; margin-top: 6px; font-weight: 600;">💙 토스할인가 확인 ➔</div>
           </div>
         `).join('')}
       </div>
@@ -384,6 +406,58 @@ function openProductDetail(slug) {
   modal.style.display = 'flex';
   modal.classList.add('active');
 }
+
+// Hot Deal Studio V2 - AI Content Draft Generator (Blog, Threads, Shorts)
+function generateContentDraft(slug, type) {
+  if (!dbData || !dbData.products) return;
+  const p = dbData.products.find(item => item.slug === slug || item.id === slug);
+  if (!p) return;
+
+  const priceStr = p.price ? `${p.price.toLocaleString()}원` : '특가 확인';
+  const shortUrl = `https://morvix.kr/${p.slug}`;
+  const tossUrl = (Array.isArray(p.affiliate_links) && p.affiliate_links.find(l => l.platform === 'toss'))?.url || shortUrl;
+  const uspsText = Array.isArray(p.usps) ? p.usps.map(u => `• ${u}`).join('\n') : `• ${p.subtitle}`;
+
+  let generatedText = '';
+
+  if (type === 'blog') {
+    generatedText = `[🔥 핫딜 정보] ${p.name} 실사용 후기 및 최저가 특가 좌표\n\n` +
+      `일상의 불편함을 단 3초 만에 해결해 주는 검증 꿀템 [${p.name}] 소식입니다!\n\n` +
+      `📌 핵심 메리트 4가지:\n${uspsText}\n\n` +
+      `💰 실시간 파격 특가: ${priceStr} (${p.discount_rate || '할인중'})\n` +
+      `🔗 토스쇼핑 공식 할인가 확인 좌표: ${tossUrl}\n\n` +
+      `#토스쇼핑 #${p.category} #핫딜추천 #꿀템 #쇼핑인텔리전스`;
+  } else if (type === 'threads') {
+    generatedText = `🔥 아니 이거 진심 사기캐 꿀템 ㅋㅋㅋ\n\n` +
+      `👉 ${p.name}\n` +
+      `"${p.subtitle}"\n\n` +
+      `지금 토스쇼핑 특가로 ${priceStr}에 뜸!!\n` +
+      `놓치면 손해임 좌표 가져가셈 👇\n\n` +
+      `🔗 ${tossUrl}\n\n` +
+      `#토스핫딜 #${p.category} #꿀템추천`;
+  } else if (type === 'shorts') {
+    generatedText = `🎬 [15초 숏폼/릴스 콘티 - ${p.name}]\n\n` +
+      `[1컷 (0-3초)] 😱 상황 억까: 사막 땀뻘뻘 / 억까 시츄에이션 연출\n` +
+      `[2컷 (3-7초)] 💡 등장: "${p.name}" 한 손으로 켜면서 반전\n` +
+      `[3컷 (7-12초)] ⚡ 핵심 USP: ${uspsText.split('\n')[0] || p.subtitle}\n` +
+      `[4컷 (12-15초)] 🚀 CTA: "프로필 링크 타고 토스 특가 ${priceStr}에 구매하기!"\n\n` +
+      `🔗 좌표: ${tossUrl}`;
+  }
+
+  const previewBox = document.getElementById('content-generator-preview');
+  if (previewBox) {
+    previewBox.style.display = 'block';
+    previewBox.textContent = generatedText;
+  }
+
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(generatedText).then(() => {
+      alert(`✅ [1초 원고 복사 완료!]\n\n${type.toUpperCase()} 바이럴 원고가 클립보드에 복사되었습니다. 블로그/스레드/숏폼에 바로 붙여넣기(Ctrl+V)하세요!`);
+    }).catch(() => {});
+  }
+}
+
+window.generateContentDraft = generateContentDraft;
 
 // Curation Quick Filter
 function filterCuration(catId) {
