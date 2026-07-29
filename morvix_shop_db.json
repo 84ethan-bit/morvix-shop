@@ -1,6 +1,84 @@
 {
   "products": [
     {
+      "id": "TOSS-AUTO-1785319297",
+      "slug": "toss_1785319297",
+      "short_url": "morvix.kr/toss_1785319297",
+      "name": "2026 초강풍 무소음 스마트 서큘레이터",
+      "subtitle": "토스 혜택가 적용 실시간 특가 45% 할인",
+      "category": "summer",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 32900,
+      "original_price": 44415,
+      "discount_rate": "45%",
+      "rating": 4.9,
+      "review_count": 52,
+      "usps": [
+        "토스 혜택가 적용 실시간 특가",
+        "실사용자 검증 100% 꿀템"
+      ],
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/live_toss_demo_circulator",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1618957610183-f2310777c65f?w=600&auto=format&fit=crop&q=80",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-29T19:01:37.946395",
+      "expiry_date": "2026-07-31T19:01:37.946395"
+    },
+    {
+      "id": "TOSS-AUTO-1785319247",
+      "slug": "toss_1785319247",
+      "short_url": "morvix.kr/toss_1785319247",
+      "name": "✱ 이 포스팅은 토스쇼핑 쉐어링크 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.\n모나리자 스마트 다용도 키친타올, 250매, 12롤, 1팩",
+      "subtitle": "토스 혜택가 적용 실시간 특가 30% 할인",
+      "category": "cleaning",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 28900,
+      "original_price": 39015,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 242,
+      "usps": [
+        "토스 혜택가 적용 실시간 특가",
+        "실사용자 검증 100% 꿀템"
+      ],
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/bRkTyZBf",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-29T19:00:47.254461",
+      "expiry_date": "2026-07-31T19:00:47.254461"
+    },
+    {
       "id": "TOSS-AUTO-1785318987",
       "slug": "toss_1785318987",
       "short_url": "morvix.kr/toss_1785318987",
