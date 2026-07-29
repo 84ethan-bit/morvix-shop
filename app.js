@@ -338,33 +338,37 @@ function renderProducts() {
 
   if (count) count.textContent = `총 ${filtered.length}개 검증 자산`;
 
-  grid.innerHTML = filtered.map(p => `
-    <div class="product-card" onclick="openProductDetail('${p.slug}')">
-      <div class="card-image-wrapper">
-        <img class="card-image" src="${p.thumbnail}" alt="${p.name}" referrerpolicy="no-referrer">
-        ${p.is_featured ? '<span class="badge-featured">🔥 HOT 꿀템</span>' : ''}
-        <span class="badge-episode">${p.episode_label || p.episode_id}</span>
-      </div>
-      <div class="card-content">
-        <h3 class="card-title">${p.name}</h3>
-        <p class="card-subtitle">${p.subtitle}</p>
-        
-        <div style="display: flex; gap: 4px; margin-bottom: 8px; font-size: 0.72rem; color: var(--text-muted);">
-          <span style="background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px;">▶ Shorts</span>
-          <span style="background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px;">📷 Reels</span>
-          <span style="background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px;">🎵 TikTok</span>
-          <span style="background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px;">📝 Blog</span>
-        </div>
+  grid.innerHTML = filtered.map(p => {
+    const isMega = parseInt(p.discount_rate) >= 90;
+    const priceStr = p.price ? p.price.toLocaleString() + '원' : '특가 확인';
+    const origPriceStr = p.original_price ? p.original_price.toLocaleString() + '원' : '';
 
-        <div class="card-meta">
-          <div class="card-trust-box" style="display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: #2ed573; font-weight: 700;">
-            <span>🔥 MORVIX 추천</span>
+    return `
+      <div class="product-card" onclick="openProductDetail('${p.slug}')" style="${isMega ? 'background: linear-gradient(135deg, rgba(255, 120, 0, 0.12), rgba(255, 0, 0, 0.08)); border: 2px solid #ff7800;' : ''}">
+        <div class="card-image-wrapper">
+          <img class="card-image" src="${p.thumbnail}" alt="${p.name}" referrerpolicy="no-referrer">
+          ${isMega ? '<span class="badge-featured" style="background: linear-gradient(135deg, #ff4757, #ff6b81); color:#fff;">🔥 MEGA 90%+</span>' : (p.is_featured ? '<span class="badge-featured">🔥 HOT 핫딜</span>' : '')}
+          <span class="badge-episode" style="background: rgba(0, 82, 204, 0.8); color: #fff;">${p.category ? p.category.toUpperCase() : 'HOTDEAL'}</span>
+        </div>
+        <div class="card-content" style="padding-top: 10px;">
+          <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 600; margin-bottom: 4px;">
+            <span>토스쇼핑</span> • <span>${p.category ? p.category.toUpperCase() : '꿀템'}</span>
           </div>
-          <button class="btn-card-buy" onclick="event.stopPropagation(); openProductDetail('${p.slug}');" style="background: linear-gradient(135deg, #0052cc, #2684ff); color: #fff; font-weight: 800;">💙 토스쇼핑 할인가 확인 ➔</button>
+          <h3 class="card-title" style="font-size: 0.92rem; font-weight: 800; color: #fff; line-height: 1.35; height: 2.5rem; overflow: hidden; margin-bottom: 6px;">${p.name}</h3>
+          
+          <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px;">
+            <span style="font-size: 1.05rem; font-weight: 900; color: ${isMega ? '#ff4757' : '#ff4757'};">${p.discount_rate || '30%'}</span>
+            <span style="font-size: 1.05rem; font-weight: 900; color: #fff;">${priceStr}</span>
+            ${origPriceStr ? `<span style="font-size: 0.78rem; color: #64748b; text-decoration: line-through;">${origPriceStr}</span>` : ''}
+          </div>
+
+          <div class="card-meta">
+            <button class="btn-card-buy" onclick="event.stopPropagation(); openProductDetail('${p.slug}');" style="background: linear-gradient(135deg, #0052cc, #2684ff); color: #fff; font-weight: 800; width: 100%; border-radius: 8px; padding: 10px;">💙 토스할인가 확인 ➔</button>
+          </div>
         </div>
       </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
 // Open Product Detail Modal
