@@ -136,12 +136,14 @@ def harvest_sharelink_portal():
                 raw = card_info['rawText']
                 lines = [l.strip() for l in raw.split('\n') if l.strip()]
 
-                # 파싱 logic
-                # 예시: '67% 특가', '14,900원', '미니 고데기'
+                # '개당 X,XXX원 수익' 제휴 수수료 박스 텍스트 제거 후 실제 판매 가격 추출
+                clean_price_raw = re.sub(r'개당\s*[\d,]+\s*원\s*수익', '', raw)
+                clean_price_raw = re.sub(r'[\d,]+\s*원\s*수익', '', clean_price_raw)
+
                 discount_match = re.search(r'(\d+[%％]\s*특가|\d+[%％]\s*할인|\d+[%％])', raw)
                 discount_rate = discount_match.group(1) if discount_match else "30%"
 
-                price_match = re.search(r'([\d,]+)\s*원', raw)
+                price_match = re.search(r'([\d,]+)\s*원', clean_price_raw)
                 price = int(price_match.group(1).replace(',', '')) if price_match else 9900
 
                 title = ""
