@@ -40,575 +40,15 @@
   ],
   "products": [
     {
-      "id": "TOSS-AUTO-1785438826-58",
-      "slug": "toss_1785438826_58",
-      "short_url": "morvix.kr/toss_1785438826_58",
-      "name": "개당 3,000원 수익",
-      "subtitle": "토스 파트너 특가 44% 적용",
-      "section": "best_seller",
-      "priority": 2,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 3000,
-      "original_price": 4050,
-      "discount_rate": "44%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/1t1ezMis",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/1t1ezMis",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-04-23%2Fcb7f11a1-6f2c-494b-a8fb-f1b66f8e9c1c.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 3000,
-          "date": "2026-07-30T19:22:34.101505"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 3,000원 수익 44%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 3000원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 3,000원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:22:35.972875",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-57",
-      "slug": "toss_1785438826_57",
-      "short_url": "morvix.kr/toss_1785438826_57",
-      "name": "올바른 식물성 엑스트라버진 올리브오일 캡슐 100, 30캡슐, 12박스",
-      "subtitle": "토스 파트너 특가 76% 적용",
-      "section": "best_seller",
-      "priority": 2,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 2990,
-      "original_price": 4036,
-      "discount_rate": "76%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/zEEgnj3r",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/zEEgnj3r",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-05-18%2F8935aa4f-1959-440c-ac11-e5d5f05c6533.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 2990,
-          "date": "2026-07-30T19:22:35.972889"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '올바른 식물성 엑스트라버진 올리브오일 캡슐 100, 30캡슐, 12박스 76%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 2990원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 올바른 식물성 엑스트라버진 올리브오일 캡슐 100, 30캡슐, 12박스 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:22:37.369776",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-56",
-      "slug": "toss_1785438826_56",
-      "short_url": "morvix.kr/toss_1785438826_56",
-      "name": "개당 2,150원 수익",
-      "subtitle": "토스 파트너 특가 64% 적용",
-      "section": "best_seller",
-      "priority": 2,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 2150,
-      "original_price": 2902,
-      "discount_rate": "64%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/jpCTjZin",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/jpCTjZin",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-30%2F2db665df-5429-453e-b10e-516be4de91e7.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 2150,
-          "date": "2026-07-30T19:22:37.369791"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 2,150원 수익 64%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 2150원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 2,150원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:22:39.074415",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-55",
-      "slug": "toss_1785438826_55",
-      "short_url": "morvix.kr/toss_1785438826_55",
-      "name": "개당 2,790원 수익",
-      "subtitle": "토스 파트너 특가 38% 적용",
-      "section": "best_seller",
-      "priority": 2,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 2790,
-      "original_price": 3766,
-      "discount_rate": "38%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/LvtKejqj",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/LvtKejqj",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-05-27%2F135d45ab-c29e-4029-b460-4081ad17fc08.png",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 2790,
-          "date": "2026-07-30T19:22:39.074430"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 2,790원 수익 38%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 2790원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 2,790원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:22:40.407456",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-54",
-      "slug": "toss_1785438826_54",
-      "short_url": "morvix.kr/toss_1785438826_54",
-      "name": "개당 1,890원 수익",
-      "subtitle": "토스 파트너 특가 48% 적용",
-      "section": "best_seller",
-      "priority": 2,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 1890,
-      "original_price": 2551,
-      "discount_rate": "48%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/Lg55QTHi",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/Lg55QTHi",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-05-26%2F5b704733-d8c2-4bfe-974f-98cc48f7b191.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 1890,
-          "date": "2026-07-30T19:22:40.407471"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 1,890원 수익 48%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 1890원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 1,890원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:22:41.918418",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-53",
-      "slug": "toss_1785438826_53",
-      "short_url": "morvix.kr/toss_1785438826_53",
-      "name": "개당 2,690원 수익",
-      "subtitle": "토스 파트너 특가 32% 적용",
-      "section": "best_seller",
-      "priority": 2,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 2690,
-      "original_price": 3631,
-      "discount_rate": "32%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/dwEZ7uab",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/dwEZ7uab",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-03-18%2F382d40ed-f961-4cff-bfe8-fc3e23def677.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 2690,
-          "date": "2026-07-30T19:22:41.918432"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 2,690원 수익 32%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 2690원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 2,690원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:22:43.294545",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-52",
-      "slug": "toss_1785438826_52",
-      "short_url": "morvix.kr/toss_1785438826_52",
-      "name": "개당 549원 수익",
-      "subtitle": "토스 파트너 특가 57% 적용",
-      "section": "best_seller",
-      "priority": 2,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 549,
-      "original_price": 741,
-      "discount_rate": "57%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/LW7wcEp9",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/LW7wcEp9",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-03-19%2F67cf3e5a-a6d9-4bbf-b07c-44dc5c1107ff.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 549,
-          "date": "2026-07-30T19:22:43.294559"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 549원 수익 57%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 549원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 549원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:22:44.421133",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-51",
-      "slug": "toss_1785438826_51",
-      "short_url": "morvix.kr/toss_1785438826_51",
-      "name": "개당 1,390원 수익",
-      "subtitle": "토스 파트너 특가 85% 적용",
-      "section": "best_seller",
-      "priority": 2,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 1390,
-      "original_price": 1876,
-      "discount_rate": "85%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/LPjdWjb8",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/LPjdWjb8",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2025-08-22%2F37f1112d-b9e3-451e-8e09-1f5ba263119b.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 1390,
-          "date": "2026-07-30T19:22:44.421147"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 1,390원 수익 85%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 1390원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 1,390원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:22:45.698740",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-50",
-      "slug": "toss_1785438826_50",
-      "short_url": "morvix.kr/toss_1785438826_50",
-      "name": "개당 1,957원 수익",
-      "subtitle": "토스 파트너 특가 67% 적용",
-      "section": "best_seller",
-      "priority": 2,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 1957,
-      "original_price": 2641,
-      "discount_rate": "67%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/HrG5rof7",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/HrG5rof7",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-29%2F329897fe-2843-4f36-8ab6-dd932d526e7b.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 1957,
-          "date": "2026-07-30T19:22:45.698755"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 1,957원 수익 67%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 1957원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 1,957원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:22:46.949373",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-46",
-      "slug": "toss_1785438826_46",
-      "short_url": "morvix.kr/toss_1785438826_46",
-      "name": "베스트판매자",
-      "subtitle": "토스 파트너 특가 30% 적용",
-      "section": "best_seller",
-      "priority": 2,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 2990,
-      "original_price": 4036,
-      "discount_rate": "30%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/NRDb6Wyj",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/NRDb6Wyj",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-23%2F2f0a5e63-df44-4d4d-a8ac-239100bab872.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 2990,
-          "date": "2026-07-30T19:22:46.949388"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '베스트판매자 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 2990원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 베스트판매자 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:22:48.063670",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-42",
-      "slug": "toss_1785438826_42",
-      "short_url": "morvix.kr/toss_1785438826_42",
+      "id": "TOSS-AUTO-1785439798-42",
+      "slug": "toss_1785439798_42",
+      "short_url": "morvix.kr/toss_1785439798_42",
       "name": "고당도 망고복숭아, 9-12과, 1kg, 1박스",
       "subtitle": "토스 파트너 특가 72% 특가 적용",
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
       "price": 12900,
       "original_price": 17415,
@@ -638,33 +78,19 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 12900,
-          "date": "2026-07-30T19:22:48.063685"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '고당도 망고복숭아, 9-12과, 1kg, 1박스 72% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 12900원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 고당도 망고복숭아, 9-12과, 1kg, 1박스 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:22:49.318053",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-41",
-      "slug": "toss_1785438826_41",
-      "short_url": "morvix.kr/toss_1785438826_41",
+      "id": "TOSS-AUTO-1785439798-41",
+      "slug": "toss_1785439798_41",
+      "short_url": "morvix.kr/toss_1785439798_41",
       "name": "썸머킹 아오리 청사과, 2kg, 1박스",
       "subtitle": "토스 파트너 특가 85% 특가 적용",
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
       "price": 7400,
       "original_price": 9990,
@@ -694,33 +120,19 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 7400,
-          "date": "2026-07-30T19:22:49.318067"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '썸머킹 아오리 청사과, 2kg, 1박스 85% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 7400원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 썸머킹 아오리 청사과, 2kg, 1박스 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:22:50.558454",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-40",
-      "slug": "toss_1785438826_40",
-      "short_url": "morvix.kr/toss_1785438826_40",
+      "id": "TOSS-AUTO-1785439798-40",
+      "slug": "toss_1785439798_40",
+      "short_url": "morvix.kr/toss_1785439798_40",
       "name": "맘스럽 아토워시 프렌치 라벤더 캡슐세제 파우치형, 실내건조형, 200개입, 1개",
       "subtitle": "토스 파트너 특가 30% 적용",
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
       "price": 5700,
       "original_price": 7695,
@@ -750,33 +162,19 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 5700,
-          "date": "2026-07-30T19:22:50.558478"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '맘스럽 아토워시 프렌치 라벤더 캡슐세제 파우치형, 실내건조형, 200개입, 1개 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 5700원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 맘스럽 아토워시 프렌치 라벤더 캡슐세제 파우치형, 실내건조형, 200개입, 1개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:22:52.098482",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-39",
-      "slug": "toss_1785438826_39",
-      "short_url": "morvix.kr/toss_1785438826_39",
+      "id": "TOSS-AUTO-1785439798-39",
+      "slug": "toss_1785439798_39",
+      "short_url": "morvix.kr/toss_1785439798_39",
       "name": "듀오덤 밴드, 혼합형, 8매입, 1개",
       "subtitle": "토스 파트너 특가 30% 적용",
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
       "price": 3800,
       "original_price": 5130,
@@ -806,33 +204,19 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 3800,
-          "date": "2026-07-30T19:22:52.098496"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '듀오덤 밴드, 혼합형, 8매입, 1개 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 3800원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 듀오덤 밴드, 혼합형, 8매입, 1개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:22:53.358405",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-38",
-      "slug": "toss_1785438826_38",
-      "short_url": "morvix.kr/toss_1785438826_38",
+      "id": "TOSS-AUTO-1785439798-38",
+      "slug": "toss_1785439798_38",
+      "short_url": "morvix.kr/toss_1785439798_38",
       "name": "유한메디카 징코 플러스엔탑 혈행 기억력 케어, 60정, 1개",
       "subtitle": "토스 파트너 특가 30% 적용",
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
       "price": 4500,
       "original_price": 6075,
@@ -862,33 +246,19 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 4500,
-          "date": "2026-07-30T19:22:53.358420"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '유한메디카 징코 플러스엔탑 혈행 기억력 케어, 60정, 1개 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 4500원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 유한메디카 징코 플러스엔탑 혈행 기억력 케어, 60정, 1개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:22:54.687759",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-37",
-      "slug": "toss_1785438826_37",
-      "short_url": "morvix.kr/toss_1785438826_37",
+      "id": "TOSS-AUTO-1785439798-37",
+      "slug": "toss_1785439798_37",
+      "short_url": "morvix.kr/toss_1785439798_37",
       "name": "백도 딱딱이 복숭아, 랜덤과, 8-14과, 2kg",
       "subtitle": "토스 파트너 특가 30% 적용",
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
       "price": 12300,
       "original_price": 16605,
@@ -918,33 +288,19 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 12300,
-          "date": "2026-07-30T19:22:54.687773"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '백도 딱딱이 복숭아, 랜덤과, 8-14과, 2kg 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 12300원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 백도 딱딱이 복숭아, 랜덤과, 8-14과, 2kg 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:22:55.816814",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-36",
-      "slug": "toss_1785438826_36",
-      "short_url": "morvix.kr/toss_1785438826_36",
+      "id": "TOSS-AUTO-1785439798-36",
+      "slug": "toss_1785439798_36",
+      "short_url": "morvix.kr/toss_1785439798_36",
       "name": "일양약품 눈건강 루테인 골드, 500mg, 30캡슐, 6박스",
       "subtitle": "토스 파트너 특가 30% 적용",
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
       "price": 10800,
       "original_price": 14580,
@@ -974,33 +330,19 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 10800,
-          "date": "2026-07-30T19:22:55.816828"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '일양약품 눈건강 루테인 골드, 500mg, 30캡슐, 6박스 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 10800원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 일양약품 눈건강 루테인 골드, 500mg, 30캡슐, 6박스 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:22:56.922072",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-35",
-      "slug": "toss_1785438826_35",
-      "short_url": "morvix.kr/toss_1785438826_35",
+      "id": "TOSS-AUTO-1785439798-35",
+      "slug": "toss_1785439798_35",
+      "short_url": "morvix.kr/toss_1785439798_35",
       "name": "맛생각 시골 전통 된장찌개, 600g, 5개",
       "subtitle": "토스 파트너 특가 30% 적용",
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
       "price": 11500,
       "original_price": 15525,
@@ -1030,33 +372,19 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 11500,
-          "date": "2026-07-30T19:22:56.922086"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '맛생각 시골 전통 된장찌개, 600g, 5개 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 11500원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 맛생각 시골 전통 된장찌개, 600g, 5개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:22:58.042866",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-34",
-      "slug": "toss_1785438826_34",
-      "short_url": "morvix.kr/toss_1785438826_34",
+      "id": "TOSS-AUTO-1785439798-34",
+      "slug": "toss_1785439798_34",
+      "short_url": "morvix.kr/toss_1785439798_34",
       "name": "퓨어스트 라이트 초순수 플레인 아기물티슈 캡형, 100매, 10팩",
       "subtitle": "토스 파트너 특가 30% 적용",
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
       "price": 4700,
       "original_price": 6345,
@@ -1086,33 +414,19 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 4700,
-          "date": "2026-07-30T19:22:58.042880"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '퓨어스트 라이트 초순수 플레인 아기물티슈 캡형, 100매, 10팩 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 4700원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 퓨어스트 라이트 초순수 플레인 아기물티슈 캡형, 100매, 10팩 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:22:59.145646",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-33",
-      "slug": "toss_1785438826_33",
-      "short_url": "morvix.kr/toss_1785438826_33",
+      "id": "TOSS-AUTO-1785439798-33",
+      "slug": "toss_1785439798_33",
+      "short_url": "morvix.kr/toss_1785439798_33",
       "name": "라버비 허그코튼 초고농축 드라이시트, 120매, 2개",
       "subtitle": "토스 파트너 특가 30% 적용",
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
       "price": 6900,
       "original_price": 9315,
@@ -1142,33 +456,19 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 6900,
-          "date": "2026-07-30T19:22:59.145662"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '라버비 허그코튼 초고농축 드라이시트, 120매, 2개 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 6900원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 라버비 허그코튼 초고농축 드라이시트, 120매, 2개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:00.253574",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-32",
-      "slug": "toss_1785438826_32",
-      "short_url": "morvix.kr/toss_1785438826_32",
+      "id": "TOSS-AUTO-1785439798-32",
+      "slug": "toss_1785439798_32",
+      "short_url": "morvix.kr/toss_1785439798_32",
       "name": "모나리자 스마트 다용도 키친타올, 250매, 12롤, 1팩",
       "subtitle": "토스 파트너 특가 30% 적용",
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
       "price": 6900,
       "original_price": 9315,
@@ -1198,33 +498,19 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 6900,
-          "date": "2026-07-30T19:23:00.253588"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '모나리자 스마트 다용도 키친타올, 250매, 12롤, 1팩 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 6900원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 모나리자 스마트 다용도 키친타올, 250매, 12롤, 1팩 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:01.365953",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-31",
-      "slug": "toss_1785438826_31",
-      "short_url": "morvix.kr/toss_1785438826_31",
+      "id": "TOSS-AUTO-1785439798-31",
+      "slug": "toss_1785439798_31",
+      "short_url": "morvix.kr/toss_1785439798_31",
       "name": "구워먹는 할루미치즈, 200g, 3개",
       "subtitle": "토스 파트너 특가 30% 적용",
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
       "price": 7600,
       "original_price": 10260,
@@ -1254,1209 +540,19 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 7600,
-          "date": "2026-07-30T19:23:01.365967"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '구워먹는 할루미치즈, 200g, 3개 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 7600원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 구워먹는 할루미치즈, 200g, 3개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:02.468614",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-30",
-      "slug": "toss_1785438826_30",
-      "short_url": "morvix.kr/toss_1785438826_30",
-      "name": "에브리워터 무라벨, 500ml, 40개",
+      "id": "TOSS-AUTO-1785439798-30",
+      "slug": "toss_1785439798_30",
+      "short_url": "morvix.kr/toss_1785439798_30",
+      "name": "한예지 가든 플라워 롤 화장지, 3겹, 30m, 30롤, 2팩",
       "subtitle": "토스 파트너 특가 30% 적용",
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 4400,
-      "original_price": 5940,
-      "discount_rate": "30%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/P18ePs1q",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/P18ePs1q",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-02-17%2F32d41410-98f1-42d9-a442-9e8820fad904.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 4400,
-          "date": "2026-07-30T19:23:02.468629"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '에브리워터 무라벨, 500ml, 40개 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 4400원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 에브리워터 무라벨, 500ml, 40개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:03.736109",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-29",
-      "slug": "toss_1785438826_29",
-      "short_url": "morvix.kr/toss_1785438826_29",
-      "name": "터치 프리미엄 워싱소다, 5kg, 1팩",
-      "subtitle": "토스 파트너 특가 56% 특가 적용",
-      "section": "best_seller",
-      "priority": 2,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 6900,
-      "original_price": 9315,
-      "discount_rate": "56% 특가",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/JLWmy73B",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/JLWmy73B",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-14%2F15eae149-9174-4971-91f7-6dda83e3e383.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 6900,
-          "date": "2026-07-30T19:23:03.736123"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '터치 프리미엄 워싱소다, 5kg, 1팩 56% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 6900원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 터치 프리미엄 워싱소다, 5kg, 1팩 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:04.832492",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-28",
-      "slug": "toss_1785438826_28",
-      "short_url": "morvix.kr/toss_1785438826_28",
-      "name": "보노하우스 풀 슬라이딩 옷정리 적층 트레이, 화이트, 중형, 1개",
-      "subtitle": "토스 파트너 특가 57% 특가 적용",
-      "section": "best_seller",
-      "priority": 2,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 3325,
-      "original_price": 4488,
-      "discount_rate": "57% 특가",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/jeY0DLix",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/jeY0DLix",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-16%2F07b0c29c-8f5d-4175-9820-bdc72199c8ea.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 3325,
-          "date": "2026-07-30T19:23:04.832870"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '보노하우스 풀 슬라이딩 옷정리 적층 트레이, 화이트, 중형, 1개 57% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 3325원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 보노하우스 풀 슬라이딩 옷정리 적층 트레이, 화이트, 중형, 1개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:05.940436",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-27",
-      "slug": "toss_1785438826_27",
-      "short_url": "morvix.kr/toss_1785438826_27",
-      "name": "아욱 다슬기 해장국, 500g, 5팩",
-      "subtitle": "토스 파트너 특가 52% 특가 적용",
-      "section": "best_seller",
-      "priority": 2,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 21900,
-      "original_price": 29565,
-      "discount_rate": "52% 특가",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/5tkz28pB",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/5tkz28pB",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-05-07%2Feb843271-06af-4c5a-85b4-d485f785dac4.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 21900,
-          "date": "2026-07-30T19:23:05.940450"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '아욱 다슬기 해장국, 500g, 5팩 52% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 21900원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 아욱 다슬기 해장국, 500g, 5팩 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:07.040322",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-26",
-      "slug": "toss_1785438826_26",
-      "short_url": "morvix.kr/toss_1785438826_26",
-      "name": "슈리오 소가죽 핸드메이드 스티치 샌들, 블랙, 235mm, 1켤레",
-      "subtitle": "토스 파트너 특가 65% 특가 적용",
-      "section": "best_seller",
-      "priority": 2,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 24300,
-      "original_price": 32805,
-      "discount_rate": "65% 특가",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/n8EYtonm",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/n8EYtonm",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-09%2F7fd80278-3dcc-4bee-9978-964740d37400.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 24300,
-          "date": "2026-07-30T19:23:07.040336"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '슈리오 소가죽 핸드메이드 스티치 샌들, 블랙, 235mm, 1켤레 65% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 24300원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 슈리오 소가죽 핸드메이드 스티치 샌들, 블랙, 235mm, 1켤레 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:08.145057",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-25",
-      "slug": "toss_1785438826_25",
-      "short_url": "morvix.kr/toss_1785438826_25",
-      "name": "몽크로스 초강력 바디팬, 다크그레이, 2개",
-      "subtitle": "토스 파트너 특가 30% 적용",
-      "section": "best_seller",
-      "priority": 2,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 29900,
-      "original_price": 40365,
-      "discount_rate": "30%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/NRDb6Wyj",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/NRDb6Wyj",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-23%2F2f0a5e63-df44-4d4d-a8ac-239100bab872.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 29900,
-          "date": "2026-07-30T19:23:08.145072"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '몽크로스 초강력 바디팬, 다크그레이, 2개 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 29900원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 몽크로스 초강력 바디팬, 다크그레이, 2개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:09.244701",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-24",
-      "slug": "toss_1785438826_24",
-      "short_url": "morvix.kr/toss_1785438826_24",
-      "name": "인테로 어나더레벨 단백질 쉐이크, 딥초코맛 630g 1개 + 17곡흑임자맛 630g 1개, 2개",
-      "subtitle": "토스 파트너 특가 60% 특가 적용",
-      "section": "best_seller",
-      "priority": 2,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 29900,
-      "original_price": 40365,
-      "discount_rate": "60% 특가",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/BnkkZUWf",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/BnkkZUWf",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-02-04%2F16794ce8-54b4-4e25-99a6-fe24a28a2547.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 29900,
-          "date": "2026-07-30T19:23:09.245093"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '인테로 어나더레벨 단백질 쉐이크, 딥초코맛 630g 1개 + 17곡흑임자맛 630g 1개, 2개 60% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 29900원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 인테로 어나더레벨 단백질 쉐이크, 딥초코맛 630g 1개 + 17곡흑임자맛 630g 1개, 2개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:10.337422",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-23",
-      "slug": "toss_1785438826_23",
-      "short_url": "morvix.kr/toss_1785438826_23",
-      "name": "차량용 구리 카본 활성탄 항균 탈취 에어컨 필터, CFCC001, 2개",
-      "subtitle": "토스 파트너 특가 72% 특가 적용",
-      "section": "best_seller",
-      "priority": 2,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 10900,
-      "original_price": 14715,
-      "discount_rate": "72% 특가",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/POdEtiDd",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/POdEtiDd",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-28%2Fd0483c52-4db7-4b85-a9ab-3053e577de7e.png",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 10900,
-          "date": "2026-07-30T19:23:10.337436"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '차량용 구리 카본 활성탄 항균 탈취 에어컨 필터, CFCC001, 2개 72% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 10900원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 차량용 구리 카본 활성탄 항균 탈취 에어컨 필터, CFCC001, 2개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:11.444265",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-22",
-      "slug": "toss_1785438826_22",
-      "short_url": "morvix.kr/toss_1785438826_22",
-      "name": "쉬젤 아티 내열유리 혼합 10종 세트, 320ml 3개 + 400ml 3개 + 520ml 2개 + 640ml 2개, 1세트",
-      "subtitle": "토스 파트너 특가 76% 특가 적용",
-      "section": "today_price",
-      "priority": 1,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 19700,
-      "original_price": 26595,
-      "discount_rate": "76% 특가",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/DqignJNa",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/DqignJNa",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-03-27%2Fb9a29455-47da-408b-9a9d-e303b9110350.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 19700,
-          "date": "2026-07-30T19:23:11.444289"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '쉬젤 아티 내열유리 혼합 10종 세트, 320ml 3개 + 400ml 3개 + 520ml 2개 + 640ml 2개, 1세트 76% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 19700원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 쉬젤 아티 내열유리 혼합 10종 세트, 320ml 3개 + 400ml 3개 + 520ml 2개 + 640ml 2개, 1세트 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:12.540707",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-21",
-      "slug": "toss_1785438826_21",
-      "short_url": "morvix.kr/toss_1785438826_21",
-      "name": "Microsoft 365 Family PKC, 12개월 구독, 1개",
-      "subtitle": "토스 파트너 특가 35% 특가 적용",
-      "section": "today_price",
-      "priority": 1,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 99900,
-      "original_price": 134865,
-      "discount_rate": "35% 특가",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/lTdmQck3",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/lTdmQck3",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-27%2Fddb5238a-0ca8-4a51-9c08-07012ce44389.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 99900,
-          "date": "2026-07-30T19:23:12.540720"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] 'Microsoft 365 Family PKC, 12개월 구독, 1개 35% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 99900원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] Microsoft 365 Family PKC, 12개월 구독, 1개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:13.642985",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-20",
-      "slug": "toss_1785438826_20",
-      "short_url": "morvix.kr/toss_1785438826_20",
-      "name": "개당 1,290원 수익",
-      "subtitle": "토스 파트너 특가 72% 특가 적용",
-      "section": "today_price",
-      "priority": 1,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 12900,
-      "original_price": 17415,
-      "discount_rate": "72% 특가",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/np12YTwn",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/np12YTwn",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-17%2Fdf994437-e669-42d0-9311-40978f0f6533.png",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 12900,
-          "date": "2026-07-30T19:23:13.642998"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 1,290원 수익 72% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 12900원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 1,290원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:14.756032",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-19",
-      "slug": "toss_1785438826_19",
-      "short_url": "morvix.kr/toss_1785438826_19",
-      "name": "개당 740원 수익",
-      "subtitle": "토스 파트너 특가 85% 특가 적용",
-      "section": "today_price",
-      "priority": 1,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 7400,
-      "original_price": 9990,
-      "discount_rate": "85% 특가",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/b75VCNdh",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/b75VCNdh",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftaca%2Fai%2Fv2%2FMWZjYmQ5%2FTEJaQWRxRHJUaVFMVHUydDUwNENnOVJXSzVuY0doYmJBZjhjVm4vV25CND0.png",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 7400,
-          "date": "2026-07-30T19:23:14.756046"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 740원 수익 85% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 7400원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 740원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:15.884523",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-18",
-      "slug": "toss_1785438826_18",
-      "short_url": "morvix.kr/toss_1785438826_18",
-      "name": "개당 570원 수익",
-      "subtitle": "토스 파트너 특가 30% 적용",
-      "section": "today_price",
-      "priority": 1,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 5700,
-      "original_price": 7695,
-      "discount_rate": "30%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/tYlxYAGt",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/tYlxYAGt",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2025-05-14%2F52c78bea-ea6e-40df-92a3-fca69d1d7141.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 5700,
-          "date": "2026-07-30T19:23:15.884536"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 570원 수익 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 5700원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 570원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:17.011241",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-17",
-      "slug": "toss_1785438826_17",
-      "short_url": "morvix.kr/toss_1785438826_17",
-      "name": "개당 380원 수익",
-      "subtitle": "토스 파트너 특가 30% 적용",
-      "section": "today_price",
-      "priority": 1,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 3800,
-      "original_price": 5130,
-      "discount_rate": "30%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/PoA17CVk",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/PoA17CVk",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftaca%2Fai%2FM2U5ODM2%2FQUljek1NbDR6TXlaZ3pNemRqWlAzSW5ZaytabUozaHpuTW1takVNY2lXTzA.png",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 3800,
-          "date": "2026-07-30T19:23:17.011257"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 380원 수익 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 3800원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 380원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:18.108842",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-16",
-      "slug": "toss_1785438826_16",
-      "short_url": "morvix.kr/toss_1785438826_16",
-      "name": "개당 450원 수익",
-      "subtitle": "토스 파트너 특가 30% 적용",
-      "section": "today_price",
-      "priority": 1,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 4500,
-      "original_price": 6075,
-      "discount_rate": "30%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/d52r3Gri",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/d52r3Gri",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftaca%2Fai%2FMzEzOTVj%2FQUtkd0twWnhXRG5KakpUVkxjeHJ0V05UTDk4ZUdQSU0wdUhZZzVhaDFIaHA.png",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 4500,
-          "date": "2026-07-30T19:23:18.108856"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 450원 수익 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 4500원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 450원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:19.405006",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-15",
-      "slug": "toss_1785438826_15",
-      "short_url": "morvix.kr/toss_1785438826_15",
-      "name": "개당 1,230원 수익",
-      "subtitle": "토스 파트너 특가 30% 적용",
-      "section": "today_price",
-      "priority": 1,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 12300,
-      "original_price": 16605,
-      "discount_rate": "30%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/l3lAjPh2",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/l3lAjPh2",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftaca%2Fai%2Fv2%2FZjRhYzkw%2FQU1HNXN3azB5eExyQnd0L0M2WktSWHJsRXdYOGc4RGtEK1lkbTBEUWY0OGM.png",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 12300,
-          "date": "2026-07-30T19:23:19.405020"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 1,230원 수익 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 12300원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 1,230원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:20.498299",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-14",
-      "slug": "toss_1785438826_14",
-      "short_url": "morvix.kr/toss_1785438826_14",
-      "name": "개당 1,080원 수익",
-      "subtitle": "토스 파트너 특가 30% 적용",
-      "section": "today_price",
-      "priority": 1,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 10800,
-      "original_price": 14580,
-      "discount_rate": "30%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/vd88aYqd",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/vd88aYqd",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2025-04-17%2Feb14e497-d99c-44b1-b6cf-828c7d796914.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 10800,
-          "date": "2026-07-30T19:23:20.498313"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 1,080원 수익 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 10800원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 1,080원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:21.610265",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-13",
-      "slug": "toss_1785438826_13",
-      "short_url": "morvix.kr/toss_1785438826_13",
-      "name": "개당 1,150원 수익",
-      "subtitle": "토스 파트너 특가 30% 적용",
-      "section": "today_price",
-      "priority": 1,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 11500,
-      "original_price": 15525,
-      "discount_rate": "30%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/BqrXSMGe",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/BqrXSMGe",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-06-15%2Fa8bbce69-1c12-4b6f-915a-53a9bbc47f2f.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 11500,
-          "date": "2026-07-30T19:23:21.610279"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 1,150원 수익 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 11500원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 1,150원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:22.712160",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-12",
-      "slug": "toss_1785438826_12",
-      "short_url": "morvix.kr/toss_1785438826_12",
-      "name": "개당 470원 수익",
-      "subtitle": "토스 파트너 특가 30% 적용",
-      "section": "today_price",
-      "priority": 1,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 4700,
-      "original_price": 6345,
-      "discount_rate": "30%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/XK1Z4VFo",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/XK1Z4VFo",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-01-16%2Fe7778601-d6a5-4390-ba58-4e286b0ced0e.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 4700,
-          "date": "2026-07-30T19:23:22.712174"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 470원 수익 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 4700원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 470원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:23.814480",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-11",
-      "slug": "toss_1785438826_11",
-      "short_url": "morvix.kr/toss_1785438826_11",
-      "name": "개당 580원 수익",
-      "subtitle": "토스 파트너 특가 30% 적용",
-      "section": "today_price",
-      "priority": 1,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 5800,
-      "original_price": 7830,
-      "discount_rate": "30%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/7ut7ukIy",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/7ut7ukIy",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-23%2F055ff865-d00c-483d-8621-71cf4028d910.jpeg",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 5800,
-          "date": "2026-07-30T19:23:23.814494"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 580원 수익 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 5800원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 580원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:24.951601",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-10",
-      "slug": "toss_1785438826_10",
-      "short_url": "morvix.kr/toss_1785438826_10",
-      "name": "개당 760원 수익",
-      "subtitle": "토스 파트너 특가 30% 적용",
-      "section": "today_price",
-      "priority": 1,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
-      "is_featured": true,
-      "price": 7600,
-      "original_price": 10260,
-      "discount_rate": "30%",
-      "rating": 4.9,
-      "review_count": 128,
-      "usps": [
-        "토스 쉐어링크 공식 제휴 특가",
-        "실사용자 만족도 1위"
-      ],
-      "toss_link": "https://toss.im/_m/ZvYUOFxx",
-      "affiliate_links": [
-        {
-          "platform": "toss",
-          "label": "💙 토스할인가 확인 ➔",
-          "url": "https://toss.im/_m/ZvYUOFxx",
-          "priority": 1,
-          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
-        }
-      ],
-      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-06-30%2Fade7ab0a-5ebe-489c-a02a-66196e0122ca.png",
-      "analytics": {
-        "clicks_count": 1,
-        "platform_clicks": {
-          "toss": 1
-        },
-        "conversions_count": 0,
-        "ctr": 5.0
-      },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 7600,
-          "date": "2026-07-30T19:23:24.951614"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 760원 수익 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 7600원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 760원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:26.050802",
-      "image_status": "Verified"
-    },
-    {
-      "id": "TOSS-AUTO-1785438826-9",
-      "slug": "toss_1785438826_9",
-      "short_url": "morvix.kr/toss_1785438826_9",
-      "name": "개당 1,190원 수익",
-      "subtitle": "토스 파트너 특가 30% 적용",
-      "section": "today_price",
-      "priority": 1,
-      "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
       "price": 11900,
       "original_price": 16065,
@@ -2486,33 +582,19 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 11900,
-          "date": "2026-07-30T19:23:26.050815"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 1,190원 수익 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 11900원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 1,190원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:27.154088",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-8",
-      "slug": "toss_1785438826_8",
-      "short_url": "morvix.kr/toss_1785438826_8",
-      "name": "개당 440원 수익",
+      "id": "TOSS-AUTO-1785439798-29",
+      "slug": "toss_1785439798_29",
+      "short_url": "morvix.kr/toss_1785439798_29",
+      "name": "에브리워터 무라벨, 500ml, 40개",
       "subtitle": "토스 파트너 특가 30% 적용",
-      "section": "today_price",
-      "priority": 1,
+      "section": "best_seller",
+      "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
       "price": 4400,
       "original_price": 5940,
@@ -2542,37 +624,23 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 4400,
-          "date": "2026-07-30T19:23:27.154100"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 440원 수익 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 4400원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 440원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:28.264407",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-7",
-      "slug": "toss_1785438826_7",
-      "short_url": "morvix.kr/toss_1785438826_7",
-      "name": "개당 690원 수익",
+      "id": "TOSS-AUTO-1785439798-28",
+      "slug": "toss_1785439798_28",
+      "short_url": "morvix.kr/toss_1785439798_28",
+      "name": "터치 프리미엄 워싱소다, 5kg, 1팩",
       "subtitle": "토스 파트너 특가 56% 특가 적용",
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
-      "price": 690,
+      "price": 6900,
       "original_price": 9315,
-      "discount_rate": "56%",
+      "discount_rate": "56% 특가",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -2598,33 +666,19 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 690,
-          "date": "2026-07-30T19:23:28.264421"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 690원 수익 56%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 690원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 690원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:29.360139",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-6",
-      "slug": "toss_1785438826_6",
-      "short_url": "morvix.kr/toss_1785438826_6",
-      "name": "개당 332원 수익",
+      "id": "TOSS-AUTO-1785439798-27",
+      "slug": "toss_1785439798_27",
+      "short_url": "morvix.kr/toss_1785439798_27",
+      "name": "보노하우스 풀 슬라이딩 옷정리 적층 트레이, 화이트, 중형, 1개",
       "subtitle": "토스 파트너 특가 57% 특가 적용",
-      "section": "today_price",
-      "priority": 1,
+      "section": "best_seller",
+      "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
       "price": 3325,
       "original_price": 4488,
@@ -2654,37 +708,23 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 3325,
-          "date": "2026-07-30T19:23:29.360153"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 332원 수익 57% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 3325원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 332원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:30.457547",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-5",
-      "slug": "toss_1785438826_5",
-      "short_url": "morvix.kr/toss_1785438826_5",
-      "name": "개당 2,190원 수익",
+      "id": "TOSS-AUTO-1785439798-26",
+      "slug": "toss_1785439798_26",
+      "short_url": "morvix.kr/toss_1785439798_26",
+      "name": "아욱 다슬기 해장국, 500g, 5팩",
       "subtitle": "토스 파트너 특가 52% 특가 적용",
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
-      "price": 2190,
+      "price": 21900,
       "original_price": 29565,
-      "discount_rate": "52%",
+      "discount_rate": "52% 특가",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -2710,37 +750,23 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 2190,
-          "date": "2026-07-30T19:23:30.457561"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 2,190원 수익 52%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 2190원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 2,190원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:31.553422",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-4",
-      "slug": "toss_1785438826_4",
-      "short_url": "morvix.kr/toss_1785438826_4",
-      "name": "개당 2,430원 수익",
+      "id": "TOSS-AUTO-1785439798-25",
+      "slug": "toss_1785439798_25",
+      "short_url": "morvix.kr/toss_1785439798_25",
+      "name": "슈리오 소가죽 핸드메이드 스티치 샌들, 블랙, 235mm, 1켤레",
       "subtitle": "토스 파트너 특가 65% 특가 적용",
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
-      "price": 2430,
+      "price": 24300,
       "original_price": 32805,
-      "discount_rate": "65%",
+      "discount_rate": "65% 특가",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -2766,37 +792,65 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 2430,
-          "date": "2026-07-30T19:23:31.553437"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 2,430원 수익 65%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 2430원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 2,430원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:32.656264",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-3",
-      "slug": "toss_1785438826_3",
-      "short_url": "morvix.kr/toss_1785438826_3",
-      "name": "개당 2,990원 수익",
+      "id": "TOSS-AUTO-1785439798-24",
+      "slug": "toss_1785439798_24",
+      "short_url": "morvix.kr/toss_1785439798_24",
+      "name": "몽크로스 초강력 바디팬, 다크그레이, 2개",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 29900,
+      "original_price": 40365,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/NRDb6Wyj",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/NRDb6Wyj",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-23%2F2f0a5e63-df44-4d4d-a8ac-239100bab872.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-23",
+      "slug": "toss_1785439798_23",
+      "short_url": "morvix.kr/toss_1785439798_23",
+      "name": "인테로 어나더레벨 단백질 쉐이크, 딥초코맛 630g 1개 + 17곡흑임자맛 630g 1개, 2개",
       "subtitle": "토스 파트너 특가 60% 특가 적용",
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
-      "price": 2990,
+      "price": 29900,
       "original_price": 40365,
-      "discount_rate": "60%",
+      "discount_rate": "60% 특가",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -2822,37 +876,23 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 2990,
-          "date": "2026-07-30T19:23:32.656278"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 2,990원 수익 60%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 2990원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 2,990원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:33.758542",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-2",
-      "slug": "toss_1785438826_2",
-      "short_url": "morvix.kr/toss_1785438826_2",
-      "name": "개당 1,090원 수익",
+      "id": "TOSS-AUTO-1785439798-22",
+      "slug": "toss_1785439798_22",
+      "short_url": "morvix.kr/toss_1785439798_22",
+      "name": "차량용 구리 카본 활성탄 항균 탈취 에어컨 필터, CFCC001, 2개",
       "subtitle": "토스 파트너 특가 72% 특가 적용",
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
-      "price": 1090,
+      "price": 10900,
       "original_price": 14715,
-      "discount_rate": "72%",
+      "discount_rate": "72% 특가",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -2878,37 +918,23 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 1090,
-          "date": "2026-07-30T19:23:33.758559"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 1,090원 수익 72%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 1090원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 1,090원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:34.856245",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-1",
-      "slug": "toss_1785438826_1",
-      "short_url": "morvix.kr/toss_1785438826_1",
-      "name": "개당 1,970원 수익",
+      "id": "TOSS-AUTO-1785439798-21",
+      "slug": "toss_1785439798_21",
+      "short_url": "morvix.kr/toss_1785439798_21",
+      "name": "쉬젤 아티 내열유리 혼합 10종 세트, 320ml 3개 + 400ml 3개 + 520ml 2개 + 640ml 2개, 1세트",
       "subtitle": "토스 파트너 특가 76% 특가 적용",
-      "section": "best_seller",
-      "priority": 2,
+      "section": "today_price",
+      "priority": 1,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
-      "price": 1970,
+      "price": 19700,
       "original_price": 26595,
-      "discount_rate": "76%",
+      "discount_rate": "76% 특가",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -2934,33 +960,19 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
-        {
-          "price": 1970,
-          "date": "2026-07-30T19:23:34.856259"
-        }
-      ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 1,970원 수익 76%할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 1970원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 1,970원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
-      },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:35.956676",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     },
     {
-      "id": "TOSS-AUTO-1785438826-0",
-      "slug": "toss_1785438826_0",
-      "short_url": "morvix.kr/toss_1785438826_0",
-      "name": "개당 9,990원 수익",
+      "id": "TOSS-AUTO-1785439798-20",
+      "slug": "toss_1785439798_20",
+      "short_url": "morvix.kr/toss_1785439798_20",
+      "name": "Microsoft 365 Family PKC, 12개월 구독, 1개",
       "subtitle": "토스 파트너 특가 35% 특가 적용",
       "section": "today_price",
       "priority": 1,
       "category": "life",
-      "status": "OUT_OF_STOCK",
+      "status": "ACTIVE",
       "is_featured": true,
       "price": 99900,
       "original_price": 134865,
@@ -2990,22 +1002,848 @@
         "conversions_count": 0,
         "ctr": 5.0
       },
-      "added_date": "2026-07-30T19:13:46.023257",
-      "expiry_date": "2026-08-01T19:13:46.023257",
-      "price_history": [
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-19",
+      "slug": "toss_1785439798_19",
+      "short_url": "morvix.kr/toss_1785439798_19",
+      "name": "개당 1,290원 수익",
+      "subtitle": "토스 파트너 특가 72% 특가 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 12900,
+      "original_price": 17415,
+      "discount_rate": "72% 특가",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/np12YTwn",
+      "affiliate_links": [
         {
-          "price": 99900,
-          "date": "2026-07-30T19:23:35.956689"
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/np12YTwn",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
         }
       ],
-      "content_assets": {
-        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 9,990원 수익 35% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
-        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 99900원 득템 -> 4컷: 극락 경험",
-        "seo_copy": "📝 [SEO 블로그] 개당 9,990원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-17%2Fdf994437-e669-42d0-9311-40978f0f6533.png",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
       },
-      "version": 2,
-      "last_synced_at": "2026-07-30T19:23:37.067376",
-      "image_status": "Verified"
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-18",
+      "slug": "toss_1785439798_18",
+      "short_url": "morvix.kr/toss_1785439798_18",
+      "name": "개당 740원 수익",
+      "subtitle": "토스 파트너 특가 85% 특가 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 7400,
+      "original_price": 9990,
+      "discount_rate": "85% 특가",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/b75VCNdh",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/b75VCNdh",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftaca%2Fai%2Fv2%2FMWZjYmQ5%2FTEJaQWRxRHJUaVFMVHUydDUwNENnOVJXSzVuY0doYmJBZjhjVm4vV25CND0.png",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-17",
+      "slug": "toss_1785439798_17",
+      "short_url": "morvix.kr/toss_1785439798_17",
+      "name": "개당 570원 수익",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 5700,
+      "original_price": 7695,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/tYlxYAGt",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/tYlxYAGt",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2025-05-14%2F52c78bea-ea6e-40df-92a3-fca69d1d7141.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-16",
+      "slug": "toss_1785439798_16",
+      "short_url": "morvix.kr/toss_1785439798_16",
+      "name": "개당 380원 수익",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 3800,
+      "original_price": 5130,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/PoA17CVk",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/PoA17CVk",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftaca%2Fai%2FM2U5ODM2%2FQUljek1NbDR6TXlaZ3pNemRqWlAzSW5ZaytabUozaHpuTW1takVNY2lXTzA.png",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-15",
+      "slug": "toss_1785439798_15",
+      "short_url": "morvix.kr/toss_1785439798_15",
+      "name": "개당 450원 수익",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 4500,
+      "original_price": 6075,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/d52r3Gri",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/d52r3Gri",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftaca%2Fai%2FMzEzOTVj%2FQUtkd0twWnhXRG5KakpUVkxjeHJ0V05UTDk4ZUdQSU0wdUhZZzVhaDFIaHA.png",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-14",
+      "slug": "toss_1785439798_14",
+      "short_url": "morvix.kr/toss_1785439798_14",
+      "name": "개당 1,230원 수익",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 12300,
+      "original_price": 16605,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/l3lAjPh2",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/l3lAjPh2",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftaca%2Fai%2Fv2%2FZjRhYzkw%2FQU1HNXN3azB5eExyQnd0L0M2WktSWHJsRXdYOGc4RGtEK1lkbTBEUWY0OGM.png",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-13",
+      "slug": "toss_1785439798_13",
+      "short_url": "morvix.kr/toss_1785439798_13",
+      "name": "개당 1,080원 수익",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 10800,
+      "original_price": 14580,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/vd88aYqd",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/vd88aYqd",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2025-04-17%2Feb14e497-d99c-44b1-b6cf-828c7d796914.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-12",
+      "slug": "toss_1785439798_12",
+      "short_url": "morvix.kr/toss_1785439798_12",
+      "name": "개당 1,150원 수익",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 11500,
+      "original_price": 15525,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/BqrXSMGe",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/BqrXSMGe",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-06-15%2Fa8bbce69-1c12-4b6f-915a-53a9bbc47f2f.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-11",
+      "slug": "toss_1785439798_11",
+      "short_url": "morvix.kr/toss_1785439798_11",
+      "name": "개당 470원 수익",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 4700,
+      "original_price": 6345,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/XK1Z4VFo",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/XK1Z4VFo",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-01-16%2Fe7778601-d6a5-4390-ba58-4e286b0ced0e.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-10",
+      "slug": "toss_1785439798_10",
+      "short_url": "morvix.kr/toss_1785439798_10",
+      "name": "개당 580원 수익",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 5800,
+      "original_price": 7830,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/7ut7ukIy",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/7ut7ukIy",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-23%2F055ff865-d00c-483d-8621-71cf4028d910.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-9",
+      "slug": "toss_1785439798_9",
+      "short_url": "morvix.kr/toss_1785439798_9",
+      "name": "개당 760원 수익",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 7600,
+      "original_price": 10260,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/ZvYUOFxx",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/ZvYUOFxx",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-06-30%2Fade7ab0a-5ebe-489c-a02a-66196e0122ca.png",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-8",
+      "slug": "toss_1785439798_8",
+      "short_url": "morvix.kr/toss_1785439798_8",
+      "name": "개당 1,190원 수익",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 11900,
+      "original_price": 16065,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/DwRnslws",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/DwRnslws",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2025-12-02%2F5e5f2029-7f7c-4511-bbc1-606a56a117b1.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-7",
+      "slug": "toss_1785439798_7",
+      "short_url": "morvix.kr/toss_1785439798_7",
+      "name": "개당 440원 수익",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 4400,
+      "original_price": 5940,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/P18ePs1q",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/P18ePs1q",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-02-17%2F32d41410-98f1-42d9-a442-9e8820fad904.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-6",
+      "slug": "toss_1785439798_6",
+      "short_url": "morvix.kr/toss_1785439798_6",
+      "name": "개당 690원 수익",
+      "subtitle": "토스 파트너 특가 56% 특가 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 6900,
+      "original_price": 9315,
+      "discount_rate": "56% 특가",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/JLWmy73B",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/JLWmy73B",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-14%2F15eae149-9174-4971-91f7-6dda83e3e383.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-5",
+      "slug": "toss_1785439798_5",
+      "short_url": "morvix.kr/toss_1785439798_5",
+      "name": "개당 332원 수익",
+      "subtitle": "토스 파트너 특가 57% 특가 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 3325,
+      "original_price": 4488,
+      "discount_rate": "57% 특가",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/jeY0DLix",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/jeY0DLix",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-16%2F07b0c29c-8f5d-4175-9820-bdc72199c8ea.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-4",
+      "slug": "toss_1785439798_4",
+      "short_url": "morvix.kr/toss_1785439798_4",
+      "name": "개당 2,190원 수익",
+      "subtitle": "토스 파트너 특가 52% 특가 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 21900,
+      "original_price": 29565,
+      "discount_rate": "52% 특가",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/5tkz28pB",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/5tkz28pB",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-05-07%2Feb843271-06af-4c5a-85b4-d485f785dac4.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-3",
+      "slug": "toss_1785439798_3",
+      "short_url": "morvix.kr/toss_1785439798_3",
+      "name": "개당 2,430원 수익",
+      "subtitle": "토스 파트너 특가 65% 특가 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 24300,
+      "original_price": 32805,
+      "discount_rate": "65% 특가",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/n8EYtonm",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/n8EYtonm",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-09%2F7fd80278-3dcc-4bee-9978-964740d37400.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-2",
+      "slug": "toss_1785439798_2",
+      "short_url": "morvix.kr/toss_1785439798_2",
+      "name": "개당 2,990원 수익",
+      "subtitle": "토스 파트너 특가 60% 특가 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 29900,
+      "original_price": 40365,
+      "discount_rate": "60% 특가",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/BnkkZUWf",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/BnkkZUWf",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-02-04%2F16794ce8-54b4-4e25-99a6-fe24a28a2547.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-1",
+      "slug": "toss_1785439798_1",
+      "short_url": "morvix.kr/toss_1785439798_1",
+      "name": "개당 1,090원 수익",
+      "subtitle": "토스 파트너 특가 72% 특가 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 10900,
+      "original_price": 14715,
+      "discount_rate": "72% 특가",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/POdEtiDd",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/POdEtiDd",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-28%2Fd0483c52-4db7-4b85-a9ab-3053e577de7e.png",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
+    },
+    {
+      "id": "TOSS-AUTO-1785439798-0",
+      "slug": "toss_1785439798_0",
+      "short_url": "morvix.kr/toss_1785439798_0",
+      "name": "개당 1,970원 수익",
+      "subtitle": "토스 파트너 특가 76% 특가 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 19700,
+      "original_price": 26595,
+      "discount_rate": "76% 특가",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/DqignJNa",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/DqignJNa",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-03-27%2Fb9a29455-47da-408b-9a9d-e303b9110350.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-30T19:29:58.887114",
+      "expiry_date": "2026-08-01T19:29:58.887114"
     }
   ]
 }
