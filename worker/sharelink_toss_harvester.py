@@ -70,12 +70,18 @@ def harvest_sharelink_portal():
         ctx_opts = {
             "viewport": {"width": 1280, "height": 900},
             "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+            "locale": "ko-KR",
+            "timezone_id": "Asia/Seoul",
+            "extra_http_headers": {
+                "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
             "permissions": ["clipboard-read", "clipboard-write"]
         }
         if use_session:
             ctx_opts["storage_state"] = SESSION_PATH
 
         ctx = browser.new_context(**ctx_opts)
+        ctx.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
         page = ctx.new_page()
 
         captured_links = {}

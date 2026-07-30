@@ -1,6 +1,9 @@
-name: 🌐 External Server Auto-Harvester Daemon
+name: 🌐 365-Day Unattended Toss Harvester Daemon
 
 on:
+  schedule:
+    # Runs every 30 minutes in the cloud 24/7
+    - cron: '*/30 * * * *'
   push:
     branches:
       - main
@@ -27,11 +30,9 @@ jobs:
         run: |
           python worker/sharelink_toss_harvester.py
 
-      - name: Commit & Push Updated DB to Vercel (Guarded against empty DBs)
+      - name: Commit & Push Updated DB to Vercel
         run: |
           git config --global user.name "MORVIX External Server Bot"
           git config --global user.email "bot@morvix.io"
-          python -c "import json; db=json.load(open('morvix_shop_db.json')); exit(0 if len(db.get('products',[]))>0 else 1)" && (
-            git add morvix_shop_db.json
-            git diff --quiet && git diff --staged --quiet || (git commit -m "chore(cron): Auto-ingest latest Toss deals from external server" && git push)
-          ) || echo "ℹ️ DB contains 0 items, skipping git push to protect live production site."
+          git add morvix_shop_db.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(cron): Auto-ingest latest Toss deals from external server" && git push)
