@@ -137,17 +137,28 @@ def harvest_sharelink_portal():
             print_log("📡 https://sharelink.toss.im/home 접속 중...")
             page.goto("https://sharelink.toss.im/home", wait_until="networkidle", timeout=60000)
             page.wait_for_timeout(3000)
+
+            # React SPA 초기화 대기: '링크 발급' 버튼 또는 '로그인/이메일' 입력창이 뜰 때까지 대기 (최대 15초)
+            try:
+                print_log("⏳ 포털 SPA DOM 로딩 대기 (링크 발급 / 로그인 폼)...")
+                page.wait_for_selector("button:has-text('링크 발급'), input[name='email'], button:has-text('로그인'), button:has-text('이메일/ID')", timeout=15000)
+            except Exception:
+                print_log("⚠️ SPA 셀렉터 대기 타임아웃 - 현재 DOM 상태로 진행")
+
+
             current_url = page.url
             print_log(f"📍 현재 URL: {current_url}")
 
             # URL 및 DOM 요소를 동시에 검사하여 SPA 로그인 화면 감지
-            has_login_input = page.locator("input[name='email']").count() > 0 or page.locator("button:has-text('로그인')").count() > 0
+            has_login_input = page.locator("input[name='email']").count() > 0 or page.locator("button:has-text('로그인')").count() > 0 or page.locator("button:has-text('이메일/ID')").count() > 0
             is_login_page = "login" in current_url or "auth" in current_url or "sign-in" in current_url or "sharelink.toss.im/home" not in current_url or has_login_input
 
             if is_login_page:
+                print_log("🚫 로그인 필요 상태 감지 (DOM/URL 검증) - 환경변수 계정 기반 자동 로그인 시도 중...")
                 user_id = os.environ.get("TOSS_USER_ID", "").strip()
                 user_pw = os.environ.get("TOSS_USER_PW", "").strip()
                 print_log(f"🔍 환경변수 검증 - TOSS_USER_ID 존재 여부: {bool(user_id)}, TOSS_USER_PW 존재 여부: {bool(user_pw)}")
+
 
 
                 if user_id and user_pw:
