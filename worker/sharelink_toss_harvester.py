@@ -481,8 +481,20 @@ def update_db_with_deals(deals):
             continue
 
 
-        # 중복 체크 (상품명 기준)
-        if any(p.get('name') == name for p in existing):
+        # UPSERT 전략: 이미 같은 상품명이 존재하면 skip이 아닌 UPDATE (링크/이미지/섹션 최신화)
+        existing_idx = next((i for i, p in enumerate(existing) if p.get('name') == name), None)
+        if existing_idx is not None:
+            # 기존 항목 현재 정보로 갱신 (링크, 이미지, 섹션, 만료일 최신화)
+            existing[existing_idx]['toss_link'] = share_link
+            existing[existing_idx]['affiliate_links'][0]['url'] = share_link
+            existing[existing_idx]['thumbnail'] = thumb
+            existing[existing_idx]['section'] = d.get('section', 'best_seller')
+            existing[existing_idx]['priority'] = d.get('priority', 2)
+            existing[existing_idx]['price'] = price
+            existing[existing_idx]['discount_rate'] = discount
+            existing[existing_idx]['expiry_date'] = (now + timedelta(hours=48)).isoformat()
+            print_log(f"  🔄 [UPSERT 갱신] {name[:28]} ➔ 링크/이미지 최신화 완료")
+            count_added += 1
             continue
 
         slug = f"toss_{int(time.time())}_{count_added}"
@@ -522,6 +534,7 @@ def update_db_with_deals(deals):
         }
         existing.insert(0, prod_entry)
         count_added += 1
+
 
     # 2순위 수복: 200개 강제 슬라이싱 대신 만료일(expiry_date) 기반으로 오래된 상품 자동 정리
     now_iso = now.isoformat()
