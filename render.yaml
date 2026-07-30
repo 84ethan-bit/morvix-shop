@@ -4,7 +4,8 @@ services:
     runtime: python
     region: virginia
     plan: free
-    buildCommand: pip install --upgrade pip && pip install --only-binary=:all: greenlet==3.2.3 && pip install playwright==1.44.0 && python -m playwright install chromium && python -m playwright install-deps chromium
+    pythonVersion: "3.11.0"
+    buildCommand: pip install --upgrade pip setuptools wheel && pip install playwright && python -m playwright install chromium && python -m playwright install-deps chromium
     startCommand: python worker/morvix_render_worker.py
     envVars:
       - key: PLAYWRIGHT_BROWSERS_PATH
