@@ -435,23 +435,15 @@ def harvest_sharelink_portal():
                                 img_url = img_el.evaluate("img => img ? (img.currentSrc || img.src || img.getAttribute('data-src') || '') : ''")
 
                         btn_el.click()
-                        page.wait_for_timeout(800)
-                        
-                        try:
-                            clip = page.evaluate("navigator.clipboard.readText()")
-                            m = re.search(r'(https?://toss\.im/_m/[A-Za-z0-9]+)', clip)
-                            if m:
-                                share_link = m.group(1)
-                        except:
-                            pass
-
-                        if not share_link and 'latest' in captured_links:
+                        page.wait_for_timeout(400)
+                        if 'latest' in captured_links:
                             share_link = captured_links['latest']
-                except Exception as e:
-                    print_log(f"⚠️ 카드 #{card_info['idx']+1} 쉐어링크 파싱 예외: {e}")
+                except Exception as click_err:
+                    print_log(f"⚠️ 카드 #{card_info['idx']+1} 클릭 예외: {click_err}")
 
                 if not share_link:
                     share_link = f"https://toss.im/_m/AUTO{card_info['idx']+1000}"
+
 
                 sec = card_info['section']
                 if sec in section_counts:
