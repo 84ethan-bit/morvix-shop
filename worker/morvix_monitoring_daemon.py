@@ -108,4 +108,5 @@ def run_atomic_operational_cycle():
     return True
 
 if __name__ == '__main__':
+    write_journal_log("⚡ [INSTANT VERIFICATION MODE] 외부 서버 즉시 가동 (대기 시간 0초)")
     run_atomic_operational_cycle()
