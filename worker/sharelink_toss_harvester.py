@@ -267,6 +267,13 @@ def harvest_sharelink_portal():
 
             for idx, btn in enumerate(btn_els[:30]):
                 try:
+                    # 1. 카드를 화면 내로 먼저 스크롤하여 이미지 레이지 로딩(Lazy-Loading) 100% 강제 유발
+                    try:
+                        btn.scroll_into_view_if_needed()
+                        page.wait_for_timeout(300)
+                    except Exception:
+                        pass
+
                     card_container = btn.evaluate_handle("""el => {
                         let card = el.parentElement;
                         while (card && card.innerText && !card.innerText.includes('원') && card.parentElement) {
