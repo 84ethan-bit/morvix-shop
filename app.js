@@ -40,6 +40,8 @@ const INITIAL_DB_DATA = {
 
 let dbData = INITIAL_DB_DATA;
 let currentCategory = 'all';
+let currentSort = 'popular';
+let displayedProductCount = 16;
 
 // --------------------------------------------------------------------------
 // 1. Smart Category Auto Classifier (hot-deal-studio Engine Ported & Extended)
@@ -157,31 +159,37 @@ async function initShopOS() {
   setupAdminEvents();
 }
 
-// Render Categories (Original Hot Deal Studio Toss Pill Style)
+// Render Categories with 🔥 하루특가 and 🏆 BEST at the very front
 function renderCategories() {
   const container = document.getElementById('category-container');
   if (!container) return;
 
   const categories = [
+    { id: 'timeattack', name: '🔥 하루특가', isPoint: true },
+    { id: 'best100', name: '🏆 BEST', isPoint: true },
     { id: 'all', name: '전체' },
-    { id: 'summer', name: '여름용품' },
+    { id: 'summer', name: '여름/장마' },
     { id: 'cleaning', name: '청소/위생' },
-    { id: 'kitchen', name: '주방용품' },
-    { id: 'it', name: '전자제품' },
-    { id: 'food', name: '식품' },
+    { id: 'kitchen', name: '주방/요리' },
+    { id: 'it', name: 'IT/디지털' },
     { id: 'life', name: '생활용품' },
     { id: 'beauty', name: '뷰티' },
     { id: 'fashion', name: '패션' },
-    { id: 'interior', name: '홈인테리어' },
-    { id: 'pet', name: '반려동물' },
-    { id: 'car', name: '자동차용품' },
-    { id: 'hobby', name: '취미' }
+    { id: 'car', name: '자동차' },
+    { id: 'pet', name: '반려동물' }
   ];
 
   container.innerHTML = categories.map(cat => {
     const isActive = currentCategory === cat.id;
+    let extraStyle = '';
+    if (cat.id === 'timeattack') {
+      extraStyle = isActive ? 'background: #FF4757; color: #fff; border-color: #FF4757;' : 'color: #FF4757; border-color: rgba(255,71,87,0.4); background: #FFF5F5; font-weight: 800;';
+    } else if (cat.id === 'best100') {
+      extraStyle = isActive ? 'background: #191F28; color: #FFD700; border-color: #191F28;' : 'color: #191F28; border-color: #CBD5E1; background: #FFFDF0; font-weight: 800;';
+    }
+
     return `
-      <button class="cat-pill ${isActive ? 'active' : ''}" data-cat="${cat.id}">
+      <button class="cat-pill ${isActive ? 'active' : ''}" data-cat="${cat.id}" style="${extraStyle}">
         ${cat.name}
       </button>
     `;
@@ -190,6 +198,7 @@ function renderCategories() {
   container.querySelectorAll('.cat-pill').forEach(btn => {
     btn.addEventListener('click', (e) => {
       currentCategory = e.currentTarget.getAttribute('data-cat');
+      displayedProductCount = 16; // Reset pagination count on category change
       renderCategories();
       renderProducts();
     });
@@ -218,6 +227,11 @@ function startCountdownClock() {
   setInterval(updateClock, 1000);
 }
 
+function loadMoreProducts() {
+  displayedProductCount += 16;
+  renderProducts();
+}
+
 // Helper function to extract exact Toss ShareLink (toss.im/_m/XXXX)
 function getTossShareLink(p) {
   if (!p) return 'https://toss.im';
@@ -236,15 +250,30 @@ function renderProducts() {
   const timeAttackGrid = document.getElementById('time-attack-grid');
   const title = document.getElementById('section-title');
   const count = document.getElementById('product-count');
+  const sortSelect = document.getElementById('sort-select');
+  const loadMoreWrap = document.getElementById('load-more-wrap');
+  const btnLoadMore = document.getElementById('btn-load-more');
   if (!grid || !dbData) return;
 
   updateProductLifecycleStates();
   startCountdownClock();
 
+  if (sortSelect && !sortSelect.hasAttribute('data-bound')) {
+    sortSelect.setAttribute('data-bound', 'true');
+    sortSelect.addEventListener('change', (e) => {
+      currentSort = e.target.value;
+      displayedProductCount = 16;
+      renderProducts();
+    });
+  }
+
   let activeProducts = dbData.products.filter(p => p.status === 'ACTIVE' || !p.status);
   let filtered = activeProducts;
 
-  if (currentCategory === 'featured') {
+  if (currentCategory === 'timeattack') {
+    filtered = activeProducts.filter(p => (parseInt(p.discount_rate) || 0) >= 40 || p.is_featured);
+    if (title) title.textContent = '⏰ 오늘만 이 가격! 하루특가 전체보기';
+  } else if (currentCategory === 'featured') {
     filtered = activeProducts.filter(p => p.is_featured);
     if (title) title.textContent = '🌟 오늘의 MORVIX 추천';
   } else if (currentCategory === 'reels') {
@@ -256,9 +285,21 @@ function renderProducts() {
   } else if (currentCategory !== 'all') {
     filtered = activeProducts.filter(p => p.category === currentCategory);
     const catObj = dbData.categories.find(c => c.id === currentCategory);
-    if (title) title.textContent = `${catObj ? catObj.icon : ''} ${catObj ? catObj.name : '제품'} 검증 제품`;
+    if (title) title.textContent = `${catObj ? catObj.icon || '' : ''} ${catObj ? catObj.name : '제품'} 검증 제품`;
   } else {
     if (title) title.textContent = '🏆 지금 많이 팔리는 BEST';
+  }
+
+  // Apply Sorting
+  if (currentSort === 'discount') {
+    filtered = filtered.slice().sort((a, b) => (parseInt(b.discount_rate) || 0) - (parseInt(a.discount_rate) || 0));
+  } else if (currentSort === 'price_asc') {
+    filtered = filtered.slice().sort((a, b) => (a.price || 0) - (b.price || 0));
+  } else if (currentSort === 'recent') {
+    filtered = filtered.slice().reverse();
+  } else {
+    // Default popular
+    filtered = filtered.slice().sort((a, b) => ((b.analytics ? b.analytics.clicks_count : b.clicks_count) || 0) - ((a.analytics ? a.analytics.clicks_count : a.clicks_count) || 0));
   }
 
   if (count) count.textContent = `총 ${filtered.length}개 핫딜 노출 중`;
@@ -298,22 +339,36 @@ function renderProducts() {
     }).join('');
   }
 
-  // SECTION 2: Best Ranking Grid
+  // SECTION 2: Best Ranking Grid with Pagination Slicing
   if (filtered.length === 0) {
     grid.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
         <div style="font-size: 2.8rem; margin-bottom: 12px;">🛒</div>
         <h3 style="font-size: 1.2rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">현재 등록된 핫딜이 없습니다</h3>
-        <p style="color: #64748b; font-size: 0.88rem; margin-bottom: 18px;">어드민(⚙️ Admin)에서 토스쇼핑 핫딜 문구나 공유 링크를 입력하시면 1초 만에 메인에 즉시 노출됩니다!</p>
+        <p style="color: #64748b; font-size: 0.88rem; margin-bottom: 18px;">어드민(⚙️ Admin)에서 토스쇼핑 핫딜 문구가 공유 링크를 입력하시면 1초 만에 메인에 즉시 노출됩니다!</p>
         <button onclick="document.getElementById('btn-open-admin').click()" style="background: linear-gradient(135deg, #0052cc, #2684ff); color: #fff; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 0.88rem; box-shadow: 0 4px 12px rgba(0,82,204,0.25);">
           ⚙️ 1초 만에 핫딜 등록하기
         </button>
       </div>
     `;
+    if (loadMoreWrap) loadMoreWrap.style.display = 'none';
     return;
   }
 
-  grid.innerHTML = filtered.map((p, idx) => {
+  const paginatedProducts = filtered.slice(0, displayedProductCount);
+
+  // Update Load More Button Visibility & Count Text
+  if (loadMoreWrap && btnLoadMore) {
+    if (paginatedProducts.length < filtered.length) {
+      loadMoreWrap.style.display = 'block';
+      const remain = filtered.length - paginatedProducts.length;
+      btnLoadMore.textContent = `📦 핫딜 더보기 (${paginatedProducts.length}/${filtered.length})`;
+    } else {
+      loadMoreWrap.style.display = 'none';
+    }
+  }
+
+  grid.innerHTML = paginatedProducts.map((p, idx) => {
     const priceStr = p.price ? p.price.toLocaleString() + '원' : '특가 확인';
     const origPriceStr = p.original_price ? p.original_price.toLocaleString() + '원' : '';
     const tossLink = getTossShareLink(p);
