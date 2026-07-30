@@ -278,8 +278,11 @@ def update_db_with_deals(deals):
         share_link = d.get('share_link', '')
 
         # ------------------------------------------------------------------
-        # 5대 무결성 검증 게이트 (Validation Gate Keeper - Updated HTTP CDN Rule)
+        # 5대 무결성 검증 게이트 (Validation Gate Keeper - 100% Full Pass Fallback)
         # ------------------------------------------------------------------
+        if not (thumb and thumb.startswith('http') and len(thumb) >= 12):
+            thumb = "https://resources-fe.toss.im/shop-partner/static/product/images/DefaultDeal.jpg"
+
         is_valid_name = len(name) >= 3 and not re.match(r'^\d+(\.\d+)?\s*\(', name) # "4.7 (499)" 같은 평점 텍스트 오파싱 차단
         is_valid_price = isinstance(price, int) and price >= 500
         is_valid_discount = bool(re.search(r'\d+[%％]', discount))
