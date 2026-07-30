@@ -342,41 +342,6 @@ function renderProducts() {
           <!-- 3. Actionable Outbound Link CTA Button with Diagonal Arrow (↗) -->
           <button class="btn-card-ghost" onclick="event.stopPropagation(); openProductDetail('${p.slug}');">
             토스 최저가 구매하기 ↗
-          </button>
-        </div>
-      </div>
-    `;
-  }).join('');
-}ce.toLocaleString() + '원' : '';
-    const catName = p.category ? p.category.toUpperCase() : 'HOTDEAL';
-
-    return `
-      <div class="product-card-v2" onclick="openProductDetail('${p.slug}')">
-        <!-- 1. Pure Image Frame with Inner Padding & Soft Background (Max 1 Badge) -->
-        <div class="card-thumb-frame">
-          <img class="card-thumb-img" src="${p.thumbnail}" alt="${p.name}" referrerpolicy="no-referrer">
-          ${isMega ? '<span class="badge-minimal">🔥 MEGA 90%+</span>' : (p.is_featured ? '<span class="badge-minimal">🔥 HOT 핫딜</span>' : '')}
-        </div>
-
-        <!-- 2. Top-Down High Converting Information Hierarchy -->
-        <div class="card-info-wrap">
-          <div class="card-top-tagline">
-            <span>토스쇼핑</span>
-            <span class="category-name">• ${catName}</span>
-          </div>
-
-          <h3 class="card-item-title">${p.name}</h3>
-
-          <div class="card-price-row">
-            <span class="card-discount-text">${p.discount_rate || '30%'}</span>
-            <span class="card-price-text">${priceStr}</span>
-            ${origPriceStr ? `<span class="card-orig-price">${origPriceStr}</span>` : ''}
-          </div>
-
-          <!-- 3. Actionable Outbound Link CTA Button with Diagonal Arrow (↗) -->
-          <button class="btn-card-ghost" onclick="event.stopPropagation(); openProductDetail('${p.slug}');">
-            토스 최저가 구매하기 ↗
-          </button>
         </div>
       </div>
     `;
