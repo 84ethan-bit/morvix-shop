@@ -434,12 +434,16 @@ def harvest_sharelink_portal():
                             if img_el:
                                 img_url = img_el.evaluate("img => img ? (img.currentSrc || img.src || img.getAttribute('data-src') || '') : ''")
 
-                        btn_el.click()
-                        page.wait_for_timeout(400)
+                        try:
+                            btn_el.click(timeout=2000, force=True)
+                        except Exception:
+                            pass
+                        page.wait_for_timeout(300)
                         if 'latest' in captured_links:
                             share_link = captured_links['latest']
                 except Exception as click_err:
                     print_log(f"⚠️ 카드 #{card_info['idx']+1} 클릭 예외: {click_err}")
+
 
                 if not share_link:
                     share_link = f"https://toss.im/_m/AUTO{card_info['idx']+1000}"
