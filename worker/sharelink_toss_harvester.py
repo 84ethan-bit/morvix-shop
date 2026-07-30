@@ -137,7 +137,10 @@ def harvest_sharelink_portal():
 
                     const text = card ? card.innerText : '';
                     const img = card ? card.querySelector('img') : null;
-                    let imgUrl = img ? (img.src || img.getAttribute('data-src') || img.getAttribute('srcset') || '') : '';
+                    let imgUrl = '';
+                    if (img) {
+                        imgUrl = img.currentSrc || img.src || img.getAttribute('src') || img.getAttribute('data-src') || img.getAttribute('data-original') || img.getAttribute('srcset') || '';
+                    }
                     if (imgUrl.includes(' ')) imgUrl = imgUrl.split(' ')[0];
 
                     cards.push({
@@ -178,9 +181,19 @@ def harvest_sharelink_portal():
                     title = lines[0]
 
                 share_link = None
+                img_url = card_info['imgUrl']
                 try:
                     btn_el = page.query_selector_all("button:has-text('링크 발급')")[card_info['idx']]
                     if btn_el:
+                        btn_el.scroll_into_view_if_needed()
+                        page.wait_for_timeout(300)
+
+                        # Re-check image src if initially empty
+                        if not img_url:
+                            img_el = btn_el.evaluate_handle("el => { let p = el.parentElement; while(p && !p.querySelector('img') && p.parentElement) p = p.parentElement; return p ? p.querySelector('img') : null; }")
+                            if img_el:
+                                img_url = img_el.evaluate("img => img ? (img.currentSrc || img.src || img.getAttribute('data-src') || '') : ''")
+
                         btn_el.click()
                         page.wait_for_timeout(800)
                         
@@ -210,7 +223,7 @@ def harvest_sharelink_portal():
                     "name": title,
                     "price": price,
                     "discount_rate": discount_rate,
-                    "thumbnail": card_info['imgUrl'],
+                    "thumbnail": img_url,
                     "share_link": share_link,
                     "section": sec,
                     "priority": card_info['priority']
@@ -257,12 +270,12 @@ def update_db_with_deals(deals):
         share_link = d.get('share_link', '')
 
         # ------------------------------------------------------------------
-        # 5대 무결성 검증 게이트 (Validation Gate Keeper)
+        # 5대 무결성 검증 게이트 (Validation Gate Keeper - Updated HTTP CDN Rule)
         # ------------------------------------------------------------------
         is_valid_name = len(name) >= 3 and not re.match(r'^\d+(\.\d+)?\s*\(', name) # "4.7 (499)" 같은 평점 텍스트 오파싱 차단
         is_valid_price = isinstance(price, int) and price >= 500
         is_valid_discount = bool(re.search(r'\d+[%％]', discount))
-        is_valid_thumb = bool(thumb and thumb.startswith('http') and ('toss.im' in thumb or 'pstatic' in thumb))
+        is_valid_thumb = bool(thumb and thumb.startswith('http') and len(thumb) >= 12) # 모든 유효 HTTP CDN 이미지 허용
         is_valid_link = bool(share_link and share_link.startswith('https://toss.im/_m/'))
 
         if not (is_valid_name and is_valid_price and is_valid_discount and is_valid_thumb and is_valid_link):
