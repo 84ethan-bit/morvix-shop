@@ -250,7 +250,7 @@ function renderProducts() {
 
   if (count) count.textContent = `총 ${filtered.length}개 핫딜 노출 중`;
 
-  // SECTION 1: Time Attack Top 3 Deals (Highest Discount Rate)
+  // SECTION 1: Time Attack Top 3 Deals (Highest Discount Rate - Compact Swiper Cards)
   if (timeAttackGrid) {
     const timeAttackDeals = activeProducts.slice().sort((a, b) => {
       const da = parseInt(a.discount_rate) || 0;
@@ -261,35 +261,27 @@ function renderProducts() {
     timeAttackGrid.innerHTML = timeAttackDeals.map(p => {
       const priceStr = p.price ? p.price.toLocaleString() + '원' : '특가 확인';
       const origPriceStr = p.original_price ? p.original_price.toLocaleString() + '원' : '';
-      const catName = p.category ? p.category.toUpperCase() : 'HOTDEAL';
 
       return `
-        <div class="product-card-v2" onclick="openProductDetail('${p.slug}')" style="border: 2px solid #FF4757; background: linear-gradient(180deg, rgba(255,71,87,0.03) 0%, #ffffff 100%);">
+        <div class="product-card-v2" onclick="openProductDetail('${p.slug}')" style="border: 1.5px solid #FF4757; background: #ffffff;">
           <div class="card-thumb-frame">
             <img class="card-thumb-img" src="${p.thumbnail}" alt="${p.name}" referrerpolicy="no-referrer">
             <span class="badge-minimal" style="background: #FF4757; color: #fff;">⏰ 하루특가</span>
           </div>
           <div class="card-info-wrap">
-            <div class="card-top-tagline">
-              <span>토스쇼핑</span>
-              <span class="category-name">• ${catName}</span>
-            </div>
             <h3 class="card-item-title">${p.name}</h3>
             <div class="card-price-row">
               <span class="card-discount-text">${p.discount_rate || '30%'}</span>
               <span class="card-price-text">${priceStr}</span>
               ${origPriceStr ? `<span class="card-orig-price">${origPriceStr}</span>` : ''}
             </div>
-            <button class="btn-card-ghost" onclick="event.stopPropagation(); openProductDetail('${p.slug}');" style="background: #FF4757; color: #fff; border: none;">
-              오늘 하루특가 구매하기 ↗
-            </button>
           </div>
         </div>
       `;
     }).join('');
   }
 
-  // SECTION 2: Best Ranking Grid with Gold/Silver/Bronze Rank Badges
+  // SECTION 2: Best Ranking Grid with Gold/Silver/Bronze Rank Badges (Compact Cards)
   if (filtered.length === 0) {
     grid.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
@@ -305,10 +297,8 @@ function renderProducts() {
   }
 
   grid.innerHTML = filtered.map((p, idx) => {
-    const isMega = parseInt(p.discount_rate) >= 90;
     const priceStr = p.price ? p.price.toLocaleString() + '원' : '특가 확인';
     const origPriceStr = p.original_price ? p.original_price.toLocaleString() + '원' : '';
-    const catName = p.category ? p.category.toUpperCase() : 'HOTDEAL';
 
     let rankBadgeHTML = '';
     if (idx === 0) rankBadgeHTML = '<span class="rank-badge-gold">🥇 BEST 1위</span>';
@@ -324,11 +314,8 @@ function renderProducts() {
           ${rankBadgeHTML}
         </div>
 
-        <!-- 2. Top-Down High Converting Information Hierarchy -->
+        <!-- 2. Top-Down High Converting Information Hierarchy (Compact) -->
         <div class="card-info-wrap">
-          <div class="card-top-tagline">
-            <span>토스쇼핑</span>
-            <span class="category-name">• ${catName}</span>
           </div>
 
           <h3 class="card-item-title">${p.name}</h3>
