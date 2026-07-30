@@ -965,3 +965,37 @@ html, body {
   }
 }
 
+/* --- 100-Point Micro-Detail Polish (Word Break & Timer Badge Row Alignment) --- */
+h2, .hero-heading, #section-title {
+  word-break: keep-all !important;
+  overflow-wrap: break-word !important;
+}
+
+.timer-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  white-space: nowrap !important;
+  background: #191F28 !important;
+  color: #FFFFFF !important;
+  padding: 5px 14px !important;
+  border-radius: 20px !important;
+  font-size: 0.82rem !important;
+  font-weight: 800 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+}
+
+#countdown-clock {
+  color: #FF4757 !important;
+  font-family: monospace, sans-serif !important;
+  font-weight: 900 !important;
+  font-size: 0.88rem !important;
+}
+
+.timer-suffix {
+  color: #FFFFFF !important;
+  font-weight: 800 !important;
+  white-space: nowrap !important;
+}
+
