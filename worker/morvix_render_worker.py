@@ -504,7 +504,7 @@ class MorvixBridgeHandler(BaseHTTPRequestHandler):
 # [준비 기능 1] 매일 00:00 KST '오늘만 이 가격' 자동 리셋 및 갱신 모듈
 # ─────────────────────────────────────────────────
 def check_midnight_today_price_reset():
-    """매일 00:00 KST 하룤특가+베스트 전체 완전 리셋 → 새날 새 상품으로 전환"""
+    """매일 00:00 KST 하루특가(today_price)만 리셋 → 베스트는 토스 업데이트 주기 확인 후 결정"""
     try:
         now = datetime.now()
         if now.hour == 0 and now.minute <= 5:
@@ -512,16 +512,22 @@ def check_midnight_today_price_reset():
             if os.path.exists(db_path):
                 with open(db_path, "r", encoding="utf-8") as f:
                     db = json.load(f)
-                # 하룤특가 + 베스트 전체 리셋 (새날 새 상품으로 완전 교체)
-                db["products"] = []
+
+                before_count = len(db.get("products", []))
+                # 하루특가(today_price)만 리셋 - 베스트는 유지 (업데이트 주기 확인 필요)
+                db["products"] = [p for p in db.get("products", []) if p.get("section") != "today_price"]
+                after_count = len(db.get("products", []))
+
                 with open(db_path, "w", encoding="utf-8") as f:
                     json.dump(db, f, ensure_ascii=False, indent=2)
-                print(f"🌙 [00:00 KST 자정 리셋] 하룤특가+베스트 전체 초기화 → 즉시 신규 수집 시작", flush=True)
+
+                print(f"🌙 [00:00 KST 자정 리셋] 하루특가 {before_count - after_count}개 삭제 → 즉시 신규 수집 시작 (베스트 {after_count}개 유지)", flush=True)
                 git_push_db()  # 리셋 즉시 배포
                 return True
     except Exception as e:
         print(f"⚠️ 자정 리셋 오류: {e}", flush=True)
     return False
+
 
 # ─────────────────────────────────────────────────
 # [준비 기능 2] 전수 카탈로그 수집 완료 시 자동 멈춤/대기 전환 모듈
