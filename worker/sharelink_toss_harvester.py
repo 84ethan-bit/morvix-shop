@@ -177,7 +177,15 @@ def harvest_sharelink_portal():
                         storage = ctx.storage_state()
                         with open(SESSION_PATH, "w", encoding="utf-8") as f:
                             json.dump(storage, f, ensure_ascii=False, indent=2)
-                        print_log("🎉 [자동 로그인 완료] 신규 세션 저장 및 수집 계속 진행!")
+
+                        # DOM 기반 최종 진입 성공 검증 (링크 발급 버튼 존재 확인)
+                        is_auth_success = page.locator("button:has-text('링크 발급')").count() > 0 or page.locator("text=링크 발급").count() > 0
+                        print_log(f"🎯 로그인 성공 여부 (DOM '링크 발급' 검증): {is_auth_success}")
+                        if is_auth_success:
+                            print_log("🎉 [자동 로그인 성공] 실시간 핫딜 포털 진입 완료!")
+                        else:
+                            print_log("⚠️ [자동 로그인 대기] 2차 인증 필요 가능성 또는 포털 로딩 지연")
+
                     except Exception as login_err:
                         print_log(f"❌ [자동 로그인 실패]: {login_err}")
                         browser.close()
