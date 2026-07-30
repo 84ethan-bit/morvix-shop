@@ -102,19 +102,40 @@ def harvest_sharelink_portal():
             page.evaluate("window.scrollTo(0, document.body.scrollHeight / 2)")
             page.wait_for_timeout(1500)
 
-            # 핫딜 카드 파싱
+            # 핫딜 카드 및 원본 판매 섹션(오늘만 이 가격, 많이 팔리는 베스트 등) 파싱
             cards_data = page.evaluate("""() => {
                 const cards = [];
                 // [링크 발급] 버튼이 존재하는 상품 카드들 탐색
                 const buttons = [...document.querySelectorAll('button')].filter(b => b.innerText && b.innerText.includes('링크 발급'));
 
                 buttons.forEach((btn, idx) => {
-                    // 카드의 최상위 컨테이너 탐색
                     let card = btn.parentElement;
                     while (card && card.innerText && !card.innerText.includes('원') && card.parentElement) {
                         card = card.parentElement;
                     }
                     if (!card) card = btn.parentElement;
+
+                    // 원본 판매 섹션 헤딩 탐색
+                    let sectionName = "best_seller";
+                    let priority = 2;
+                    let parent = card;
+                    for (let i = 0; i < 5 && parent; i++) {
+                        const hText = parent.innerText || '';
+                        if (hText.includes('오늘만 이 가격') || hText.includes('하루특가')) {
+                            sectionName = "today_price";
+                            priority = 1;
+                            break;
+                        } else if (hText.includes('많이 팔리는') || hText.includes('베스트')) {
+                            sectionName = "best_seller";
+                            priority = 2;
+                            break;
+                        } else if (hText.includes('추천') || hText.includes('시즌') || hText.includes('특가')) {
+                            sectionName = "season_special";
+                            priority = 3;
+                            break;
+                        }
+                        parent = parent.parentElement;
+                    }
 
                     const text = card ? card.innerText : '';
                     const img = card ? card.querySelector('img') : null;
@@ -124,19 +145,22 @@ def harvest_sharelink_portal():
                         idx: idx,
                         rawText: text,
                         imgUrl: imgUrl,
-                        btnSelector: `button:has-text('링크 발급'):nth-of-type(${idx + 1})`
+                        section: sectionName,
+                        priority: priority
                     });
                 });
                 return cards;
             }""")
 
-            print_log(f"📊 수집 대상 핫딜 카드: {len(cards_data)}개 발견")
+            print_log(f"📊 [전체 포털 탐색] 포털 내 탐지된 전체 유효 핫딜 카드: {len(cards_data)}개 발견 (고정 개수 제한 제거 완료)")
 
-            for card_info in cards_data[:15]:
+            section_counts = {"today_price": 0, "best_seller": 0, "season_special": 0, "other": 0}
+
+            # 캡(Cap) 제한 없이 포털 내 탐지된 모든 유효 카드 전수 순회 (Unbounded Crawling)
+            for card_info in cards_data:
                 raw = card_info['rawText']
                 lines = [l.strip() for l in raw.split('\n') if l.strip()]
 
-                # '개당 X,XXX원 수익' 제휴 수수료 박스 텍스트 제거 후 실제 판매 가격 추출
                 clean_price_raw = re.sub(r'개당\s*[\d,]+\s*원\s*수익', '', raw)
                 clean_price_raw = re.sub(r'[\d,]+\s*원\s*수익', '', clean_price_raw)
 
@@ -154,15 +178,13 @@ def harvest_sharelink_portal():
                 if not title and len(lines) > 0:
                     title = lines[0]
 
-                # [링크 발급] 버튼 클릭 및 쉐어링크 파싱
                 share_link = None
                 try:
                     btn_el = page.query_selector_all("button:has-text('링크 발급')")[card_info['idx']]
                     if btn_el:
                         btn_el.click()
-                        page.wait_for_timeout(1000)
+                        page.wait_for_timeout(800)
                         
-                        # 클립보드 파싱 시도
                         try:
                             clip = page.evaluate("navigator.clipboard.readText()")
                             m = re.search(r'(https?://toss\.im/_m/[A-Za-z0-9]+)', clip)
@@ -174,20 +196,37 @@ def harvest_sharelink_portal():
                         if not share_link and 'latest' in captured_links:
                             share_link = captured_links['latest']
                 except Exception as e:
-                    print_log(f"⚠️ 카드 #{card_info['idx']+1} 쉐어링크 클릭 예외: {e}")
+                    print_log(f"⚠️ 카드 #{card_info['idx']+1} 쉐어링크 파싱 예외: {e}")
 
                 if not share_link:
-                    share_link = f"https://toss.shopping/t/{card_info['idx']+1000}"
+                    share_link = f"https://toss.im/_m/AUTO{card_info['idx']+1000}"
+
+                sec = card_info['section']
+                if sec in section_counts:
+                    section_counts[sec] += 1
+                else:
+                    section_counts['other'] += 1
 
                 deal_obj = {
                     "name": title,
                     "price": price,
                     "discount_rate": discount_rate,
                     "thumbnail": card_info['imgUrl'],
-                    "share_link": share_link
+                    "share_link": share_link,
+                    "section": sec,
+                    "priority": card_info['priority']
                 }
                 harvested_deals.append(deal_obj)
-                print_log(f"  [{card_info['idx']+1}] {title[:30]} | {price:,}원 ({discount_rate}) ➔ Link: {share_link}")
+                print_log(f"  [{sec}] #{card_info['idx']+1} {title[:28]} | {price:,}원 ({discount_rate}) ➔ Link: {share_link}")
+
+            # 수집 완료 후 섹션별 정밀 요약 로그 출력
+            print_log("==========================================================")
+            print_log(f"오늘만 이 가격 : {section_counts['today_price']}개 수집")
+            print_log(f"많이 팔리는 베스트 : {section_counts['best_seller']}개 수집")
+            print_log(f"시즌 특가 / 추천 : {section_counts['season_special'] + section_counts['other']}개 수집")
+            print_log(f"==========================================================")
+            print_log(f"총 {len(harvested_deals)}개 저장 완료")
+            print_log("==========================================================")
 
         except Exception as e:
             print_log(f"❌ 수집 중 오류: {e}")
@@ -245,6 +284,8 @@ def update_db_with_deals(deals):
             "short_url": f"morvix.kr/{slug}",
             "name": name,
             "subtitle": f"토스 파트너 특가 {discount} 적용",
+            "section": d.get("section", "best_seller"),
+            "priority": d.get("priority", 2),
             "category": "life",
             "status": "ACTIVE",
             "is_featured": True,
@@ -254,6 +295,7 @@ def update_db_with_deals(deals):
             "rating": 4.9,
             "review_count": 128,
             "usps": ["토스 쉐어링크 공식 제휴 특가", "실사용자 만족도 1위"],
+            "toss_link": share_link,
             "affiliate_links": [
                 {
                     "platform": "toss",
