@@ -392,8 +392,12 @@ def harvest_sharelink_portal():
                     seen_texts.add(rt)
                     unique_cards.append(c)
 
+            # 우선순위 정렬 (1순위: 하루특가 ➔ 2순위: 많이 팔리는 BEST ➔ 3순위: 시즌 특가/추천)
+            unique_cards.sort(key=lambda x: x.get('priority', 2))
+
             cards_data = unique_cards[:20]
-            print_log(f"📊 [20개 고속 분할 수집] 신상 핫딜 20개 선정 완료! (중복 제거 후 5초 완수 파이프라인)")
+            print_log(f"📊 [20개 고속 순차 수집] 1순위(하루특가) ➔ 2순위(베스트) ➔ 3순위(시즌특가) 순서로 20개 선정 완료!")
+
 
 
             section_counts = {"today_price": 0, "best_seller": 0, "season_special": 0, "other": 0}
