@@ -377,7 +377,7 @@ function renderProducts() {
     if (idx === 0) rankBadgeHTML = '<span class="rank-badge-gold">🥇 BEST 1위</span>';
     else if (idx === 1) rankBadgeHTML = '<span class="rank-badge-silver">🥈 BEST 2위</span>';
     else if (idx === 2) rankBadgeHTML = '<span class="rank-badge-bronze">🥉 BEST 3위</span>';
-    else rankBadgeHTML = `<span class="rank-badge-num">#${idx + 1}</span>`;
+    else rankBadgeHTML = '';
 
     return renderUniversalProductCard(p, rankBadgeHTML);
   }).join('');
