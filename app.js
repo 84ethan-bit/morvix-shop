@@ -632,10 +632,11 @@ function handleGoRedirectRoute() {
         : [{ platform: 'coupang', url: prod.coupang_link || 'https://m.shopping.naver.com' }];
       
       const targetLink = affiliateLinks[0];
-      logRealClickEvent(slug, targetLink.platform || 'coupang');
+      logRealClickEvent(slug, targetLink?.platform || 'toss');
       
-      // Auto-redirect to affiliate destination
-      window.location.href = targetLink.url;
+      // Auto-redirect to affiliate destination (safe optional chaining)
+      const destUrl = targetLink?.url || prod.toss_link || 'https://toss.im';
+      window.location.href = destUrl;
     }
   }
 }
@@ -1866,9 +1867,9 @@ function renderAdminProductList() {
 
   let filtered = dbData.products.filter(p => {
     const matchesSearch = !searchKw || 
-      p.name.toLowerCase().includes(searchKw) || 
-      p.slug.toLowerCase().includes(searchKw) || 
-      (p.episode_id && p.episode_id.toLowerCase().includes(searchKw));
+      (p.name || '').toLowerCase().includes(searchKw) || 
+      (p.slug || '').toLowerCase().includes(searchKw) || 
+      (p.episode_id ? p.episode_id.toLowerCase().includes(searchKw) : false);
     
     const matchesStatus = filterStatus === 'ALL' || (p.status || 'ACTIVE') === filterStatus;
     const matchesCat = filterCat === 'ALL' || p.category === filterCat;

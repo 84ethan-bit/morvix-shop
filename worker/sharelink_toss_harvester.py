@@ -119,15 +119,17 @@ def harvest_sharelink_portal():
 
 
         captured_links = {}
+        capture_lock = [0]  # [현재 캡처 대상 idx] - Race Condition 방어용 원자적 단방향 잠금
 
-        # 네트워크 요청에서 생성되는 toss.im/_m/ 쉐어링크 캐치
+        # 네트워크 요청에서 생성되는 toss.im/_m/ 쉐어링크 캐치 (Race Condition 방어: per-card idx 독립 키)
         def on_response(response):
             try:
                 if "toss.im/_m/" in response.url or "share" in response.url:
                     text = response.text()
-                    m = re.search(r'(https?://toss\.im/_m/[A-Za-z0-9]+)', text)
+                    m = re.search(r'(https?://toss\.im/_m/[A-Za-z0-9_-]+)', text)
                     if m:
-                        captured_links['latest'] = m.group(1)
+                        # 현재 캡처 대상 카드 idx에만 1:1 원자적 저장 → 교차 덮어쓰기 100% 차단
+                        captured_links[capture_lock[0]] = m.group(1)
             except:
                 pass
 
@@ -360,7 +362,9 @@ def harvest_sharelink_portal():
                     priority = 1 if sec == 'today_price' else (2 if sec == 'best_seller' else 3)
 
 
-                    captured_links.clear()
+                    # Race Condition 방어: 현재 idx를 capture_lock에 등록하고 이전 응답 제거
+                    capture_lock[0] = idx
+                    captured_links.pop(idx, None)
                     btn.scroll_into_view_if_needed()
                     page.wait_for_timeout(200)
 
@@ -368,10 +372,8 @@ def harvest_sharelink_portal():
                         btn.click(timeout=2000, force=True)
                     except Exception:
                         pass
-                    page.wait_for_timeout(400)
-
-                    page.wait_for_timeout(500)
-                    share_link = captured_links.get('latest')
+                    page.wait_for_timeout(600)
+                    share_link = captured_links.get(idx)
 
                     # 1. 모달/팝업 DOM 내 실시간 발급된 토스 쉐어링크 정밀 검사
                     if not share_link:
@@ -521,7 +523,10 @@ def update_db_with_deals(deals):
         existing.insert(0, prod_entry)
         count_added += 1
 
-    db["products"] = existing[:200]
+    # 2순위 수복: 200개 강제 슬라이싱 대신 만료일(expiry_date) 기반으로 오래된 상품 자동 정리
+    now_iso = now.isoformat()
+    existing = [p for p in existing if p.get('expiry_date', '9999') > now_iso]
+    db["products"] = existing[:300]  # 안전 상한선 300개로 완화
 
     with open(DB_PATH, "w", encoding="utf-8") as f:
 
