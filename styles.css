@@ -37,12 +37,12 @@
 .top-announcement-bar {
   background: #F8FAFC;
   border-bottom: 1px solid #E2E8F0;
-  color: #64748B;
-  font-size: 0.72rem;
-  font-weight: 500;
+  color: #475569;
+  font-size: 0.85rem;
+  font-weight: 600;
   text-align: center;
-  padding: 5px 16px;
-  line-height: 1.4;
+  padding: 8px 16px;
+  line-height: 1.45;
   letter-spacing: -0.2px;
 }
 
@@ -55,12 +55,15 @@ body {
   overflow-x: hidden;
 }
 
-/* --- Mobile Responsiveness & Header Actions Hide --- */
+/* Hide header action buttons on BOTH PC and Mobile version for pure clean logo GNB */
+.header-actions,
+.header-action-btn,
+.btn-admin {
+  display: none !important;
+}
+
+/* --- Mobile Responsiveness --- */
 @media (max-width: 768px) {
-  .header-action-btn {
-    display: none !important;
-  }
-  
   .hero-heading {
     font-size: 1.25rem !important;
     line-height: 1.35 !important;
