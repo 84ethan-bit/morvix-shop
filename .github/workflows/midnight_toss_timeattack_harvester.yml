@@ -1,7 +1,10 @@
 name: 🌐 External Server Auto-Harvester Daemon
 
 on:
-  workflow_dispatch: # Allows manual trigger anytime from GitHub UI
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   run-harvester:
@@ -28,7 +31,6 @@ jobs:
         run: |
           git config --global user.name "MORVIX External Server Bot"
           git config --global user.email "bot@morvix.io"
-          # Only commit if morvix_shop_db.json contains products
           python -c "import json; db=json.load(open('morvix_shop_db.json')); exit(0 if len(db.get('products',[]))>0 else 1)" && (
             git add morvix_shop_db.json
             git diff --quiet && git diff --staged --quiet || (git commit -m "chore(cron): Auto-ingest latest Toss deals from external server" && git push)
