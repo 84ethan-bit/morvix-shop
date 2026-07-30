@@ -196,14 +196,37 @@ function renderCategories() {
   });
 }
 
-// Render Products (Filtering out EXPIRED & HIDDEN from main grid while maintaining analytics)
+// Real-time Countdown Clock Engine for Section 1 Time Attack
+function startCountdownClock() {
+  const clockEl = document.getElementById('countdown-clock');
+  if (!clockEl) return;
+
+  function updateClock() {
+    const now = new Date();
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+    const diff = Math.max(0, Math.floor((endOfDay - now) / 1000));
+
+    const h = String(Math.floor(diff / 3600)).padStart(2, '0');
+    const m = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+    const s = String(diff % 60).padStart(2, '0');
+
+    clockEl.textContent = `${h}:${m}:${s}`;
+  }
+
+  updateClock();
+  setInterval(updateClock, 1000);
+}
+
 function renderProducts() {
   const grid = document.getElementById('product-grid');
+  const timeAttackGrid = document.getElementById('time-attack-grid');
   const title = document.getElementById('section-title');
   const count = document.getElementById('product-count');
   if (!grid || !dbData) return;
 
   updateProductLifecycleStates();
+  startCountdownClock();
 
   let activeProducts = dbData.products.filter(p => p.status === 'ACTIVE' || !p.status);
   let filtered = activeProducts;
@@ -222,11 +245,51 @@ function renderProducts() {
     const catObj = dbData.categories.find(c => c.id === currentCategory);
     if (title) title.textContent = `${catObj ? catObj.icon : ''} ${catObj ? catObj.name : '제품'} 검증 제품`;
   } else {
-    if (title) title.textContent = '🔥 지금 가장 많이 찾는 검증 제품';
+    if (title) title.textContent = '🏆 지금 많이 팔리는 BEST';
   }
 
   if (count) count.textContent = `총 ${filtered.length}개 핫딜 노출 중`;
 
+  // SECTION 1: Time Attack Top 3 Deals (Highest Discount Rate)
+  if (timeAttackGrid) {
+    const timeAttackDeals = activeProducts.slice().sort((a, b) => {
+      const da = parseInt(a.discount_rate) || 0;
+      const db = parseInt(b.discount_rate) || 0;
+      return db - da;
+    }).slice(0, 3);
+
+    timeAttackGrid.innerHTML = timeAttackDeals.map(p => {
+      const priceStr = p.price ? p.price.toLocaleString() + '원' : '특가 확인';
+      const origPriceStr = p.original_price ? p.original_price.toLocaleString() + '원' : '';
+      const catName = p.category ? p.category.toUpperCase() : 'HOTDEAL';
+
+      return `
+        <div class="product-card-v2" onclick="openProductDetail('${p.slug}')" style="border: 2px solid #FF4757; background: linear-gradient(180deg, rgba(255,71,87,0.03) 0%, #ffffff 100%);">
+          <div class="card-thumb-frame">
+            <img class="card-thumb-img" src="${p.thumbnail}" alt="${p.name}" referrerpolicy="no-referrer">
+            <span class="badge-minimal" style="background: #FF4757; color: #fff;">⏰ 하루특가</span>
+          </div>
+          <div class="card-info-wrap">
+            <div class="card-top-tagline">
+              <span>토스쇼핑</span>
+              <span class="category-name">• ${catName}</span>
+            </div>
+            <h3 class="card-item-title">${p.name}</h3>
+            <div class="card-price-row">
+              <span class="card-discount-text">${p.discount_rate || '30%'}</span>
+              <span class="card-price-text">${priceStr}</span>
+              ${origPriceStr ? `<span class="card-orig-price">${origPriceStr}</span>` : ''}
+            </div>
+            <button class="btn-card-ghost" onclick="event.stopPropagation(); openProductDetail('${p.slug}');" style="background: #FF4757; color: #fff; border: none;">
+              오늘 하루특가 구매하기 ↗
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // SECTION 2: Best Ranking Grid with Gold/Silver/Bronze Rank Badges
   if (filtered.length === 0) {
     grid.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
@@ -241,10 +304,50 @@ function renderProducts() {
     return;
   }
 
-  grid.innerHTML = filtered.map(p => {
+  grid.innerHTML = filtered.map((p, idx) => {
     const isMega = parseInt(p.discount_rate) >= 90;
     const priceStr = p.price ? p.price.toLocaleString() + '원' : '특가 확인';
     const origPriceStr = p.original_price ? p.original_price.toLocaleString() + '원' : '';
+    const catName = p.category ? p.category.toUpperCase() : 'HOTDEAL';
+
+    let rankBadgeHTML = '';
+    if (idx === 0) rankBadgeHTML = '<span class="rank-badge-gold">🥇 BEST 1위</span>';
+    else if (idx === 1) rankBadgeHTML = '<span class="rank-badge-silver">🥈 BEST 2위</span>';
+    else if (idx === 2) rankBadgeHTML = '<span class="rank-badge-bronze">🥉 BEST 3위</span>';
+    else rankBadgeHTML = `<span class="rank-badge-num">#${idx + 1}</span>`;
+
+    return `
+      <div class="product-card-v2" onclick="openProductDetail('${p.slug}')">
+        <!-- 1. Pure Image Frame with Rank Badge -->
+        <div class="card-thumb-frame">
+          <img class="card-thumb-img" src="${p.thumbnail}" alt="${p.name}" referrerpolicy="no-referrer">
+          ${rankBadgeHTML}
+        </div>
+
+        <!-- 2. Top-Down High Converting Information Hierarchy -->
+        <div class="card-info-wrap">
+          <div class="card-top-tagline">
+            <span>토스쇼핑</span>
+            <span class="category-name">• ${catName}</span>
+          </div>
+
+          <h3 class="card-item-title">${p.name}</h3>
+
+          <div class="card-price-row">
+            <span class="card-discount-text">${p.discount_rate || '30%'}</span>
+            <span class="card-price-text">${priceStr}</span>
+            ${origPriceStr ? `<span class="card-orig-price">${origPriceStr}</span>` : ''}
+          </div>
+
+          <!-- 3. Actionable Outbound Link CTA Button with Diagonal Arrow (↗) -->
+          <button class="btn-card-ghost" onclick="event.stopPropagation(); openProductDetail('${p.slug}');">
+            토스 최저가 구매하기 ↗
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}ce.toLocaleString() + '원' : '';
     const catName = p.category ? p.category.toUpperCase() : 'HOTDEAL';
 
     return `

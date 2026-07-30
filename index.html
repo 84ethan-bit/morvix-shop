@@ -66,8 +66,8 @@
   <section class="hero-banner-v2">
     <div class="hero-banner-inner">
       <div>
-        <h1 class="hero-heading" id="section-title">🔥 오늘의 추천 핫딜</h1>
-        <p class="hero-subheading" id="product-count">실시간 365일 자동 업데이트 검증 제품</p>
+        <h1 class="hero-heading">🔥 MORVIX 검증 핫딜 모음집</h1>
+        <p class="hero-subheading">토스 파트너 공식 제휴 365일 실시간 자동 업데이트</p>
       </div>
     </div>
   </section>
@@ -79,15 +79,35 @@
     </div>
   </nav>
 
-  <!-- Main Product Grid Section -->
-  <main style="max-width: 1200px; margin: 0 auto 50px; padding: 0 24px;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-      <h2 style="font-size: 1.25rem; font-weight: 900; color: #0f172a; letter-spacing: -0.5px;" id="section-title">🔥 실시간 핫딜 추천</h2>
-    </div>
+  <!-- Main Content Container -->
+  <main style="max-width: 1200px; margin: 0 auto 60px; padding: 0 24px;">
 
-    <div class="product-grid" id="product-grid">
-      <!-- Injected dynamically by app.js -->
-    </div>
+    <!-- SECTION 1: ⏰ 오늘만 이 가격! 하루특가 (Urgency / 24h Time Attack) -->
+    <section style="margin-bottom: 48px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <h2 style="font-size: 1.3rem; font-weight: 900; color: #191F28; letter-spacing: -0.5px;">⏰ 오늘만 이 가격! 하루특가</h2>
+          <div class="timer-badge" id="timer-badge" style="background: #191F28; color: #FF4757; font-weight: 800; font-size: 0.85rem; padding: 4px 12px; border-radius: 20px; font-family: monospace; display: flex; align-items: center; gap: 6px;">
+            <span>⏱️</span> <span id="countdown-clock">23:59:59</span> 남음
+          </div>
+        </div>
+      </div>
+      <div class="product-grid" id="time-attack-grid">
+        <!-- Injected dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- SECTION 2: 🔥 지금 많이 팔리는 BEST (Social Proof / Popularity Ranking) -->
+    <section>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+        <h2 style="font-size: 1.3rem; font-weight: 900; color: #191F28; letter-spacing: -0.5px;" id="section-title">🏆 지금 많이 팔리는 BEST</h2>
+        <span style="font-size: 0.85rem; color: #8B95A1; font-weight: 600;" id="product-count">총 9개 노출 중</span>
+      </div>
+      <div class="product-grid" id="product-grid">
+        <!-- Injected dynamically by app.js -->
+      </div>
+    </section>
+
   </main>
 
   <!-- Product Detail Modal -->

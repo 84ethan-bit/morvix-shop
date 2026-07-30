@@ -247,6 +247,62 @@ body {
   z-index: 2;
 }
 
+/* 1~3위 골드/실버/브론즈 랭킹 뱃지 */
+.rank-badge-gold {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  color: #191F28;
+  font-size: 0.78rem;
+  font-weight: 900;
+  padding: 4px 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4);
+  z-index: 2;
+}
+
+.rank-badge-silver {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: linear-gradient(135deg, #E0E0E0, #F5F5F5);
+  color: #191F28;
+  font-size: 0.78rem;
+  font-weight: 900;
+  padding: 4px 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+.rank-badge-bronze {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: linear-gradient(135deg, #CD7F32, #E69A58);
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 900;
+  padding: 4px 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(205, 127, 50, 0.4);
+  z-index: 2;
+}
+
+.rank-badge-num {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #191F28;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 8px;
+  z-index: 2;
+}
+
 /* 2. Text Section with Top Sub-Tag Line */
 .card-info-wrap {
   padding-top: 14px;
