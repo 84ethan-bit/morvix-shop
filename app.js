@@ -263,12 +263,13 @@ function loadMoreProducts() {
 function getTossShareLink(p) {
   if (!p) return 'https://toss.im';
   if (p.toss_link && p.toss_link.includes('toss.im/_m/')) return p.toss_link;
-  if (Array.isArray(p.affiliate_links) && p.affiliate_links.length > 0) {
-    const tossObj = p.affiliate_links.find(l => (l.url && l.url.includes('toss.im/_m/')) || l.platform === 'toss');
-    if (tossObj && tossObj.url) return tossObj.url;
-    if (p.affiliate_links[0] && p.affiliate_links[0].url) return p.affiliate_links[0].url;
-  }
   if (p.short_url && p.short_url.includes('toss.im/_m/')) return p.short_url;
+  if (Array.isArray(p.affiliate_links) && p.affiliate_links.length > 0) {
+    const found = p.affiliate_links.find(l => typeof l === 'string' ? l.includes('toss.im/_m/') : (l && l.url && l.url.includes('toss.im/_m/')));
+    if (found) return typeof found === 'string' ? found : found.url;
+    const first = p.affiliate_links[0];
+    return typeof first === 'string' ? first : (first ? first.url : 'https://toss.im');
+  }
   return p.toss_link || 'https://toss.im';
 }
 
