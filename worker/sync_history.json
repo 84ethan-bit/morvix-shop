@@ -1,5 +1,24 @@
 [
   {
+    "timestamp": "2026-07-30T02:09:55.347722",
+    "status": "PARTIAL_SHIELD",
+    "count": 9,
+    "success_rate": "0.0%",
+    "log": "[Process: PROCESS_SUCCESS | Harvest: SCRAPE_BLOCKED (403/418 Shield)] Master DB 9개 상품 동기화 스캔 완료",
+    "duration": "21.3초",
+    "error_details": [
+      "toss_1785351348_8 [toss]: 404 Not Found (Auto set OUT_OF_STOCK)",
+      "toss_1785351348_7 [toss]: 404 Not Found (Auto set OUT_OF_STOCK)",
+      "toss_1785351348_6 [toss]: 404 Not Found (Auto set OUT_OF_STOCK)",
+      "toss_1785351348_5 [toss]: 404 Not Found (Auto set OUT_OF_STOCK)",
+      "toss_1785351348_4 [toss]: 404 Not Found (Auto set OUT_OF_STOCK)",
+      "toss_1785351348_3 [toss]: 404 Not Found (Auto set OUT_OF_STOCK)",
+      "toss_1785351348_2 [toss]: 404 Not Found (Auto set OUT_OF_STOCK)",
+      "toss_1785351348_1 [toss]: 404 Not Found (Auto set OUT_OF_STOCK)",
+      "toss_1785351348_0 [toss]: 404 Not Found (Auto set OUT_OF_STOCK)"
+    ]
+  },
+  {
     "timestamp": "2026-07-29T19:12:55.242203",
     "status": "PARTIAL_SHIELD",
     "count": 9,
