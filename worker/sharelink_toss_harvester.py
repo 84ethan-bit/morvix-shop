@@ -138,11 +138,39 @@ def harvest_sharelink_portal():
             page.goto("https://sharelink.toss.im/home", wait_until="networkidle", timeout=60000)
             page.wait_for_timeout(3000)
             current_url = page.url
-            print_log(f"📍 현재 URL: {current_url}")
-            if "login" in current_url or "auth" in current_url or "sharelink.toss.im/home" not in current_url:
-                print_log("🚫 로그인 페이지로 리다이렉트됨 - 세션 만료 가능성")
-                browser.close()
-                return []
+            if "login" in current_url or "auth" in current_url or "sign-in" in current_url or "sharelink.toss.im/home" not in current_url:
+                print_log("🚫 로그인 필요 상태 감지 - 환경변수 계정 기반 자동 로그인 시도 중...")
+                user_id = os.environ.get("TOSS_USER_ID", "").strip()
+                user_pw = os.environ.get("TOSS_USER_PW", "").strip()
+
+                if user_id and user_pw:
+                    try:
+                        print_log(f"🔑 [자동 로그인] ID({user_id[:4]}***) 및 비밀번호 폼 입력 중...")
+                        page.wait_for_selector("input[name='email']", timeout=10000)
+                        page.fill("input[name='email']", user_id)
+                        page.fill("input[name='password']", user_pw)
+                        page.wait_for_timeout(1000)
+
+                        # Submit login form
+                        page.click("button:has-text('로그인')")
+                        print_log("⏳ 로그인 제출 완료 - 포털 메인 홈 이동 대기 중...")
+                        page.wait_for_url("**/home", timeout=30000)
+                        page.wait_for_timeout(3000)
+
+                        # Save new session state locally
+                        storage = ctx.storage_state()
+                        with open(SESSION_PATH, "w", encoding="utf-8") as f:
+                            json.dump(storage, f, ensure_ascii=False, indent=2)
+                        print_log("🎉 [자동 로그인 성공] 신규 세션 저장 및 갱신 완료!")
+                    except Exception as login_err:
+                        print_log(f"❌ [자동 로그인 실패]: {login_err}")
+                        browser.close()
+                        return []
+                else:
+                    print_log("⚠️ TOSS_USER_ID / TOSS_USER_PW 환경변수 미설정 - 자동 로그인 불가")
+                    browser.close()
+                    return []
+
 
             # Multi-stage scroll loop to trigger full page lazy-loading for all sections (Full Catalog)
             for step in range(1, 6):
