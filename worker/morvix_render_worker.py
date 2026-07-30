@@ -10,7 +10,8 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH  = os.path.join(BASE_DIR, "morvix_shop_db.json")
-HARVEST_INTERVAL = 30 * 60  # 30분
+HARVEST_INTERVAL = 1 * 60  # 1분 (검증용 - 확인 후 30분으로 변경)
+
 
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
