@@ -33,16 +33,13 @@
   padding: 0;
 }
 
-/* --- Top Announcement Bar (Toss Shopping Share Compliance) --- */
-.top-announcement-bar {
-  background: #F8FAFC;
-  border-bottom: 1px solid #E2E8F0;
-  color: #475569;
-  font-size: 0.85rem;
+/* --- Integrated Header Disclosure Notice --- */
+.header-disclosure-text {
+  font-size: 0.82rem;
   font-weight: 600;
-  text-align: center;
-  padding: 8px 16px;
-  line-height: 1.45;
+  color: #64748B;
+  text-align: right;
+  line-height: 1.35;
   letter-spacing: -0.2px;
 }
 
@@ -64,6 +61,10 @@ body {
 
 /* --- Mobile Responsiveness --- */
 @media (max-width: 768px) {
+  .header-disclosure-text {
+    font-size: 0.68rem !important;
+    line-height: 1.25 !important;
+  }
   .hero-heading {
     font-size: 1.25rem !important;
     line-height: 1.35 !important;

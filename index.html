@@ -46,26 +46,18 @@
 </head>
 <body>
 
-  <!-- Sleek Modern Glass Header (Top Anchor) -->
-  <header style="background: rgba(255, 255, 255, 0.95); position: sticky; top: 0; z-index: 50; padding: 14px 24px; border-bottom: 1px solid #E5E8EB; backdrop-filter: blur(12px); box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
-    <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
-      <div style="display: flex; align-items: center; gap: 10px; cursor: pointer;" onclick="window.location.reload();">
+  <!-- Sleek Modern Glass Header (Top Anchor with Integrated Disclosure Notice) -->
+  <header style="background: rgba(255, 255, 255, 0.95); position: sticky; top: 0; z-index: 50; padding: 12px 24px; border-bottom: 1px solid #E5E8EB; backdrop-filter: blur(12px); box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+      <div style="display: flex; align-items: center; gap: 10px; cursor: pointer; flex-shrink: 0;" onclick="window.location.reload();">
         <div style="width: 38px; height: 38px; background: linear-gradient(135deg, #0F172A, #1E293B); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #38BDF8; font-size: 1.25rem; font-weight: 900; box-shadow: 0 4px 12px rgba(15,23,42,0.18);">♾️</div>
         <span style="font-size: 1.35rem; font-weight: 900; color: #0F172A; letter-spacing: -0.5px; font-family: 'Outfit', sans-serif;">MORVIX</span>
       </div>
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <button class="header-action-btn" onclick="alert('💬 피드백이 정상 접수되었습니다.')" style="padding: 7px 14px; border-radius: 20px; background: #F1F5F9; color: #475569; font-size: 0.8rem; font-weight: 700; border: none; cursor: pointer; transition: all 0.2s;">💬 피드백</button>
-        <button class="header-action-btn" onclick="alert('📱 [홈 화면에 추가] MORVIX 더 빠르게 접속하세요!')" style="padding: 7px 14px; border-radius: 20px; background: #3182F6; color: #fff; font-size: 0.8rem; font-weight: 700; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(49,130,246,0.25);">📱 앱 설치</button>
-        <button class="header-action-btn" onclick="navigator.clipboard.writeText(window.location.href); alert('🔗 MORVIX 핫딜 공유 링크가 복사되었습니다!');" style="width: 34px; height: 34px; border-radius: 50%; background: #F1F5F9; color: #475569; font-size: 0.9rem; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">🔗</button>
-        <button class="btn-admin header-action-btn" id="btn-open-admin" style="padding: 7px 16px; border-radius: 20px; background: #0F172A; color: #fff; font-size: 0.8rem; font-weight: 800; border: none; cursor: pointer; transition: all 0.2s;">⚙️ Admin</button>
+      <div class="header-disclosure-text">
+        📢 <strong>MORVIX</strong>는 토스 쇼핑쉐어 파트너스 활동을 통해 일정액의 수수료를 제공받을 수 있으며, 이는 365일 최저가 큐레이션 운영에 활용됩니다.
       </div>
     </div>
   </header>
-
-  <!-- Top Announcement Bar (Toss Shopping Share Compliance & Trust Below Header) -->
-  <div class="top-announcement-bar">
-    📢 <strong>MORVIX</strong>는 토스 쇼핑쉐어 파트너스 활동을 통해 일정액의 수수료를 제공받을 수 있으며, 이는 365일 최저가 큐레이션 운영에 활용됩니다.
-  </div>
 
   <!-- Slim Modern Header Banner (Clean Minimalist Headline) -->
   <section class="hero-banner-v2">
