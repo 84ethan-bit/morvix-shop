@@ -561,29 +561,30 @@ def ensure_playwright_browsers():
             print("❌ Chromium install FAILED", flush=True)
 
 def restore_toss_session():
-    """세션 파일 확인 및 Render 환경변수 TOSS_SESSION_B64 백업 복원"""
+    """Render 환경변수 TOSS_SESSION_B64가 있으면 무조건 우선 적용하여 최신 세션 유지"""
     session_dir = os.path.join(BASE_DIR, "scratch")
     os.makedirs(session_dir, exist_ok=True)
     session_path = os.path.join(session_dir, "toss_sharelink_session.json")
 
-    # 1. 이미 최신 세션 파일이 존재하면 그대로 사용
-    if os.path.exists(session_path) and os.path.getsize(session_path) > 100:
-        print(f"✅ 레포지토리 저장 세션 파일 사용: {session_path}", flush=True)
-        return
+    b64 = os.environ.get("TOSS_SESSION_B64", "").strip()
+    if b64:
+        try:
+            import base64
+            decoded = base64.b64decode(b64.encode("utf-8")).decode("utf-8")
+            # JSON 파싱 검증
+            parsed = json.loads(decoded)
+            with open(session_path, "w", encoding="utf-8") as f:
+                json.dump(parsed, f, ensure_ascii=False, indent=2)
+            print(f"🔑 [Render Env] TOSS_SESSION_B64 최신 세션 적용 완료: {session_path} (쿠키 {len(parsed.get('cookies',[]))}개)", flush=True)
+            return
+        except Exception as e:
+            print(f"❌ TOSS_SESSION_B64 디코딩 실패: {e}", flush=True)
 
-    # 2. 파일이 없거나 유효하지 않은 경우 환경변수에서 복원
-    b64 = os.environ.get("TOSS_SESSION_B64", "")
-    if not b64:
-        print("⚠️ 세션 파일 및 TOSS_SESSION_B64 환경변수 없음 - 세션 없이 수집 시도", flush=True)
-        return
-    try:
-        import base64
-        decoded = base64.b64decode(b64.encode("utf-8")).decode("utf-8")
-        with open(session_path, "w", encoding="utf-8") as f:
-            f.write(decoded)
-        print(f"✅ 환경변수에서 토스 세션 복원 완료: {session_path}", flush=True)
-    except Exception as e:
-        print(f"❌ 세션 복원 오류: {e}", flush=True)
+    if os.path.exists(session_path) and os.path.getsize(session_path) > 100:
+        print(f"✅ 레포지토리 기본 세션 파일 사용: {session_path}", flush=True)
+    else:
+        print("⚠️ 세션 파일 및 환경변수 없음 - 비로그인 수집 시도", flush=True)
+
 
 
 def run():

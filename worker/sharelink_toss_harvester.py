@@ -97,7 +97,18 @@ def harvest_sharelink_portal():
             ctx_opts["storage_state"] = SESSION_PATH
 
         ctx = browser.new_context(**ctx_opts)
+        if use_session:
+            try:
+                with open(SESSION_PATH, "r", encoding="utf-8") as f:
+                    sdata = json.load(f)
+                if "cookies" in sdata and len(sdata["cookies"]) > 0:
+                    ctx.add_cookies(sdata["cookies"])
+                    print_log(f"🍪 [add_cookies] 쿠키 {len(sdata['cookies'])}개 수동 추가 완료")
+            except Exception as cook_err:
+                print_log(f"⚠️ add_cookies 오류: {cook_err}")
+
         ctx.add_init_script("""
+
             Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
             Object.defineProperty(navigator, 'platform', {get: () => 'Win32'});
             Object.defineProperty(navigator, 'vendor', {get: () => 'Google Inc.'});
