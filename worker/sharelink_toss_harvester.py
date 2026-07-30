@@ -145,7 +145,6 @@ def harvest_sharelink_portal():
             except Exception:
                 print_log("⚠️ SPA 셀렉터 대기 타임아웃 - 현재 DOM 상태로 진행")
 
-
             current_url = page.url
             print_log(f"📍 현재 URL: {current_url}")
 
@@ -154,35 +153,39 @@ def harvest_sharelink_portal():
             is_login_page = "login" in current_url or "auth" in current_url or "sign-in" in current_url or "sharelink.toss.im/home" not in current_url or has_login_input
 
             if is_login_page:
-                print_log("🚫 로그인 필요 상태 감지 (DOM/URL 검증) - 환경변수 계정 기반 자동 로그인 시도 중...")
+                print_log("🚫 [2. 로그인 필요 상태 감지]: True - 자동 로그인 진입")
                 user_id = os.environ.get("TOSS_USER_ID", "").strip()
                 user_pw = os.environ.get("TOSS_USER_PW", "").strip()
-                print_log(f"🔍 환경변수 검증 - TOSS_USER_ID 존재 여부: {bool(user_id)}, TOSS_USER_PW 존재 여부: {bool(user_pw)}")
-
-
+                print_log(f"📋 [1. 환경변수 검증] TOSS_USER_ID: {bool(user_id)}, TOSS_USER_PW: {bool(user_pw)}")
 
                 if user_id and user_pw:
                     try:
-                        print_log(f"🔑 [자동 로그인 시도] 계정 '{user_id[:3]}***' 입력 중...")
+                        print_log(f"🔑 계정 '{user_id[:3]}***' 입력 진행 중...")
                         page.wait_for_selector("input[name='email']", timeout=10000)
                         page.fill("input[name='email']", user_id)
+                        print_log("📋 [3. 이메일 입력 성공 여부]: True")
+
                         page.fill("input[name='password']", user_pw)
+                        print_log("📋 [4. 비밀번호 입력 성공 여부]: True")
                         page.wait_for_timeout(1000)
 
-                        # Submit login form
                         page.click("button:has-text('로그인')")
-                        print_log("⏳ 로그인 버튼 클릭 완료 - 응답 및 홈 이동 대기 중...")
+                        print_log("📋 [5. 로그인 버튼 클릭 성공 여부]: True")
+                        print_log("⏳ 로그인 후 이동 대기 중...")
                         page.wait_for_timeout(5000)
 
                         current_post_login_url = page.url
-                        print_log(f"📍 로그인 버튼 클릭 후 URL: {current_post_login_url}")
+                        print_log(f"📋 [6. 클릭 후 현재 URL]: {current_post_login_url}")
 
                         try:
                             after_login_screenshot = os.path.join(BASE_DIR, "scratch", "after_login.png")
                             page.screenshot(path=after_login_screenshot, full_page=True)
-                            print_log(f"📸 로그인 시도 직후 스크린샷 저장: {after_login_screenshot}")
+                            print_log(f"📋 [7. 클릭 후 스크린샷]: {after_login_screenshot}")
                         except Exception as ss_err:
                             print_log(f"스크린샷 저장 실패: {ss_err}")
+
+                        snippet = page.content()[:500].replace('\n', ' ')
+                        print_log(f"📋 [8. page.content() 앞 500자]: {snippet}")
 
                         # Save new session state locally
                         storage = ctx.storage_state()
@@ -205,8 +208,6 @@ def harvest_sharelink_portal():
                     print_log("⚠️ TOSS_USER_ID / TOSS_USER_PW 환경변수가 외부 서버에 등록되지 않았습니다.")
                     browser.close()
                     return []
-
-
 
             # Multi-stage scroll loop to trigger full page lazy-loading for all sections (Full Catalog)
             for step in range(1, 6):
