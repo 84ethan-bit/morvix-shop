@@ -1,0 +1,6 @@
+# Ignore Python worker scripts and temporary files from Vercel static build
+worker/
+scratch/
+*.py
+.github/
+README.md
