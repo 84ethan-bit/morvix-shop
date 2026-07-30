@@ -499,7 +499,46 @@ class MorvixBridgeHandler(BaseHTTPRequestHandler):
 # ─────────────────────────────────────────────────
 # 자율 수집 루프 (30분마다 토스 수집 → DB 갱신 → Git Push)
 # ─────────────────────────────────────────────────
+
+# ─────────────────────────────────────────────────
+# [준비 기능 1] 매일 00:00 KST '오늘만 이 가격' 자동 리셋 및 갱신 모듈
+# ─────────────────────────────────────────────────
+def check_midnight_today_price_reset():
+    """매일 00:00 KST에 자정 특가(오늘만 이 가격)를 자동 리셋하고 신규 특가 수집 준비"""
+    try:
+        now = datetime.now()
+        # 00:00 ~ 00:05 사이 자정 리셋 수행
+        if now.hour == 0 and now.minute <= 5:
+            db_path = os.path.join(BASE_DIR, "morvix_shop_db.json")
+            if os.path.exists(db_path):
+                with open(db_path, "r", encoding="utf-8") as f:
+                    db = json.load(f)
+                
+                # 기존 'today_price' 항목을 00:00 KST에 신규 교체하기 위해 리셋
+                products = db.get("products", [])
+                retained_products = [p for p in products if p.get("section") != "today_price"]
+                db["products"] = retained_products
+                
+                with open(db_path, "w", encoding="utf-8") as f:
+                    json.dump(db, f, ensure_ascii=False, indent=2)
+                
+                print(f"🌙 [00:00 KST 자정 리셋 완료] '오늘만 이 가격' 핫딜 카테고리 자정 리셋 완료 ➔ 신규 핫딜 수집 대기 중", flush=True)
+    except Exception as e:
+        print(f"⚠️ 자정 리셋 처리 중 오류: {e}", flush=True)
+
+# ─────────────────────────────────────────────────
+# [준비 기능 2] 전수 카탈로그 수집 완료 시 자동 멈춤/대기 전환 모듈
+# ─────────────────────────────────────────────────
+def check_full_catalog_completed(no_new_item_streak):
+    """전체 핫딜 카탈로그가 DB에 전수 등록 완료되면 멈추고 자정(00:00 KST)까지 대기"""
+    if no_new_item_streak >= 3:
+        print(f"🏁 [전체 핫딜 카탈로그 수집 완수] 토스 포털 내 모든 핫딜이 DB에 등록되었습니다.", flush=True)
+        print(f"😴 신규 상품 업데이트 및 자정(00:00 KST) 리셋 전까지 자동 수집 대기 모드로 전환됩니다.", flush=True)
+        return True
+    return False
+
 def git_push_db():
+
     try:
         subprocess.run(["git", "config", "user.name",  "MORVIX Render Server"], cwd=BASE_DIR)
         subprocess.run(["git", "config", "user.email", "render@morvix.io"],      cwd=BASE_DIR)
