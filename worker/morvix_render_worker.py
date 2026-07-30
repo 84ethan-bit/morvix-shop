@@ -504,36 +504,38 @@ class MorvixBridgeHandler(BaseHTTPRequestHandler):
 # [준비 기능 1] 매일 00:00 KST '오늘만 이 가격' 자동 리셋 및 갱신 모듈
 # ─────────────────────────────────────────────────
 def check_midnight_today_price_reset():
-    """매일 00:00 KST에 자정 특가(오늘만 이 가격)를 자동 리셋하고 신규 특가 수집 준비"""
+    """매일 00:00 KST 하룤특가+베스트 전체 완전 리셋 → 새날 새 상품으로 전환"""
     try:
         now = datetime.now()
-        # 00:00 ~ 00:05 사이 자정 리셋 수행
         if now.hour == 0 and now.minute <= 5:
             db_path = os.path.join(BASE_DIR, "morvix_shop_db.json")
             if os.path.exists(db_path):
                 with open(db_path, "r", encoding="utf-8") as f:
                     db = json.load(f)
-                
-                # 기존 'today_price' 항목을 00:00 KST에 신규 교체하기 위해 리셋
-                products = db.get("products", [])
-                retained_products = [p for p in products if p.get("section") != "today_price"]
-                db["products"] = retained_products
-                
+                # 하룤특가 + 베스트 전체 리셋 (새날 새 상품으로 완전 교체)
+                db["products"] = []
                 with open(db_path, "w", encoding="utf-8") as f:
                     json.dump(db, f, ensure_ascii=False, indent=2)
-                
-                print(f"🌙 [00:00 KST 자정 리셋 완료] '오늘만 이 가격' 핫딜 카테고리 자정 리셋 완료 ➔ 신규 핫딜 수집 대기 중", flush=True)
+                print(f"🌙 [00:00 KST 자정 리셋] 하룤특가+베스트 전체 초기화 → 즉시 신규 수집 시작", flush=True)
+                git_push_db()  # 리셋 즉시 배포
+                return True
     except Exception as e:
-        print(f"⚠️ 자정 리셋 처리 중 오류: {e}", flush=True)
+        print(f"⚠️ 자정 리셋 오류: {e}", flush=True)
+    return False
 
 # ─────────────────────────────────────────────────
 # [준비 기능 2] 전수 카탈로그 수집 완료 시 자동 멈춤/대기 전환 모듈
 # ─────────────────────────────────────────────────
 def check_full_catalog_completed(no_new_item_streak):
-    """전체 핫딜 카탈로그가 DB에 전수 등록 완료되면 멈추고 자정(00:00 KST)까지 대기"""
+    """전체 핫딜 수집 완수 시 자정 00:00까지 진짜 단방향 슬립 (5분 폴링 루프 금지)"""
     if no_new_item_streak >= 3:
-        print(f"🏁 [전체 핫딜 카탈로그 수집 완수] 토스 포털 내 모든 핫딜이 DB에 등록되었습니다.", flush=True)
-        print(f"😴 신규 상품 업데이트 및 자정(00:00 KST) 리셋 전까지 자동 수집 대기 모드로 전환됩니다.", flush=True)
+        print(f"🏁 [전체 핫딜 수집 완수] 토스 포털 모든 핫딜 DB 등록 완료", flush=True)
+        now = datetime.now()
+        from datetime import timedelta
+        tomorrow_midnight = (now + timedelta(days=1)).replace(hour=0, minute=1, second=0, microsecond=0)
+        sleep_sec = max((tomorrow_midnight - now).total_seconds(), 60)
+        print(f"😴 자정(00:00 KST)까지 {int(sleep_sec//3600)}시간 {int((sleep_sec%3600)//60)}분 대기 후 신규 수집 재개", flush=True)
+        time.sleep(sleep_sec)
         return True
     return False
 
@@ -598,25 +600,24 @@ def autonomous_harvest_loop():
             last_added_count = 0
             for line in proc.stdout:
                 print(line, end="", flush=True)
-                if "0개 신규 정상 핫딜 등록 완료" in line:
-                    last_added_count = 0
-                elif "신규 정상 핫딜 등록 완료" in line:
-                    last_added_count = 1
+                # UPSERT 갱신 or 신규 등록 모두 콴트 (수집 활동 판별)
+                if "UPSERT 갱신" in line or "신규 정상 핫딜 등록 완료" in line:
+                    last_added_count += 1
 
             proc.wait()
             if proc.returncode == 0:
-                print(f"[{datetime.now().strftime('%H:%M:%S')}] ✅ 수집 완료", flush=True)
-                git_push_db()
+                print(f"[{datetime.now().strftime('%H:%M:%S')}] ✅ 수집 완료 → Git Push 시작", flush=True)
+                git_push_db()  # 수집 완료 즉시 Push → Vercel 자동 배포 → 홈페이지 반영
 
                 if last_added_count == 0:
                     no_new_item_streak += 1
+                    print(f"  ℹ️ 신규/갱신 없음 (연속 {no_new_item_streak}회)", flush=True)
                 else:
                     no_new_item_streak = 0
 
-                # 2. 전수 카탈로그 완수 시 자동 멈춤 및 자정 대기 체크
+                # 전수 완수 시 자정까지 진짜 슬립 (5분 폴링 루프 절대 금지)
                 if check_full_catalog_completed(no_new_item_streak):
-                    print("😴 전수 완수 대기 모드: 5분 후 재확인...", flush=True)
-                    time.sleep(300)
+                    no_new_item_streak = 0  # 자정 후 streak 초기화
                     continue
 
             else:
