@@ -71,7 +71,14 @@ def harvest_sharelink_portal():
     with sync_playwright() as p:
         browser = p.chromium.launch(
             headless=True,
-            args=["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"]
+            args=[
+                "--no-sandbox",
+                "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-blink-features=AutomationControlled",
+                "--disable-infobars",
+                "--window-size=1280,900"
+            ]
         )
         ctx_opts = {
             "viewport": {"width": 1280, "height": 900},
@@ -79,7 +86,10 @@ def harvest_sharelink_portal():
             "locale": "ko-KR",
             "timezone_id": "Asia/Seoul",
             "extra_http_headers": {
-                "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7"
+                "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+                "sec-ch-ua": '"Not/A)Brand";v="8", "Chromium";v="126", "Google Chrome";v="126"',
+                "sec-ch-ua-mobile": "?0",
+                "sec-ch-ua-platform": '"Windows"'
             },
             "permissions": ["clipboard-read", "clipboard-write"]
         }
@@ -87,8 +97,15 @@ def harvest_sharelink_portal():
             ctx_opts["storage_state"] = SESSION_PATH
 
         ctx = browser.new_context(**ctx_opts)
-        ctx.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+        ctx.add_init_script("""
+            Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+            Object.defineProperty(navigator, 'platform', {get: () => 'Win32'});
+            Object.defineProperty(navigator, 'vendor', {get: () => 'Google Inc.'});
+            Object.defineProperty(navigator, 'languages', {get: () => ['ko-KR', 'ko', 'en-US', 'en']});
+            window.chrome = { runtime: {} };
+        """)
         page = ctx.new_page()
+
 
         captured_links = {}
 
