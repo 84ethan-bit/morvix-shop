@@ -118,12 +118,25 @@ def harvest_sharelink_portal():
 
             # Multi-stage scroll loop to trigger full page lazy-loading for all sections (Full Catalog)
             for step in range(1, 6):
-                page.evaluate(f"window.scrollTo(0, (document.body.scrollHeight / 5) * {step})")
-                page.wait_for_timeout(1000)
-            page.wait_for_timeout(1500)
+                try:
+                    page.evaluate(f"window.scrollTo(0, (document.body.scrollHeight / 5) * {step})")
+                except Exception:
+                    pass
+                page.wait_for_timeout(1500)
+            page.wait_for_timeout(3000)
 
-            # 핫딜 카드 및 원본 판매 섹션(오늘만 이 가격, 많이 팔리는 베스트 등) 파싱
-            cards_data = page.evaluate("""() => {
+            # 페이지 안정화 후 networkidle 대기
+            try:
+                page.wait_for_load_state("networkidle", timeout=10000)
+            except Exception:
+                pass
+            page.wait_for_timeout(2000)
+
+            # 핫딜 카드 파싱 (네비게이션 오류 시 재시도)
+            cards_data = []
+            for attempt in range(3):
+                try:
+                    cards_data = page.evaluate("""() => {
                 const cards = [];
                 const buttons = [...document.querySelectorAll('button')].filter(b => b.innerText && b.innerText.includes('링크 발급'));
 
@@ -173,8 +186,14 @@ def harvest_sharelink_portal():
                 });
                 return cards;
             }""")
+                    print_log(f"✅ [시도 {attempt+1}] 카드 추출 성공: {len(cards_data)}개")
+                    break
+                except Exception as eval_err:
+                    print_log(f"⚠️ [시도 {attempt+1}] page.evaluate 오류: {eval_err}")
+                    page.wait_for_timeout(3000)
 
             print_log(f"📊 [전체 포털 탐색] 포털 내 탐지된 전체 유효 핫딜 카드: {len(cards_data)}개 발견 (고정 개수 제한 제거 완료)")
+
 
             section_counts = {"today_price": 0, "best_seller": 0, "season_special": 0, "other": 0}
 
