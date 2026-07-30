@@ -145,14 +145,14 @@ def harvest_sharelink_portal():
             is_login_page = "login" in current_url or "auth" in current_url or "sign-in" in current_url or "sharelink.toss.im/home" not in current_url or has_login_input
 
             if is_login_page:
-                print_log("🚫 로그인 필요 상태 감지 (DOM/URL 검증) - 환경변수 계정 기반 자동 로그인 시도 중...")
-
                 user_id = os.environ.get("TOSS_USER_ID", "").strip()
                 user_pw = os.environ.get("TOSS_USER_PW", "").strip()
+                print_log(f"🔍 환경변수 검증 - TOSS_USER_ID 존재 여부: {bool(user_id)}, TOSS_USER_PW 존재 여부: {bool(user_pw)}")
+
 
                 if user_id and user_pw:
                     try:
-                        print_log(f"🔑 [자동 로그인] ID({user_id[:4]}***) 및 비밀번호 폼 입력 중...")
+                        print_log(f"🔑 [자동 로그인 시도] 계정 '{user_id[:3]}***' 입력 중...")
                         page.wait_for_selector("input[name='email']", timeout=10000)
                         page.fill("input[name='email']", user_id)
                         page.fill("input[name='password']", user_pw)
@@ -160,23 +160,33 @@ def harvest_sharelink_portal():
 
                         # Submit login form
                         page.click("button:has-text('로그인')")
-                        print_log("⏳ 로그인 제출 완료 - 포털 메인 홈 이동 대기 중...")
-                        page.wait_for_url("**/home", timeout=30000)
-                        page.wait_for_timeout(3000)
+                        print_log("⏳ 로그인 버튼 클릭 완료 - 응답 및 홈 이동 대기 중...")
+                        page.wait_for_timeout(5000)
+
+                        current_post_login_url = page.url
+                        print_log(f"📍 로그인 버튼 클릭 후 URL: {current_post_login_url}")
+
+                        try:
+                            after_login_screenshot = os.path.join(BASE_DIR, "scratch", "after_login.png")
+                            page.screenshot(path=after_login_screenshot, full_page=True)
+                            print_log(f"📸 로그인 시도 직후 스크린샷 저장: {after_login_screenshot}")
+                        except Exception as ss_err:
+                            print_log(f"스크린샷 저장 실패: {ss_err}")
 
                         # Save new session state locally
                         storage = ctx.storage_state()
                         with open(SESSION_PATH, "w", encoding="utf-8") as f:
                             json.dump(storage, f, ensure_ascii=False, indent=2)
-                        print_log("🎉 [자동 로그인 성공] 신규 세션 저장 및 갱신 완료!")
+                        print_log("🎉 [자동 로그인 완료] 신규 세션 저장 및 수집 계속 진행!")
                     except Exception as login_err:
                         print_log(f"❌ [자동 로그인 실패]: {login_err}")
                         browser.close()
                         return []
                 else:
-                    print_log("⚠️ TOSS_USER_ID / TOSS_USER_PW 환경변수 미설정 - 자동 로그인 불가")
+                    print_log("⚠️ TOSS_USER_ID / TOSS_USER_PW 환경변수가 외부 서버에 등록되지 않았습니다.")
                     browser.close()
                     return []
+
 
 
             # Multi-stage scroll loop to trigger full page lazy-loading for all sections (Full Catalog)
