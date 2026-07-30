@@ -198,7 +198,17 @@ class MorvixBridgeHandler(BaseHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type')
 
+    def do_HEAD(self):
+        if self.path == '/health' or self.path == '/':
+            self.send_response(200)
+            self._cors()
+            self.end_headers()
+        else:
+            self.send_response(404)
+            self.end_headers()
+
     def do_OPTIONS(self):
+
         self.send_response(200)
         self._cors()
         self.end_headers()
@@ -525,7 +535,29 @@ def autonomous_harvest_loop():
         print(f"😴 {HARVEST_INTERVAL//60}분 후 재가동...", flush=True)
         time.sleep(HARVEST_INTERVAL)
 
+def ensure_playwright_browsers():
+    """런타임 시작 시 Playwright Chromium 브라우저 자동 설치"""
+    try:
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as p:
+            b = p.chromium.launch(headless=True, args=["--no-sandbox"])
+            b.close()
+        print("✅ Playwright Chromium: READY", flush=True)
+    except Exception:
+        print("⚠️ Chromium not found - installing now...", flush=True)
+        result = subprocess.run(
+            [sys.executable, "-m", "playwright", "install", "chromium"],
+            capture_output=False
+        )
+        if result.returncode == 0:
+            print("✅ Chromium install: COMPLETE", flush=True)
+        else:
+            print("❌ Chromium install FAILED", flush=True)
+
 def run():
+    # Render 런타임 시작 시 Playwright 브라우저 먼저 설치
+    ensure_playwright_browsers()
+
     # 자율 수집 루프 백그라운드 스레드로 즉시 시작
     harvest_thread = threading.Thread(target=autonomous_harvest_loop, daemon=True)
     harvest_thread.start()
