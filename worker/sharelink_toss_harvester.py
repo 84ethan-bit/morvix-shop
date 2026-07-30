@@ -392,14 +392,15 @@ def harvest_sharelink_portal():
                     seen_texts.add(rt)
                     unique_cards.append(c)
 
-            cards_data = unique_cards
-            print_log(f"📊 [전 포털 심층 전수 통합] 중복 제거 후 최종 핫딜 목록: {len(cards_data)}개 전수 수집 완료!")
+            cards_data = unique_cards[:20]
+            print_log(f"📊 [20개 고속 분할 수집] 신상 핫딜 20개 선정 완료! (중복 제거 후 5초 완수 파이프라인)")
 
 
             section_counts = {"today_price": 0, "best_seller": 0, "season_special": 0, "other": 0}
 
             # 캡(Cap) 제한 없이 포털 내 탐지된 모든 유효 카드 전수 순회 (Unbounded Crawling)
             for card_info in cards_data:
+
                 raw = card_info['rawText']
                 lines = [l.strip() for l in raw.split('\n') if l.strip()]
 
@@ -564,9 +565,10 @@ def update_db_with_deals(deals):
         existing.insert(0, prod_entry)
         count_added += 1
 
-    db["products"] = existing[:40]
+    db["products"] = existing[:200]
 
     with open(DB_PATH, "w", encoding="utf-8") as f:
+
         json.dump(db, f, ensure_ascii=False, indent=2)
 
     print_log(f"🎉 morvix_shop_db.json {count_added}개 신규 정상 핫딜 등록 완료! (불량 차단: {rejected_count}개)")
