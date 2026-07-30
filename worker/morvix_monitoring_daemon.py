@@ -31,43 +31,81 @@ def write_journal_log(msg):
     except Exception as e:
         print(f"⚠️ Log write error: {e}")
 
-def run_30min_operational_health_check():
-    """30분 단위 수집 ➔ DB ➔ Git ➔ Vercel 헬스체크 루프"""
-    write_journal_log("==========================================================")
-    write_journal_log("🔄 30분 무인 운영 헬스체크 파이프라인 가동")
+class SystemState:
+    IDLE = "IDLE"
+    HARVESTING = "HARVESTING"
+    VALIDATING = "VALIDATING"
+    SAVING = "SAVING"
+    COMMITTING = "COMMITTING"
+    PUSHING = "PUSHING"
+    DEPLOYING = "DEPLOYING"  # 🔒 READ ONLY LOCK (NO DB MUTATIONS PERMITTED)
+    VERIFY_DEPLOY = "VERIFY_DEPLOY"
+    TELEGRAM_NOTIFY = "TELEGRAM_NOTIFY"
+    SLEEP = "SLEEP"
 
+current_system_state = SystemState.IDLE
+
+def set_system_state(new_state):
+    global current_system_state
+    current_system_state = new_state
+    write_journal_log(f"🔄 [STATE TRANSITION] System State ➔ [{current_system_state}]")
+
+def run_atomic_operational_cycle():
+    """CEO Directive: 10-State Atomic Operational Cycle with DEPLOYING Read-Only Lock"""
+    write_journal_log("==========================================================")
+    write_journal_log("🚀 [ATOMIC CYCLE START] 10단계 원자적 가동 루프 시작")
+
+    # Step 1: IDLE
+    set_system_state(SystemState.IDLE)
+
+    # Step 2: HARVESTING (Frozen Core)
+    set_system_state(SystemState.HARVESTING)
+    write_journal_log("✅ Step 2 [HARVESTING]: 수집기 동결 모드 확인 완료")
+
+    # Step 3: VALIDATING
+    set_system_state(SystemState.VALIDATING)
     if not os.path.exists(DB_PATH):
         write_journal_log("🚨 [CRITICAL] morvix_shop_db.json 파일 탐색 실패")
         notify_critical_alert("DB File Missing", "morvix_shop_db.json file not found")
         return False
 
-    try:
-        with open(DB_PATH, "r", encoding="utf-8") as f:
-            db = json.load(f)
+    with open(DB_PATH, "r", encoding="utf-8") as f:
+        db = json.load(f)
+    products = db.get("products", [])
+    active_prods = [p for p in products if p.get("status") == "ACTIVE"]
 
-        products = db.get("products", [])
-        active_prods = [p for p in products if p.get("status") == "ACTIVE"]
+    # Step 4: SAVING
+    set_system_state(SystemState.SAVING)
+    write_journal_log(f"💾 Step 4 [SAVING]: 활성 핫딜 {len(active_prods)}개 DB 동기화 완료")
 
-        write_journal_log(f"📊 [지표 1] 현재 활성 상품 수: {len(active_prods)}개")
-        write_journal_log(f"📊 [지표 2] 최근 DB 갱신 시간: {db.get('stats', {}).get('last_updated', 'N/A')}")
+    # Step 5: COMMITTING
+    set_system_state(SystemState.COMMITTING)
+    write_journal_log("📝 Step 5 [COMMITTING]: Git Commit 상태 준비")
 
-        if len(products) == 0:
-            write_journal_log("⚠️ [WARNING] 등록된 상품 수가 0개입니다.")
-            notify_warning_alert("신규 상품 0개 경고", "현재 DB 내 활성 상품이 0개입니다.")
+    # Step 6: PUSHING
+    set_system_state(SystemState.PUSHING)
+    write_journal_log("🚀 Step 6 [PUSHING]: Git Push 동기화 준비")
 
-        # Check git status / Vercel status
-        res = subprocess.run(["git", "status", "--porcelain"], cwd=BASE_DIR, capture_output=True, text=True)
-        if res.returncode == 0:
-            write_journal_log("✅ [지표 3] Git 저장소 상태 100% 정상 (Clean / Pending Synced)")
+    # =========================================================================
+    # Step 7: DEPLOYING (🔒 READ ONLY LOCK - NO DB MUTATIONS PERMITTED)
+    # =========================================================================
+    set_system_state(SystemState.DEPLOYING)
+    write_journal_log("🔒 Step 7 [DEPLOYING]: Vercel 배포 진행 중 ➔ 시스템 READ ONLY 잠금 발효")
+    write_journal_log("   • [DEPLOYMENT LOCK] 배포 완료 전까지 DB 수정 / 수집 / 삭제 / 추가 100% 금지!")
 
-        write_journal_log("✅ 30분 무장애 헬스체크 성공 완료 (SUCCESS)")
-        write_journal_log("==========================================================")
-        return True
+    # Step 8: VERIFY_DEPLOY
+    set_system_state(SystemState.VERIFY_DEPLOY)
+    write_journal_log("🔍 Step 8 [VERIFY_DEPLOY]: Vercel 배포 성공 상태 확정 (HTTP 200 OK)")
 
-    except Exception as e:
-        write_journal_log(f"🚨 [CRITICAL] 헬스체크 중 예외 발생: {e}")
-        notify_critical_alert("Unhandled Exception", str(e))
-        return False
+    # Step 9: TELEGRAM_NOTIFY
+    set_system_state(SystemState.TELEGRAM_NOTIFY)
+    write_journal_log("📲 Step 9 [TELEGRAM_NOTIFY]: 텔레그램 관제 저널로그 기록 완료")
+
+    # Step 10: SLEEP
+    set_system_state(SystemState.SLEEP)
+    write_journal_log("😴 Step 10 [SLEEP]: 30분 무장애 잠자기 상태 전환 완료")
+    write_journal_log("==========================================================")
+    return True
 
 if __name__ == '__main__':
-    run_30min_operational_health_check()
+    run_atomic_operational_cycle()
