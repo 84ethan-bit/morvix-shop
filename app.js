@@ -263,7 +263,7 @@ function renderProducts() {
 
   if (count) count.textContent = `총 ${filtered.length}개 핫딜 노출 중`;
 
-  // SECTION 1: Time Attack Top 3 Deals (Direct Outbound Toss Share Links)
+  // SECTION 1: Time Attack Top 3 Deals (Matching Approved Bottom Section Font & Button Layout)
   if (timeAttackGrid) {
     const timeAttackDeals = activeProducts.slice().sort((a, b) => {
       const da = parseInt(a.discount_rate) || 0;
@@ -285,9 +285,12 @@ function renderProducts() {
           <div class="card-info-wrap">
             <h3 class="card-item-title">${p.name}</h3>
             <div class="card-price-row">
-              <span class="card-discount-text">${p.discount_rate || '30%'}</span>
+              <span class="card-discount-text">${p.discount_rate || '30%'} 특가</span>
               <span class="card-price-text">${priceStr}</span>
               ${origPriceStr ? `<span class="card-orig-price">${origPriceStr}</span>` : ''}
+            </div>
+            <div class="btn-card-ghost" style="background: #FFF5F5; border-color: #FF4757; color: #FF4757;">
+              토스 최저가 구매하기 ↗
             </div>
           </div>
         </a>
@@ -295,7 +298,7 @@ function renderProducts() {
     }).join('');
   }
 
-  // SECTION 2: Best Ranking Grid with Gold/Silver/Bronze Rank Badges (Direct Outbound Toss Share Links)
+  // SECTION 2: Best Ranking Grid with Gold/Silver/Bronze Rank Badges (Matching Approved Bottom Section Font & Button Layout)
   if (filtered.length === 0) {
     grid.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
@@ -322,7 +325,7 @@ function renderProducts() {
     else rankBadgeHTML = `<span class="rank-badge-num">#${idx + 1}</span>`;
 
     return `
-      <div class="product-card-v2" onclick="openProductDetail('${p.slug}')">
+      <a href="${tossLink}" target="_blank" rel="noopener noreferrer" class="product-card-v2" onclick="trackOutboundClick('${p.slug}')">
         <!-- 1. Pure Image Frame with Rank Badge -->
         <div class="card-thumb-frame">
           <img class="card-thumb-img" src="${p.thumbnail}" alt="${p.name}" referrerpolicy="no-referrer">
