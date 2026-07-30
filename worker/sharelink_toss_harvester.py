@@ -138,8 +138,15 @@ def harvest_sharelink_portal():
             page.goto("https://sharelink.toss.im/home", wait_until="networkidle", timeout=60000)
             page.wait_for_timeout(3000)
             current_url = page.url
-            if "login" in current_url or "auth" in current_url or "sign-in" in current_url or "sharelink.toss.im/home" not in current_url:
-                print_log("🚫 로그인 필요 상태 감지 - 환경변수 계정 기반 자동 로그인 시도 중...")
+            print_log(f"📍 현재 URL: {current_url}")
+
+            # URL 및 DOM 요소를 동시에 검사하여 SPA 로그인 화면 감지
+            has_login_input = page.locator("input[name='email']").count() > 0 or page.locator("button:has-text('로그인')").count() > 0
+            is_login_page = "login" in current_url or "auth" in current_url or "sign-in" in current_url or "sharelink.toss.im/home" not in current_url or has_login_input
+
+            if is_login_page:
+                print_log("🚫 로그인 필요 상태 감지 (DOM/URL 검증) - 환경변수 계정 기반 자동 로그인 시도 중...")
+
                 user_id = os.environ.get("TOSS_USER_ID", "").strip()
                 user_pw = os.environ.get("TOSS_USER_PW", "").strip()
 
