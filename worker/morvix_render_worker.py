@@ -16,39 +16,8 @@ HARVEST_INTERVAL = 1 * 60  # 1분 (검증용 - 확인 후 30분으로 변경)
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
-# ─────────────────────────────────────────────────
-# FORCE PLAYWRIGHT BROWSERS INTO PROJECT DIRECTORY
-# So Chromium persists across Render deploys
-# ─────────────────────────────────────────────────
-PLAYWRIGHT_CACHE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.playwright-cache')
-os.environ['PLAYWRIGHT_BROWSERS_PATH'] = PLAYWRIGHT_CACHE
-print(f"📦 PLAYWRIGHT_BROWSERS_PATH = {PLAYWRIGHT_CACHE}")
-
-CHROMIUM_READY = False
-
-def install_chromium_background():
-    global CHROMIUM_READY
-    try:
-        from playwright.sync_api import sync_playwright
-        with sync_playwright() as p:
-            b = p.chromium.launch(headless=True, args=["--no-sandbox"])
-            b.close()
-        print("✅ Playwright Chromium: READY (already installed)")
-        CHROMIUM_READY = True
-    except Exception:
-        print("⚠️ Chromium not found — installing in background...")
-        result = subprocess.run(
-            [sys.executable, "-m", "playwright", "install", "chromium"],
-            capture_output=False
-        )
-        if result.returncode == 0:
-            print("✅ Chromium background install: COMPLETE")
-            CHROMIUM_READY = True
-        else:
-            print("❌ Chromium install failed")
-
-threading.Thread(target=install_chromium_background, daemon=True).start()
-# ─────────────────────────────────────────────────
+CHROMIUM_READY = True
+print(f"📦 PLAYWRIGHT_BROWSERS_PATH = {os.environ.get('PLAYWRIGHT_BROWSERS_PATH', 'default')}")
 
 
 
