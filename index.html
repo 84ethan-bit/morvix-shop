@@ -46,12 +46,7 @@
 </head>
 <body>
 
-  <!-- Top Announcement Bar (Toss Shopping Share Compliance & Trust) -->
-  <div class="top-announcement-bar">
-    📢 <strong>MORVIX</strong>는 토스 쇼핑쉐어 파트너스 활동을 통해 일정액의 수수료를 제공받을 수 있으며, 이는 365일 최저가 큐레이션 운영에 활용됩니다.
-  </div>
-
-  <!-- Sleek Modern Glass Header -->
+  <!-- Sleek Modern Glass Header (Top Anchor) -->
   <header style="background: rgba(255, 255, 255, 0.95); position: sticky; top: 0; z-index: 50; padding: 14px 24px; border-bottom: 1px solid #E5E8EB; backdrop-filter: blur(12px); box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
     <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
       <div style="display: flex; align-items: center; gap: 10px; cursor: pointer;" onclick="window.location.reload();">
@@ -59,20 +54,24 @@
         <span style="font-size: 1.35rem; font-weight: 900; color: #0F172A; letter-spacing: -0.5px; font-family: 'Outfit', sans-serif;">MORVIX</span>
       </div>
       <div style="display: flex; align-items: center; gap: 8px;">
-        <button onclick="alert('💬 피드백이 정상 접수되었습니다.')" style="padding: 7px 14px; border-radius: 20px; background: #F1F5F9; color: #475569; font-size: 0.8rem; font-weight: 700; border: none; cursor: pointer; transition: all 0.2s;">💬 피드백</button>
-        <button onclick="alert('📱 [홈 화면에 추가] MORVIX 더 빠르게 접속하세요!')" style="padding: 7px 14px; border-radius: 20px; background: #3182F6; color: #fff; font-size: 0.8rem; font-weight: 700; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(49,130,246,0.25);">📱 앱 설치</button>
-        <button onclick="navigator.clipboard.writeText(window.location.href); alert('🔗 MORVIX 핫딜 공유 링크가 복사되었습니다!');" style="width: 34px; height: 34px; border-radius: 50%; background: #F1F5F9; color: #475569; font-size: 0.9rem; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">🔗</button>
-        <button class="btn-admin" id="btn-open-admin" style="padding: 7px 16px; border-radius: 20px; background: #0F172A; color: #fff; font-size: 0.8rem; font-weight: 800; border: none; cursor: pointer; transition: all 0.2s;">⚙️ Admin</button>
+        <button class="header-action-btn" onclick="alert('💬 피드백이 정상 접수되었습니다.')" style="padding: 7px 14px; border-radius: 20px; background: #F1F5F9; color: #475569; font-size: 0.8rem; font-weight: 700; border: none; cursor: pointer; transition: all 0.2s;">💬 피드백</button>
+        <button class="header-action-btn" onclick="alert('📱 [홈 화면에 추가] MORVIX 더 빠르게 접속하세요!')" style="padding: 7px 14px; border-radius: 20px; background: #3182F6; color: #fff; font-size: 0.8rem; font-weight: 700; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(49,130,246,0.25);">📱 앱 설치</button>
+        <button class="header-action-btn" onclick="navigator.clipboard.writeText(window.location.href); alert('🔗 MORVIX 핫딜 공유 링크가 복사되었습니다!');" style="width: 34px; height: 34px; border-radius: 50%; background: #F1F5F9; color: #475569; font-size: 0.9rem; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">🔗</button>
+        <button class="btn-admin header-action-btn" id="btn-open-admin" style="padding: 7px 16px; border-radius: 20px; background: #0F172A; color: #fff; font-size: 0.8rem; font-weight: 800; border: none; cursor: pointer; transition: all 0.2s;">⚙️ Admin</button>
       </div>
     </div>
   </header>
 
-  <!-- Slim Modern Header Banner (MORVIX PICK Branding Approved) -->
+  <!-- Top Announcement Bar (Toss Shopping Share Compliance & Trust Below Header) -->
+  <div class="top-announcement-bar">
+    📢 <strong>MORVIX</strong>는 토스 쇼핑쉐어 파트너스 활동을 통해 일정액의 수수료를 제공받을 수 있으며, 이는 365일 최저가 큐레이션 운영에 활용됩니다.
+  </div>
+
+  <!-- Slim Modern Header Banner (Clean Minimalist Headline) -->
   <section class="hero-banner-v2">
     <div class="hero-banner-inner">
       <div>
-        <h1 class="hero-heading">🔥 MORVIX가 직접 검증한 오늘의 추천 핫딜</h1>
-        <p class="hero-subheading">YouTube @MORVIX_Lab 연동 • 365일 무인 자율 파트너 제휴 특가</p>
+        <h1 class="hero-heading">🔥 MORVIX가 직접 검증한<br>오늘의 추천 핫딜</h1>
       </div>
     </div>
   </section>
@@ -579,11 +578,10 @@
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="footer">
+  <!-- Footer (Clean Minimalist Approved) -->
+  <footer class="footer" style="padding: 24px 16px; text-align: center; color: #94A3B8; font-size: 0.78rem; border-top: 1px solid #E5E8EB; background: #ffffff;">
     <div class="footer-container">
-      <p>© 2026 MORVIX SHOP OS. All rights reserved. Powered by VIS Knowledge Framework Engine.</p>
-      <p class="footer-disclaimer">본 사이트는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받을 수 있습니다.</p>
+      <p>© 2026 MORVIX. All rights reserved.</p>
     </div>
   </footer>
 
