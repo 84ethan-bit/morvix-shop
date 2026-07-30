@@ -1,0 +1,30 @@
+name: 🌙 Midnight 00:10 KST Toss Time Attack Auto-Harvester
+
+on:
+  schedule:
+    # 15:10 UTC = 00:10 KST (Korea Standard Time)
+    - cron: '10 15 * * *'
+  workflow_dispatch: # Allows manual trigger anytime from GitHub UI
+
+jobs:
+  rotate-time-attack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Run Midnight Time Attack Rotation Script
+        run: |
+          python worker/midnight_timeattack_rotator.py
+
+      - name: Commit & Push Updated DB to Vercel
+        run: |
+          git config --global user.name "MORVIX Midnight Bot"
+          git config --global user.email "bot@morvix.io"
+          git add morvix_shop_db.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(cron): Auto-rotate midnight 00:10 KST Time Attack deals" && git push)
