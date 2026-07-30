@@ -1,7 +1,3 @@
 {
-  "version": 2,
-  "rewrites": [
-    { "source": "/go/:slug*", "destination": "/index.html" },
-    { "source": "/:path*", "destination": "/index.html" }
-  ]
+  "cleanUrls": true
 }
