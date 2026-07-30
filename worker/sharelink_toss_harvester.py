@@ -274,10 +274,14 @@ def harvest_sharelink_portal():
                     except Exception:
                         pass
 
+                    # 1. 썸네일 이미지(img)와 가격(원)이 모두 상위 상자에 포함되도록 DOM 상위 조상 정밀 클라이밍
                     card_container = btn.evaluate_handle("""el => {
                         let card = el.parentElement;
-                        while (card && card.innerText && !card.innerText.includes('원') && card.parentElement) {
-                            card = card.parentElement;
+                        for (let i = 0; i < 8 && card; i++) {
+                            if (card.querySelector('img') && card.innerText && card.innerText.includes('원')) {
+                                break;
+                            }
+                            if (card.parentElement) card = card.parentElement;
                         }
                         return card || el.parentElement;
                     }""")
