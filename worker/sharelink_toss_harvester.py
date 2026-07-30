@@ -226,13 +226,19 @@ def harvest_sharelink_portal():
                     browser.close()
                     return []
 
-            # Multi-stage scroll loop to trigger full page lazy-loading for all sections (Full Catalog)
-            for step in range(1, 6):
+            # Full-page deep scroll: 10단계 전체 스크롤로 모든 섹션 lazy-loading 완전 유발
+            print_log("📜 전체 페이지 딥스크롤 시작 (10단계 전체 구역 강제 로딩)...")
+            for step in range(1, 11):
                 try:
-                    page.evaluate(f"window.scrollTo(0, (document.body.scrollHeight / 5) * {step})")
+                    page.evaluate(f"window.scrollTo(0, (document.body.scrollHeight / 10) * {step})")
                 except Exception:
                     pass
-                page.wait_for_timeout(1500)
+                page.wait_for_timeout(800)
+            # 맨 위로 복귀 후 재안정화
+            try:
+                page.evaluate("window.scrollTo(0, 0)")
+            except Exception:
+                pass
             page.wait_for_timeout(3000)
 
             # 페이지 안정화 후 networkidle 대기
@@ -259,15 +265,32 @@ def harvest_sharelink_portal():
                 print_log(f"버튼 목록 조회 실패: {e}")
             # ── 진단 끝 ──
 
-            # ── [원천 해결] 원타임 원자적 카드 파싱 & 링크 발급 결합 (1-Pass Single Container Extraction) ──
-            # 카드 텍스트, 썸네일 이미지, 버튼 클릭, 쉐어링크를 1:1로 원자적(Atomic) 매칭하여 절대 교차 미스매치가 없도록 보장
+            # ── 카테고리 탭 전수 순회하여 전체 상품 풀(Full Pool) 확대 수집 ──
+            # 토스 쇼핑몰의 '전체' 탭 → '오늘만 이 가격' 탭 → '많이 팔리는 BEST' 탭 순서로 전수 탐색
+            category_tabs_to_visit = []
+            try:
+                tabs = page.evaluate("""() => {
+                    const btns = [...document.querySelectorAll('button, a')];
+                    return btns
+                        .filter(b => b.innerText && b.innerText.length < 30 && !b.innerText.includes('링크 발급') && !b.innerText.includes('로그인'))
+                        .map(b => b.innerText.trim())
+                        .filter(t => t.length > 1)
+                        .slice(0, 20);
+                }""")
+                print_log(f"📑 탐지된 탭 목록: {tabs}")
+            except Exception:
+                pass
+
             btn_els = page.query_selector_all("button:has-text('링크 발급')")
             print_log(f"📊 탐지된 핫딜 '링크 발급' 카드 총 수량: {len(btn_els)}개")
 
             section_counts = {"today_price": 0, "best_seller": 0, "season_special": 0, "other": 0}
             seen_titles = set()
 
-            for idx, btn in enumerate(btn_els[:30]):
+            # 상한 60개로 확대 (첫 20개 고정 → 전체 섹션 풀 수집)
+            TARGET_DEALS = 60
+
+            for idx, btn in enumerate(btn_els):  # [:30] 제한 해제 - 전체 버튼 순회
                 try:
                     # 1. 카드를 화면 내로 먼저 스크롤하여 이미지 레이지 로딩(Lazy-Loading) 100% 강제 유발
                     try:
@@ -425,11 +448,115 @@ def harvest_sharelink_portal():
                     harvested_deals.append(deal_obj)
                     print_log(f"  [{sec}] #{len(harvested_deals)} {title[:28]} | {price:,}원 ({discount_rate}) ➔ Link: {share_link}")
 
-                    if len(harvested_deals) >= 20:
+                    if len(harvested_deals) >= TARGET_DEALS:
                         break
 
                 except Exception as card_err:
                     print_log(f"⚠️ 카드 #{idx+1} 단일 파싱 오류: {card_err}")
+
+            # ── 카테고리 탭 순회: 아직 TARGET_DEALS 미달 시 추가 섹션에서 보충 수집 ──
+            if len(harvested_deals) < TARGET_DEALS:
+                print_log(f"📂 1차 수집 {len(harvested_deals)}개 → 카테고리 탭 순회로 추가 보충 시작...")
+
+                # 탭 키워드 후보 - 토스 쇼핑몰의 카테고리 탭 텍스트 매칭
+                TAB_KEYWORDS = ['전체', '식품', '생활', '패션', '뷰티', '가전', '유아', '스포츠', '반려', '문화', '여행']
+
+                for tab_kw in TAB_KEYWORDS:
+                    if len(harvested_deals) >= TARGET_DEALS:
+                        break
+                    try:
+                        tab_btn = page.locator(f"button:has-text('{tab_kw}'), a:has-text('{tab_kw}')")
+                        if tab_btn.count() == 0:
+                            continue
+                        print_log(f"  📁 탭 클릭: [{tab_kw}]")
+                        tab_btn.first.click(timeout=3000)
+                        page.wait_for_timeout(2000)
+
+                        # 탭 전환 후 딥스크롤로 lazy-load 유발
+                        for step in range(1, 6):
+                            try:
+                                page.evaluate(f"window.scrollTo(0, (document.body.scrollHeight / 5) * {step})")
+                            except Exception:
+                                pass
+                            page.wait_for_timeout(500)
+                        page.wait_for_timeout(1500)
+
+                        # 추가 버튼 재스캔
+                        extra_btns = page.query_selector_all("button:has-text('링크 발급')")
+                        print_log(f"  📊 [{tab_kw}] 탭 내 '링크 발급' 버튼: {len(extra_btns)}개")
+
+                        for idx2, btn2 in enumerate(extra_btns):
+                            if len(harvested_deals) >= TARGET_DEALS:
+                                break
+                            try:
+                                btn2.scroll_into_view_if_needed()
+                                page.wait_for_timeout(200)
+
+                                # 카드 컨테이너 탐색 (img + 가격 텍스트가 모두 있는 최상위 상자)
+                                card_container = btn2.evaluate_handle("""el => {
+                                    let node = el;
+                                    for (let i = 0; i < 8; i++) {
+                                        node = node.parentElement;
+                                        if (!node) break;
+                                        const hasImg = node.querySelector('img') !== null;
+                                        const text = node.innerText || '';
+                                        const hasPrice = /[0-9,]+\\s*\uc6d0/.test(text);
+                                        if (hasImg && hasPrice) return node;
+                                    }
+                                    return el.parentElement || el;
+                                }""")
+
+                                if not card_container:
+                                    continue
+
+                                card_text = card_container.evaluate("el => el.innerText || ''")
+                                lines_text = [l.strip() for l in card_text.split('\n') if l.strip() and '링크 발급' not in l]
+
+                                import re as _re
+                                title2 = next((l for l in lines_text if len(l) >= 5 and not _re.match(r'^[\d,%원]+$', l) and '할인' not in l and '특가' not in l and l not in seen_titles), '')
+                                if not title2 or title2 in seen_titles:
+                                    continue
+                                seen_titles.add(title2)
+
+                                price_m = _re.search(r'([0-9,]+)\s*원', card_text)
+                                price2 = int(price_m.group(1).replace(',', '')) if price_m else 0
+                                disc_m = _re.search(r'(\d+)\s*[%％]', card_text)
+                                disc2 = f"{disc_m.group(1)}%" if disc_m else '30%'
+                                img_el = card_container.query_selector('img')
+                                img2 = ''
+                                if img_el:
+                                    img2 = img_el.get_attribute('src') or img_el.get_attribute('data-src') or ''
+
+                                if not (price2 >= 500 and img2.startswith('http')):
+                                    continue
+
+                                # 쉐어링크 발급
+                                capture_lock[0] = 90000 + idx2
+                                captured_links.pop(90000 + idx2, None)
+                                try:
+                                    btn2.click(timeout=2000, force=True)
+                                except Exception:
+                                    pass
+                                page.wait_for_timeout(600)
+                                link2 = captured_links.get(90000 + idx2)
+                                if not link2 or 'toss.im/_m/' not in link2:
+                                    continue
+
+                                deal_obj2 = {
+                                    "name": title2,
+                                    "price": price2,
+                                    "discount_rate": disc2,
+                                    "thumbnail": img2,
+                                    "share_link": link2,
+                                    "section": "best_seller",
+                                    "priority": 2
+                                }
+                                harvested_deals.append(deal_obj2)
+                                print_log(f"  [tab:{tab_kw}] #{len(harvested_deals)} {title2[:28]} | {price2:,}원 ({disc2})")
+                            except Exception:
+                                pass
+                    except Exception as tab_err:
+                        print_log(f"  ⚠️ [{tab_kw}] 탭 순회 오류: {tab_err}")
 
             print_log("==========================================================")
             print_log(f"오늘만 이 가격 : {section_counts['today_price']}개 수집")
@@ -438,6 +565,7 @@ def harvest_sharelink_portal():
             print_log("==========================================================")
             print_log(f"총 {len(harvested_deals)}개 저장 완료")
             print_log("==========================================================")
+
 
         except Exception as e:
             print_log(f"❌ 수집 중 오류: {e}")
