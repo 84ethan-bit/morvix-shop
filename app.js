@@ -237,7 +237,8 @@ function renderUniversalProductCard(p, badgeHTML = '', extraCardStyle = '') {
     <a href="${tossLink}" target="_blank" rel="noopener noreferrer" class="product-card-v2" onclick="trackOutboundClick('${p.slug}')" style="${extraCardStyle}">
       <!-- 1. Pure 1:1 Image Box with Absolute Badge -->
       <div class="card-thumb-frame">
-        <img class="card-thumb-img" src="${p.thumbnail}" alt="${p.name}" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&auto=format&fit=crop&q=80';">
+        <img class="card-thumb-img" src="${p.thumbnail}" alt="${p.name}" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80';">
+
         ${badgeHTML}
       </div>
 
@@ -316,7 +317,7 @@ function renderProducts() {
   let filtered = activeProducts;
 
   if (currentCategory === 'timeattack') {
-    filtered = activeProducts.filter(p => parseDiscountNum(p.discount_rate) >= 40 || p.is_featured);
+    filtered = activeProducts.filter(p => p.section === 'today_price');
     if (title) title.textContent = '⏰ 오늘만 이 가격! 하루특가 전체보기';
   } else if (currentCategory === 'featured') {
     filtered = activeProducts.filter(p => p.is_featured);
@@ -325,7 +326,7 @@ function renderProducts() {
     filtered = activeProducts.filter(p => p.episode_id || p.episode_label);
     if (title) title.textContent = '🎬 릴스/쇼츠에서 본 바로 그 제품';
   } else if (currentCategory === 'best100') {
-    filtered = activeProducts.slice().sort((a, b) => ((b.analytics ? b.analytics.clicks_count : b.clicks_count) || 0) - ((a.analytics ? a.analytics.clicks_count : a.clicks_count) || 0));
+    filtered = activeProducts.filter(p => p.section === 'best_seller' || !p.section);
     if (title) title.textContent = '🏆 MORVIX 베스트 100 히트 라인업';
   } else if (currentCategory !== 'all') {
     filtered = activeProducts.filter(p => p.category === currentCategory);
@@ -334,6 +335,7 @@ function renderProducts() {
   } else {
     if (title) title.textContent = '🏆 지금 많이 팔리는 BEST';
   }
+
 
   // Apply Sorting
   if (currentSort === 'discount') {

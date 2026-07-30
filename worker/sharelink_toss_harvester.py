@@ -293,13 +293,29 @@ def harvest_sharelink_portal():
                         continue
                     seen_titles.add(title)
 
-                    img_url = card_container.evaluate("""el => {
-                        const img = el.querySelector('img');
-                        if (!img) return '';
-                        return img.currentSrc || img.src || img.getAttribute('data-src') || img.getAttribute('src') || '';
+                    img_url = card_container.evaluate(r"""el => {
+
+                        const imgs = [...el.querySelectorAll('img')];
+                        for (const img of imgs) {
+                            let src = img.currentSrc || img.src || img.getAttribute('data-src') || img.getAttribute('src') || img.getAttribute('srcset') || '';
+                            if (src.includes(' ')) src = src.split(' ')[0];
+                            if (src && src.startsWith('http') && !src.includes('placeholder') && !src.includes('DefaultDeal') && !src.includes('data:image')) {
+                                return src;
+                            }
+                        }
+                        const divs = [...el.querySelectorAll('div, span, a')];
+                        for (const d of divs) {
+                            const bg = window.getComputedStyle(d).backgroundImage;
+                            if (bg && bg.includes('url(')) {
+                                const match = bg.match(/url\(["']?(https?:\/\/[^"']+)["']?\)/);
+                                if (match && match[1]) return match[1];
+                            }
+                        }
+                        return '';
                     }""")
                     if ' ' in img_url:
                         img_url = img_url.split(' ')[0]
+
 
                     clean_price_raw = re.sub(r'개당\s*[\d,]+\s*원\s*수익', '', raw)
                     clean_price_raw = re.sub(r'[\d,]+\s*원\s*수익', '', clean_price_raw)
@@ -343,9 +359,41 @@ def harvest_sharelink_portal():
                         pass
                     page.wait_for_timeout(400)
 
+                    page.wait_for_timeout(500)
                     share_link = captured_links.get('latest')
+
+                    # 1. 모달/팝업 DOM 내 실시간 발급된 토스 쉐어링크 정밀 검사
                     if not share_link:
-                        share_link = f"https://toss.im/_m/AUTO{idx+1000}"
+                        try:
+                            modal_link = page.evaluate("""() => {
+                                const els = [...document.querySelectorAll('input, a, p, div, span')];
+                                for (const el of els) {
+                                    const val = el.value || el.href || el.innerText || '';
+                                    if (val.includes('toss.im/_m/') || val.includes('toss.im/m/')) {
+                                        const match = val.match(/(https:\\/\\/toss\\.im\\/(?:_m|m)\\/[A-Za-z0-9_-]+)/);
+                                        if (match) return match[1];
+                                    }
+                                }
+                                return null;
+                            }""")
+                            if modal_link:
+                                share_link = modal_link
+                        except Exception:
+                            pass
+
+                    # 모달 팝업 닫기 (이후 버튼 클릭 방해 해제)
+                    try:
+                        close_btn = page.locator("button:has-text('닫기'), [aria-label='close'], .modal-close, button:has-text('확인')")
+                        if close_btn.count() > 0:
+                            close_btn.first.click(timeout=1000)
+                    except Exception:
+                        pass
+
+                    # 🚨 100% 진짜 토스 쉐어링크가 발급되지 않은 경우 AUTO 가짜 생성 금지 및 즉시 차단
+                    if not share_link or "AUTO" in share_link or not ("toss.im/_m/" in share_link or "toss.im/m/" in share_link):
+                        print_log(f"🛑 [진짜 쉐어링크 미발급 차단] {title[:25]} ➔ 더미 생성 금지 및 수집 제외")
+                        continue
+
 
                     if sec in section_counts:
                         section_counts[sec] += 1
@@ -408,22 +456,17 @@ def update_db_with_deals(deals):
         thumb = d.get('thumbnail', '')
         share_link = d.get('share_link', '')
 
-        # ------------------------------------------------------------------
-        # 5대 무결성 검증 게이트 (Validation Gate Keeper - 100% Full Pass Fallback)
-        # ------------------------------------------------------------------
-        if not (thumb and thumb.startswith('http') and len(thumb) >= 12):
-            thumb = "https://resources-fe.toss.im/shop-partner/static/product/images/DefaultDeal.jpg"
-
-        is_valid_name = len(name) >= 3 and not re.match(r'^\d+(\.\d+)?\s*\(', name) # "4.7 (499)" 같은 평점 텍스트 오파싱 차단
+        is_valid_name = len(name) >= 3 and not re.match(r'^\d+(\.\d+)?\s*\(', name)
         is_valid_price = isinstance(price, int) and price >= 500
         is_valid_discount = bool(re.search(r'\d+[%％]', discount))
-        is_valid_thumb = bool(thumb and thumb.startswith('http') and len(thumb) >= 12) # 모든 유효 HTTP CDN 이미지 허용
+        is_valid_thumb = bool(thumb and thumb.startswith('http') and len(thumb) >= 15 and not 'DefaultDeal' in thumb and not 'placeholder' in thumb)
         is_valid_link = bool(share_link and share_link.startswith('https://toss.im/_m/'))
 
         if not (is_valid_name and is_valid_price and is_valid_discount and is_valid_thumb and is_valid_link):
             rejected_count += 1
             print_log(f"🛑 [검증 실패 차단] {name[:25]} (사유: Name:{is_valid_name}, Price:{is_valid_price}, Disc:{is_valid_discount}, Thumb:{is_valid_thumb}, Link:{is_valid_link})")
             continue
+
 
         # 중복 체크 (상품명 기준)
         if any(p.get('name') == name for p in existing):
