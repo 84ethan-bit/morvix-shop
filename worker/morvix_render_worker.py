@@ -534,12 +534,9 @@ def run():
     print("=" * 60)
     print(f"🚀 MORVIX RENDER CLOUD WORKER ONLINE — PORT {port}")
     print(f"📡 https://morvix-shop.onrender.com")
-    print(f"🤖 AUTO HARVEST LOOP: 30분마다 자동 수집 → Git Push")
-    print(f"🔐 POST /api/direct-login     (Playwright auto login)")
-    print(f"🍪 POST /api/inject-cookies   (manual cookie bridge)")
-    print(f"✅ GET  /api/verify-session   (check auth cookies)")
+    print(f"🤖 AUTO HARVEST LOOP: 1분마다 자동 수집 → Git Push")
     print("=" * 60)
-    httpd = HTTPServer(('', port), MorvixBridgeHandler)
+    httpd = HTTPServer(('0.0.0.0', port), MorvixBridgeHandler)
     httpd.serve_forever()
 
 if __name__ == "__main__":
