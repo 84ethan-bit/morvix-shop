@@ -1,0 +1,13 @@
+services:
+  - type: worker
+    name: morvix-shop
+    runtime: python
+    region: virginia
+    plan: free
+    buildCommand: pip install -r requirements.txt && python -m playwright install chromium && python -m playwright install-deps chromium
+    startCommand: python worker/morvix_render_worker.py
+    envVars:
+      - key: PLAYWRIGHT_BROWSERS_PATH
+        value: /opt/render/project/.playwright-cache
+      - key: PYTHONUNBUFFERED
+        value: "1"

@@ -4,8 +4,13 @@ import sys
 import time
 import subprocess
 import threading
+import re
 from datetime import datetime
 from http.server import HTTPServer, BaseHTTPRequestHandler
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DB_PATH  = os.path.join(BASE_DIR, "morvix_shop_db.json")
+HARVEST_INTERVAL = 30 * 60  # 30분
 
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
@@ -509,11 +514,55 @@ class MorvixBridgeHandler(BaseHTTPRequestHandler):
             self._respond(404, {"error": "Not found"})
 
 
+# ─────────────────────────────────────────────────
+# 자율 수집 루프 (30분마다 토스 수집 → DB 갱신 → Git Push)
+# ─────────────────────────────────────────────────
+def git_push_db():
+    try:
+        subprocess.run(["git", "config", "user.name",  "MORVIX Render Server"], cwd=BASE_DIR)
+        subprocess.run(["git", "config", "user.email", "render@morvix.io"],      cwd=BASE_DIR)
+        subprocess.run(["git", "add", "morvix_shop_db.json"],                    cwd=BASE_DIR)
+        diff = subprocess.run(["git", "diff", "--staged", "--quiet"],            cwd=BASE_DIR)
+        if diff.returncode != 0:
+            now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
+            subprocess.run(["git", "commit", "-m", f"chore(render): Auto-ingest Toss deals @ {now_str}"], cwd=BASE_DIR)
+            subprocess.run(["git", "push", "origin", "main"], cwd=BASE_DIR)
+            print(f"[{now_str}] ✅ Git Push 완료 → Vercel 자동 배포 시작", flush=True)
+        else:
+            print(f"[{datetime.now().strftime('%H:%M:%S')}] ℹ️ 변경사항 없음 - Push 생략", flush=True)
+    except Exception as e:
+        print(f"❌ Git Push 오류: {e}", flush=True)
+
+def autonomous_harvest_loop():
+    """30분마다 토스 수집 → DB 갱신 → Git Push 자동 루프"""
+    print("🤖 [AUTO LOOP] 자율 수집 루프 시작 (30분 간격)", flush=True)
+    while True:
+        try:
+            print(f"\n[{datetime.now().strftime('%H:%M:%S')}] 🕐 토스 파트너 수집 시작...", flush=True)
+            result = subprocess.run(
+                [sys.executable, os.path.join(BASE_DIR, "worker", "sharelink_toss_harvester.py")],
+                capture_output=True, text=True, cwd=BASE_DIR, timeout=600
+            )
+            if result.returncode == 0:
+                print(f"[{datetime.now().strftime('%H:%M:%S')}] ✅ 수집 완료", flush=True)
+                git_push_db()
+            else:
+                print(f"❌ 수집기 오류:\n{result.stderr[-500:]}", flush=True)
+        except Exception as e:
+            print(f"❌ 자율 루프 예외: {e}", flush=True)
+        print(f"😴 {HARVEST_INTERVAL//60}분 후 재가동...", flush=True)
+        time.sleep(HARVEST_INTERVAL)
+
 def run():
-    port = int(os.getenv("PORT", "5000"))
+    # 자율 수집 루프 백그라운드 스레드로 즉시 시작
+    harvest_thread = threading.Thread(target=autonomous_harvest_loop, daemon=True)
+    harvest_thread.start()
+
+    port = int(os.getenv("PORT", "10000"))
     print("=" * 60)
     print(f"🚀 MORVIX RENDER CLOUD WORKER ONLINE — PORT {port}")
     print(f"📡 https://morvix-shop.onrender.com")
+    print(f"🤖 AUTO HARVEST LOOP: 30분마다 자동 수집 → Git Push")
     print(f"🔐 POST /api/direct-login     (Playwright auto login)")
     print(f"🍪 POST /api/inject-cookies   (manual cookie bridge)")
     print(f"✅ GET  /api/verify-session   (check auth cookies)")
