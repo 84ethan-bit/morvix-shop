@@ -1,38 +1,21 @@
-name: 🌐 365-Day Unattended Toss Harvester Daemon
+# 🌐 MORVIX SHOP - Pure Repository & Static Deployment Workflow
+# (GitHub Actions does NOT crawl Toss. Crawling is strictly 100% isolated to the External Server.)
+
+name: 🌐 Static Deployment Listener
 
 on:
-  schedule:
-    # Runs every 30 minutes in the cloud 24/7
-    - cron: '*/30 * * * *'
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
-  run-harvester:
+  static-deploy-check:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: Install Playwright & Dependencies
+      - name: Verify Repository Integrity
         run: |
-          pip install playwright requests
-          playwright install --with-deps chromium
-
-      - name: Execute Standalone Toss Harvester Core
-        run: |
-          python worker/sharelink_toss_harvester.py
-
-      - name: Commit & Push Updated DB to Vercel
-        run: |
-          git config --global user.name "MORVIX External Server Bot"
-          git config --global user.email "bot@morvix.io"
-          git add morvix_shop_db.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(cron): Auto-ingest latest Toss deals from external server" && git push)
+          echo "✅ GitHub Repository received commit from External Server."
+          echo "✅ Vercel static deployment will auto-trigger via GitHub webhook."
