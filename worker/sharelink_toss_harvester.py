@@ -394,7 +394,8 @@ def update_db_with_deals(deals):
         with open(DB_PATH, "r", encoding="utf-8") as f:
             db = json.load(f)
 
-    existing = db.get("products", [])
+    # 2026-07-31 수복 이전 구형 엇갈린 데이터 100% 자동 소탕 필터
+    existing = [p for p in db.get("products", []) if p.get("added_date", "") >= "2026-07-31T00:00:00"]
     now = datetime.now()
 
     count_added = 0
