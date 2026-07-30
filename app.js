@@ -263,7 +263,7 @@ function renderProducts() {
 
   if (count) count.textContent = `총 ${filtered.length}개 핫딜 노출 중`;
 
-  // SECTION 1: Time Attack Top 3 Deals (Matching Approved Bottom Section Font & Button Layout)
+  // SECTION 1: Time Attack Top 3 Deals
   if (timeAttackGrid) {
     const timeAttackDeals = activeProducts.slice().sort((a, b) => {
       const da = parseInt(a.discount_rate) || 0;
@@ -277,7 +277,7 @@ function renderProducts() {
       const tossLink = getTossShareLink(p);
 
       return `
-        <a href="${tossLink}" target="_blank" rel="noopener noreferrer" class="product-card-v2" onclick="trackOutboundClick('${p.slug}')" style="border: 1.5px solid #FF4757; background: #ffffff;">
+        <a href="${tossLink}" target="_blank" rel="noopener noreferrer" class="product-card-v2" style="border: 1.5px solid #FF4757; background: #ffffff;">
           <div class="card-thumb-frame">
             <img class="card-thumb-img" src="${p.thumbnail}" alt="${p.name}" referrerpolicy="no-referrer">
             <span class="badge-minimal" style="background: #FF4757; color: #fff;">⏰ 하루특가</span>
@@ -285,7 +285,7 @@ function renderProducts() {
           <div class="card-info-wrap">
             <h3 class="card-item-title">${p.name}</h3>
             <div class="card-price-row">
-              <span class="card-discount-text">${p.discount_rate || '30%'} 특가</span>
+              <span class="card-discount-text">${p.discount_rate || '30%'}</span>
               <span class="card-price-text">${priceStr}</span>
               ${origPriceStr ? `<span class="card-orig-price">${origPriceStr}</span>` : ''}
             </div>
@@ -298,7 +298,7 @@ function renderProducts() {
     }).join('');
   }
 
-  // SECTION 2: Best Ranking Grid with Gold/Silver/Bronze Rank Badges (Matching Approved Bottom Section Font & Button Layout)
+  // SECTION 2: Best Ranking Grid
   if (filtered.length === 0) {
     grid.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
@@ -326,7 +326,6 @@ function renderProducts() {
 
     return `
       <a href="${tossLink}" target="_blank" rel="noopener noreferrer" class="product-card-v2" onclick="trackOutboundClick('${p.slug}')">
-        <!-- 1. Pure Image Frame with Rank Badge -->
         <div class="card-thumb-frame">
           <img class="card-thumb-img" src="${p.thumbnail}" alt="${p.name}" referrerpolicy="no-referrer">
           ${rankBadgeHTML}
