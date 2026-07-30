@@ -24,9 +24,11 @@ print(f"📦 PLAYWRIGHT_BROWSERS_PATH = {os.environ.get('PLAYWRIGHT_BROWSERS_PAT
 
 
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-SESSION_DIR = os.path.join(BASE_DIR, "sessions")
+WORKER_DIR = os.path.dirname(os.path.abspath(__file__))
+SESSION_DIR = os.path.join(WORKER_DIR, "sessions")
 os.makedirs(SESSION_DIR, exist_ok=True)
+
+
 
 NAVER_SESSION_PATH = os.path.join(SESSION_DIR, "naver_storageState.json")
 COUPANG_SESSION_PATH = os.path.join(SESSION_DIR, "coupang_storageState.json")
