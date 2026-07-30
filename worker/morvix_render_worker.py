@@ -525,11 +525,17 @@ def autonomous_harvest_loop():
                 [sys.executable, os.path.join(BASE_DIR, "worker", "sharelink_toss_harvester.py")],
                 capture_output=True, text=True, cwd=BASE_DIR, timeout=600
             )
+            # 수집기 전체 출력을 로그에 표시
+            if result.stdout:
+                print(f"[HARVESTER STDOUT]\n{result.stdout[-1000:]}", flush=True)
+            if result.stderr:
+                print(f"[HARVESTER STDERR]\n{result.stderr[-500:]}", flush=True)
+
             if result.returncode == 0:
                 print(f"[{datetime.now().strftime('%H:%M:%S')}] ✅ 수집 완료", flush=True)
                 git_push_db()
             else:
-                print(f"❌ 수집기 오류:\n{result.stderr[-500:]}", flush=True)
+                print(f"❌ 수집기 returncode={result.returncode}", flush=True)
         except Exception as e:
             print(f"❌ 자율 루프 예외: {e}", flush=True)
         print(f"😴 {HARVEST_INTERVAL//60}분 후 재가동...", flush=True)
