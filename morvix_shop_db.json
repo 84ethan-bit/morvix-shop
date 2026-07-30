@@ -8,15 +8,15 @@
       "original_price": 24900,
       "discount_rate": "40%",
       "thumbnail": "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=800&auto=format&fit=crop&q=80",
-      "toss_link": "https://toss.im/_m/FvwL8w2",
-      "short_url": "https://toss.im/_m/FvwL8w2",
+      "toss_link": "https://toss.im",
+      "short_url": "https://toss.im",
       "affiliate_links": [
-        "https://toss.im/_m/FvwL8w2"
+        "https://toss.im"
       ],
       "category": "kitchen",
       "status": "ACTIVE",
       "is_featured": true,
-      "expiry_date": "2026-07-31T14:56:08.751545"
+      "expiry_date": "2026-07-31T15:06:45.217836"
     },
     {
       "id": "toss_namul_002",
@@ -26,15 +26,15 @@
       "original_price": 19800,
       "discount_rate": "35%",
       "thumbnail": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80",
-      "toss_link": "https://toss.im/_m/a8B73cd",
-      "short_url": "https://toss.im/_m/a8B73cd",
+      "toss_link": "https://toss.im",
+      "short_url": "https://toss.im",
       "affiliate_links": [
-        "https://toss.im/_m/a8B73cd"
+        "https://toss.im"
       ],
       "category": "kitchen",
       "status": "ACTIVE",
       "is_featured": true,
-      "expiry_date": "2026-07-31T14:56:08.751545"
+      "expiry_date": "2026-07-31T15:06:45.217836"
     },
     {
       "id": "toss_madeleine_003",
@@ -44,15 +44,15 @@
       "original_price": 16000,
       "discount_rate": "38%",
       "thumbnail": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&auto=format&fit=crop&q=80",
-      "toss_link": "https://toss.im/_m/k9X2m7Q",
-      "short_url": "https://toss.im/_m/k9X2m7Q",
+      "toss_link": "https://toss.im",
+      "short_url": "https://toss.im",
       "affiliate_links": [
-        "https://toss.im/_m/k9X2m7Q"
+        "https://toss.im"
       ],
       "category": "kitchen",
       "status": "ACTIVE",
       "is_featured": true,
-      "expiry_date": "2026-07-31T14:56:08.751545"
+      "expiry_date": "2026-07-31T15:06:45.217836"
     },
     {
       "id": "toss_vitamin_004",
@@ -62,10 +62,10 @@
       "original_price": 20115,
       "discount_rate": "55%",
       "thumbnail": "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&auto=format&fit=crop&q=80",
-      "toss_link": "https://toss.im/_m/P4n89vW",
-      "short_url": "https://toss.im/_m/P4n89vW",
+      "toss_link": "https://toss.im",
+      "short_url": "https://toss.im",
       "affiliate_links": [
-        "https://toss.im/_m/P4n89vW"
+        "https://toss.im"
       ],
       "category": "beauty",
       "status": "ACTIVE",
@@ -79,10 +79,10 @@
       "original_price": 39800,
       "discount_rate": "50%",
       "thumbnail": "https://images.unsplash.com/photo-1503602642458-232111445657?w=800&auto=format&fit=crop&q=80",
-      "toss_link": "https://toss.im/_m/L1m34zR",
-      "short_url": "https://toss.im/_m/L1m34zR",
+      "toss_link": "https://toss.im",
+      "short_url": "https://toss.im",
       "affiliate_links": [
-        "https://toss.im/_m/L1m34zR"
+        "https://toss.im"
       ],
       "category": "it",
       "status": "ACTIVE",
@@ -96,10 +96,10 @@
       "original_price": 29800,
       "discount_rate": "50%",
       "thumbnail": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&auto=format&fit=crop&q=80",
-      "toss_link": "https://toss.im/_m/J7k92tY",
-      "short_url": "https://toss.im/_m/J7k92tY",
+      "toss_link": "https://toss.im",
+      "short_url": "https://toss.im",
       "affiliate_links": [
-        "https://toss.im/_m/J7k92tY"
+        "https://toss.im"
       ],
       "category": "fashion",
       "status": "ACTIVE",
@@ -113,10 +113,10 @@
       "original_price": 45000,
       "discount_rate": "51%",
       "thumbnail": "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&auto=format&fit=crop&q=80",
-      "toss_link": "https://toss.im/_m/W8q15xM",
-      "short_url": "https://toss.im/_m/W8q15xM",
+      "toss_link": "https://toss.im",
+      "short_url": "https://toss.im",
       "affiliate_links": [
-        "https://toss.im/_m/W8q15xM"
+        "https://toss.im"
       ],
       "category": "life",
       "status": "ACTIVE",
@@ -168,6 +168,6 @@
   "stats": {
     "total_products": 7,
     "active_deals": 7,
-    "last_updated": "2026-07-30T14:56:08.751545"
+    "last_updated": "2026-07-30T15:06:45.217836"
   }
 }

@@ -259,16 +259,26 @@ function loadMoreProducts() {
   renderProducts();
 }
 
-// Helper function to extract exact Toss ShareLink (toss.im/_m/XXXX)
+// Outbound click logging helper to prevent JS errors
+function trackOutboundClick(slug) {
+  try {
+    logRealClickEvent(slug, 'toss');
+  } catch (e) {
+    console.warn("trackOutboundClick warning:", e);
+  }
+}
+window.trackOutboundClick = trackOutboundClick;
+
+// Helper function to extract exact Toss ShareLink (toss.im/_m/XXXX or https://toss.im)
 function getTossShareLink(p) {
   if (!p) return 'https://toss.im';
-  if (p.toss_link && p.toss_link.includes('toss.im/_m/')) return p.toss_link;
-  if (p.short_url && p.short_url.includes('toss.im/_m/')) return p.short_url;
+  if (p.toss_link && p.toss_link.startsWith('http')) return p.toss_link;
+  if (p.short_url && p.short_url.startsWith('http')) return p.short_url;
   if (Array.isArray(p.affiliate_links) && p.affiliate_links.length > 0) {
-    const found = p.affiliate_links.find(l => typeof l === 'string' ? l.includes('toss.im/_m/') : (l && l.url && l.url.includes('toss.im/_m/')));
+    const found = p.affiliate_links.find(l => typeof l === 'string' ? l.startsWith('http') : (l && l.url && l.url.startsWith('http')));
     if (found) return typeof found === 'string' ? found : found.url;
     const first = p.affiliate_links[0];
-    return typeof first === 'string' ? first : (first ? first.url : 'https://toss.im');
+    return typeof first === 'string' ? first : (first && first.url ? first.url : 'https://toss.im');
   }
   return p.toss_link || 'https://toss.im';
 }
