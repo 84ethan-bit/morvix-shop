@@ -250,7 +250,7 @@ function renderProducts() {
 
   if (count) count.textContent = `총 ${filtered.length}개 핫딜 노출 중`;
 
-  // SECTION 1: Time Attack Top 3 Deals (Highest Discount Rate - Compact Swiper Cards)
+  // SECTION 1: Time Attack Top 3 Deals (Direct Outbound Toss Share Links)
   if (timeAttackGrid) {
     const timeAttackDeals = activeProducts.slice().sort((a, b) => {
       const da = parseInt(a.discount_rate) || 0;
@@ -261,9 +261,10 @@ function renderProducts() {
     timeAttackGrid.innerHTML = timeAttackDeals.map(p => {
       const priceStr = p.price ? p.price.toLocaleString() + '원' : '특가 확인';
       const origPriceStr = p.original_price ? p.original_price.toLocaleString() + '원' : '';
+      const tossLink = p.toss_link || 'https://toss.im';
 
       return `
-        <div class="product-card-v2" onclick="openProductDetail('${p.slug}')" style="border: 1.5px solid #FF4757; background: #ffffff;">
+        <a href="${tossLink}" target="_blank" rel="noopener noreferrer" class="product-card-v2" onclick="trackOutboundClick('${p.slug}')" style="border: 1.5px solid #FF4757; background: #ffffff;">
           <div class="card-thumb-frame">
             <img class="card-thumb-img" src="${p.thumbnail}" alt="${p.name}" referrerpolicy="no-referrer">
             <span class="badge-minimal" style="background: #FF4757; color: #fff;">⏰ 하루특가</span>
@@ -276,12 +277,12 @@ function renderProducts() {
               ${origPriceStr ? `<span class="card-orig-price">${origPriceStr}</span>` : ''}
             </div>
           </div>
-        </div>
+        </a>
       `;
     }).join('');
   }
 
-  // SECTION 2: Best Ranking Grid with Gold/Silver/Bronze Rank Badges (Compact Cards)
+  // SECTION 2: Best Ranking Grid with Gold/Silver/Bronze Rank Badges (Direct Outbound Toss Share Links)
   if (filtered.length === 0) {
     grid.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
@@ -299,6 +300,7 @@ function renderProducts() {
   grid.innerHTML = filtered.map((p, idx) => {
     const priceStr = p.price ? p.price.toLocaleString() + '원' : '특가 확인';
     const origPriceStr = p.original_price ? p.original_price.toLocaleString() + '원' : '';
+    const tossLink = p.toss_link || 'https://toss.im';
 
     let rankBadgeHTML = '';
     if (idx === 0) rankBadgeHTML = '<span class="rank-badge-gold">🥇 BEST 1위</span>';
