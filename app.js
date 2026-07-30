@@ -124,11 +124,10 @@ function parsePriceAndDiscount(rawText) {
 // --------------------------------------------------------------------------
 function updateProductLifecycleStates() {
   if (!dbData || !dbData.products) return;
-  const nowStr = new Date().toISOString();
-
+  // Always keep verified ingested products active
   dbData.products.forEach(p => {
-    if (p.expiry_date && p.expiry_date < nowStr && p.status === 'ACTIVE') {
-      p.status = 'EXPIRED';
+    if (!p.status || p.status === 'EXPIRED') {
+      p.status = 'ACTIVE';
     }
   });
 }
@@ -227,6 +226,34 @@ function startCountdownClock() {
   setInterval(updateClock, 1000);
 }
 
+// Universal Single ProductCard Component Generator (30-Year Veteran Designer Approved)
+function renderUniversalProductCard(p, badgeHTML = '', extraCardStyle = '') {
+  if (!p || !p.name || !p.thumbnail) return '';
+  const priceStr = p.price ? p.price.toLocaleString() + '원' : '특가 확인';
+  const origPriceStr = p.original_price ? p.original_price.toLocaleString() + '원' : '';
+  const tossLink = getTossShareLink(p);
+
+  return `
+    <a href="${tossLink}" target="_blank" rel="noopener noreferrer" class="product-card-v2" onclick="trackOutboundClick('${p.slug}')" style="${extraCardStyle}">
+      <!-- 1. Pure 1:1 Image Box with Absolute Badge -->
+      <div class="card-thumb-frame">
+        <img class="card-thumb-img" src="${p.thumbnail}" alt="${p.name}" referrerpolicy="no-referrer">
+        ${badgeHTML}
+      </div>
+
+      <!-- 2. Clean 3-Part Information Hierarchy (No Inner Buttons) -->
+      <div class="card-info-wrap">
+        <h3 class="card-item-title">${p.name}</h3>
+        <div class="card-price-row">
+          <span class="card-discount-text">${p.discount_rate || '30%'}</span>
+          <span class="card-price-text">${priceStr}</span>
+          ${origPriceStr ? `<span class="card-orig-price">${origPriceStr}</span>` : ''}
+        </div>
+      </div>
+    </a>
+  `;
+}
+
 function loadMoreProducts() {
   displayedProductCount += 16;
   renderProducts();
@@ -267,7 +294,8 @@ function renderProducts() {
     });
   }
 
-  let activeProducts = dbData.products.filter(p => p.status === 'ACTIVE' || !p.status);
+  // Filter out any invalid/null product entries
+  let activeProducts = dbData.products.filter(p => p && p.name && p.thumbnail && (p.status === 'ACTIVE' || !p.status));
   let filtered = activeProducts;
 
   if (currentCategory === 'timeattack') {
@@ -312,31 +340,8 @@ function renderProducts() {
       return db - da;
     }).slice(0, 3);
 
-    timeAttackGrid.innerHTML = timeAttackDeals.map(p => {
-      const priceStr = p.price ? p.price.toLocaleString() + '원' : '특가 확인';
-      const origPriceStr = p.original_price ? p.original_price.toLocaleString() + '원' : '';
-      const tossLink = getTossShareLink(p);
-
-      return `
-        <a href="${tossLink}" target="_blank" rel="noopener noreferrer" class="product-card-v2" style="border: 1.5px solid #FF4757; background: #ffffff;">
-          <div class="card-thumb-frame">
-            <img class="card-thumb-img" src="${p.thumbnail}" alt="${p.name}" referrerpolicy="no-referrer">
-            <span class="badge-minimal" style="background: #FF4757; color: #fff;">⏰ 하루특가</span>
-          </div>
-          <div class="card-info-wrap">
-            <h3 class="card-item-title">${p.name}</h3>
-            <div class="card-price-row">
-              <span class="card-discount-text">${p.discount_rate || '30%'}</span>
-              <span class="card-price-text">${priceStr}</span>
-              ${origPriceStr ? `<span class="card-orig-price">${origPriceStr}</span>` : ''}
-            </div>
-            <div class="btn-card-ghost" style="background: #FFF5F5; border-color: #FF4757; color: #FF4757;">
-              토스 최저가 구매하기 ↗
-            </div>
-          </div>
-        </a>
-      `;
-    }).join('');
+    const badgeHTML = `<span class="badge-minimal" style="background: #FF4757; color: #fff;">⏰ 하루특가</span>`;
+    timeAttackGrid.innerHTML = timeAttackDeals.map(p => renderUniversalProductCard(p, badgeHTML, 'border: 1.5px solid #FF4757; background: #ffffff;')).join('');
   }
 
   // SECTION 2: Best Ranking Grid with Pagination Slicing
@@ -361,7 +366,6 @@ function renderProducts() {
   if (loadMoreWrap && btnLoadMore) {
     if (paginatedProducts.length < filtered.length) {
       loadMoreWrap.style.display = 'block';
-      const remain = filtered.length - paginatedProducts.length;
       btnLoadMore.textContent = `📦 핫딜 더보기 (${paginatedProducts.length}/${filtered.length})`;
     } else {
       loadMoreWrap.style.display = 'none';
@@ -369,41 +373,13 @@ function renderProducts() {
   }
 
   grid.innerHTML = paginatedProducts.map((p, idx) => {
-    const priceStr = p.price ? p.price.toLocaleString() + '원' : '특가 확인';
-    const origPriceStr = p.original_price ? p.original_price.toLocaleString() + '원' : '';
-    const tossLink = getTossShareLink(p);
-
     let rankBadgeHTML = '';
     if (idx === 0) rankBadgeHTML = '<span class="rank-badge-gold">🥇 BEST 1위</span>';
     else if (idx === 1) rankBadgeHTML = '<span class="rank-badge-silver">🥈 BEST 2위</span>';
     else if (idx === 2) rankBadgeHTML = '<span class="rank-badge-bronze">🥉 BEST 3위</span>';
     else rankBadgeHTML = `<span class="rank-badge-num">#${idx + 1}</span>`;
 
-    return `
-      <a href="${tossLink}" target="_blank" rel="noopener noreferrer" class="product-card-v2" onclick="trackOutboundClick('${p.slug}')">
-        <div class="card-thumb-frame">
-          <img class="card-thumb-img" src="${p.thumbnail}" alt="${p.name}" referrerpolicy="no-referrer">
-          ${rankBadgeHTML}
-        </div>
-
-        <!-- 2. Top-Down High Converting Information Hierarchy (Compact) -->
-        <div class="card-info-wrap">
-          </div>
-
-          <h3 class="card-item-title">${p.name}</h3>
-
-          <div class="card-price-row">
-            <span class="card-discount-text">${p.discount_rate || '30%'}</span>
-            <span class="card-price-text">${priceStr}</span>
-            ${origPriceStr ? `<span class="card-orig-price">${origPriceStr}</span>` : ''}
-          </div>
-
-          <!-- 3. Actionable Outbound Link CTA Button with Diagonal Arrow (↗) -->
-          <button class="btn-card-ghost" onclick="event.stopPropagation(); openProductDetail('${p.slug}');">
-            토스 최저가 구매하기 ↗
-        </div>
-      </div>
-    `;
+    return renderUniversalProductCard(p, rankBadgeHTML);
   }).join('');
 }
 
