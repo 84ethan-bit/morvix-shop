@@ -1,6 +1,8 @@
-# Ignore Python worker scripts and temporary files from Vercel static build
+# Ignore Python worker scripts, backups, scratch files from Vercel static build
 worker/
+backups/
 scratch/
 *.py
+requirements.txt
 .github/
 README.md
