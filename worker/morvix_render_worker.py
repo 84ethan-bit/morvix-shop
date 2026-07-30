@@ -556,7 +556,9 @@ def git_push_db():
         else:
             subprocess.run(["git", "remote", "set-url", "origin", repo_url], cwd=BASE_DIR)
 
-        subprocess.run(["git", "add", "morvix_shop_db.json"], cwd=BASE_DIR)
+        # DB 및 승인된 세션 파일(toss_sharelink_session.json) 동시 Git 스테이징 ➔ Render 재부팅 시에도 2FA 세션 영구 보존
+        subprocess.run(["git", "add", "morvix_shop_db.json", "scratch/toss_sharelink_session.json"], cwd=BASE_DIR)
+
         diff = subprocess.run(["git", "diff", "--staged", "--quiet"], cwd=BASE_DIR)
         if diff.returncode != 0:
             now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
