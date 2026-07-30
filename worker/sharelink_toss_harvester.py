@@ -132,6 +132,23 @@ def harvest_sharelink_portal():
                 pass
             page.wait_for_timeout(2000)
 
+            # ── 진단: 실제 버튼 목록 및 스크린샷 ──
+            try:
+                screenshot_path = os.path.join(BASE_DIR, "scratch", "debug_screenshot.png")
+                page.screenshot(path=screenshot_path, full_page=True)
+                print_log(f"📸 스크린샷 저장: {screenshot_path}")
+            except Exception as e:
+                print_log(f"스크린샷 실패: {e}")
+
+            try:
+                all_buttons = page.evaluate("""() => {
+                    return [...document.querySelectorAll('button')].map(b => b.innerText.trim()).filter(t => t.length > 0).slice(0, 20);
+                }""")
+                print_log(f"🔍 페이지 내 버튼 목록 (최대20): {all_buttons}")
+            except Exception as e:
+                print_log(f"버튼 목록 조회 실패: {e}")
+            # ── 진단 끝 ──
+
             # 핫딜 카드 파싱 (네비게이션 오류 시 재시도)
             cards_data = []
             for attempt in range(3):
