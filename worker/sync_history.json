@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-07-30T08:22:52.768727",
+    "status": "SUCCESS",
+    "count": 9,
+    "success_rate": "100.0%",
+    "log": "[Process: PROCESS_SUCCESS | Harvest: HARVEST_SUCCESS] Master DB 9개 상품 동기화 스캔 완료",
+    "duration": "0.0초",
+    "error_details": []
+  },
+  {
     "timestamp": "2026-07-30T02:09:55.347722",
     "status": "PARTIAL_SHIELD",
     "count": 9,
