@@ -98,14 +98,13 @@ def harvest_sharelink_portal():
             page.goto("https://sharelink.toss.im/home", wait_until="networkidle", timeout=20000)
             page.wait_for_timeout(3000)
 
-            # Scroll down to load all deals
-            page.evaluate("window.scrollTo(0, document.body.scrollHeight / 2)")
-            page.wait_for_timeout(1500)
+            # Scroll down completely to trigger lazy-loaded images
+            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            page.wait_for_timeout(2000)
 
             # 핫딜 카드 및 원본 판매 섹션(오늘만 이 가격, 많이 팔리는 베스트 등) 파싱
             cards_data = page.evaluate("""() => {
                 const cards = [];
-                // [링크 발급] 버튼이 존재하는 상품 카드들 탐색
                 const buttons = [...document.querySelectorAll('button')].filter(b => b.innerText && b.innerText.includes('링크 발급'));
 
                 buttons.forEach((btn, idx) => {
@@ -115,7 +114,6 @@ def harvest_sharelink_portal():
                     }
                     if (!card) card = btn.parentElement;
 
-                    // 원본 판매 섹션 헤딩 탐색
                     let sectionName = "best_seller";
                     let priority = 2;
                     let parent = card;
@@ -139,7 +137,8 @@ def harvest_sharelink_portal():
 
                     const text = card ? card.innerText : '';
                     const img = card ? card.querySelector('img') : null;
-                    const imgUrl = img ? (img.src || img.getAttribute('data-src') || '') : '';
+                    let imgUrl = img ? (img.src || img.getAttribute('data-src') || img.getAttribute('srcset') || '') : '';
+                    if (imgUrl.includes(' ')) imgUrl = imgUrl.split(' ')[0];
 
                     cards.push({
                         idx: idx,
