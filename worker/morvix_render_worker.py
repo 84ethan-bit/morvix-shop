@@ -646,22 +646,24 @@ def restore_toss_session():
     os.makedirs(session_dir, exist_ok=True)
     session_path = os.path.join(session_dir, "toss_sharelink_session.json")
 
+    # 1. 디스크에 승인 완료된 최신 세션 파일이 이미 존재하면 환경변수 덮어쓰기 금지!
+    if os.path.exists(session_path) and os.path.getsize(session_path) > 100:
+        print(f"✅ 2FA 승인 완료된 최신 세션 파일 우선 사용: {session_path}", flush=True)
+        return
+
+    # 2. 파일이 없을 때만 환경변수 TOSS_SESSION_B64 초기 적용
     b64 = os.environ.get("TOSS_SESSION_B64", "").strip()
     if b64:
         try:
             import base64
             decoded = base64.b64decode(b64.encode("utf-8")).decode("utf-8")
-            # JSON 파싱 검증
             parsed = json.loads(decoded)
             with open(session_path, "w", encoding="utf-8") as f:
                 json.dump(parsed, f, ensure_ascii=False, indent=2)
-            print(f"🔑 [Render Env] TOSS_SESSION_B64 최신 세션 적용 완료: {session_path} (쿠키 {len(parsed.get('cookies',[]))}개)", flush=True)
+            print(f"🔑 [Render Env] TOSS_SESSION_B64 초기 세션 적용: {session_path} (쿠키 {len(parsed.get('cookies',[]))}개)", flush=True)
             return
         except Exception as e:
             print(f"❌ TOSS_SESSION_B64 디코딩 실패: {e}", flush=True)
-
-    if os.path.exists(session_path) and os.path.getsize(session_path) > 100:
-        print(f"✅ 레포지토리 기본 세션 파일 사용: {session_path}", flush=True)
     else:
         print("⚠️ 세션 파일 및 환경변수 없음 - 비로그인 수집 시도", flush=True)
 
