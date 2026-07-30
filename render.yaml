@@ -4,10 +4,8 @@ services:
     runtime: python
     region: virginia
     plan: free
-    buildCommand: pip install --upgrade pip setuptools wheel && pip install playwright && python -m playwright install --with-deps chromium
+    buildCommand: pip install -r requirements.txt && python -m playwright install chromium
     startCommand: python worker/morvix_render_worker.py
     envVars:
-      - key: PLAYWRIGHT_BROWSERS_PATH
-        value: /opt/render/project/src/.playwright-cache
       - key: PYTHONUNBUFFERED
         value: "1"
