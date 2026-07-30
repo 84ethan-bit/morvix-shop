@@ -192,13 +192,18 @@ def harvest_sharelink_portal():
                         with open(SESSION_PATH, "w", encoding="utf-8") as f:
                             json.dump(storage, f, ensure_ascii=False, indent=2)
 
-                        # DOM 기반 최종 진입 성공 검증 (링크 발급 버튼 존재 확인)
-                        is_auth_success = page.locator("button:has-text('링크 발급')").count() > 0 or page.locator("text=링크 발급").count() > 0
-                        print_log(f"🎯 로그인 성공 여부 (DOM '링크 발급' 검증): {is_auth_success}")
                         if is_auth_success:
                             print_log("🎉 [자동 로그인 성공] 실시간 핫딜 포털 진입 완료!")
                         else:
                             print_log("🚨 [토스 2FA 본인인증 요구 감지] 스마트폰 토스 앱에서 '로그인 확인' 푸시 알림 승인을 대기합니다 (30초 대기)...")
+                            try:
+                                if page.locator("button:has-text('알림 다시 받기')").count() > 0:
+                                    page.click("button:has-text('알림 다시 받기')")
+                                    print_log("📲 [푸시 알림 재전송 클릭 완료] 대표님 스마트폰 토스 앱으로 '로그인 확인' 알림이 즉시 발송되었습니다!")
+                            except Exception as push_err:
+                                print_log(f"알림 클릭 스킵: {push_err}")
+
+
                         try:
                             # 30초 동안 토스 앱 승인 대기
                             page.wait_for_selector("button:has-text('링크 발급')", timeout=30000)
@@ -208,6 +213,7 @@ def harvest_sharelink_portal():
                                 json.dump(storage, f, ensure_ascii=False, indent=2)
                         except Exception:
                             print_log("⚠️ [2FA 타임아웃] 스마트폰 앱 승인이 지연되었습니다. 다음 루프에서 재시도합니다.")
+
 
                     except Exception as login_err:
                         print_log(f"❌ [자동 로그인 실패]: {login_err}")
