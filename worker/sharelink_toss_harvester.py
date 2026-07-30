@@ -60,13 +60,19 @@ def harvest_sharelink_portal():
     print_log("🚀 [TOSS SHARELINK HARVESTER] 수집 프로세스 가동")
 
     use_session = os.path.exists(SESSION_PATH)
+    print_log(f"🔑 세션 파일 존재: {use_session} → {SESSION_PATH}")
     if use_session:
         print_log(f"🔑 저장된 세션 파일 적용: {SESSION_PATH}")
+    else:
+        print_log("⚠️ 세션 파일 없음 - 비로그인 상태로 접속 시도")
 
     harvested_deals = []
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(
+            headless=True,
+            args=["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"]
+        )
         ctx_opts = {
             "viewport": {"width": 1280, "height": 900},
             "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
@@ -101,8 +107,14 @@ def harvest_sharelink_portal():
 
         try:
             print_log("📡 https://sharelink.toss.im/home 접속 중...")
-            page.goto("https://sharelink.toss.im/home", wait_until="networkidle", timeout=20000)
+            page.goto("https://sharelink.toss.im/home", wait_until="networkidle", timeout=60000)
             page.wait_for_timeout(3000)
+            current_url = page.url
+            print_log(f"📍 현재 URL: {current_url}")
+            if "login" in current_url or "auth" in current_url or "sharelink.toss.im/home" not in current_url:
+                print_log("🚫 로그인 페이지로 리다이렉트됨 - 세션 만료 가능성")
+                browser.close()
+                return []
 
             # Multi-stage scroll loop to trigger full page lazy-loading for all sections (Full Catalog)
             for step in range(1, 6):
