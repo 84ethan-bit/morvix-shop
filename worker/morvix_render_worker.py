@@ -575,25 +575,51 @@ def git_push_db():
 def autonomous_harvest_loop():
     """HARVEST_INTERVAL마다 토스 수집 → DB 갱신 → Git Push 자동 루프 (실시간 라인 스트리밍)"""
     print(f"🤖 [AUTO LOOP] 자율 수집 루프 시작 ({HARVEST_INTERVAL//60}분 간격)", flush=True)
+    no_new_item_streak = 0
+
     while True:
         try:
+            # 1. 자정(00:00 KST) 리셋 체크
+            check_midnight_today_price_reset()
+
             print(f"\n[{datetime.now().strftime('%H:%M:%S')}] 🕐 토스 파트너 수집 시작...", flush=True)
             cmd = [sys.executable, "-u", os.path.join(BASE_DIR, "worker", "sharelink_toss_harvester.py")]
             env = dict(os.environ)
             env["PYTHONUNBUFFERED"] = "1"
             proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, cwd=BASE_DIR, env=env, bufsize=1)
+
+            last_added_count = 0
             for line in proc.stdout:
                 print(line, end="", flush=True)
+                if "0개 신규 정상 핫딜 등록 완료" in line:
+                    last_added_count = 0
+                elif "신규 정상 핫딜 등록 완료" in line:
+                    last_added_count = 1
+
             proc.wait()
             if proc.returncode == 0:
                 print(f"[{datetime.now().strftime('%H:%M:%S')}] ✅ 수집 완료", flush=True)
                 git_push_db()
+
+                if last_added_count == 0:
+                    no_new_item_streak += 1
+                else:
+                    no_new_item_streak = 0
+
+                # 2. 전수 카탈로그 완수 시 자동 멈춤 및 자정 대기 체크
+                if check_full_catalog_completed(no_new_item_streak):
+                    print("😴 전수 완수 대기 모드: 5분 후 재확인...", flush=True)
+                    time.sleep(300)
+                    continue
+
             else:
                 print(f"❌ 수집기 returncode={proc.returncode}", flush=True)
         except Exception as e:
             print(f"❌ 자율 루프 예외: {e}", flush=True)
+
         print(f"😴 {HARVEST_INTERVAL//60}분 후 재가동...", flush=True)
         time.sleep(HARVEST_INTERVAL)
+
 
 def ensure_playwright_browsers():
     """런타임 시작 시 Playwright Chromium 브라우저 자동 설치"""
