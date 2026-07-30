@@ -272,6 +272,12 @@ function getTossShareLink(p) {
   return p.toss_link || 'https://toss.im';
 }
 
+function parseDiscountNum(val) {
+  if (!val) return 0;
+  const nums = String(val).replace(/[^\d]/g, '');
+  return nums ? parseInt(nums, 10) : 0;
+}
+
 function renderProducts() {
   const grid = document.getElementById('product-grid');
   const timeAttackGrid = document.getElementById('time-attack-grid');
@@ -299,7 +305,7 @@ function renderProducts() {
   let filtered = activeProducts;
 
   if (currentCategory === 'timeattack') {
-    filtered = activeProducts.filter(p => (parseInt(p.discount_rate) || 0) >= 40 || p.is_featured);
+    filtered = activeProducts.filter(p => parseDiscountNum(p.discount_rate) >= 40 || p.is_featured);
     if (title) title.textContent = '⏰ 오늘만 이 가격! 하루특가 전체보기';
   } else if (currentCategory === 'featured') {
     filtered = activeProducts.filter(p => p.is_featured);
@@ -320,7 +326,7 @@ function renderProducts() {
 
   // Apply Sorting
   if (currentSort === 'discount') {
-    filtered = filtered.slice().sort((a, b) => (parseInt(b.discount_rate) || 0) - (parseInt(a.discount_rate) || 0));
+    filtered = filtered.slice().sort((a, b) => parseDiscountNum(b.discount_rate) - parseDiscountNum(a.discount_rate));
   } else if (currentSort === 'price_asc') {
     filtered = filtered.slice().sort((a, b) => (a.price || 0) - (b.price || 0));
   } else if (currentSort === 'recent') {
@@ -330,21 +336,24 @@ function renderProducts() {
     filtered = filtered.slice().sort((a, b) => ((b.analytics ? b.analytics.clicks_count : b.clicks_count) || 0) - ((a.analytics ? a.analytics.clicks_count : a.clicks_count) || 0));
   }
 
-  if (count) count.textContent = `총 ${filtered.length}개 핫딜 노출 중`;
-
   // SECTION 1: Time Attack Top 3 Deals
+  let timeAttackDeals = [];
   if (timeAttackGrid) {
-    const timeAttackDeals = activeProducts.slice().sort((a, b) => {
-      const da = parseInt(a.discount_rate) || 0;
-      const db = parseInt(b.discount_rate) || 0;
-      return db - da;
-    }).slice(0, 3);
+    timeAttackDeals = activeProducts.slice().sort((a, b) => parseDiscountNum(b.discount_rate) - parseDiscountNum(a.discount_rate)).slice(0, 3);
 
     const badgeHTML = `<span class="badge-minimal" style="background: #FF4757; color: #fff;">⏰ 하루특가</span>`;
     timeAttackGrid.innerHTML = timeAttackDeals.map(p => renderUniversalProductCard(p, badgeHTML, 'border: 1.5px solid #FF4757; background: #ffffff;')).join('');
   }
 
-  // SECTION 2: Best Ranking Grid with Pagination Slicing
+  // Deduplication: Exclude Section 1 Time Attack items from Section 2 BEST grid
+  const timeAttackSlugs = new Set(timeAttackDeals.map(p => p.slug || p.id));
+  if (currentCategory === 'all' || currentCategory === 'best100') {
+    filtered = filtered.filter(p => !timeAttackSlugs.has(p.slug || p.id));
+  }
+
+  if (count) count.textContent = `총 ${filtered.length}개 핫딜 노출 중`;
+
+  // SECTION 2: Best Ranking Grid with Pagination Slicing (Deduplicated)
   if (filtered.length === 0) {
     grid.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
