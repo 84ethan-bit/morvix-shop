@@ -516,8 +516,8 @@ def git_push_db():
         print(f"❌ Git Push 오류: {e}", flush=True)
 
 def autonomous_harvest_loop():
-    """30분마다 토스 수집 → DB 갱신 → Git Push 자동 루프"""
-    print("🤖 [AUTO LOOP] 자율 수집 루프 시작 (30분 간격)", flush=True)
+    """HARVEST_INTERVAL마다 토스 수집 → DB 갱신 → Git Push 자동 루프"""
+    print(f"🤖 [AUTO LOOP] 자율 수집 루프 시작 ({HARVEST_INTERVAL//60}분 간격)", flush=True)
     while True:
         try:
             print(f"\n[{datetime.now().strftime('%H:%M:%S')}] 🕐 토스 파트너 수집 시작...", flush=True)
