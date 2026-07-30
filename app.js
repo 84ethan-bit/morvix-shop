@@ -218,6 +218,19 @@ function startCountdownClock() {
   setInterval(updateClock, 1000);
 }
 
+// Helper function to extract exact Toss ShareLink (toss.im/_m/XXXX)
+function getTossShareLink(p) {
+  if (!p) return 'https://toss.im';
+  if (p.toss_link && p.toss_link.includes('toss.im/_m/')) return p.toss_link;
+  if (Array.isArray(p.affiliate_links) && p.affiliate_links.length > 0) {
+    const tossObj = p.affiliate_links.find(l => (l.url && l.url.includes('toss.im/_m/')) || l.platform === 'toss');
+    if (tossObj && tossObj.url) return tossObj.url;
+    if (p.affiliate_links[0] && p.affiliate_links[0].url) return p.affiliate_links[0].url;
+  }
+  if (p.short_url && p.short_url.includes('toss.im/_m/')) return p.short_url;
+  return p.toss_link || 'https://toss.im';
+}
+
 function renderProducts() {
   const grid = document.getElementById('product-grid');
   const timeAttackGrid = document.getElementById('time-attack-grid');
@@ -261,7 +274,7 @@ function renderProducts() {
     timeAttackGrid.innerHTML = timeAttackDeals.map(p => {
       const priceStr = p.price ? p.price.toLocaleString() + '원' : '특가 확인';
       const origPriceStr = p.original_price ? p.original_price.toLocaleString() + '원' : '';
-      const tossLink = p.toss_link || 'https://toss.im';
+      const tossLink = getTossShareLink(p);
 
       return `
         <a href="${tossLink}" target="_blank" rel="noopener noreferrer" class="product-card-v2" onclick="trackOutboundClick('${p.slug}')" style="border: 1.5px solid #FF4757; background: #ffffff;">
@@ -300,7 +313,7 @@ function renderProducts() {
   grid.innerHTML = filtered.map((p, idx) => {
     const priceStr = p.price ? p.price.toLocaleString() + '원' : '특가 확인';
     const origPriceStr = p.original_price ? p.original_price.toLocaleString() + '원' : '';
-    const tossLink = p.toss_link || 'https://toss.im';
+    const tossLink = getTossShareLink(p);
 
     let rankBadgeHTML = '';
     if (idx === 0) rankBadgeHTML = '<span class="rank-badge-gold">🥇 BEST 1위</span>';
