@@ -5,34 +5,14 @@
       "value": "JTdCJTdE",
       "domain": ".toss.im",
       "path": "/",
-      "expires": 1816930884,
-      "httpOnly": false,
-      "secure": false,
-      "sameSite": "Lax"
-    },
-    {
-      "name": "_hjSession_6659753",
-      "value": "eyJpZCI6IjAzYmMyNDEwLWQ3NTEtNGYyMC1hMWNkLTFhZGM3Y2NjMTljYSIsImMiOjE3ODUzOTQ4ODUzNjUsInMiOjAsInIiOjAsInNiIjowLCJzciI6MCwic2UiOjAsImZzIjoxLCJzcCI6MH0=",
-      "domain": ".toss.im",
-      "path": "/",
-      "expires": 1785396685,
-      "httpOnly": false,
-      "secure": true,
-      "sameSite": "None"
-    },
-    {
-      "name": "_gcl_au",
-      "value": "1.1.1306520119.1785394885",
-      "domain": ".toss.im",
-      "path": "/",
-      "expires": 1793170885,
+      "expires": 1816940877,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
     },
     {
       "name": "TBUUID",
-      "value": "988b1ba3-cf9e-4ea0-8e74-2d8287a037bc",
+      "value": "c3d207cc-ffe6-4002-8831-6b617228e1aa",
       "domain": "business.toss.im",
       "path": "/",
       "expires": -1,
@@ -41,111 +21,131 @@
       "sameSite": "Lax"
     },
     {
-      "name": "_ga",
-      "value": "GA1.1.438090274.1785394886",
+      "name": "_hjSessionUser_6659753",
+      "value": "eyJpZCI6IjQyYzEzMTU0LWM2YzItNTdhZC1hM2YwLTExMzE3ZWQ4Y2RmOSIsImNyZWF0ZWQiOjE3ODU0MDQ4Nzg0MjEsImV4aXN0aW5nIjpmYWxzZX0=",
       "domain": ".toss.im",
       "path": "/",
-      "expires": 1819954904.495168,
+      "expires": 1816940878,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "_hjSession_6659753",
+      "value": "eyJpZCI6Ijg2OThlZGMzLWEyZTUtNDNkMy05YTE2LTNjZGMzYjdhYzNhYSIsImMiOjE3ODU0MDQ4Nzg0MjIsInMiOjAsInIiOjAsInNiIjowLCJzciI6MCwic2UiOjAsImZzIjoxLCJzcCI6MH0=",
+      "domain": ".toss.im",
+      "path": "/",
+      "expires": 1785406678,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "_gcl_au",
+      "value": "1.1.1849940096.1785404879",
+      "domain": ".toss.im",
+      "path": "/",
+      "expires": 1793180879,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
     },
     {
       "name": "TGSID",
-      "value": "888a944b-0470-41b0-9cd8-05ee0f864333",
+      "value": "7fefbfdc-0e9a-4da2-b1d8-f13d74e48929",
       "domain": ".toss.im",
       "path": "/",
-      "expires": 1816930885.921954,
+      "expires": 1816940878.528657,
       "httpOnly": true,
       "secure": true,
       "sameSite": "None"
     },
     {
-      "name": "ch-veil-id",
-      "value": "6677b561-ad3d-44d1-9143-26789730dbb5",
+      "name": "_ga",
+      "value": "GA1.1.1905861294.1785404879",
       "domain": ".toss.im",
       "path": "/",
-      "expires": 1816930904.734316,
+      "expires": 1819964879.005331,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
     },
     {
-      "name": "IDE",
-      "value": "AHWqTUkgw3aD-jIi2rX9q4OXnKn38FJnhNp7sbAxW97-bZPVGZQi4Oe1hOz0z7A_",
+      "name": "test_cookie",
+      "value": "CheckForPermission",
       "domain": ".doubleclick.net",
       "path": "/",
-      "expires": 1819954904.418445,
-      "httpOnly": true,
-      "secure": true,
-      "sameSite": "None"
-    },
-    {
-      "name": "_hjSessionUser_6659753",
-      "value": "eyJpZCI6ImEwZmU4ODRmLTVkNTctNTA1Ny05MmExLTE0OTc5ZGNhODUzMCIsImNyZWF0ZWQiOjE3ODUzOTQ4ODUzNjQsImV4aXN0aW5nIjp0cnVlfQ==",
-      "domain": ".toss.im",
-      "path": "/",
-      "expires": 1816930904,
+      "expires": 1785405778.973932,
       "httpOnly": false,
       "secure": true,
       "sameSite": "None"
     },
     {
       "name": "_dd_s_v2",
-      "value": "aid=ec804631-01ec-440c-93e8-cb254932ad49&id=ebc4caf1-ad96-4bef-9044-0a1c578258ef&created=1785394886539&expire=1785395804722&c=0",
+      "value": "aid=09ea4c38-29b8-4426-9d41-8b3c9d28de37&id=01710196-482f-4124-aa8f-7d28987554b7&created=1785404879515&expire=1785405779515&c=0",
       "domain": "business.toss.im",
       "path": "/",
-      "expires": 1816930904.722,
+      "expires": 1816940879.515,
       "httpOnly": false,
       "secure": true,
       "sameSite": "Strict"
     },
     {
-      "name": "ch-session-144685",
-      "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzZXMiLCJleHAiOjE3ODc5ODY5MDYsImlhdCI6MTc4NTM5NDkwNiwia2V5IjoiMTQ0Njg1LTZhNmFmNmM4MDkwZDVhZjFlMzJiIn0.lBmbN59TPAWFwxdwWh59VKMJ51qW2MZGN2Ex7tP6xkk",
+      "name": "ch-veil-id",
+      "value": "dc41e039-51c3-4f0e-a870-4992f4a8c04e",
       "domain": ".toss.im",
       "path": "/",
-      "expires": 1785396704.734533,
+      "expires": 1816940879.646401,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "ch-session-144685",
+      "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzZXMiLCJleHAiOjE3ODc5OTY4ODAsImlhdCI6MTc4NTQwNDg4MCwia2V5IjoiMTQ0Njg1LTZhNmIxZGQwNzMwNTY3ZDk3ZTI5In0.YVQfeuPUzQd-xtQAVZ07bUeUbi4AOx8HNsQoYRimpps",
+      "domain": ".toss.im",
+      "path": "/",
+      "expires": 1785406679.646524,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
     },
     {
       "name": "_ga_XMB6338SF6",
-      "value": "GS2.1.s1785394885$o1$g1$t1785394909$j36$l0$h0",
+      "value": "GS2.1.s1785404878$o1$g1$t1785404893$j45$l0$h0",
       "domain": ".toss.im",
       "path": "/",
-      "expires": 1819954909.914361,
+      "expires": 1819964893.638241,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
     },
     {
       "name": "_ga_4F64XP345M",
-      "value": "GS2.1.s1785394885$o1$g1$t1785394909$j36$l0$h0",
+      "value": "GS2.1.s1785404878$o1$g1$t1785404893$j45$l0$h0",
       "domain": ".toss.im",
       "path": "/",
-      "expires": 1819954909.918017,
+      "expires": 1819964893.642121,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
     },
     {
       "name": "TBIZAUTH",
-      "value": "Mzg4ZjA4ZWYtMzQ1My00M2FmLWI5ZGQtZjc0ZjRkYmUzOTQ0",
+      "value": "MjA2NmVmZGYtNDJkZS00YzY5LWI3NzEtNjJmNDJiZjIwZTFk",
       "domain": ".toss.im",
       "path": "/",
-      "expires": 1785826910.087786,
+      "expires": 1785836893.819198,
       "httpOnly": true,
       "secure": true,
       "sameSite": "None"
     },
     {
       "name": "AMP_b2079b126e",
-      "value": "JTdCJTIyZGV2aWNlSWQlMjIlM0ElMjJkNDY1YzJiNi0zNzQxLTQ3ZmUtYWFhOC1kZGI5ZWQ5NGM3YTUlMjIlMkMlMjJ1c2VySWQlMjIlM0ElMjJiaXpfMzAzNDQ2JTIyJTJDJTIyc2Vzc2lvbklkJTIyJTNBMTc4NTM5NDg4NDgxNiUyQyUyMm9wdE91dCUyMiUzQWZhbHNlJTJDJTIybGFzdEV2ZW50VGltZSUyMiUzQTE3ODUzOTQ5MTA4NDYlMkMlMjJsYXN0RXZlbnRJZCUyMiUzQTQlMkMlMjJwYWdlQ291bnRlciUyMiUzQTIlMkMlMjJjb29raWVEb21haW4lMjIlM0ElMjIudG9zcy5pbSUyMiU3RA==",
+      "value": "JTdCJTIyZGV2aWNlSWQlMjIlM0ElMjI1MDc2NjIwYy03NzczLTRjOGQtYjI2Zi1hNDYyYWI4OGFiYzAlMjIlMkMlMjJ1c2VySWQlMjIlM0ElMjJiaXpfMzAzNDQ2JTIyJTJDJTIyc2Vzc2lvbklkJTIyJTNBMTc4NTQwNDg3NzY0NiUyQyUyMm9wdE91dCUyMiUzQWZhbHNlJTJDJTIybGFzdEV2ZW50VGltZSUyMiUzQTE3ODU0MDQ4OTYyNTclMkMlMjJsYXN0RXZlbnRJZCUyMiUzQTYlMkMlMjJwYWdlQ291bnRlciUyMiUzQTIlMkMlMjJjb29raWVEb21haW4lMjIlM0ElMjIudG9zcy5pbSUyMiU3RA==",
       "domain": ".toss.im",
       "path": "/",
-      "expires": 1816930910,
+      "expires": 1816940896,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
@@ -157,15 +157,15 @@
       "localStorage": [
         {
           "name": "AMP_unsent_b2079b126e",
-          "value": "[{\"device_id\":\"d465c2b6-3741-47fe-aaa8-ddb9ed94c7a5\",\"session_id\":1785394884816,\"time\":1785394884819,\"platform\":\"Web\",\"language\":\"ko-KR\",\"ip\":\"$remote\",\"insert_id\":\"d7eedaf0-d6d4-45ec-a3c8-c1ae9e40dec7\",\"event_type\":\"$identify\",\"user_properties\":{\"$setOnce\":{\"initial_utm_campaign\":\"EMPTY\",\"initial_utm_content\":\"EMPTY\",\"initial_utm_id\":\"EMPTY\",\"initial_utm_medium\":\"EMPTY\",\"initial_utm_source\":\"EMPTY\",\"initial_utm_term\":\"EMPTY\",\"initial_referrer\":\"EMPTY\",\"initial_referring_domain\":\"EMPTY\",\"initial_dclid\":\"EMPTY\",\"initial_gbraid\":\"EMPTY\",\"initial_gclid\":\"EMPTY\",\"initial_fbclid\":\"EMPTY\",\"initial_ko_click_id\":\"EMPTY\",\"initial_li_fat_id\":\"EMPTY\",\"initial_msclkid\":\"EMPTY\",\"initial_rdt_cid\":\"EMPTY\",\"initial_ttclid\":\"EMPTY\",\"initial_twclid\":\"EMPTY\",\"initial_wbraid\":\"EMPTY\"},\"$unset\":{\"utm_campaign\":\"-\",\"utm_content\":\"-\",\"utm_id\":\"-\",\"utm_medium\":\"-\",\"utm_source\":\"-\",\"utm_term\":\"-\",\"referrer\":\"-\",\"referring_domain\":\"-\",\"dclid\":\"-\",\"gbraid\":\"-\",\"gclid\":\"-\",\"fbclid\":\"-\",\"ko_click_id\":\"-\",\"li_fat_id\":\"-\",\"msclkid\":\"-\",\"rdt_cid\":\"-\",\"ttclid\":\"-\",\"twclid\":\"-\",\"wbraid\":\"-\"}},\"event_id\":0,\"library\":\"amplitude-ts/2.39.1\",\"user_agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"},{\"device_id\":\"d465c2b6-3741-47fe-aaa8-ddb9ed94c7a5\",\"session_id\":1785394884816,\"time\":1785394884816,\"platform\":\"Web\",\"language\":\"ko-KR\",\"ip\":\"$remote\",\"insert_id\":\"afcc38db-89d5-46af-b55a-0f1f60d8ba13\",\"event_type\":\"session_start\",\"event_id\":1,\"library\":\"amplitude-ts/2.39.1\",\"user_agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\",\"event_properties\":{\"[Amplitude] Page Domain\":\"sharelink.toss.im\",\"[Amplitude] Page Location\":\"https://sharelink.toss.im/login?redirect=%2Fhome\",\"[Amplitude] Page Path\":\"/login\",\"[Amplitude] Page Title\":\"토스쇼핑 쉐어링크\",\"[Amplitude] Page URL\":\"https://sharelink.toss.im/login\",\"[Amplitude] Previous Page Location\":\"\",\"[Amplitude] Previous Page Type\":\"direct\"}},{\"device_id\":\"d465c2b6-3741-47fe-aaa8-ddb9ed94c7a5\",\"session_id\":1785394884816,\"time\":1785394884821,\"platform\":\"Web\",\"language\":\"ko-KR\",\"ip\":\"$remote\",\"insert_id\":\"267b603a-2e5f-4c0c-8114-14b0946acdba\",\"event_type\":\"[Amplitude] Page Viewed\",\"event_properties\":{\"[Amplitude] Page Domain\":\"sharelink.toss.im\",\"[Amplitude] Page Location\":\"https://sharelink.toss.im/login?redirect=%2Fhome\",\"[Amplitude] Page Path\":\"/login\",\"[Amplitude] Page Title\":\"토스쇼핑 쉐어링크\",\"[Amplitude] Page URL\":\"https://sharelink.toss.im/login\",\"[Amplitude] Page View ID\":\"ab58f8f6-1aad-4cc6-8957-a87fd2bf4d74\",\"[Amplitude] Page Counter\":1,\"[Amplitude] Previous Page Location\":\"\",\"[Amplitude] Previous Page Type\":\"direct\"},\"event_id\":2,\"library\":\"amplitude-ts/2.39.1\",\"user_agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"},{\"device_id\":\"d465c2b6-3741-47fe-aaa8-ddb9ed94c7a5\",\"session_id\":1785394884816,\"time\":1785394910811,\"platform\":\"Web\",\"language\":\"ko-KR\",\"ip\":\"$remote\",\"insert_id\":\"2a3501bc-9d7d-4f83-b844-d6cb34c44e73\",\"event_type\":\"[Amplitude] Page Viewed\",\"event_properties\":{\"referrer\":\"https://business.toss.im/\",\"referring_domain\":\"business.toss.im\",\"[Amplitude] Page Domain\":\"sharelink.toss.im\",\"[Amplitude] Page Location\":\"https://sharelink.toss.im/signup-start?code=kiMQ2eJ3D1rgNqh1xnMPG1_oSslEYhd6fCLIheeTFeqqwjJVv-HwP9tdk-Jy75HUeigPFT0LrAh0Pf1SbXwLx-VeVe9acGGAv2cU7Q7CLSyN4SciirixAQZwCraqOeXW\",\"[Amplitude] Page Path\":\"/signup-start\",\"[Amplitude] Page Title\":\"토스쇼핑 쉐어링크\",\"[Amplitude] Page URL\":\"https://sharelink.toss.im/signup-start\",\"[Amplitude] Page View ID\":\"edc65e7b-0f94-4c62-8384-9d56d16dadf3\",\"[Amplitude] Page Counter\":2,\"[Amplitude] Previous Page Location\":\"\",\"[Amplitude] Previous Page Type\":\"direct\"},\"event_id\":3,\"library\":\"amplitude-ts/2.39.1\",\"user_agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"},{\"user_id\":\"biz_303446\",\"device_id\":\"d465c2b6-3741-47fe-aaa8-ddb9ed94c7a5\",\"session_id\":1785394884816,\"time\":1785394910846,\"platform\":\"Web\",\"language\":\"ko-KR\",\"ip\":\"$remote\",\"insert_id\":\"66e18508-c4d6-4eb5-893a-441a5cc9e99b\",\"event_type\":\"$identify\",\"user_properties\":{\"$set\":{\"partner_created_at\":\"2026-07-27T15:32:16\"}},\"event_id\":4,\"library\":\"amplitude-ts/2.39.1\",\"user_agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"}]"
+          "value": "[{\"user_id\":\"biz_303446\",\"device_id\":\"5076620c-7773-4c8d-b26f-a462ab88abc0\",\"session_id\":1785404877646,\"time\":1785404896257,\"platform\":\"Web\",\"language\":\"ko-KR\",\"ip\":\"$remote\",\"insert_id\":\"b1d63544-f4d1-47a7-8b2a-665e4f56219e\",\"event_type\":\"section_impressed\",\"event_properties\":{\"surface_section\":\"home_TODAY_DEAL\",\"surface\":\"home\",\"sectionOrder\":0,\"productCount\":9,\"sectionName\":\"오늘만 이 가격에 살 수 있는 하루특가\",\"[Amplitude] Page Domain\":\"sharelink.toss.im\",\"[Amplitude] Page Location\":\"https://sharelink.toss.im/home\",\"[Amplitude] Page Path\":\"/home\",\"[Amplitude] Page Title\":\"토스쇼핑 쉐어링크\",\"[Amplitude] Page URL\":\"https://sharelink.toss.im/home\",\"[Amplitude] Previous Page Location\":\"https://sharelink.toss.im/login?redirect=%2Fhome\",\"[Amplitude] Previous Page Type\":\"internal\"},\"event_id\":6,\"library\":\"amplitude-ts/2.39.1\",\"user_agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"}]"
         },
         {
           "name": "AMP_remote_config_b2079b126e",
-          "value": "{\"remoteConfig\":{\"configs\":{\"diagnostics\":{\"browserSDK\":{\"sampleRate\":0.02}},\"sessionReplay\":{\"sr_privacy_config\":{\"maskSelector\":[],\"blockSelector\":[],\"unmaskSelector\":[],\"defaultMaskLevel\":\"medium\"},\"sr_sampling_config\":{\"sample_rate\":0.01,\"capture_enabled\":true}},\"analyticsSDK\":{}}},\"lastFetch\":\"2026-07-30T07:01:50.811Z\"}"
+          "value": "{\"remoteConfig\":{\"configs\":{\"diagnostics\":{\"browserSDK\":{\"sampleRate\":0.02}},\"sessionReplay\":{\"sr_privacy_config\":{\"maskSelector\":[],\"blockSelector\":[],\"unmaskSelector\":[],\"defaultMaskLevel\":\"medium\"},\"sr_sampling_config\":{\"capture_enabled\":true,\"sample_rate\":0.01}},\"analyticsSDK\":{}}},\"lastFetch\":\"2026-07-30T09:48:14.080Z\"}"
         },
         {
           "name": "@toss/browserId",
-          "value": "_vOARkCaLAxrMPdOPBt7y"
+          "value": "XZPdYKnGWI_IjloEcPJiH"
         }
       ]
     },
@@ -174,7 +174,7 @@
       "localStorage": [
         {
           "name": "Channel.last_seen_tab_id_",
-          "value": "\"1ddeb049-24f8-4f12-9acd-9d67bdf0784a\""
+          "value": "\"7f000d6a-d8ed-41db-a588-7f2db42f3853\""
         },
         {
           "name": "toss-business:auth:last-sign-in-method",
@@ -182,7 +182,7 @@
         },
         {
           "name": "Channel.ch-veil-id",
-          "value": "\"6677b561-ad3d-44d1-9143-26789730dbb5\""
+          "value": "\"dc41e039-51c3-4f0e-a870-4992f4a8c04e\""
         },
         {
           "name": "Channel.plugin_info.5eb6e862-fa41-4018-b984-47710ac0327d",
@@ -194,15 +194,11 @@
         },
         {
           "name": "Channel.last_seen_tab_id_144685",
-          "value": "\"1ddeb049-24f8-4f12-9acd-9d67bdf0784a\""
+          "value": "\"7f000d6a-d8ed-41db-a588-7f2db42f3853\""
         },
         {
           "name": "_gcl_ls",
-          "value": "{\"schema\":\"gcl\",\"version\":1,\"gsid_dc\":{\"value\":{\"joinId\":\"o0F2cUzVaYUPB2JjsAFbqAoFRjUwU4tQoQ\",\"lastJoinedTimeMs\":1785394885435},\"expires\":1785395185435},\"gcl_ctr\":{\"value\":{\"value\":0,\"timeouts\":0,\"errors\":0,\"eopCount\":0,\"creationTimeMs\":1785394885438},\"expires\":1793170885438}}"
-        },
-        {
-          "name": "toss-business:auth:remember-id",
-          "value": "\"84ethan@gmail.com\""
+          "value": "{\"schema\":\"gcl\",\"version\":1,\"gsid_dc\":{\"value\":{\"joinId\":\"58KUvcjmYWx0yYTQo5FSm8svj0fNOsihVw\",\"lastJoinedTimeMs\":1785404878509},\"expires\":1785405178509},\"gcl_ctr\":{\"value\":{\"value\":0,\"timeouts\":0,\"errors\":0,\"eopCount\":0,\"creationTimeMs\":1785404878513},\"expires\":1793180878513}}"
         },
         {
           "name": "Channel.notification_sound_144685",

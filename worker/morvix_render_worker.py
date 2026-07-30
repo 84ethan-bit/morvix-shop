@@ -561,22 +561,30 @@ def ensure_playwright_browsers():
             print("❌ Chromium install FAILED", flush=True)
 
 def restore_toss_session():
-    """Render 환경변수 TOSS_SESSION_B64 → 세션 파일 복원"""
+    """세션 파일 확인 및 Render 환경변수 TOSS_SESSION_B64 백업 복원"""
+    session_dir = os.path.join(BASE_DIR, "scratch")
+    os.makedirs(session_dir, exist_ok=True)
+    session_path = os.path.join(session_dir, "toss_sharelink_session.json")
+
+    # 1. 이미 최신 세션 파일이 존재하면 그대로 사용
+    if os.path.exists(session_path) and os.path.getsize(session_path) > 100:
+        print(f"✅ 레포지토리 저장 세션 파일 사용: {session_path}", flush=True)
+        return
+
+    # 2. 파일이 없거나 유효하지 않은 경우 환경변수에서 복원
     b64 = os.environ.get("TOSS_SESSION_B64", "")
     if not b64:
-        print("⚠️ TOSS_SESSION_B64 환경변수 없음 - 세션 없이 수집 시도", flush=True)
+        print("⚠️ 세션 파일 및 TOSS_SESSION_B64 환경변수 없음 - 세션 없이 수집 시도", flush=True)
         return
     try:
         import base64
-        session_dir = os.path.join(BASE_DIR, "scratch")
-        os.makedirs(session_dir, exist_ok=True)
-        session_path = os.path.join(session_dir, "toss_sharelink_session.json")
         decoded = base64.b64decode(b64.encode("utf-8")).decode("utf-8")
         with open(session_path, "w", encoding="utf-8") as f:
             f.write(decoded)
-        print(f"✅ 토스 세션 복원 완료: {session_path}", flush=True)
+        print(f"✅ 환경변수에서 토스 세션 복원 완료: {session_path}", flush=True)
     except Exception as e:
         print(f"❌ 세션 복원 오류: {e}", flush=True)
+
 
 def run():
     # 1. 토스 세션 복원 (Render 환경변수 → 파일)
