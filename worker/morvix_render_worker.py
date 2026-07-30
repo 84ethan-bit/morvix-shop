@@ -503,17 +503,35 @@ def git_push_db():
     try:
         subprocess.run(["git", "config", "user.name",  "MORVIX Render Server"], cwd=BASE_DIR)
         subprocess.run(["git", "config", "user.email", "render@morvix.io"],      cwd=BASE_DIR)
-        subprocess.run(["git", "add", "morvix_shop_db.json"],                    cwd=BASE_DIR)
-        diff = subprocess.run(["git", "diff", "--staged", "--quiet"],            cwd=BASE_DIR)
+
+        gh_token = os.environ.get("GH_TOKEN", os.environ.get("GITHUB_TOKEN", "")).strip()
+        if gh_token:
+            repo_url = f"https://x-access-token:{gh_token}@github.com/84ethan-bit/morvix-shop.git"
+        else:
+            repo_url = "https://github.com/84ethan-bit/morvix-shop.git"
+
+        # Git Remote origin 존재 여부 검사 및 설정
+        remote_check = subprocess.run(["git", "remote", "get-url", "origin"], cwd=BASE_DIR, capture_output=True, text=True)
+        if remote_check.returncode != 0:
+            subprocess.run(["git", "remote", "add", "origin", repo_url], cwd=BASE_DIR)
+        else:
+            subprocess.run(["git", "remote", "set-url", "origin", repo_url], cwd=BASE_DIR)
+
+        subprocess.run(["git", "add", "morvix_shop_db.json"], cwd=BASE_DIR)
+        diff = subprocess.run(["git", "diff", "--staged", "--quiet"], cwd=BASE_DIR)
         if diff.returncode != 0:
             now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
             subprocess.run(["git", "commit", "-m", f"chore(render): Auto-ingest Toss deals @ {now_str}"], cwd=BASE_DIR)
-            subprocess.run(["git", "push", "origin", "main"], cwd=BASE_DIR)
-            print(f"[{now_str}] ✅ Git Push 완료 → Vercel 자동 배포 시작", flush=True)
+            push_res = subprocess.run(["git", "push", "origin", "HEAD:main"], cwd=BASE_DIR, capture_output=True, text=True)
+            if push_res.returncode == 0:
+                print(f"[{now_str}] ✅ Git Push 성공 ➔ Vercel 라이브 자동 배포 완료! 🎉", flush=True)
+            else:
+                print(f"⚠️ Git Push 응답: {push_res.stderr.strip()}", flush=True)
         else:
             print(f"[{datetime.now().strftime('%H:%M:%S')}] ℹ️ 변경사항 없음 - Push 생략", flush=True)
     except Exception as e:
         print(f"❌ Git Push 오류: {e}", flush=True)
+
 
 def autonomous_harvest_loop():
     """HARVEST_INTERVAL마다 토스 수집 → DB 갱신 → Git Push 자동 루프"""
