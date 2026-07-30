@@ -61,10 +61,21 @@ body {
 
 /* --- Mobile Responsiveness --- */
 @media (max-width: 768px) {
-  .header-disclosure-text {
-    font-size: 0.68rem !important;
-    line-height: 1.25 !important;
+  .header-nav-inner {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
   }
+
+  .header-disclosure-text {
+    font-size: 0.72rem !important;
+    line-height: 1.3 !important;
+    text-align: left !important;
+    width: 100% !important;
+    padding-top: 4px;
+    border-top: 1px solid #F1F5F9;
+  }
+
   .hero-heading {
     font-size: 1.25rem !important;
     line-height: 1.35 !important;
