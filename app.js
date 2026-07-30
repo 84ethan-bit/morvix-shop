@@ -141,7 +141,7 @@ async function initShopOS() {
     const res = await fetch('morvix_shop_db.json?t=' + Date.now(), { cache: 'no-store' });
     if (res.ok) {
       const fetched = await res.json();
-      if (fetched && Array.isArray(fetched.products) && fetched.products.length > 0) {
+      if (fetched && Array.isArray(fetched.products)) {
         dbData.products = fetched.products;
         try { localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(dbData.products)); } catch(e){}
       }
