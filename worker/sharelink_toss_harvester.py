@@ -311,7 +311,89 @@ def harvest_sharelink_portal():
                     print_log(f"⚠️ [시도 {attempt+1}] page.evaluate 오류: {eval_err}")
                     page.wait_for_timeout(3000)
 
-            print_log(f"📊 [전체 포털 탐색] 포털 내 탐지된 전체 유효 핫딜 카드: {len(cards_data)}개 발견 (고정 개수 제한 제거 완료)")
+            print_log(f"📊 [/home 메인 탐색] 메인 화면 핫딜 카드: {len(cards_data)}개 수집 완료")
+
+            # ── [고도화] '전체 보기 >' 서브 카테고리(하루특가/베스트/시즌) 전수 심층 수집 ──
+            try:
+                view_all_locators = page.locator("*:has-text('전체 보기'), *:has-text('전체보기')").all()
+                valid_clickables = []
+                for loc in view_all_locators:
+                    try:
+                        txt = loc.inner_text().strip()
+                        if ('전체 보기' in txt or '전체보기' in txt) and len(txt) < 15:
+                            valid_clickables.append(loc)
+                    except:
+                        pass
+
+                print_log(f"🔎 탐지된 '전체 보기' 서브 카테고리 섹션: {len(valid_clickables)}개")
+
+                for s_idx, clickable in enumerate(valid_clickables[:4]):
+                    try:
+                        section_title = clickable.locator("xpath=ancestor::*[contains(., '하루특가') or contains(., 'BEST') or contains(., '베스트') or contains(., '시즌')][1]").inner_text()
+                    except:
+                        section_title = f"Section_{s_idx+1}"
+
+                    print_log(f"📂 [{s_idx+1}/{len(valid_clickables)}] '전체 보기' 심층 이동 중: {section_title[:20]}...")
+                    try:
+                        clickable.click(timeout=5000)
+                        page.wait_for_timeout(3000)
+
+                        # 서브 페이지 전수 스크롤
+                        for s_step in range(1, 8):
+                            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                            page.wait_for_timeout(1000)
+
+                        sub_cards = page.evaluate("""() => {
+                            const cards = [];
+                            const buttons = [...document.querySelectorAll('button')].filter(b => b.innerText && b.innerText.includes('링크 발급'));
+                            buttons.forEach((btn, idx) => {
+                                let card = btn.parentElement;
+                                while (card && card.innerText && !card.innerText.includes('원') && card.parentElement) {
+                                    card = card.parentElement;
+                                }
+                                if (!card) card = btn.parentElement;
+
+                                const text = card ? card.innerText : '';
+                                const img = card ? card.querySelector('img') : null;
+                                let imgUrl = '';
+                                if (img) {
+                                    imgUrl = img.currentSrc || img.src || img.getAttribute('src') || img.getAttribute('data-src') || img.getAttribute('data-original') || img.getAttribute('srcset') || '';
+                                }
+                                if (imgUrl.includes(' ')) imgUrl = imgUrl.split(' ')[0];
+
+                                cards.push({
+                                    idx: idx,
+                                    rawText: text,
+                                    imgUrl: imgUrl,
+                                    section: "best_seller",
+                                    priority: 2
+                                });
+                            });
+                            return cards;
+                        }""")
+                        print_log(f"   ➔ 서브 페이지 전수 추출 성공: {len(sub_cards)}개 추가")
+                        cards_data.extend(sub_cards)
+
+                        # 메인 홈 복귀
+                        page.goto("https://sharelink.toss.im/home", wait_until="networkidle")
+                        page.wait_for_timeout(2000)
+                    except Exception as sub_err:
+                        print_log(f"   ⚠️ 서브 섹션 탐색 패스: {sub_err}")
+
+            except Exception as sub_find_err:
+                print_log(f"⚠️ '전체 보기' 서브 카테고리 탐색 중 제외: {sub_find_err}")
+
+            # 중복 제거 (rawText 기준)
+            unique_cards = []
+            seen_texts = set()
+            for c in cards_data:
+                rt = c.get('rawText', '').strip()
+                if rt and rt not in seen_texts:
+                    seen_texts.add(rt)
+                    unique_cards.append(c)
+
+            cards_data = unique_cards
+            print_log(f"📊 [전 포털 심층 전수 통합] 중복 제거 후 최종 핫딜 목록: {len(cards_data)}개 전수 수집 완료!")
 
 
             section_counts = {"today_price": 0, "best_seller": 0, "season_special": 0, "other": 0}
