@@ -257,233 +257,124 @@ def harvest_sharelink_portal():
                 print_log(f"버튼 목록 조회 실패: {e}")
             # ── 진단 끝 ──
 
-            # 핫딜 카드 파싱 (네비게이션 오류 시 재시도)
-            cards_data = []
-            for attempt in range(3):
-                try:
-                    cards_data = page.evaluate("""() => {
-                const cards = [];
-                const buttons = [...document.querySelectorAll('button')].filter(b => b.innerText && b.innerText.includes('링크 발급'));
-
-                buttons.forEach((btn, idx) => {
-                    let card = btn.parentElement;
-                    while (card && card.innerText && !card.innerText.includes('원') && card.parentElement) {
-                        card = card.parentElement;
-                    }
-                    if (!card) card = btn.parentElement;
-
-                    let sectionName = "best_seller";
-                    let priority = 2;
-                    let parent = card;
-                    for (let i = 0; i < 5 && parent; i++) {
-                        const hText = parent.innerText || '';
-                        if (hText.includes('오늘만 이 가격') || hText.includes('하루특가')) {
-                            sectionName = "today_price";
-                            priority = 1;
-                            break;
-                        } else if (hText.includes('많이 팔리는') || hText.includes('베스트')) {
-                            sectionName = "best_seller";
-                            priority = 2;
-                            break;
-                        } else if (hText.includes('추천') || hText.includes('시즌') || hText.includes('특가')) {
-                            sectionName = "season_special";
-                            priority = 3;
-                            break;
-                        }
-                        parent = parent.parentElement;
-                    }
-
-                    const text = card ? card.innerText : '';
-                    const img = card ? card.querySelector('img') : null;
-                    let imgUrl = '';
-                    if (img) {
-                        imgUrl = img.currentSrc || img.src || img.getAttribute('src') || img.getAttribute('data-src') || img.getAttribute('data-original') || img.getAttribute('srcset') || '';
-                    }
-                    if (imgUrl.includes(' ')) imgUrl = imgUrl.split(' ')[0];
-
-                    cards.push({
-                        idx: idx,
-                        rawText: text,
-                        imgUrl: imgUrl,
-                        section: sectionName,
-                        priority: priority
-                    });
-                });
-                return cards;
-            }""")
-                    print_log(f"✅ [시도 {attempt+1}] 카드 추출 성공: {len(cards_data)}개")
-                    break
-                except Exception as eval_err:
-                    print_log(f"⚠️ [시도 {attempt+1}] page.evaluate 오류: {eval_err}")
-                    page.wait_for_timeout(3000)
-
-            print_log(f"📊 [/home 메인 탐색] 메인 화면 핫딜 카드: {len(cards_data)}개 수집 완료")
-
-            # ── [고도화] '전체 보기 >' 서브 카테고리(하루특가/베스트/시즌) 전수 심층 수집 ──
-            try:
-                view_all_locators = page.locator("*:has-text('전체 보기'), *:has-text('전체보기')").all()
-                valid_clickables = []
-                for loc in view_all_locators:
-                    try:
-                        txt = loc.inner_text().strip()
-                        if ('전체 보기' in txt or '전체보기' in txt) and len(txt) < 15:
-                            valid_clickables.append(loc)
-                    except:
-                        pass
-
-                print_log(f"🔎 탐지된 '전체 보기' 서브 카테고리 섹션: {len(valid_clickables)}개")
-
-                for s_idx, clickable in enumerate(valid_clickables[:4]):
-                    try:
-                        section_title = clickable.locator("xpath=ancestor::*[contains(., '하루특가') or contains(., 'BEST') or contains(., '베스트') or contains(., '시즌')][1]").inner_text()
-                    except:
-                        section_title = f"Section_{s_idx+1}"
-
-                    print_log(f"📂 [{s_idx+1}/{len(valid_clickables)}] '전체 보기' 심층 이동 중: {section_title[:20]}...")
-                    try:
-                        clickable.click(timeout=5000)
-                        page.wait_for_timeout(3000)
-
-                        # 서브 페이지 전수 스크롤
-                        for s_step in range(1, 8):
-                            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-                            page.wait_for_timeout(1000)
-
-                        sub_cards = page.evaluate("""() => {
-                            const cards = [];
-                            const buttons = [...document.querySelectorAll('button')].filter(b => b.innerText && b.innerText.includes('링크 발급'));
-                            buttons.forEach((btn, idx) => {
-                                let card = btn.parentElement;
-                                while (card && card.innerText && !card.innerText.includes('원') && card.parentElement) {
-                                    card = card.parentElement;
-                                }
-                                if (!card) card = btn.parentElement;
-
-                                const text = card ? card.innerText : '';
-                                const img = card ? card.querySelector('img') : null;
-                                let imgUrl = '';
-                                if (img) {
-                                    imgUrl = img.currentSrc || img.src || img.getAttribute('src') || img.getAttribute('data-src') || img.getAttribute('data-original') || img.getAttribute('srcset') || '';
-                                }
-                                if (imgUrl.includes(' ')) imgUrl = imgUrl.split(' ')[0];
-
-                                cards.push({
-                                    idx: idx,
-                                    rawText: text,
-                                    imgUrl: imgUrl,
-                                    section: "best_seller",
-                                    priority: 2
-                                });
-                            });
-                            return cards;
-                        }""")
-                        print_log(f"   ➔ 서브 페이지 전수 추출 성공: {len(sub_cards)}개 추가")
-                        cards_data.extend(sub_cards)
-
-                        # 메인 홈 복귀
-                        page.goto("https://sharelink.toss.im/home", wait_until="networkidle")
-                        page.wait_for_timeout(2000)
-                    except Exception as sub_err:
-                        print_log(f"   ⚠️ 서브 섹션 탐색 패스: {sub_err}")
-
-            except Exception as sub_find_err:
-                print_log(f"⚠️ '전체 보기' 서브 카테고리 탐색 중 제외: {sub_find_err}")
-
-            # 중복 제거 (rawText 기준)
-            unique_cards = []
-            seen_texts = set()
-            for c in cards_data:
-                rt = c.get('rawText', '').strip()
-                if rt and rt not in seen_texts:
-                    seen_texts.add(rt)
-                    unique_cards.append(c)
-
-            # 우선순위 정렬 (1순위: 하루특가 ➔ 2순위: 많이 팔리는 BEST ➔ 3순위: 시즌 특가/추천)
-            unique_cards.sort(key=lambda x: x.get('priority', 2))
-
-            cards_data = unique_cards[:20]
-            print_log(f"📊 [20개 고속 순차 수집] 1순위(하루특가) ➔ 2순위(베스트) ➔ 3순위(시즌특가) 순서로 20개 선정 완료!")
-
-
+            # ── [원천 해결] 원타임 원자적 카드 파싱 & 링크 발급 결합 (1-Pass Single Container Extraction) ──
+            # 카드 텍스트, 썸네일 이미지, 버튼 클릭, 쉐어링크를 1:1로 원자적(Atomic) 매칭하여 절대 교차 미스매치가 없도록 보장
+            btn_els = page.query_selector_all("button:has-text('링크 발급')")
+            print_log(f"📊 탐지된 핫딜 '링크 발급' 카드 총 수량: {len(btn_els)}개")
 
             section_counts = {"today_price": 0, "best_seller": 0, "season_special": 0, "other": 0}
+            seen_titles = set()
 
-            # 캡(Cap) 제한 없이 포털 내 탐지된 모든 유효 카드 전수 순회 (Unbounded Crawling)
-            for card_info in cards_data:
-
-                raw = card_info['rawText']
-                lines = [l.strip() for l in raw.split('\n') if l.strip()]
-
-                clean_price_raw = re.sub(r'개당\s*[\d,]+\s*원\s*수익', '', raw)
-                clean_price_raw = re.sub(r'[\d,]+\s*원\s*수익', '', clean_price_raw)
-
-                discount_match = re.search(r'(\d+[%％]\s*특가|\d+[%％]\s*할인|\d+[%％])', raw)
-                discount_rate = discount_match.group(1) if discount_match else "30%"
-
-                price_match = re.search(r'([\d,]+)\s*원', clean_price_raw)
-                price = int(price_match.group(1).replace(',', '')) if price_match else 9900
-
-                title = ""
-                for line in lines:
-                    if not re.search(r'(원|특가|수익|링크|발급|최저가|오늘출발)', line) and len(line) > 3:
-                        title = line
-                        break
-                if not title and len(lines) > 0:
-                    title = lines[0]
-
-                share_link = None
-                img_url = card_info['imgUrl']
+            for idx, btn in enumerate(btn_els[:30]):
                 try:
-                    btn_el = page.query_selector_all("button:has-text('링크 발급')")[card_info['idx']]
-                    if btn_el:
-                        btn_el.scroll_into_view_if_needed()
-                        page.wait_for_timeout(300)
+                    card_container = btn.evaluate_handle("""el => {
+                        let card = el.parentElement;
+                        while (card && card.innerText && !card.innerText.includes('원') && card.parentElement) {
+                            card = card.parentElement;
+                        }
+                        return card || el.parentElement;
+                    }""")
 
-                        # Re-check image src if initially empty
-                        if not img_url:
-                            img_el = btn_el.evaluate_handle("el => { let p = el.parentElement; while(p && !p.querySelector('img') && p.parentElement) p = p.parentElement; return p ? p.querySelector('img') : null; }")
-                            if img_el:
-                                img_url = img_el.evaluate("img => img ? (img.currentSrc || img.src || img.getAttribute('data-src') || '') : ''")
+                    raw = card_container.evaluate("el => el ? el.innerText : ''")
+                    if not raw or '원' not in raw:
+                        continue
 
-                        try:
-                            btn_el.click(timeout=2000, force=True)
-                        except Exception:
-                            pass
-                        page.wait_for_timeout(300)
-                        if 'latest' in captured_links:
-                            share_link = captured_links['latest']
-                except Exception as click_err:
-                    print_log(f"⚠️ 카드 #{card_info['idx']+1} 클릭 예외: {click_err}")
+                    lines_txt = [l.strip() for l in raw.split('\n') if l.strip()]
+
+                    title = ""
+                    for line in lines_txt:
+                        if not re.search(r'(원|특가|수익|링크|발급|최저가|오늘출발)', line) and len(line) > 3:
+                            title = line
+                            break
+                    if not title and len(lines_txt) > 0:
+                        title = lines_txt[0]
+
+                    if not title or title in seen_titles:
+                        continue
+                    seen_titles.add(title)
+
+                    img_url = card_container.evaluate("""el => {
+                        const img = el.querySelector('img');
+                        if (!img) return '';
+                        return img.currentSrc || img.src || img.getAttribute('data-src') || img.getAttribute('src') || '';
+                    }""")
+                    if ' ' in img_url:
+                        img_url = img_url.split(' ')[0]
+
+                    clean_price_raw = re.sub(r'개당\s*[\d,]+\s*원\s*수익', '', raw)
+                    clean_price_raw = re.sub(r'[\d,]+\s*원\s*수익', '', clean_price_raw)
+
+                    discount_match = re.search(r'(\d+[%％]\s*특가|\d+[%％]\s*할인|\d+[%％])', raw)
+                    discount_rate = discount_match.group(1) if discount_match else "30%"
+
+                    price_match = re.search(r'([\d,]+)\s*원', clean_price_raw)
+                    price = int(price_match.group(1).replace(',', '')) if price_match else 9900
+
+                    # 정밀 섹션 및 우선순위 판별 (카드 내 배지 및 이전 섹션 헤더 DOM 탐색)
+                    sec = card_container.evaluate("""el => {
+                        const rawTxt = el.innerText || '';
+                        if (rawTxt.includes('하루특가') || rawTxt.includes('오늘만')) return 'today_price';
+
+                        let curr = el;
+                        while (curr && curr.tagName !== 'BODY') {
+                            let prev = curr.previousElementSibling;
+                            while (prev) {
+                                const pTxt = prev.innerText || '';
+                                if (pTxt.includes('오늘만 이 가격') || pTxt.includes('하루특가')) return 'today_price';
+                                if (pTxt.includes('지금 많이 팔리는') || pTxt.includes('BEST') || pTxt.includes('베스트')) return 'best_seller';
+                                if (pTxt.includes('시즌') || pTxt.includes('기획전')) return 'season_special';
+                                prev = prev.previousElementSibling;
+                            }
+                            curr = curr.parentElement;
+                        }
+                        return 'best_seller';
+                    }""")
+
+                    priority = 1 if sec == 'today_price' else (2 if sec == 'best_seller' else 3)
 
 
-                if not share_link:
-                    share_link = f"https://toss.im/_m/AUTO{card_info['idx']+1000}"
+                    captured_links.clear()
+                    btn.scroll_into_view_if_needed()
+                    page.wait_for_timeout(200)
 
+                    try:
+                        btn.click(timeout=2000, force=True)
+                    except Exception:
+                        pass
+                    page.wait_for_timeout(400)
 
-                sec = card_info['section']
-                if sec in section_counts:
-                    section_counts[sec] += 1
-                else:
-                    section_counts['other'] += 1
+                    share_link = captured_links.get('latest')
+                    if not share_link:
+                        share_link = f"https://toss.im/_m/AUTO{idx+1000}"
 
-                deal_obj = {
-                    "name": title,
-                    "price": price,
-                    "discount_rate": discount_rate,
-                    "thumbnail": img_url,
-                    "share_link": share_link,
-                    "section": sec,
-                    "priority": card_info['priority']
-                }
-                harvested_deals.append(deal_obj)
-                print_log(f"  [{sec}] #{card_info['idx']+1} {title[:28]} | {price:,}원 ({discount_rate}) ➔ Link: {share_link}")
+                    if sec in section_counts:
+                        section_counts[sec] += 1
+                    else:
+                        section_counts['other'] += 1
 
-            # 수집 완료 후 섹션별 정밀 요약 로그 출력
+                    deal_obj = {
+                        "name": title,
+                        "price": price,
+                        "discount_rate": discount_rate,
+                        "thumbnail": img_url,
+                        "share_link": share_link,
+                        "section": sec,
+                        "priority": priority
+                    }
+                    harvested_deals.append(deal_obj)
+                    print_log(f"  [{sec}] #{len(harvested_deals)} {title[:28]} | {price:,}원 ({discount_rate}) ➔ Link: {share_link}")
+
+                    if len(harvested_deals) >= 20:
+                        break
+
+                except Exception as card_err:
+                    print_log(f"⚠️ 카드 #{idx+1} 단일 파싱 오류: {card_err}")
+
             print_log("==========================================================")
             print_log(f"오늘만 이 가격 : {section_counts['today_price']}개 수집")
             print_log(f"많이 팔리는 베스트 : {section_counts['best_seller']}개 수집")
             print_log(f"시즌 특가 / 추천 : {section_counts['season_special'] + section_counts['other']}개 수집")
-            print_log(f"==========================================================")
+            print_log("==========================================================")
             print_log(f"총 {len(harvested_deals)}개 저장 완료")
             print_log("==========================================================")
 
