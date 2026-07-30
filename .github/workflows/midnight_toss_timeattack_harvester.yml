@@ -1,13 +1,10 @@
-name: 🌐 365-Day Unattended Toss Harvester Daemon
+name: 🌐 External Server Auto-Harvester Daemon
 
 on:
-  schedule:
-    # Runs every 30 minutes in the cloud 24/7
-    - cron: '*/30 * * * *'
-  workflow_dispatch: # Allows manual cloud trigger anytime
   push:
     branches:
       - main
+  workflow_dispatch: # Allows manual trigger anytime from GitHub UI
 
 jobs:
   run-harvester:
