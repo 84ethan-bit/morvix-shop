@@ -21,26 +21,6 @@
       "sameSite": "Lax"
     },
     {
-      "name": "_hjSessionUser_6659753",
-      "value": "eyJpZCI6IjQyYzEzMTU0LWM2YzItNTdhZC1hM2YwLTExMzE3ZWQ4Y2RmOSIsImNyZWF0ZWQiOjE3ODU0MDQ4Nzg0MjEsImV4aXN0aW5nIjpmYWxzZX0=",
-      "domain": ".toss.im",
-      "path": "/",
-      "expires": 1816940878,
-      "httpOnly": false,
-      "secure": true,
-      "sameSite": "None"
-    },
-    {
-      "name": "_hjSession_6659753",
-      "value": "eyJpZCI6Ijg2OThlZGMzLWEyZTUtNDNkMy05YTE2LTNjZGMzYjdhYzNhYSIsImMiOjE3ODU0MDQ4Nzg0MjIsInMiOjAsInIiOjAsInNiIjowLCJzciI6MCwic2UiOjAsImZzIjoxLCJzcCI6MH0=",
-      "domain": ".toss.im",
-      "path": "/",
-      "expires": 1785406678,
-      "httpOnly": false,
-      "secure": true,
-      "sameSite": "None"
-    },
-    {
       "name": "_gcl_au",
       "value": "1.1.1849940096.1785404879",
       "domain": ".toss.im",
@@ -65,87 +45,107 @@
       "value": "GA1.1.1905861294.1785404879",
       "domain": ".toss.im",
       "path": "/",
-      "expires": 1819964879.005331,
+      "expires": 1819981725.941532,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
-    },
-    {
-      "name": "test_cookie",
-      "value": "CheckForPermission",
-      "domain": ".doubleclick.net",
-      "path": "/",
-      "expires": 1785405778.973932,
-      "httpOnly": false,
-      "secure": true,
-      "sameSite": "None"
-    },
-    {
-      "name": "_dd_s_v2",
-      "value": "aid=09ea4c38-29b8-4426-9d41-8b3c9d28de37&id=01710196-482f-4124-aa8f-7d28987554b7&created=1785404879515&expire=1785405779515&c=0",
-      "domain": "business.toss.im",
-      "path": "/",
-      "expires": 1816940879.515,
-      "httpOnly": false,
-      "secure": true,
-      "sameSite": "Strict"
     },
     {
       "name": "ch-veil-id",
       "value": "dc41e039-51c3-4f0e-a870-4992f4a8c04e",
       "domain": ".toss.im",
       "path": "/",
-      "expires": 1816940879.646401,
+      "expires": 1816957730.543211,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
+    },
+    {
+      "name": "_hjSessionUser_6659753",
+      "value": "eyJpZCI6IjQyYzEzMTU0LWM2YzItNTdhZC1hM2YwLTExMzE3ZWQ4Y2RmOSIsImNyZWF0ZWQiOjE3ODU0MDQ4Nzg0MjEsImV4aXN0aW5nIjp0cnVlfQ==",
+      "domain": ".toss.im",
+      "path": "/",
+      "expires": 1816957723,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "_hjSession_6659753",
+      "value": "eyJpZCI6IjFlYjAzOTI5LWFhOGQtNDAwYS1hMmUzLTExYWM4OWJjZWVkZiIsImMiOjE3ODU0MjE3MjMyNDksInMiOjAsInIiOjAsInNiIjowLCJzciI6MCwic2UiOjAsImZzIjowLCJzcCI6MH0=",
+      "domain": ".toss.im",
+      "path": "/",
+      "expires": 1785423523,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "test_cookie",
+      "value": "CheckForPermission",
+      "domain": ".doubleclick.net",
+      "path": "/",
+      "expires": 1785422624.872989,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
     },
     {
       "name": "ch-session-144685",
-      "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzZXMiLCJleHAiOjE3ODc5OTY4ODAsImlhdCI6MTc4NTQwNDg4MCwia2V5IjoiMTQ0Njg1LTZhNmIxZGQwNzMwNTY3ZDk3ZTI5In0.YVQfeuPUzQd-xtQAVZ07bUeUbi4AOx8HNsQoYRimpps",
+      "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzZXMiLCJleHAiOjE3ODgwMTM3MzAsImlhdCI6MTc4NTQyMTczMCwia2V5IjoiMTQ0Njg1LTZhNmIxZGQwNzMwNTY3ZDk3ZTI5In0.j8wXH5yrlaMLGM8bTAMc1t0DF-aLtD44HERJhcH2_-4",
       "domain": ".toss.im",
       "path": "/",
-      "expires": 1785406679.646524,
+      "expires": 1785423530.543329,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
     },
     {
-      "name": "_ga_XMB6338SF6",
-      "value": "GS2.1.s1785404878$o1$g1$t1785404893$j45$l0$h0",
+      "name": "_dd_s_v2",
+      "value": "aid=09ea4c38-29b8-4426-9d41-8b3c9d28de37&id=182eaf20-f34b-4bfa-96e0-c66394b4e583&created=1785421733443&expire=1785422633443&c=0",
+      "domain": "business.toss.im",
+      "path": "/",
+      "expires": 1816957733.443,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Strict"
+    },
+    {
+      "name": "TBIZAUTH",
+      "value": "ZGEyZDUyZWItZGEyMy00MzhlLTlkNjEtNzQ3M2M2N2I5M2Mx",
       "domain": ".toss.im",
       "path": "/",
-      "expires": 1819964893.638241,
+      "expires": 1785853736.173587,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "_ga_XMB6338SF6",
+      "value": "GS2.1.s1785421724$o2$g1$t1785421737$j47$l0$h0",
+      "domain": ".toss.im",
+      "path": "/",
+      "expires": 1819981737.341075,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
     },
     {
       "name": "_ga_4F64XP345M",
-      "value": "GS2.1.s1785404878$o1$g1$t1785404893$j45$l0$h0",
+      "value": "GS2.1.s1785421725$o2$g1$t1785421737$j48$l0$h0",
       "domain": ".toss.im",
       "path": "/",
-      "expires": 1819964893.642121,
+      "expires": 1819981737.346057,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
     },
     {
-      "name": "TBIZAUTH",
-      "value": "MjA2NmVmZGYtNDJkZS00YzY5LWI3NzEtNjJmNDJiZjIwZTFk",
-      "domain": ".toss.im",
-      "path": "/",
-      "expires": 1785836893.819198,
-      "httpOnly": true,
-      "secure": true,
-      "sameSite": "None"
-    },
-    {
       "name": "AMP_b2079b126e",
-      "value": "JTdCJTIyZGV2aWNlSWQlMjIlM0ElMjI1MDc2NjIwYy03NzczLTRjOGQtYjI2Zi1hNDYyYWI4OGFiYzAlMjIlMkMlMjJ1c2VySWQlMjIlM0ElMjJiaXpfMzAzNDQ2JTIyJTJDJTIyc2Vzc2lvbklkJTIyJTNBMTc4NTQwNDg3NzY0NiUyQyUyMm9wdE91dCUyMiUzQWZhbHNlJTJDJTIybGFzdEV2ZW50VGltZSUyMiUzQTE3ODU0MDQ4OTYyNTclMkMlMjJsYXN0RXZlbnRJZCUyMiUzQTYlMkMlMjJwYWdlQ291bnRlciUyMiUzQTIlMkMlMjJjb29raWVEb21haW4lMjIlM0ElMjIudG9zcy5pbSUyMiU3RA==",
+      "value": "JTdCJTIyZGV2aWNlSWQlMjIlM0ElMjI1MDc2NjIwYy03NzczLTRjOGQtYjI2Zi1hNDYyYWI4OGFiYzAlMjIlMkMlMjJ1c2VySWQlMjIlM0ElMjJiaXpfMzAzNDQ2JTIyJTJDJTIyc2Vzc2lvbklkJTIyJTNBMTc4NTQyMTcxMjc0NCUyQyUyMm9wdE91dCUyMiUzQWZhbHNlJTJDJTIybGFzdEV2ZW50VGltZSUyMiUzQTE3ODU0MjE3NjU4NTElMkMlMjJsYXN0RXZlbnRJZCUyMiUzQTEyJTJDJTIycGFnZUNvdW50ZXIlMjIlM0EyJTJDJTIyY29va2llRG9tYWluJTIyJTNBJTIyLnRvc3MuaW0lMjIlN0Q=",
       "domain": ".toss.im",
       "path": "/",
-      "expires": 1816940896,
+      "expires": 1816957765,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
@@ -157,11 +157,11 @@
       "localStorage": [
         {
           "name": "AMP_unsent_b2079b126e",
-          "value": "[{\"user_id\":\"biz_303446\",\"device_id\":\"5076620c-7773-4c8d-b26f-a462ab88abc0\",\"session_id\":1785404877646,\"time\":1785404896257,\"platform\":\"Web\",\"language\":\"ko-KR\",\"ip\":\"$remote\",\"insert_id\":\"b1d63544-f4d1-47a7-8b2a-665e4f56219e\",\"event_type\":\"section_impressed\",\"event_properties\":{\"surface_section\":\"home_TODAY_DEAL\",\"surface\":\"home\",\"sectionOrder\":0,\"productCount\":9,\"sectionName\":\"오늘만 이 가격에 살 수 있는 하루특가\",\"[Amplitude] Page Domain\":\"sharelink.toss.im\",\"[Amplitude] Page Location\":\"https://sharelink.toss.im/home\",\"[Amplitude] Page Path\":\"/home\",\"[Amplitude] Page Title\":\"토스쇼핑 쉐어링크\",\"[Amplitude] Page URL\":\"https://sharelink.toss.im/home\",\"[Amplitude] Previous Page Location\":\"https://sharelink.toss.im/login?redirect=%2Fhome\",\"[Amplitude] Previous Page Type\":\"internal\"},\"event_id\":6,\"library\":\"amplitude-ts/2.39.1\",\"user_agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"}]"
+          "value": "[{\"user_id\":\"biz_303446\",\"device_id\":\"5076620c-7773-4c8d-b26f-a462ab88abc0\",\"session_id\":1785421712744,\"time\":1785421765851,\"platform\":\"Web\",\"language\":\"ko-KR\",\"ip\":\"$remote\",\"insert_id\":\"c3fd3cad-aa2c-4879-803c-827d75cf0f45\",\"event_type\":\"page_viewed\",\"event_properties\":{\"page\":\"home\",\"[Amplitude] Page Domain\":\"sharelink.toss.im\",\"[Amplitude] Page Location\":\"https://sharelink.toss.im/home\",\"[Amplitude] Page Path\":\"/home\",\"[Amplitude] Page Title\":\"토스쇼핑 쉐어링크\",\"[Amplitude] Page URL\":\"https://sharelink.toss.im/home\",\"[Amplitude] Previous Page Location\":\"\",\"[Amplitude] Previous Page Type\":\"direct\"},\"event_id\":12,\"library\":\"amplitude-ts/2.39.1\",\"user_agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36\"}]"
         },
         {
           "name": "AMP_remote_config_b2079b126e",
-          "value": "{\"remoteConfig\":{\"configs\":{\"diagnostics\":{\"browserSDK\":{\"sampleRate\":0.02}},\"sessionReplay\":{\"sr_privacy_config\":{\"maskSelector\":[],\"blockSelector\":[],\"unmaskSelector\":[],\"defaultMaskLevel\":\"medium\"},\"sr_sampling_config\":{\"capture_enabled\":true,\"sample_rate\":0.01}},\"analyticsSDK\":{}}},\"lastFetch\":\"2026-07-30T09:48:14.080Z\"}"
+          "value": "{\"remoteConfig\":{\"configs\":{\"diagnostics\":{\"browserSDK\":{\"sampleRate\":0.02}},\"sessionReplay\":{\"sr_privacy_config\":{\"maskSelector\":[],\"blockSelector\":[],\"unmaskSelector\":[],\"defaultMaskLevel\":\"medium\"},\"sr_sampling_config\":{\"sample_rate\":0.01,\"capture_enabled\":true}},\"analyticsSDK\":{}}},\"lastFetch\":\"2026-07-30T14:29:03.146Z\"}"
         },
         {
           "name": "@toss/browserId",
@@ -174,7 +174,7 @@
       "localStorage": [
         {
           "name": "Channel.last_seen_tab_id_",
-          "value": "\"7f000d6a-d8ed-41db-a588-7f2db42f3853\""
+          "value": "\"01111540-aafe-47a9-82be-e2e56cafab19\""
         },
         {
           "name": "toss-business:auth:last-sign-in-method",
@@ -194,11 +194,11 @@
         },
         {
           "name": "Channel.last_seen_tab_id_144685",
-          "value": "\"7f000d6a-d8ed-41db-a588-7f2db42f3853\""
+          "value": "\"01111540-aafe-47a9-82be-e2e56cafab19\""
         },
         {
           "name": "_gcl_ls",
-          "value": "{\"schema\":\"gcl\",\"version\":1,\"gsid_dc\":{\"value\":{\"joinId\":\"58KUvcjmYWx0yYTQo5FSm8svj0fNOsihVw\",\"lastJoinedTimeMs\":1785404878509},\"expires\":1785405178509},\"gcl_ctr\":{\"value\":{\"value\":0,\"timeouts\":0,\"errors\":0,\"eopCount\":0,\"creationTimeMs\":1785404878513},\"expires\":1793180878513}}"
+          "value": "{\"schema\":\"gcl\",\"version\":1,\"gsid_dc\":{\"value\":{\"joinId\":\"xtUE6xKJjbFIDHGbO-p0xCIED0Akv5iTxw\",\"lastJoinedTimeMs\":1785421720846},\"expires\":1785422020846},\"gcl_ctr\":{\"value\":{\"value\":0,\"timeouts\":0,\"errors\":0,\"eopCount\":0,\"creationTimeMs\":1785404878513},\"expires\":1793180878513}}"
         },
         {
           "name": "Channel.notification_sound_144685",
