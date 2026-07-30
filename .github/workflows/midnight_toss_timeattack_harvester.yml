@@ -1,13 +1,16 @@
-name: 🌙 Midnight 00:10 KST Toss Time Attack Auto-Harvester
+name: 🌐 365-Day Unattended Toss Harvester Daemon
 
 on:
   schedule:
-    # 15:10 UTC = 00:10 KST (Korea Standard Time)
-    - cron: '10 15 * * *'
-  workflow_dispatch: # Allows manual trigger anytime from GitHub UI
+    # Runs every 30 minutes in the cloud 24/7
+    - cron: '*/30 * * * *'
+  workflow_dispatch: # Allows manual cloud trigger anytime
+  push:
+    branches:
+      - main
 
 jobs:
-  rotate-time-attack:
+  run-harvester:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -18,13 +21,18 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Run Midnight Time Attack Rotation Script
+      - name: Install Playwright & Dependencies
         run: |
-          python worker/midnight_timeattack_rotator.py
+          pip install playwright requests
+          playwright install --with-deps chromium
+
+      - name: Execute Standalone Toss Harvester Core
+        run: |
+          python worker/sharelink_toss_harvester.py
 
       - name: Commit & Push Updated DB to Vercel
         run: |
-          git config --global user.name "MORVIX Midnight Bot"
+          git config --global user.name "MORVIX External Server Bot"
           git config --global user.email "bot@morvix.io"
           git add morvix_shop_db.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(cron): Auto-rotate midnight 00:10 KST Time Attack deals" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(cron): Auto-ingest latest Toss deals from external server" && git push)
