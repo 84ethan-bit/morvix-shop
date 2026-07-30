@@ -347,10 +347,13 @@ function renderProducts() {
     filtered = filtered.slice().sort((a, b) => ((b.analytics ? b.analytics.clicks_count : b.clicks_count) || 0) - ((a.analytics ? a.analytics.clicks_count : a.clicks_count) || 0));
   }
 
-  // SECTION 1: Time Attack Top 3 Deals
+  // SECTION 1: Time Attack Deals (prioritize p.section === 'today_price', fallback to highest discount)
   let timeAttackDeals = [];
   if (timeAttackGrid) {
-    timeAttackDeals = activeProducts.slice().sort((a, b) => parseDiscountNum(b.discount_rate) - parseDiscountNum(a.discount_rate)).slice(0, 3);
+    timeAttackDeals = activeProducts.filter(p => p.section === 'today_price');
+    if (timeAttackDeals.length === 0) {
+      timeAttackDeals = activeProducts.slice().sort((a, b) => parseDiscountNum(b.discount_rate) - parseDiscountNum(a.discount_rate)).slice(0, 3);
+    }
 
     const badgeHTML = `<span class="badge-minimal" style="background: #FF4757; color: #fff;">⏰ 하루특가</span>`;
     timeAttackGrid.innerHTML = timeAttackDeals.map(p => renderUniversalProductCard(p, badgeHTML, 'border: 1.5px solid #FF4757; background: #ffffff;')).join('');
