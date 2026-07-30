@@ -98,9 +98,11 @@ def harvest_sharelink_portal():
             page.goto("https://sharelink.toss.im/home", wait_until="networkidle", timeout=20000)
             page.wait_for_timeout(3000)
 
-            # Scroll down completely to trigger lazy-loaded images
-            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-            page.wait_for_timeout(2000)
+            # Multi-stage scroll loop to trigger full page lazy-loading for all sections (Full Catalog)
+            for step in range(1, 6):
+                page.evaluate(f"window.scrollTo(0, (document.body.scrollHeight / 5) * {step})")
+                page.wait_for_timeout(1000)
+            page.wait_for_timeout(1500)
 
             # 핫딜 카드 및 원본 판매 섹션(오늘만 이 가격, 많이 팔리는 베스트 등) 파싱
             cards_data = page.evaluate("""() => {
