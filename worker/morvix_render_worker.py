@@ -534,26 +534,23 @@ def git_push_db():
 
 
 def autonomous_harvest_loop():
-    """HARVEST_INTERVAL마다 토스 수집 → DB 갱신 → Git Push 자동 루프"""
+    """HARVEST_INTERVAL마다 토스 수집 → DB 갱신 → Git Push 자동 루프 (실시간 라인 스트리밍)"""
     print(f"🤖 [AUTO LOOP] 자율 수집 루프 시작 ({HARVEST_INTERVAL//60}분 간격)", flush=True)
     while True:
         try:
             print(f"\n[{datetime.now().strftime('%H:%M:%S')}] 🕐 토스 파트너 수집 시작...", flush=True)
-            result = subprocess.run(
-                [sys.executable, os.path.join(BASE_DIR, "worker", "sharelink_toss_harvester.py")],
-                capture_output=True, text=True, cwd=BASE_DIR, timeout=600
-            )
-            # 수집기 전체 출력을 로그에 표시
-            if result.stdout:
-                print(f"[HARVESTER STDOUT]\n{result.stdout[-1000:]}", flush=True)
-            if result.stderr:
-                print(f"[HARVESTER STDERR]\n{result.stderr[-500:]}", flush=True)
-
-            if result.returncode == 0:
+            cmd = [sys.executable, "-u", os.path.join(BASE_DIR, "worker", "sharelink_toss_harvester.py")]
+            env = dict(os.environ)
+            env["PYTHONUNBUFFERED"] = "1"
+            proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, cwd=BASE_DIR, env=env, bufsize=1)
+            for line in proc.stdout:
+                print(line, end="", flush=True)
+            proc.wait()
+            if proc.returncode == 0:
                 print(f"[{datetime.now().strftime('%H:%M:%S')}] ✅ 수집 완료", flush=True)
                 git_push_db()
             else:
-                print(f"❌ 수집기 returncode={result.returncode}", flush=True)
+                print(f"❌ 수집기 returncode={proc.returncode}", flush=True)
         except Exception as e:
             print(f"❌ 자율 루프 예외: {e}", flush=True)
         print(f"😴 {HARVEST_INTERVAL//60}분 후 재가동...", flush=True)
