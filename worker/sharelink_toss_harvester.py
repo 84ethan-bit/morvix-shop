@@ -226,48 +226,290 @@ def harvest_sharelink_portal():
                     browser.close()
                     return []
 
-            # Full-page deep scroll: 10단계 전체 스크롤로 모든 섹션 lazy-loading 완전 유발
-            print_log("📜 전체 페이지 딥스크롤 시작 (10단계 전체 구역 강제 로딩)...")
-            for step in range(1, 11):
+            # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            # 2-섹션 전용 수집 전략:
+            #  1순위) "오늘만 이가격" 하루특가  → 전체 보기 클릭 → 전체 상품 수집
+            #  2순위) "지금 많이 팔리는 BEST"  → 전체 보기 클릭 → 전체 상품 수집
+            # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+            section_counts = {"today_price": 0, "best_seller": 0}
+            seen_titles = set()
+            TARGET_PER_SECTION = 30  # 섹션당 최대 30개
+
+            def collect_from_full_page(section_name, section_key, priority_val):
+                """현재 '전체 보기' 페이지에서 링크 발급 버튼 전수 수집"""
+                nonlocal seen_titles
+
+                # 전체 페이지 딥스크롤 (10단계)
+                print_log(f"  📜 [{section_name}] 딥스크롤 시작...")
+                for step in range(1, 11):
+                    try:
+                        page.evaluate(f"window.scrollTo(0, (document.body.scrollHeight / 10) * {step})")
+                    except Exception:
+                        pass
+                    page.wait_for_timeout(600)
                 try:
-                    page.evaluate(f"window.scrollTo(0, (document.body.scrollHeight / 10) * {step})")
+                    page.evaluate("window.scrollTo(0, 0)")
                 except Exception:
                     pass
-                page.wait_for_timeout(800)
-            # 맨 위로 복귀 후 재안정화
+                page.wait_for_timeout(2000)
+
+                btns = page.query_selector_all("button:has-text('링크 발급')")
+                print_log(f"  📊 [{section_name}] 탐지된 '링크 발급' 버튼: {len(btns)}개")
+
+                collected = 0
+                for idx, btn in enumerate(btns):
+                    if collected >= TARGET_PER_SECTION:
+                        break
+                    try:
+                        btn.scroll_into_view_if_needed()
+                        page.wait_for_timeout(300)
+
+                        # 카드 컨테이너 탐색 (img + 가격이 함께 있는 최상위 상자)
+                        card_container = btn.evaluate_handle("""el => {
+                            let node = el;
+                            for (let i = 0; i < 8; i++) {
+                                node = node.parentElement;
+                                if (!node) break;
+                                const hasImg = node.querySelector('img') !== null;
+                                const text = node.innerText || '';
+                                const hasPrice = /[0-9,]+\\s*원/.test(text);
+                                if (hasImg && hasPrice) return node;
+                            }
+                            return el.parentElement || el;
+                        }""")
+                        if not card_container:
+                            continue
+
+                        raw = card_container.evaluate("el => el.innerText || ''")
+                        lines_raw = [l.strip() for l in raw.split('\n') if l.strip() and '링크 발급' not in l]
+
+                        # 상품명: 숫자/기호만 있는 줄 제외, 최소 5글자 이상
+                        title = next((l for l in lines_raw if len(l) >= 5 and not re.match(r'^[\d,%원\-~]+$', l)
+                                      and '특가' not in l and '최저가' not in l and '오늘출발' not in l
+                                      and '베스트판매자' not in l and '내일도착' not in l), '')
+                        if not title or title in seen_titles:
+                            continue
+                        seen_titles.add(title)
+
+                        # 이미지
+                        img_url = card_container.evaluate(r"""el => {
+                            const imgs = [...el.querySelectorAll('img')];
+                            for (const img of imgs) {
+                                let src = img.currentSrc || img.src || img.getAttribute('data-src') || img.getAttribute('src') || '';
+                                if (src.includes(' ')) src = src.split(' ')[0];
+                                if (src && src.startsWith('http') && !src.includes('placeholder') && !src.includes('DefaultDeal') && !src.includes('data:image')) {
+                                    return src;
+                                }
+                            }
+                            const divs = [...el.querySelectorAll('div, span')];
+                            for (const d of divs) {
+                                const bg = window.getComputedStyle(d).backgroundImage;
+                                if (bg && bg.includes('url(')) {
+                                    const m = bg.match(/url\(["']?(https?:\/\/[^"']+)["']?\)/);
+                                    if (m && m[1]) return m[1];
+                                }
+                            }
+                            return '';
+                        }""")
+                        if ' ' in img_url:
+                            img_url = img_url.split(' ')[0]
+
+                        # 할인율
+                        discount_match = re.search(r'(\d+[%％]\s*특가|\d+[%％]\s*할인|\d+[%％])', raw)
+                        discount_rate = discount_match.group(1) if discount_match else '30%'
+
+                        # 가격 (개당/수익 텍스트 제거 후)
+                        clean_raw = re.sub(r'개당\s*[\d,]+\s*원\s*수익', '', raw)
+                        clean_raw = re.sub(r'[\d,]+\s*원\s*수익', '', clean_raw)
+                        price_match = re.search(r'([\d,]+)\s*원', clean_raw)
+                        price = int(price_match.group(1).replace(',', '')) if price_match else 9900
+
+                        # 5대 검증
+                        is_valid_name = len(title) >= 3
+                        is_valid_price = isinstance(price, int) and price >= 500
+                        is_valid_discount = bool(re.search(r'\d+[%％]', discount_rate))
+                        is_valid_thumb = bool(img_url and img_url.startswith('http') and len(img_url) >= 15)
+                        if not (is_valid_name and is_valid_price and is_valid_discount and is_valid_thumb):
+                            print_log(f"    🛑 [검증 실패] {title[:20]} (Name:{is_valid_name} Price:{is_valid_price} Disc:{is_valid_discount} Thumb:{is_valid_thumb})")
+                            continue
+
+                        # Race Condition 방어: per-card idx 독립 키
+                        card_key = (priority_val * 10000) + idx
+                        capture_lock[0] = card_key
+                        captured_links.pop(card_key, None)
+                        try:
+                            btn.click(timeout=2000, force=True)
+                        except Exception:
+                            pass
+                        page.wait_for_timeout(600)
+                        share_link = captured_links.get(card_key)
+
+                        # 모달 DOM 정밀 검사
+                        if not share_link:
+                            try:
+                                modal_link = page.evaluate("""() => {
+                                    const els = [...document.querySelectorAll('input, a, p, div, span')];
+                                    for (const el of els) {
+                                        const val = el.value || el.href || el.innerText || '';
+                                        if (val.includes('toss.im/_m/') || val.includes('toss.im/m/')) {
+                                            const match = val.match(/(https:\\/\\/toss\\.im\\/(?:_m|m)\\/[A-Za-z0-9_-]+)/);
+                                            if (match) return match[1];
+                                        }
+                                    }
+                                    return null;
+                                }""")
+                                if modal_link:
+                                    share_link = modal_link
+                            except Exception:
+                                pass
+
+                        # 모달 닫기
+                        try:
+                            close_btn = page.locator("button:has-text('닫기'), [aria-label='close'], .modal-close, button:has-text('확인')")
+                            if close_btn.count() > 0:
+                                close_btn.first.click(timeout=1000)
+                        except Exception:
+                            pass
+
+                        if not share_link or 'AUTO' in share_link or not ('toss.im/_m/' in share_link or 'toss.im/m/' in share_link):
+                            print_log(f"    🛑 [링크 미발급] {title[:25]} → 수집 제외")
+                            continue
+
+                        deal_obj = {
+                            "name": title,
+                            "price": price,
+                            "discount_rate": discount_rate,
+                            "thumbnail": img_url,
+                            "share_link": share_link,
+                            "section": section_key,
+                            "priority": priority_val
+                        }
+                        harvested_deals.append(deal_obj)
+                        section_counts[section_key] += 1
+                        collected += 1
+                        print_log(f"  [{section_name}] #{collected} {title[:30]} | {price:,}원 ({discount_rate})")
+
+                    except Exception as card_err:
+                        print_log(f"  ⚠️ 카드 #{idx+1} 파싱 오류: {card_err}")
+
+                return collected
+
+            # ── 1순위: 오늘만 이가격 (하루특가) 전체 보기 ──
+            print_log("━━━ [1순위] 오늘만 이가격 하루특가 전체 보기 클릭 ━━━")
             try:
+                # 홈페이지 딥스크롤 → 섹션 헤더 노출
+                for step in range(1, 6):
+                    try:
+                        page.evaluate(f"window.scrollTo(0, (document.body.scrollHeight / 5) * {step})")
+                    except Exception:
+                        pass
+                    page.wait_for_timeout(500)
                 page.evaluate("window.scrollTo(0, 0)")
-            except Exception:
-                pass
-            page.wait_for_timeout(3000)
+                page.wait_for_timeout(1500)
 
-            # 페이지 안정화 후 networkidle 대기
-            try:
-                page.wait_for_load_state("networkidle", timeout=10000)
-            except Exception:
-                pass
-            page.wait_for_timeout(2000)
+                today_see_all = page.locator("a:has-text('전체 보기'), button:has-text('전체 보기'), a:has-text('더 보기'), button:has-text('더 보기')").first
+                if today_see_all.count() > 0 or True:
+                    # 하루특가 섹션의 전체 보기 탐색
+                    see_all_link = page.evaluate("""() => {
+                        const headers = [...document.querySelectorAll('h1, h2, h3, p, span, div')];
+                        for (const h of headers) {
+                            const txt = h.innerText || '';
+                            if (txt.includes('오늘만 이 가격') || txt.includes('하루특가')) {
+                                let parent = h.parentElement;
+                                for (let i = 0; i < 5; i++) {
+                                    if (!parent) break;
+                                    const link = parent.querySelector('a[href], button');
+                                    const linkTxt = link ? (link.innerText || '') : '';
+                                    if (linkTxt.includes('전체') || linkTxt.includes('더 보기')) {
+                                        return link.href || link.getAttribute('href') || '__CLICK__';
+                                    }
+                                    parent = parent.parentElement;
+                                }
+                            }
+                        }
+                        return null;
+                    }""")
+                    print_log(f"  🔗 하루특가 '전체 보기' 링크: {see_all_link}")
 
-            # ── 진단: 실제 버튼 목록 및 스크린샷 ──
-            try:
-                screenshot_path = os.path.join(BASE_DIR, "scratch", "debug_screenshot.png")
-                page.screenshot(path=screenshot_path, full_page=True)
-                print_log(f"📸 스크린샷 저장: {screenshot_path}")
+                    if see_all_link and see_all_link != '__CLICK__':
+                        page.goto(see_all_link, wait_until="domcontentloaded", timeout=30000)
+                        page.wait_for_timeout(2000)
+                        collect_from_full_page("하루특가", "today_price", 1)
+                    else:
+                        # 전체 보기 링크 없으면 홈에서 하루특가 카드 직접 수집
+                        print_log("  ⚠️ 전체 보기 링크 없음 → 홈 하루특가 섹션 직접 수집")
+                        collect_from_full_page("하루특가(홈)", "today_price", 1)
+
             except Exception as e:
-                print_log(f"스크린샷 실패: {e}")
+                print_log(f"  ❌ 하루특가 전체 보기 오류: {e}")
 
+            # ── 홈으로 복귀 ──
             try:
-                all_buttons = page.evaluate("""() => {
-                    return [...document.querySelectorAll('button')].map(b => b.innerText.trim()).filter(t => t.length > 0).slice(0, 20);
+                page.goto("https://sharelink.toss.im/home", wait_until="domcontentloaded", timeout=30000)
+                page.wait_for_timeout(2000)
+            except Exception:
+                pass
+
+            # ── 2순위: 지금 많이 팔리는 BEST 전체 보기 ──
+            print_log("━━━ [2순위] 지금 많이 팔리는 BEST 전체 보기 클릭 ━━━")
+            try:
+                for step in range(1, 6):
+                    try:
+                        page.evaluate(f"window.scrollTo(0, (document.body.scrollHeight / 5) * {step})")
+                    except Exception:
+                        pass
+                    page.wait_for_timeout(500)
+                page.evaluate("window.scrollTo(0, 0)")
+                page.wait_for_timeout(1500)
+
+                best_see_all_link = page.evaluate("""() => {
+                    const headers = [...document.querySelectorAll('h1, h2, h3, p, span, div')];
+                    for (const h of headers) {
+                        const txt = h.innerText || '';
+                        if (txt.includes('지금 많이 팔리는') || txt.includes('BEST') || txt.includes('베스트')) {
+                            let parent = h.parentElement;
+                            for (let i = 0; i < 5; i++) {
+                                if (!parent) break;
+                                const link = parent.querySelector('a[href], button');
+                                const linkTxt = link ? (link.innerText || '') : '';
+                                if (linkTxt.includes('전체') || linkTxt.includes('더 보기')) {
+                                    return link.href || link.getAttribute('href') || '__CLICK__';
+                                }
+                                parent = parent.parentElement;
+                            }
+                        }
+                    }
+                    return null;
                 }""")
-                print_log(f"🔍 페이지 내 버튼 목록 (최대20): {all_buttons}")
-            except Exception as e:
-                print_log(f"버튼 목록 조회 실패: {e}")
-            # ── 진단 끝 ──
+                print_log(f"  🔗 베스트 '전체 보기' 링크: {best_see_all_link}")
 
-            # ── 카테고리 탭 전수 순회하여 전체 상품 풀(Full Pool) 확대 수집 ──
-            # 토스 쇼핑몰의 '전체' 탭 → '오늘만 이 가격' 탭 → '많이 팔리는 BEST' 탭 순서로 전수 탐색
-            category_tabs_to_visit = []
+                if best_see_all_link and best_see_all_link != '__CLICK__':
+                    page.goto(best_see_all_link, wait_until="domcontentloaded", timeout=30000)
+                    page.wait_for_timeout(2000)
+                    collect_from_full_page("지금 많이 팔리는 BEST", "best_seller", 2)
+                else:
+                    print_log("  ⚠️ 전체 보기 링크 없음 → 홈 베스트 섹션 직접 수집")
+                    collect_from_full_page("베스트(홈)", "best_seller", 2)
+
+            except Exception as e:
+                print_log(f"  ❌ 베스트 전체 보기 오류: {e}")
+
+            print_log("==========================================================")
+            print_log(f"🏆 오늘만 이가격(하루특가) : {section_counts['today_price']}개 수집")
+            print_log(f"🔥 지금 많이 팔리는 BEST  : {section_counts['best_seller']}개 수집")
+            print_log(f"📦 총 합계               : {len(harvested_deals)}개")
+            print_log("==========================================================")
+
+
+
+
+
+
+
+
+
+
             try:
                 tabs = page.evaluate("""() => {
                     const btns = [...document.querySelectorAll('button, a')];
