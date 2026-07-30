@@ -554,11 +554,32 @@ def ensure_playwright_browsers():
         else:
             print("❌ Chromium install FAILED", flush=True)
 
+def restore_toss_session():
+    """Render 환경변수 TOSS_SESSION_B64 → 세션 파일 복원"""
+    b64 = os.environ.get("TOSS_SESSION_B64", "")
+    if not b64:
+        print("⚠️ TOSS_SESSION_B64 환경변수 없음 - 세션 없이 수집 시도", flush=True)
+        return
+    try:
+        import base64
+        session_dir = os.path.join(BASE_DIR, "scratch")
+        os.makedirs(session_dir, exist_ok=True)
+        session_path = os.path.join(session_dir, "toss_sharelink_session.json")
+        decoded = base64.b64decode(b64.encode("utf-8")).decode("utf-8")
+        with open(session_path, "w", encoding="utf-8") as f:
+            f.write(decoded)
+        print(f"✅ 토스 세션 복원 완료: {session_path}", flush=True)
+    except Exception as e:
+        print(f"❌ 세션 복원 오류: {e}", flush=True)
+
 def run():
-    # Render 런타임 시작 시 Playwright 브라우저 먼저 설치
+    # 1. 토스 세션 복원 (Render 환경변수 → 파일)
+    restore_toss_session()
+
+    # 2. Playwright 브라우저 설치 확인
     ensure_playwright_browsers()
 
-    # 자율 수집 루프 백그라운드 스레드로 즉시 시작
+    # 3. 자율 수집 루프 백그라운드 스레드로 즉시 시작
     harvest_thread = threading.Thread(target=autonomous_harvest_loop, daemon=True)
     harvest_thread.start()
 
