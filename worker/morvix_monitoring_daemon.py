@@ -103,7 +103,7 @@ def run_atomic_operational_cycle():
 
     # Step 10: SLEEP
     set_system_state(SystemState.SLEEP)
-    write_journal_log("😴 Step 10 [SLEEP]: 30분 무장애 잠자기 상태 전환 완료")
+    write_journal_log("😴 Step 10 [SLEEP]: 1분 주기 수집 가동 상태 준비 완료")
     write_journal_log("==========================================================")
     return True
 
