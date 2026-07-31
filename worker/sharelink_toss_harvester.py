@@ -1258,12 +1258,14 @@ def update_db_with_deals(deals):
         discount = d.get('discount_rate', '')
         thumb = d.get('thumbnail', '')
         share_link = d.get('share_link', '')
-
-        # 🛑 [단가/수익 찌꺼기 텍스트 100% 차단 검증 게이트]
         is_bad_profit_title = bool(re.search(r'개당|수익|원\s*수익|개당\s*[\d,]+\s*원', name))
         is_valid_name = len(name) >= 3 and not is_bad_profit_title and not re.match(r'^\d+(\.\d+)?\s*\(', name)
         is_valid_price = isinstance(price, int) and price >= 1000
         is_valid_discount = bool(re.search(r'\d+[%％]', discount))
+        is_valid_thumb = bool(thumb and thumb.startswith('http') and len(thumb) >= 15 and not 'DefaultDeal' in thumb and not 'placeholder' in thumb)
+        is_valid_link = bool(share_link and share_link.startswith('https://toss.im/_m/'))
+
+
         if not (is_valid_name and is_valid_price and is_valid_discount and is_valid_thumb and is_valid_link):
             rejected_count += 1
             reasons = []
@@ -1280,6 +1282,7 @@ def update_db_with_deals(deals):
             print_log(f"  할인율: '{discount}'")
             print_log(f"  차단 사유: {', '.join(reasons)}")
             continue
+
 
 
 
