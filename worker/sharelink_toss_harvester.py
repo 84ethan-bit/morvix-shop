@@ -312,7 +312,63 @@ def harvest_sharelink_portal():
 
             dismiss_popups()
 
-            section_counts = {"today_price": 0, "best_seller": 0}
+            # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            # [대표님 지정 1단계 검증] __NEXT_DATA__ 존재 여부, 크기, Key 구조, 상품 배열 덤프 진단
+            print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+            print_log("🔍 [JSON CHECK] __NEXT_DATA__ 스크립트 태그 정밀 진단 시작")
+            print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+            next_data_diag = page.evaluate("""() => {
+                const el = document.getElementById('__NEXT_DATA__');
+                if (!el) return { found: false };
+                const text = el.innerText || '';
+                const size = text.length;
+                try {
+                    const json = JSON.parse(text);
+                    const topKeys = Object.keys(json);
+                    const pagePropsKeys = json.pageProps ? Object.keys(json.pageProps) : [];
+                    
+                    // 수색: JSON 내부 배열 및 상품 키 찾기
+                    const searchArrays = (obj, path = '', depth = 0) => {
+                        let res = [];
+                        if (depth > 5 || !obj || typeof obj !== 'object') return res;
+                        for (const k in obj) {
+                            const newPath = path ? `${path}.${k}` : k;
+                            if (Array.isArray(obj[k])) {
+                                if (obj[k].length > 0 && typeof obj[k][0] === 'object') {
+                                    res.push({ path: newPath, count: obj[k].length, sample: obj[k][0] });
+                                }
+                            } else if (typeof obj[k] === 'object') {
+                                res = res.concat(searchArrays(obj[k], newPath, depth + 1));
+                            }
+                        }
+                        return res;
+                    };
+                    
+                    const foundArrays = searchArrays(json);
+                    return {
+                        found: true,
+                        size: size,
+                        topKeys: topKeys,
+                        pagePropsKeys: pagePropsKeys,
+                        foundArrays: foundArrays.map(a => `${a.path} (${a.count}개)`).slice(0, 10),
+                        sampleArray: foundArrays.length > 0 ? { path: foundArrays[0].path, sample: foundArrays[0].sample } : null
+                    };
+                } catch (e) {
+                    return { found: true, size: size, parseError: e.toString() };
+                }
+            }""")
+
+            print_log(f"📌 __NEXT_DATA__ Found : {next_data_diag.get('found')}")
+            if next_data_diag.get('found'):
+                print_log(f"📌 Size                 : {next_data_diag.get('size')} bytes")
+                print_log(f"📌 Top Keys             : {next_data_diag.get('topKeys')}")
+                print_log(f"📌 pageProps Keys       : {next_data_diag.get('pagePropsKeys')}")
+                print_log(f"📌 Found Array Paths    : {next_data_diag.get('foundArrays')}")
+                if next_data_diag.get('sampleArray'):
+                    print_log(f"📌 Sample Array Path    : {next_data_diag['sampleArray']['path']}")
+                    print_log(f"📌 Sample Object Keys   : {list(next_data_diag['sampleArray']['sample'].keys()) if isinstance(next_data_diag['sampleArray']['sample'], dict) else 'N/A'}")
+            print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
             seen_titles = set()
             TARGET_PER_SECTION = 200
 
