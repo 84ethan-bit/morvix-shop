@@ -429,16 +429,45 @@ def harvest_sharelink_portal():
                 page._last_url_before_click = before_url
                 page._last_clicked_html = btn_info.get('html', 'N/A')
 
-                # [대표님 지정] Network(fetch/XHR), History API(pushState/replaceState), React Fiber props/listeners 계측 모듈
+                # [대표님 지정] JS Exception, Unhandled Promise Rejection, Console Error/Warn 수집 모듈
                 page.evaluate("""() => {
-                    window._networkLogs = [];
-                    window._historyLogs = [];
-                    window._reactFiberInfo = null;
+                    window._jsErrorLogs = [];
+                    window._consoleLogs = [];
 
-                    // 1. fetch/XHR 후킹
+                    // 1. JS Runtime Exception 수색
+                    window.addEventListener('error', (e) => {
+                        window._jsErrorLogs.push({
+                            type: 'uncaught_error',
+                            message: e.message || String(e),
+                            filename: e.filename || 'N/A',
+                            lineno: e.lineno || 0
+                        });
+                    });
+
+                    // 2. Unhandled Promise Rejection 수색
+                    window.addEventListener('unhandledrejection', (e) => {
+                        window._jsErrorLogs.push({
+                            type: 'unhandled_rejection',
+                            reason: e.reason ? (e.reason.message || String(e.reason)) : 'Unknown Promise Rejection'
+                        });
+                    });
+
+                    // 3. console.error / console.warn 후킹
+                    const origErr = console.error;
+                    console.error = function(...args) {
+                        window._consoleLogs.push({ type: 'error', msg: args.map(a => String(a)).join(' ') });
+                        return origErr.apply(this, args);
+                    };
+                    const origWarn = console.warn;
+                    console.warn = function(...args) {
+                        window._consoleLogs.push({ type: 'warn', msg: args.map(a => String(a)).join(' ') });
+                        return origWarn.apply(this, args);
+                    };
+
+                    // 4. fetch/XHR 후킹
                     const origFetch = window.fetch;
                     window.fetch = function(...args) {
-                        window._networkLogs.push({ type: 'fetch', url: str(args[0]) });
+                        window._networkLogs.push({ type: 'fetch', url: String(args[0]) });
                         return origFetch.apply(this, args);
                     };
                     const origOpen = XMLHttpRequest.prototype.open;
@@ -447,7 +476,7 @@ def harvest_sharelink_portal():
                         return origOpen.apply(this, arguments);
                     };
 
-                    // 2. History API (pushState / replaceState) 후킹
+                    // 5. History API (pushState / replaceState) 후킹
                     const origPush = history.pushState;
                     history.pushState = function(...args) {
                         window._historyLogs.push({ type: 'pushState', state: args[0], url: args[2] });
@@ -459,7 +488,7 @@ def harvest_sharelink_portal():
                         return origReplace.apply(this, args);
                     };
 
-                    // 3. React Fiber & Props / Event Handlers 수색
+                    // 6. React Fiber & Props / Event Handlers 수색
                     const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
                     for (const h of headers) {
                         const txt = (h.innerText || '').trim();
@@ -488,6 +517,7 @@ def harvest_sharelink_portal():
                         }
                     }
                 }""")
+
 
 
 
@@ -575,19 +605,22 @@ def harvest_sharelink_portal():
                     return {
                         networkLogs: window._networkLogs || [],
                         historyLogs: window._historyLogs || [],
-                        reactFiberInfo: window._reactFiberInfo || {}
+                        reactFiberInfo: window._reactFiberInfo || {},
+                        jsErrorLogs: window._jsErrorLogs || [],
+                        consoleLogs: window._consoleLogs || []
                     };
                 }""")
 
                 print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                print_log("🔍 [대표님 지정] React 이후 계측 리포트 (Network, History API, React Fiber)")
+                print_log("🔍 [대표님 지정] React 내부 오류 & JS Exception 정밀 계측 리포트")
                 print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                print_log(f" 1️⃣ 클릭 후 Network(fetch/XHR) 요청 수: {len(react_post_report['networkLogs'])}개 ({react_post_report['networkLogs']})")
-                print_log(f" 2️⃣ History API(pushState/replaceState): {len(react_post_report['historyLogs'])}개 ({react_post_report['historyLogs']})")
-                rf_info = react_post_report.get('reactFiberInfo', {})
-                print_log(f" 3️⃣ React Fiber / Internal Instance  : HasPropsKey: {rf_info.get('hasPropsKey')}, HasFiberKey: {rf_info.get('hasFiberKey')}")
-                print_log(f" 4️⃣ React onClick 핸들러 연결 여부     : HasOnClick: {rf_info.get('hasOnClick')}")
+                print_log(f" 📌 JS Uncaught Errors 수량      : {len(react_post_report['jsErrorLogs'])}개 ({react_post_report['jsErrorLogs']})")
+                print_log(f" 📌 Unhandled Promise Rejections : {len([e for e in react_post_report['jsErrorLogs'] if e.get('type') == 'unhandled_rejection'])}개")
+                print_log(f" 📌 console.error / console.warn : {len(react_post_report['consoleLogs'])}개 ({react_post_report['consoleLogs']})")
+                print_log(f" 📌 클릭 후 Network(fetch/XHR)   : {len(react_post_report['networkLogs'])}개")
+                print_log(f" 📌 History API(pushState)       : {len(react_post_report['historyLogs'])}개")
                 print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
 
 
 
