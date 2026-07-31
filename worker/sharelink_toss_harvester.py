@@ -487,6 +487,8 @@ def harvest_sharelink_portal():
             def collect_from_full_page(section_name, section_key, priority_val):
                 """현재 '전체 보기' 페이지에서 인피니티 스크롤로 전체 핫딜 전수 수집 및 단계별 상세 수량 출력"""
                 nonlocal seen_titles
+                section_counts = {"today_price": 0, "best_seller": 0}
+
 
                 curr_url = page.url
                 curr_title = page.title()
