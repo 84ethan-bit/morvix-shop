@@ -554,8 +554,8 @@ def harvest_sharelink_portal():
                         clean_raw = re.sub(r'수익', '', clean_raw)
                         clean_raw = re.sub(r'30일\s*최저가', '', clean_raw)
 
-                        # 개당 N원 및 수량(N개, N봉, N팩, N롤) 감지 자동 총액 계산 보정
-                        unit_match = re.search(r'개당\s*([\d,]+)\s*원', raw)
+                        # '수익' 문구가 제거된 clean_raw에서 '개당 N원' 및 수량(N개, N봉) 감지
+                        unit_match = re.search(r'개당\s*([\d,]+)\s*원', clean_raw)
                         qty_match = re.search(r'([\d,]+)\s*(개|봉|팩|롤|병|정|포)', title)
 
                         prices_found = re.findall(r'([\d,]+)\s*원', clean_raw)
@@ -563,16 +563,13 @@ def harvest_sharelink_portal():
                         valid_prices = [p for p in prices_int if p >= 500]
                         price = valid_prices[0] if valid_prices else 9900
 
-                        # 보정 규칙: 상품명에 수량(예: 10개, 2팩)이 있고 1개당 단가가 적혀있다면 총액으로 계산 (단가 1,490원 × 10개 = 14,900원)
-                        if qty_match:
+                        # 보정 규칙: '수익'이 아닌 진짜 상품 개당 단가가 존재할 경우에만 총액 보정
+                        if qty_match and unit_match:
                             try:
                                 qty_num = int(qty_match.group(1).replace(',', ''))
-                                if qty_num > 1:
-                                    if unit_match:
-                                        unit_val = int(unit_match.group(1).replace(',', ''))
-                                        price = unit_val * qty_num
-                                    elif price < 3500:
-                                        price = price * qty_num
+                                unit_val = int(unit_match.group(1).replace(',', ''))
+                                if qty_num > 1 and unit_val >= 100:
+                                    price = unit_val * qty_num
                             except Exception:
                                 pass
 

@@ -130,10 +130,15 @@ def run_365_unattended_daemon(interval_minutes=30, run_once=False, is_midnight=F
     """365일 무인 가동 메인 루프"""
     write_journal_log("=========================================================================")
     write_journal_log("🛡️ MORVIX SHOP OS - 365-DAY UNATTENDED AUTONOMOUS DAEMON INITIALIZED")
-    write_journal_log(f"   • 실행 모드: {'매일 00:01 자정 자동 가동 모드' if is_midnight else f'매 {interval_minutes}분 주기 모드'}")
+    write_journal_log(f"   • 실행 모드: {'매일 00:01 자정 대기 가동 모드 (바로 대기 진입)' if is_midnight else f'매 {interval_minutes}분 주기 모드'}")
     write_journal_log(f"   • DB 경로: {DB_PATH}")
     write_journal_log(f"   • 저널 로그: {LOG_PATH}")
     write_journal_log("=========================================================================")
+
+    if is_midnight and not run_once:
+        # 데몬 시작 직후 자정 00:01분까지 즉시 대기 모드로 진입 (추가 즉시 수집 없음)
+        sleep_sec = sleep_until_next_midnight(0, 1)
+        time.sleep(sleep_sec)
 
     while True:
         try:
