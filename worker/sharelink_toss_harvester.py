@@ -429,6 +429,11 @@ def harvest_sharelink_portal():
                 page._last_url_before_click = before_url
                 page._last_clicked_html = btn_info.get('html', 'N/A')
 
+                # [대표님 지정] 전체보기 클릭 직후 React SPA 상태 변화 5대 계측
+                dom_len_before = page.evaluate("document.body.innerHTML.length")
+                card_count_before = page.locator("[class*='ProductCard']").count()
+                react_children_before = page.evaluate("document.body.firstElementChild ? document.body.firstElementChild.childElementCount : 0")
+
                 # 섹션 내부 전체보기 클릭
                 click_executed = page.evaluate("""() => {
                     const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
@@ -452,9 +457,25 @@ def harvest_sharelink_portal():
                     }
                     return false;
                 }""")
-                page.wait_for_timeout(2500)
+                
+                # React SPA 상태 변경 및 렌더링 대기
+                page.wait_for_timeout(3000)
+
+                dom_len_after = page.evaluate("document.body.innerHTML.length")
+                card_count_after = page.locator("[class*='ProductCard']").count()
+                react_children_after = page.evaluate("document.body.firstElementChild ? document.body.firstElementChild.childElementCount : 0")
                 after_url = page.url
-                print_log(f"📌 [STEP 5] 클릭 실행 | Executed: {click_executed} | Before URL: {before_url} | After URL: {after_url}")
+
+                print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print_log("🔍 [대표님 지정] 전체보기 클릭 전/후 React SPA 5대 변화 계측 리포트")
+                print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print_log(f" 1️⃣ 클릭 전 HTML DOM 길이   : {dom_len_before:,} bytes")
+                print_log(f" 2️⃣ 클릭 후 HTML DOM 길이   : {dom_len_after:,} bytes (변화량: {dom_len_after - dom_len_before:+} bytes)")
+                print_log(f" 3️⃣ ProductCard 요소 수 변화: {card_count_before}개 ➔ {card_count_after}개 (변화량: {card_count_after - card_count_before:+}개)")
+                print_log(f" 4️⃣ React Root 자식 노드 변화: {react_children_before}개 ➔ {react_children_after}개")
+                print_log(f" 5️⃣ 클릭 실행 여부 및 URL   : Executed: {click_executed} | Before URL: {before_url} | After URL: {after_url}")
+                print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
 
                 # [STEP 6] URL 검증
                 is_bad_route = any(bad in after_url for bad in ["settlement", "guide", "info", "member", "dashboard"])
