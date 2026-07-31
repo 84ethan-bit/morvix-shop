@@ -481,8 +481,23 @@ def harvest_sharelink_portal():
                     pass
                 page.wait_for_timeout(500)
 
+                # [조건 3 & 4] Swiper Next 버튼 클릭 시도 및 수집 데이터 출처(DOM vs XHR) 명시
+                print_log(f"📌 [DATA SOURCE TRACER] 수집 출처: HTML DOM 카드 파싱 (도청된 XHR 패킷: {len(captured_api_products)}개)")
+                
+                # Swiper Next 버튼 클릭으로 가려진 카드 수율 확대
+                next_btns = page.locator("button[aria-label='다음'], .swiper-button-next, button:has(svg)")
+                if next_btns.count() > 0:
+                    print_log("  🔄 [Swiper Next 클릭] 슬라이더 가려진 카드 로딩 시도 (4회 클릭)...")
+                    for n_idx in range(4):
+                        try:
+                            next_btns.first.click(timeout=1000, force=True)
+                            page.wait_for_timeout(400)
+                        except Exception:
+                            pass
+
                 btns = page.query_selector_all("button:has-text('링크 발급')")
-                print_log(f"  🎯 [{section_name}] 최종 카드 로딩 완료: 총 {len(btns)}개 (목표 100개+ 전수 파싱 시작)")
+                print_log(f"  🎯 [{section_name}] Swiper Next 후 최종 탐지된 '링크 발급' 카드 수: 총 {len(btns)}개")
+
 
 
 
@@ -976,11 +991,13 @@ def harvest_sharelink_portal():
                     clean_price_raw = re.sub(r'개당\s*[\d,]+\s*원\s*수익', '', raw)
                     clean_price_raw = re.sub(r'[\d,]+\s*원\s*수익', '', clean_price_raw)
 
+                    # [조건 1] 할인율 기본값 30% 임의 대입 금지 (실제 DOM/JSON 추출값만 인정, 없으면 빈값)
                     discount_match = re.search(r'(\d+[%％]\s*특가|\d+[%％]\s*할인|\d+[%％])', raw)
-                    discount_rate = discount_match.group(1) if discount_match else "30%"
+                    discount_rate = discount_match.group(1) if discount_match else ""
 
                     price_match = re.search(r'([\d,]+)\s*원', clean_price_raw)
                     price = int(price_match.group(1).replace(',', '')) if price_match else 9900
+
 
                     # 정밀 섹션 및 우선순위 판별 (카드 내 배지 및 이전 섹션 헤더 DOM 탐색)
                     sec = card_container.evaluate("""el => {
@@ -1247,13 +1264,23 @@ def update_db_with_deals(deals):
         is_valid_name = len(name) >= 3 and not is_bad_profit_title and not re.match(r'^\d+(\.\d+)?\s*\(', name)
         is_valid_price = isinstance(price, int) and price >= 1000
         is_valid_discount = bool(re.search(r'\d+[%％]', discount))
-        is_valid_thumb = bool(thumb and thumb.startswith('http') and len(thumb) >= 15 and not 'DefaultDeal' in thumb and not 'placeholder' in thumb)
-        is_valid_link = bool(share_link and share_link.startswith('https://toss.im/_m/'))
-
         if not (is_valid_name and is_valid_price and is_valid_discount and is_valid_thumb and is_valid_link):
             rejected_count += 1
-            print_log(f"🛑 [검증 실패 차단] {name[:25]} (사유: Name:{is_valid_name}, Price:{is_valid_price}, Disc:{is_valid_discount}, Thumb:{is_valid_thumb}, Link:{is_valid_link})")
+            reasons = []
+            if not is_valid_name: reasons.append("이름 불량")
+            if not is_valid_price: reasons.append("가격 불량 (<1000원)")
+            if not is_valid_discount: reasons.append("할인율 없음/형식 불량")
+            if not is_valid_thumb: reasons.append("이미지 URL 불량")
+            if not is_valid_link: reasons.append("토스 쉐어링크 미발급")
+            
+            print_log(f"📌 [REJECT] 상세 사유 리포트")
+            print_log(f"  상품: {name}")
+            print_log(f"  가격: {price}원")
+            print_log(f"  정가: {d.get('original_price', 'N/A')}원")
+            print_log(f"  할인율: '{discount}'")
+            print_log(f"  차단 사유: {', '.join(reasons)}")
             continue
+
 
 
 
