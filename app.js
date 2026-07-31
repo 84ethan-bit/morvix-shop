@@ -252,24 +252,33 @@ function renderUniversalProductCard(p, badgeHTML = '', extraCardStyle = '') {
   if (!cleanTitle || cleanTitle.length < 2) cleanTitle = p.name;
 
 
-  // 2. 판매가 및 정가 정밀 포맷팅
+  // 2. 판매가 및 정가 100% 수학적 일치 포맷팅 엔진
   const numPrice = typeof p.price === 'number' ? p.price : parseInt(String(p.price).replace(/[^0-9]/g, '')) || 0;
   const priceStr = numPrice > 0 ? numPrice.toLocaleString() + '원' : '특가 확인';
 
-  let numOrig = typeof p.original_price === 'number' ? p.original_price : parseInt(String(p.original_price || 0).replace(/[^0-9]/g, '')) || 0;
-  if (numOrig <= numPrice && numPrice > 0) {
-    numOrig = Math.floor(numPrice * 1.3);
-  }
-  const origPriceStr = numOrig > numPrice ? numOrig.toLocaleString() + '원' : '';
-
-  // 3. 할인율 정밀 처리 (미표기 시 비율 계산 또는 숨김)
   let discRate = (p.discount_rate || '').trim();
-  if (!discRate && numOrig > numPrice && numOrig > 0) {
+  let numOrig = typeof p.original_price === 'number' ? p.original_price : parseInt(String(p.original_price || 0).replace(/[^0-9]/g, '')) || 0;
+
+  // 할인율(%)이 명시되어 있는 경우: 정가(original_price)를 할인율 역산 공식으로 100% 일치하도록 재계산
+  if (discRate && numPrice > 0) {
+    const rateNum = parseInt(discRate.replace(/[^0-9]/g, '')) || 0;
+    if (rateNum > 0 && rateNum < 95) {
+      numOrig = Math.round((numPrice / (1 - rateNum / 100.0)) / 100) * 100;
+    }
+  } else if (numOrig > numPrice && numPrice > 0) {
+    // 정가만 있고 할인율이 없는 경우: 역으로 할인율(%) 자동 계산
     const calcRate = Math.round(((numOrig - numPrice) / numOrig) * 100);
     if (calcRate > 0 && calcRate < 95) {
       discRate = calcRate + '%';
     }
   }
+
+  if (numOrig <= numPrice && numPrice > 0) {
+    numOrig = Math.round((numPrice * 1.35) / 100) * 100;
+    if (!discRate) discRate = '26%';
+  }
+
+  const origPriceStr = numOrig > numPrice ? numOrig.toLocaleString() + '원' : '';
 
   const tossLink = getTossShareLink(p);
 
