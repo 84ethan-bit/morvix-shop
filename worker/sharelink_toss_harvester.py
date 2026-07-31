@@ -14,9 +14,10 @@ worker/sharelink_toss_harvester.py
 3. morvix_shop_db.json 바인딩 ➔ GitHub/Vercel 라이브 1초 게재
 =============================================================================
 """
-import sys, os, json, time, re, requests
+import sys, os, json, time, re, requests, uuid
 from datetime import datetime, timedelta
 from playwright.sync_api import sync_playwright
+
 
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
