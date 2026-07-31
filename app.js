@@ -261,7 +261,7 @@ function renderUniversalProductCard(p, badgeHTML = '', extraCardStyle = '') {
   const tossLink = getTossShareLink(p);
 
   return `
-    <a href="${tossLink}" target="_blank" rel="noopener noreferrer" class="product-card-v2" onclick="trackOutboundClick('${p.slug}')" style="${extraCardStyle}">
+    <a href="${tossLink}" target="_blank" rel="noopener noreferrer" class="product-card-v2" onclick="trackOutboundClick('${p.slug}'); openTossMobileView('${tossLink}', event);" style="${extraCardStyle}">
       <!-- 1. Pure 1:1 Image Box with Absolute Badge -->
       <div class="card-thumb-frame">
         <img class="card-thumb-img" src="${p.thumbnail}" alt="${cleanTitle}" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80';">
@@ -300,6 +300,7 @@ window.trackOutboundClick = trackOutboundClick;
 // Helper function to extract exact Toss ShareLink (toss.im/_m/XXXX or https://toss.im)
 function getTossShareLink(p) {
   if (!p) return 'https://toss.im';
+  if (p.share_link && p.share_link.startsWith('http')) return p.share_link;
   if (p.toss_link && p.toss_link.startsWith('http')) return p.toss_link;
   if (p.short_url && p.short_url.startsWith('http')) return p.short_url;
   if (Array.isArray(p.affiliate_links) && p.affiliate_links.length > 0) {
@@ -308,8 +309,9 @@ function getTossShareLink(p) {
     const first = p.affiliate_links[0];
     return typeof first === 'string' ? first : (first && first.url ? first.url : 'https://toss.im');
   }
-  return p.toss_link || 'https://toss.im';
+  return p.share_link || p.toss_link || 'https://toss.im';
 }
+
 
 function parseDiscountNum(val) {
   if (!val) return 0;
