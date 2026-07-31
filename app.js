@@ -142,17 +142,25 @@ function renderCategories() {
 async function initShopOS() {
   // 1. Fetch static morvix_shop_db.json with cache-busting timestamp as Primary Source of Truth
   try {
+    // 🧹 이전 브라우저 임시 보관함(LocalStorage) 강제 완전 청소
+    try {
+      localStorage.removeItem(DB_STORAGE_KEY);
+      localStorage.removeItem('morvix_master_db_products');
+      localStorage.removeItem('morvix_master_db_products_v13');
+      localStorage.removeItem('morvix_master_db_products_v14');
+    } catch(e){}
+
     const res = await fetch('morvix_shop_db.json?t=' + Date.now(), { cache: 'no-store' });
     if (res.ok) {
       const fetched = await res.json();
       if (fetched && Array.isArray(fetched.products)) {
         dbData.products = fetched.products;
-        try { localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(dbData.products)); } catch(e){}
       }
     }
   } catch (err) {
-    console.warn("Primary DB fetch warning, checking LocalStorage fallback:", err);
+    console.warn("Primary DB fetch warning:", err);
   }
+
 
 
   updateProductLifecycleStates();
