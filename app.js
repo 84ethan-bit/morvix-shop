@@ -4,16 +4,10 @@
 
 function openTossMobileView(url, e) {
   if (!url) return;
-  // If user is on Desktop PC (screen width > 768px), open in a smartphone-shaped window to bypass PC desktop blocks
-  if (window.innerWidth > 768) {
-    if (e) e.preventDefault();
-    const width = 440;
-    const height = 860;
-    const left = Math.round((window.screen.width / 2) - (width / 2));
-    const top = Math.round((window.screen.height / 2) - (height / 2));
-    window.open(url, 'TossMobileShopping', `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,resizable=yes`);
-  }
+  if (e) e.preventDefault();
+  window.location.href = url;
 }
+
 
 const INITIAL_DB_DATA = {
   "store_info": {
@@ -253,29 +247,20 @@ function renderUniversalProductCard(p, badgeHTML = '', extraCardStyle = '') {
   `;
 }
 
-// 📱 스마트폰 모바일 팝업창 완전 제거 & 토스 앱 0.1초 즉시 직행 네비게이션 엔진
+// 📱 토스 앱 0.1초 즉시 직행 네비게이션 엔진 (팝업창 100% 원천 차단)
 function handleProductCardClick(e, url, slug) {
   if (!url) return;
+  if (e) e.preventDefault();
   try {
     trackOutboundClick(slug);
   } catch (err) {}
 
-  // PC 모니터(화면 폭 > 768px)일 때만 스마트폰 모양 프리뷰 팝업창 오픈
-  if (window.innerWidth > 768) {
-    e.preventDefault();
-    const width = 440;
-    const height = 860;
-    const left = Math.round((window.screen.width / 2) - (width / 2));
-    const top = Math.round((window.screen.height / 2) - (height / 2));
-    window.open(url, 'TossMobileShopping', `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,resizable=yes`);
-  } else {
-    // 📱 모바일 스마트폰 환경에서는 팝업창/인앱 브라우저 새창을 100% 원천 차단하고
-    // 현재 창 direct 이동(location.href)을 수행하여 스마트폰 OS가 토스 앱을 즉시 실행(Deep Linking)하도록 유도!
-    e.preventDefault();
-    window.location.href = url;
-  }
+  // 팝업창/인앱 브라우저 새창을 100% 원천 차단하고 
+  // 현재 창 direct 이동(window.location.href)을 수행하여 토스 앱을 즉시 실행(Deep Linking)
+  window.location.href = url;
 }
 window.handleProductCardClick = handleProductCardClick;
+
 
 
 
@@ -443,9 +428,10 @@ function openProductDetail(slug) {
 
   const tossLink = getTossShareLink(product);
   if (tossLink && tossLink !== '#') {
-    window.open(tossLink, '_blank', 'noopener,noreferrer');
+    window.location.href = tossLink;
   }
 }
+
 
 
 // Hot Deal Studio V2 - AI Content Draft Generator (Blog, Threads, Shorts)
