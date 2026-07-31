@@ -516,20 +516,43 @@ def harvest_sharelink_portal():
 
 
                 last_card_count = 0
-                for scroll_step in range(1, 35):
+                for scroll_step in range(1, 10):
                     try:
-                        page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                        page.evaluate(f"window.scrollTo(0, (document.body.scrollHeight / 10) * {scroll_step})")
                         page.wait_for_timeout(600)
-                        current_btns = page.query_selector_all("button:has-text('링크 발급')")
-                        current_count = len(current_btns)
-                        print_log(f"  📜 스크롤 {scroll_step}회 ➔ 탐지 상품 {current_count}개")
-
-                        if current_count == last_card_count and current_count > 0:
-                            print_log(f"  ℹ️ 추가 로딩 없음 (최종 {current_count}개) ➔ 스크롤 탐색 완수")
-                            break
-                        last_card_count = current_count
+                        link_btns = page.query_selector_all("button:has-text('링크 발급')")
+                        prod_cards = page.locator("[class*='ProductCard']").count()
+                        h_val = page.evaluate("document.body.scrollHeight")
+                        print_log(f"  📜 [Scroll #{scroll_step}] scrollHeight: {h_val} | '링크 발급' 버튼: {len(link_btns)}개 | ProductCard 요소: {prod_cards}개")
                     except Exception as sc_err:
-                        print_log(f"  ⚠️ 스크롤 #{scroll_step} 오류: {sc_err}")
+                        print_log(f"  ⚠️ 스크롤 #{scroll_step} 계측 오류: {sc_err}")
+
+                # 최하단 도달 후 최종 계측
+                page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                page.wait_for_timeout(1000)
+                final_btns = page.query_selector_all("button:has-text('링크 발급')")
+                final_cards = page.locator("[class*='ProductCard']").count()
+                print_log(f"📌 [검증 2 - 최하단 최종 계측] '링크 발급' 버튼 총합: {len(final_btns)}개 | ProductCard 총합: {final_cards}개")
+
+                # Swiper 섹션별 계측
+                swiper_diag = page.evaluate("""() => {
+                    const sections = [...document.querySelectorAll('section, div[class*="swiper"]')];
+                    return sections.map((sec, i) => {
+                        const h = sec.querySelector('h1, h2, h3, h4, span, p');
+                        const title = h ? (h.innerText || '').trim().slice(0, 30) : `Swiper #${i+1}`;
+                        const btns = sec.querySelectorAll('button');
+                        let linkBtnCount = 0;
+                        for (const b of btns) {
+                            if ((b.innerText || '').includes('링크 발급')) linkBtnCount++;
+                        }
+                        const cardCount = sec.querySelectorAll('[class*="ProductCard"]').length;
+                        return { title, linkBtnCount, cardCount };
+                    }).filter(s => s.linkBtnCount > 0 || s.cardCount > 0);
+                }""")
+                print_log("📌 [검증 3 - Swiper별 개별 계측]")
+                for sw_item in swiper_diag:
+                    print_log(f"   └─ [{sw_item['title']}] '링크 발급': {sw_item['linkBtnCount']}개 | ProductCard: {sw_item['cardCount']}개")
+
 
                 try:
                     page.evaluate("window.scrollTo(0, 0)")
