@@ -716,11 +716,14 @@ def harvest_sharelink_portal():
                     return null;
                 }""")
                 print_log(f"  🔗 베스트 '전체 보기' 링크: {best_see_all_link}")
+                page._last_url_before_click = page.url
+                page._last_clicked_html = f"<link target='{best_see_all_link}'>"
 
                 if best_see_all_link and best_see_all_link != '__CLICK__' and best_see_all_link.startswith('http'):
                     page.goto(best_see_all_link, wait_until="domcontentloaded", timeout=30000)
                     page.wait_for_timeout(2000)
                     collect_from_full_page("지금 많이 팔리는 BEST", "best_seller", 2)
+
                 else:
                     # 직접 클릭 시도 (Playwright / JS 강제 클릭 엔진)
                     clicked = False
