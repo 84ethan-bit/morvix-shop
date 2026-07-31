@@ -429,28 +429,66 @@ def harvest_sharelink_portal():
                 page._last_url_before_click = before_url
                 page._last_clicked_html = btn_info.get('html', 'N/A')
 
-                # [대표님 지정] Event Dispatch 및 React SyntheticEvent 계측 모듈
-                print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                print_log("🔍 [EVENT DISPATCH TRACER] 이벤트 전파 및 캡처 계측 준비")
-                print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-
+                # [대표님 지정] Network(fetch/XHR), History API(pushState/replaceState), React Fiber props/listeners 계측 모듈
                 page.evaluate("""() => {
-                    window._eventLogs = [];
-                    const events = ['mousedown', 'mouseup', 'click'];
-                    events.forEach(evtType => {
-                        document.addEventListener(evtType, (e) => {
-                            const targetTag = e.target ? (e.target.tagName + (e.target.className ? '.' + String(e.target.className).slice(0, 30) : '')) : 'N/A';
-                            window._eventLogs.push({
-                                type: e.type,
-                                target: targetTag,
-                                bubbles: e.bubbles,
-                                cancelable: e.cancelable,
-                                defaultPrevented: e.defaultPrevented,
-                                timeStamp: Math.round(e.timeStamp)
-                            });
-                        }, true); // Capture phase listener
-                    });
+                    window._networkLogs = [];
+                    window._historyLogs = [];
+                    window._reactFiberInfo = null;
+
+                    // 1. fetch/XHR 후킹
+                    const origFetch = window.fetch;
+                    window.fetch = function(...args) {
+                        window._networkLogs.push({ type: 'fetch', url: str(args[0]) });
+                        return origFetch.apply(this, args);
+                    };
+                    const origOpen = XMLHttpRequest.prototype.open;
+                    XMLHttpRequest.prototype.open = function(method, url) {
+                        window._networkLogs.push({ type: 'xhr', url: String(url) });
+                        return origOpen.apply(this, arguments);
+                    };
+
+                    // 2. History API (pushState / replaceState) 후킹
+                    const origPush = history.pushState;
+                    history.pushState = function(...args) {
+                        window._historyLogs.push({ type: 'pushState', state: args[0], url: args[2] });
+                        return origPush.apply(this, args);
+                    };
+                    const origReplace = history.replaceState;
+                    history.replaceState = function(...args) {
+                        window._historyLogs.push({ type: 'replaceState', state: args[0], url: args[2] });
+                        return origReplace.apply(this, args);
+                    };
+
+                    // 3. React Fiber & Props / Event Handlers 수색
+                    const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
+                    for (const h of headers) {
+                        const txt = (h.innerText || '').trim();
+                        if (txt.includes('오늘만 이 가격') || txt.includes('하루특가')) {
+                            let parent = h.parentElement;
+                            for (let i = 0; i < 7; i++) {
+                                if (!parent) break;
+                                const btn = parent.querySelector('a, button, [role="button"]');
+                                if (btn) {
+                                    const btnTxt = (btn.innerText || '').trim();
+                                    if (btnTxt.includes('전체') || btnTxt.includes('더')) {
+                                        const reactPropsKey = Object.keys(btn).find(k => k.startsWith('__reactProps$') || k.startsWith('__reactEventHandlers$'));
+                                        const reactFiberKey = Object.keys(btn).find(k => k.startsWith('__reactFiber$') || k.startsWith('__reactInternalInstance$'));
+                                        const props = reactPropsKey ? btn[reactPropsKey] : null;
+                                        window._reactFiberInfo = {
+                                            hasPropsKey: !!reactPropsKey,
+                                            hasFiberKey: !!reactFiberKey,
+                                            hasOnClick: !!(props && props.onClick),
+                                            propsKeys: props ? Object.keys(props) : []
+                                        };
+                                        break;
+                                    }
+                                }
+                                parent = parent.parentElement;
+                            }
+                        }
+                    }
                 }""")
+
 
 
 
@@ -533,24 +571,24 @@ def harvest_sharelink_portal():
                 # React SPA 상태 변경 및 렌더링 대기
                 page.wait_for_timeout(3000)
 
-                event_report = page.evaluate("""() => {
-                    const logs = window._eventLogs || [];
+                react_post_report = page.evaluate("""() => {
                     return {
-                        totalEvents: logs.length,
-                        eventSequence: logs.map(l => `${l.type} -> ${l.target}`),
-                        hasClick: logs.some(l => l.type === 'click'),
-                        defaultPrevented: logs.some(l => l.defaultPrevented)
+                        networkLogs: window._networkLogs || [],
+                        historyLogs: window._historyLogs || [],
+                        reactFiberInfo: window._reactFiberInfo || {}
                     };
                 }""")
 
                 print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                print_log("🔍 [대표님 지정] Event Dispatch 및 React SyntheticEvent 계측 리포트")
+                print_log("🔍 [대표님 지정] React 이후 계측 리포트 (Network, History API, React Fiber)")
                 print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                print_log(f" 📌 디스패치된 총 Event 수: {event_report['totalEvents']}회")
-                print_log(f" 📌 이벤트 시퀀스 (mousedown -> mouseup -> click): {event_report['eventSequence']}")
-                print_log(f" 📌 click 이벤트 수신 여부 : {event_report['hasClick']}")
-                print_log(f" 📌 defaultPrevented 여부  : {event_report['defaultPrevented']}")
+                print_log(f" 1️⃣ 클릭 후 Network(fetch/XHR) 요청 수: {len(react_post_report['networkLogs'])}개 ({react_post_report['networkLogs']})")
+                print_log(f" 2️⃣ History API(pushState/replaceState): {len(react_post_report['historyLogs'])}개 ({react_post_report['historyLogs']})")
+                rf_info = react_post_report.get('reactFiberInfo', {})
+                print_log(f" 3️⃣ React Fiber / Internal Instance  : HasPropsKey: {rf_info.get('hasPropsKey')}, HasFiberKey: {rf_info.get('hasFiberKey')}")
+                print_log(f" 4️⃣ React onClick 핸들러 연결 여부     : HasOnClick: {rf_info.get('hasOnClick')}")
                 print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
 
 
 
