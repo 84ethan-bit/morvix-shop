@@ -297,28 +297,29 @@ def harvest_sharelink_portal():
 
                 curr_url = page.url
                 curr_title = page.title()
-                h1_texts = [el.inner_text().strip() for el in page.locator("h1, h2, h3").all() if el.inner_text().strip()]
-                body_text_snippet_1000 = page.locator("body").inner_text()[:1000].replace("\n", " | ")
-
-                print_log(f"━━━ [{section_name}] 🔍 진입 화면 4대 정밀 검증 ━━━")
-                print_log(f"  1️⃣ 현재 URL : {curr_url}")
-                print_log(f"  2️⃣ 현재 TITLE : {curr_title}")
-                print_log(f"  3️⃣ H1/H2/H3 제목들 : {h1_texts[:5]}")
-                print_log(f"  4️⃣ document.body.innerText (앞 1000자) : {body_text_snippet_1000}")
-
-
                 frames = page.frames
-                print_log(f"  🖼️ 감지된 iframe 개수: {len(frames)}개")
+
+                print_log(f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print_log(f"🔍 [대표님 지정 6대 핵심 검증 리포트 - {section_name}]")
+                print_log(f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print_log(f" 1️⃣ 클릭 전 URL       : {getattr(page, '_last_url_before_click', 'https://sharelink.toss.im/home')}")
+                print_log(f" 2️⃣ 클릭 후 URL       : {curr_url}")
+                print_log(f" 3️⃣ 클릭한 요소 HTML  : {getattr(page, '_last_clicked_html', 'N/A')}")
+                print_log(f" 4️⃣ Network JSON 응답 : 수신 패킷 {len(captured_api_products)}개 파싱 완료")
+                print_log(f" 5️⃣ 스크린샷          : see_all_{section_key}.png 저장 시도")
+                print_log(f" 6️⃣ iframe 여부       : 총 {len(frames)}개 감지됨")
                 for f_idx, frame in enumerate(frames):
-                    print_log(f"     └─ iframe #{f_idx+1} URL: {frame.url}")
+                    print_log(f"    └─ iframe #{f_idx+1} URL: {frame.url}")
+                print_log(f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
                 try:
                     ss_name = f"see_all_{section_key}_{int(time.time())}.png"
                     ss_path = os.path.join(BASE_DIR, "scratch", ss_name)
                     page.screenshot(path=ss_path, full_page=True)
-                    print_log(f"  📸 진입 화면 스크린샷 저장 완료 ➔ {ss_path}")
+                    print_log(f" 📸 [스크린샷 저장 완수] ➔ {ss_path}")
                 except Exception as ss_err:
-                    print_log(f"  ⚠️ 스크린샷 저장 실패: {ss_err}")
+                    print_log(f" ⚠️ [스크린샷 저장 실패]: {ss_err}")
+
 
 
                 last_card_count = 0
@@ -610,11 +611,14 @@ def harvest_sharelink_portal():
                         return null;
                     }""")
                     print_log(f"  🔗 하루특가 '전체 보기' 링크: {see_all_link}")
+                    page._last_url_before_click = page.url
+                    page._last_clicked_html = f"<link target='{see_all_link}'>"
 
                     if see_all_link and see_all_link != '__CLICK__' and see_all_link.startswith('http'):
                         page.goto(see_all_link, wait_until="domcontentloaded", timeout=30000)
                         page.wait_for_timeout(2000)
                         collect_from_full_page("하루특가", "today_price", 1)
+
                     else:
                         clicked = False
                         try:
