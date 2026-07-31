@@ -1039,8 +1039,10 @@ def update_db_with_deals(deals):
         thumb = d.get('thumbnail', '')
         share_link = d.get('share_link', '')
 
-        is_valid_name = len(name) >= 3 and not re.match(r'^\d+(\.\d+)?\s*\(', name)
-        is_valid_price = isinstance(price, int) and price >= 500
+        # 🛑 [단가/수익 찌꺼기 텍스트 100% 차단 검증 게이트]
+        is_bad_profit_title = bool(re.search(r'개당|수익|원\s*수익|개당\s*[\d,]+\s*원', name))
+        is_valid_name = len(name) >= 3 and not is_bad_profit_title and not re.match(r'^\d+(\.\d+)?\s*\(', name)
+        is_valid_price = isinstance(price, int) and price >= 1000
         is_valid_discount = bool(re.search(r'\d+[%％]', discount))
         is_valid_thumb = bool(thumb and thumb.startswith('http') and len(thumb) >= 15 and not 'DefaultDeal' in thumb and not 'placeholder' in thumb)
         is_valid_link = bool(share_link and share_link.startswith('https://toss.im/_m/'))
@@ -1049,6 +1051,7 @@ def update_db_with_deals(deals):
             rejected_count += 1
             print_log(f"🛑 [검증 실패 차단] {name[:25]} (사유: Name:{is_valid_name}, Price:{is_valid_price}, Disc:{is_valid_discount}, Thumb:{is_valid_thumb}, Link:{is_valid_link})")
             continue
+
 
 
         # UPSERT 전략: 이미 같은 상품명이 존재하면 skip이 아닌 UPDATE (오늘만 이 가격 섹션 1순위 보호)
