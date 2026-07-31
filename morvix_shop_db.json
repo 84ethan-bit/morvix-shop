@@ -50,7 +50,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 1858,
+      "price": 9290,
       "original_price": 2508,
       "discount_rate": "30%",
       "rating": 4.9,
@@ -79,7 +79,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T03:11:46.236075",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785521044-43",
@@ -121,7 +121,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T03:04:04.422886",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785521044-41",
@@ -163,7 +163,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T03:04:04.422886",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785521044-40",
@@ -205,7 +205,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T03:04:04.422886",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785521044-39",
@@ -218,7 +218,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 8950,
+      "price": 17900,
       "original_price": 12082,
       "discount_rate": "30%",
       "rating": 4.9,
@@ -247,7 +247,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T03:04:04.422886",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785521044-32",
@@ -260,7 +260,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 1556,
+      "price": 7789,
       "original_price": 2100,
       "discount_rate": "73%",
       "rating": 4.9,
@@ -289,7 +289,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T03:04:04.422886",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785521044-31",
@@ -331,7 +331,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T03:04:04.422886",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785521044-30",
@@ -373,7 +373,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T03:04:04.422886",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785521044-29",
@@ -415,7 +415,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T03:04:04.422886",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785521044-28",
@@ -428,7 +428,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 1598,
+      "price": 7999,
       "original_price": 2157,
       "discount_rate": "61%",
       "rating": 4.9,
@@ -457,7 +457,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T03:04:04.422886",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785521044-27",
@@ -499,7 +499,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T03:04:04.422886",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785521044-26",
@@ -512,7 +512,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 7620,
+      "price": 38100,
       "original_price": 10287,
       "discount_rate": "30%",
       "rating": 4.9,
@@ -541,7 +541,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T03:04:04.422886",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785521044-25",
@@ -554,7 +554,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 9840,
+      "price": 16400,
       "original_price": 13284,
       "discount_rate": "30%",
       "rating": 4.9,
@@ -583,7 +583,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T03:04:04.422886",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785521044-24",
@@ -596,7 +596,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 31800,
+      "price": 15900,
       "original_price": 42930,
       "discount_rate": "30%",
       "rating": 4.9,
@@ -625,7 +625,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T03:04:04.422886",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785521044-21",
@@ -638,7 +638,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 114000,
+      "price": 5700,
       "original_price": 153900,
       "discount_rate": "30%",
       "rating": 4.9,
@@ -667,7 +667,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T03:04:04.422886",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785521044-20",
@@ -680,7 +680,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 27000,
+      "price": 4500,
       "original_price": 36450,
       "discount_rate": "30%",
       "rating": 4.9,
@@ -709,7 +709,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T03:04:04.422886",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785521044-19",
@@ -722,7 +722,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 116000,
+      "price": 5800,
       "original_price": 156600,
       "discount_rate": "30%",
       "rating": 4.9,
@@ -751,7 +751,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T03:04:04.422886",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785521044-16",
@@ -764,7 +764,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 1600,
+      "price": 8000,
       "original_price": 2160,
       "discount_rate": "30%",
       "rating": 4.9,
@@ -793,7 +793,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T03:04:04.422886",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785520644-21",
@@ -835,7 +835,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T02:57:24.820138",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785520644-20",
@@ -848,7 +848,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 8720,
+      "price": 10900,
       "original_price": 11772,
       "discount_rate": "43%",
       "rating": 4.9,
@@ -877,7 +877,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T02:57:24.820138",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785520644-19",
@@ -919,7 +919,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T02:57:24.820138",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785520644-18",
@@ -932,7 +932,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 3780,
+      "price": 18900,
       "original_price": 5103,
       "discount_rate": "52%",
       "rating": 4.9,
@@ -961,7 +961,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T02:57:24.820138",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785520644-17",
@@ -974,7 +974,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 87900,
+      "price": 29300,
       "original_price": 118665,
       "discount_rate": "26%",
       "rating": 4.9,
@@ -1003,7 +1003,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T02:57:24.820138",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785520644-16",
@@ -1016,7 +1016,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 30240,
+      "price": 18900,
       "original_price": 40824,
       "discount_rate": "44%",
       "rating": 4.9,
@@ -1045,7 +1045,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T02:57:24.820138",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785520644-15",
@@ -1058,7 +1058,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 25080,
+      "price": 20900,
       "original_price": 33858,
       "discount_rate": "32%",
       "rating": 4.9,
@@ -1087,7 +1087,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T02:57:24.820138",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785520644-14",
@@ -1100,7 +1100,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 31152,
+      "price": 12988,
       "original_price": 42055,
       "discount_rate": "50%",
       "rating": 4.9,
@@ -1129,7 +1129,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T02:57:24.820138",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785520644-13",
@@ -1142,7 +1142,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 18760,
+      "price": 46900,
       "original_price": 25326,
       "discount_rate": "36%",
       "rating": 4.9,
@@ -1171,7 +1171,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T02:57:24.820138",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785520644-12",
@@ -4237,7 +4237,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-08-01T01:56:59.643315",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785513883-27",
@@ -4250,7 +4250,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 54000,
+      "price": 4500,
       "original_price": 6075,
       "discount_rate": "30%",
       "rating": 4.9,
@@ -4279,7 +4279,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785513883-26",
@@ -4321,7 +4321,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785513883-25",
@@ -4334,7 +4334,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 2280,
+      "price": 7600,
       "original_price": 10260,
       "discount_rate": "30%",
       "rating": 4.9,
@@ -4363,7 +4363,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785513883-24",
@@ -4418,7 +4418,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 1380,
+      "price": 6900,
       "original_price": 9315,
       "discount_rate": "30%",
       "rating": 4.9,
@@ -4447,7 +4447,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785513883-22",
@@ -4460,7 +4460,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 17600,
+      "price": 4400,
       "original_price": 5940,
       "discount_rate": "30%",
       "rating": 4.9,
@@ -4489,7 +4489,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785513883-21",
@@ -4531,7 +4531,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785513883-20",
@@ -4544,7 +4544,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 8800,
+      "price": 5500,
       "original_price": 7425,
       "discount_rate": "30%",
       "rating": 4.9,
@@ -4573,7 +4573,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785513883-19",
@@ -4586,7 +4586,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 8280,
+      "price": 6900,
       "original_price": 9315,
       "discount_rate": "30%",
       "rating": 4.9,
@@ -4615,7 +4615,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785513883-18",
@@ -4657,7 +4657,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785513883-17",
@@ -4670,7 +4670,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 17280,
+      "price": 7200,
       "original_price": 9720,
       "discount_rate": "30%",
       "rating": 4.9,
@@ -4699,7 +4699,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785513883-14",
@@ -4741,7 +4741,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785513883-7",
@@ -4783,7 +4783,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785513883-6",
@@ -4796,7 +4796,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 14280,
+      "price": 11900,
       "original_price": 19278,
       "discount_rate": "54%",
       "rating": 4.9,
@@ -4825,7 +4825,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785513883-5",
@@ -4838,7 +4838,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 92120,
+      "price": 32900,
       "original_price": 124362,
       "discount_rate": "88%",
       "rating": 4.9,
@@ -4867,7 +4867,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785513883-4",
@@ -4880,7 +4880,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 15600,
+      "price": 7800,
       "original_price": 21060,
       "discount_rate": "39%",
       "rating": 4.9,
@@ -4909,7 +4909,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785513883-3",
@@ -4922,7 +4922,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 9000,
+      "price": 22500,
       "original_price": 12150,
       "discount_rate": "43%",
       "rating": 4.9,
@@ -4951,7 +4951,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785513883-2",
@@ -4964,7 +4964,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 1960,
+      "price": 9800,
       "original_price": 2646,
       "discount_rate": "81%",
       "rating": 4.9,
@@ -4993,7 +4993,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785513883-1",
@@ -5006,7 +5006,7 @@
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 7180,
+      "price": 35900,
       "original_price": 9693,
       "discount_rate": "61%",
       "rating": 4.9,
@@ -5035,7 +5035,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     },
     {
       "id": "TOSS-AUTO-1785513883-0",
@@ -5077,7 +5077,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-03T03:11:46.236075"
+      "expiry_date": "2026-08-03T03:23:48.430277"
     }
   ]
 }
