@@ -989,9 +989,9 @@ def harvest_sharelink_portal():
 
         browser.close()
 
-    # ⚡ [API Interceptor] 도청된 백엔드 JSON 데이터를 harvested_deals에 최우선 병합
+    # ⚡ [API Interceptor] 도청된 백엔드 JSON 전수 데이터를 harvested_deals에 100% 무조건 전량 등록
     if captured_api_products:
-        print_log(f"📡 [API Interceptor] 토스 백엔드 JSON 원본 {len(captured_api_products)}개 도청 획득 완료!")
+        print_log(f"📡 [API Interceptor] 토스 백엔드 JSON 원본 {len(captured_api_products)}개 전수 획득 완료!")
         for api_item in captured_api_products:
             matched = False
             for d in harvested_deals:
@@ -1002,16 +1002,18 @@ def harvest_sharelink_portal():
                     if api_item["share_link"] and api_item["share_link"].startswith("http"): d["share_link"] = api_item["share_link"]
                     matched = True
                     break
-            if not matched and api_item.get("share_link"):
+            # 백엔드 API에서 포획된 신규 핫딜은 제한 없이 전량 추가
+            if not matched:
                 harvested_deals.append({
                     "name": api_item["name"],
                     "price": api_item["price"],
                     "discount_rate": api_item["discount_rate"],
                     "thumbnail": api_item["thumbnail"],
-                    "share_link": api_item["share_link"],
+                    "share_link": api_item.get("share_link", ""),
                     "section": "best_seller",
                     "priority": 2
                 })
+
 
 
     if harvested_deals:
