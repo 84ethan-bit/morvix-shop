@@ -286,9 +286,27 @@ def harvest_sharelink_portal():
             # 2-섹션 전용 수집 전략:
             #  1순위) "오늘만 이가격" 하루특가  → 전체 보기 클릭 → 전체 상품 수집
             #  2순위) "지금 많이 팔리는 BEST"  → 전체 보기 클릭 → 전체 상품 수집
-            # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            def dismiss_popups():
+                """'활동 정보 등록이 필요해요' 및 각종 모달/팝업 레이어 자동 감지 및 닫기"""
+                try:
+                    close_btns = page.locator("button:has-text('닫기'), button:has-text('나중에 하기'), button:has-text('확인'), [aria-label='닫기'], .modal-close")
+                    if close_btns.count() > 0:
+                        print_log(f"🚨 [팝업 레이어 감지] {close_btns.count()}개 팝업 닫기 시도...")
+                        for i in range(close_btns.count()):
+                            try:
+                                close_btns.nth(i).click(timeout=1500, force=True)
+                                page.wait_for_timeout(500)
+                            except Exception:
+                                pass
+                        print_log("✅ 팝업 레이어 닫기 완료!")
+                except Exception as p_err:
+                    print_log(f"⚠️ 팝업 처리 생략: {p_err}")
+
+            # 홈 접속 직후 팝업 자동 감지 및 닫기
+            dismiss_popups()
 
             section_counts = {"today_price": 0, "best_seller": 0}
+
             seen_titles = set()
             TARGET_PER_SECTION = 200  # 전체 상품 100% 무제한 풀 수집
 
@@ -570,91 +588,43 @@ def harvest_sharelink_portal():
                 page.wait_for_timeout(1500)
 
                 today_see_all = page.locator("a:has-text('전체 보기'), button:has-text('전체 보기'), a:has-text('더 보기'), button:has-text('더 보기')").first
-                if today_see_all.count() > 0 or True:
-                    # 하루특가 섹션의 전체 보기 탐색 (DOM 다각도 탐색)
-                    see_all_link = page.evaluate("""() => {
-                        // 1. 텍스트 직접 매칭 탐색
-                        const allEls = [...document.querySelectorAll('a, button, div, span')];
-                        for (const el of allEls) {
-                            const txt = (el.innerText || '').trim();
-                            if ((txt === '전체 보기' || txt === '전체보기' || txt === '더보기' || txt === '더 보기') && (el.href || el.tagName === 'BUTTON' || el.onclick || el.getAttribute('role') === 'button')) {
-                                // 섹션 근처인지 확인
-                                let p = el.parentElement;
-                                for (let i = 0; i < 5; i++) {
-                                    if (!p) break;
-                                    const pTxt = p.innerText || '';
-                                    if (pTxt.includes('오늘만') || pTxt.includes('하루특가')) {
-                                        return el.href || el.getAttribute('href') || '__CLICK__';
-                                    }
-                                    p = p.parentElement;
-                                }
-                            }
-                        }
-                        // 2. 헤더 기준 근처 버튼/링크 탐색
+                    # [수칙 2] "오늘만 이 가격" section 내부의 "전체보기"만 클릭 (섹션 한정 돔 매칭)
+                    click_res = page.evaluate("""() => {
                         const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
                         for (const h of headers) {
-                            const txt = h.innerText || '';
+                            const txt = (h.innerText || '').trim();
                             if (txt.includes('오늘만 이 가격') || txt.includes('하루특가')) {
                                 let parent = h.parentElement;
-                                for (let i = 0; i < 6; i++) {
+                                for (let i = 0; i < 7; i++) {
                                     if (!parent) break;
-                                    const link = parent.querySelector('a, button, [role="button"]');
-                                    if (link) {
-                                        const linkTxt = (link.innerText || '').trim();
-                                        if (linkTxt.includes('전체') || linkTxt.includes('더')) {
-                                            return link.href || link.getAttribute('href') || '__CLICK__';
+                                    const btn = parent.querySelector('a, button, [role="button"]');
+                                    if (btn) {
+                                        const btnTxt = (btn.innerText || '').trim();
+                                        if (btnTxt.includes('전체') || btnTxt.includes('더')) {
+                                            const href = btn.href || btn.getAttribute('href');
+                                            btn.click();
+                                            return { success: true, href: href || '__CLICKED__', html: btn.outerHTML };
                                         }
                                     }
                                     parent = parent.parentElement;
                                 }
                             }
                         }
-                        return null;
+                        return { success: false };
                     }""")
-                    print_log(f"  🔗 하루특가 '전체 보기' 링크: {see_all_link}")
-                    page._last_url_before_click = page.url
-                    page._last_clicked_html = f"<link target='{see_all_link}'>"
 
-                    if see_all_link and see_all_link != '__CLICK__' and see_all_link.startswith('http'):
-                        page.goto(see_all_link, wait_until="domcontentloaded", timeout=30000)
-                        page.wait_for_timeout(2000)
+                    page._last_url_before_click = page.url
+                    page._last_clicked_html = click_res.get('html', 'N/A')
+                    print_log(f"  🔗 '오늘만 이 가격' 섹션 한정 전체보기 클릭 결과: {click_res}")
+                    page.wait_for_timeout(2500)
+
+                    # [수칙 3] 클릭 후 URL 검증: /settlements 또는 관리자 라우트로 이탈 시 즉시 실패 처리
+                    post_click_url = page.url
+                    if any(bad_route in post_click_url for bad_route in ["settlement", "guide", "info", "member", "dashboard"]):
+                        print_log(f"🚨 [라우팅 오류 실패] 엉뚱한 관리자/정산 페이지로 이동 감지! URL: {post_click_url}")
+                    else:
                         collect_from_full_page("하루특가", "today_price", 1)
 
-                    else:
-                        clicked = False
-                        try:
-                            btn = page.locator("text='오늘만 이 가격' >> xpath=../..//button[contains(.,'전체')] | text='오늘만 이 가격' >> xpath=../..//a[contains(.,'전체')]").first
-                            if btn.count() > 0:
-                                btn.click(timeout=3000, force=True)
-                                page.wait_for_timeout(2000)
-                                clicked = True
-                        except Exception:
-                            pass
-
-                        if not clicked:
-                            try:
-                                clicked = page.evaluate("""() => {
-                                    const els = [...document.querySelectorAll('a, button, div, span')];
-                                    for (const el of els) {
-                                        const t = (el.innerText || '').trim();
-                                        if (t === '전체 보기' || t === '전체보기' || t === '더보기' || t === '더 보기') {
-                                            el.click();
-                                            return true;
-                                        }
-                                    }
-                                    return false;
-                                }""")
-                                if clicked:
-                                    page.wait_for_timeout(2000)
-                            except Exception:
-                                pass
-
-                        if clicked:
-                            print_log("  👆 하루특가 '전체 보기' 클릭 성공!")
-                            collect_from_full_page("하루특가", "today_price", 1)
-                        else:
-                            print_log("  ⚠️ 전체 보기 링크 없음 → 홈 하루특가 섹션 직접 수집")
-                            collect_from_full_page("하루특가(홈)", "today_price", 1)
 
 
 
