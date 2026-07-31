@@ -297,12 +297,15 @@ def harvest_sharelink_portal():
 
                 curr_url = page.url
                 curr_title = page.title()
-                body_text_snippet = page.locator("body").inner_text()[:400].replace("\n", " ")
+                h1_texts = [el.inner_text().strip() for el in page.locator("h1, h2, h3").all() if el.inner_text().strip()]
+                body_text_snippet_1000 = page.locator("body").inner_text()[:1000].replace("\n", " | ")
 
-                print_log(f"━━━ [{section_name}] 전체보기 진입 검증 ━━━")
-                print_log(f"  📍 클릭 후 URL: {curr_url}")
-                print_log(f"  📌 클릭 후 Page Title: {curr_title}")
-                print_log(f"  📄 DOM Text Snippet (앞 400자): {body_text_snippet}")
+                print_log(f"━━━ [{section_name}] 🔍 진입 화면 4대 정밀 검증 ━━━")
+                print_log(f"  1️⃣ 현재 URL : {curr_url}")
+                print_log(f"  2️⃣ 현재 TITLE : {curr_title}")
+                print_log(f"  3️⃣ H1/H2/H3 제목들 : {h1_texts[:5]}")
+                print_log(f"  4️⃣ document.body.innerText (앞 1000자) : {body_text_snippet_1000}")
+
 
                 frames = page.frames
                 print_log(f"  🖼️ 감지된 iframe 개수: {len(frames)}개")
