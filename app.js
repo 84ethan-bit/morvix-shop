@@ -233,7 +233,7 @@ function renderUniversalProductCard(p, badgeHTML = '', extraCardStyle = '') {
   const tossLink = getTossShareLink(p);
 
   return `
-    <a href="${tossLink}" target="_blank" rel="noopener noreferrer" class="product-card-v2" onclick="trackOutboundClick('${p.slug}'); openTossMobileView('${tossLink}', event);" style="${extraCardStyle}">
+    <a href="${tossLink}" class="product-card-v2" onclick="handleProductCardClick(event, '${tossLink}', '${p.slug}')" style="${extraCardStyle}">
       <!-- 1. Pure 1:1 Image Box with Absolute Badge -->
       <div class="card-thumb-frame">
         <img class="card-thumb-img" src="${p.thumbnail}" alt="${cleanTitle}" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80';">
@@ -252,6 +252,31 @@ function renderUniversalProductCard(p, badgeHTML = '', extraCardStyle = '') {
     </a>
   `;
 }
+
+// 📱 스마트폰 모바일 팝업창 완전 제거 & 토스 앱 0.1초 즉시 직행 네비게이션 엔진
+function handleProductCardClick(e, url, slug) {
+  if (!url) return;
+  try {
+    trackOutboundClick(slug);
+  } catch (err) {}
+
+  // PC 모니터(화면 폭 > 768px)일 때만 스마트폰 모양 프리뷰 팝업창 오픈
+  if (window.innerWidth > 768) {
+    e.preventDefault();
+    const width = 440;
+    const height = 860;
+    const left = Math.round((window.screen.width / 2) - (width / 2));
+    const top = Math.round((window.screen.height / 2) - (height / 2));
+    window.open(url, 'TossMobileShopping', `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,resizable=yes`);
+  } else {
+    // 📱 모바일 스마트폰 환경에서는 팝업창/인앱 브라우저 새창을 100% 원천 차단하고
+    // 현재 창 direct 이동(location.href)을 수행하여 스마트폰 OS가 토스 앱을 즉시 실행(Deep Linking)하도록 유도!
+    e.preventDefault();
+    window.location.href = url;
+  }
+}
+window.handleProductCardClick = handleProductCardClick;
+
 
 
 function loadMoreProducts() {
