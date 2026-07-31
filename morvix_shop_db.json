@@ -220,7 +220,7 @@
       "is_featured": true,
       "price": 9900,
       "original_price": 13365,
-      "discount_rate": "64% 특가",
+      "discount_rate": "64%",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -247,7 +247,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:54:34.345093",
-      "expiry_date": "2026-08-02T09:40:56.544827"
+      "expiry_date": "2026-08-02T09:45:45.330852"
     },
     {
       "id": "TOSS-AUTO-1785486869-42",
@@ -1830,7 +1830,7 @@
       "is_featured": true,
       "price": 12900,
       "original_price": 17415,
-      "discount_rate": "72% 특가",
+      "discount_rate": "72%",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -1857,7 +1857,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T09:40:56.544827",
+      "expiry_date": "2026-08-02T09:45:45.330852",
       "price_history": [
         {
           "price": 12900,
@@ -1886,7 +1886,7 @@
       "is_featured": true,
       "price": 8900,
       "original_price": 12015,
-      "discount_rate": "24% 특가",
+      "discount_rate": "24%",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -1913,7 +1913,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T09:40:56.544827",
+      "expiry_date": "2026-08-02T09:45:45.330852",
       "price_history": [
         {
           "price": 8900,
@@ -1998,7 +1998,7 @@
       "is_featured": true,
       "price": 19700,
       "original_price": 26595,
-      "discount_rate": "76% 특가",
+      "discount_rate": "76%",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -2025,7 +2025,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T09:40:56.544827",
+      "expiry_date": "2026-08-02T09:45:45.330852",
       "price_history": [
         {
           "price": 19700,
@@ -2054,7 +2054,7 @@
       "is_featured": true,
       "price": 11800,
       "original_price": 15930,
-      "discount_rate": "73% 특가",
+      "discount_rate": "73%",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -2081,7 +2081,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T09:40:56.544827",
+      "expiry_date": "2026-08-02T09:45:45.330852",
       "price_history": [
         {
           "price": 11800,
@@ -2110,7 +2110,7 @@
       "is_featured": true,
       "price": 8290,
       "original_price": 11191,
-      "discount_rate": "60% 특가",
+      "discount_rate": "60%",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -2137,7 +2137,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T09:40:56.544827",
+      "expiry_date": "2026-08-02T09:45:45.330852",
       "price_history": [
         {
           "price": 8290,
@@ -2166,7 +2166,7 @@
       "is_featured": true,
       "price": 18900,
       "original_price": 25515,
-      "discount_rate": "48% 특가",
+      "discount_rate": "48%",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -2193,7 +2193,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T09:40:56.544827",
+      "expiry_date": "2026-08-02T09:45:45.330852",
       "price_history": [
         {
           "price": 18900,
@@ -2222,7 +2222,7 @@
       "is_featured": true,
       "price": 26900,
       "original_price": 36315,
-      "discount_rate": "32% 특가",
+      "discount_rate": "32%",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -2249,7 +2249,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T09:40:56.544827",
+      "expiry_date": "2026-08-02T09:45:45.330852",
       "price_history": [
         {
           "price": 26900,
@@ -2278,7 +2278,7 @@
       "is_featured": true,
       "price": 6900,
       "original_price": 9315,
-      "discount_rate": "56% 특가",
+      "discount_rate": "56%",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -2305,7 +2305,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T09:40:56.544827",
+      "expiry_date": "2026-08-02T09:45:45.330852",
       "price_history": [
         {
           "price": 6900,
@@ -2334,7 +2334,7 @@
       "is_featured": true,
       "price": 8490,
       "original_price": 11461,
-      "discount_rate": "71% 특가",
+      "discount_rate": "71%",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -2361,7 +2361,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T09:40:56.544827",
+      "expiry_date": "2026-08-02T09:45:45.330852",
       "price_history": [
         {
           "price": 8490,
