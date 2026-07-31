@@ -1028,21 +1028,30 @@ def update_db_with_deals(deals):
             continue
 
 
-        # UPSERT 전략: 이미 같은 상품명이 존재하면 skip이 아닌 UPDATE (링크/이미지/섹션 최신화)
+        # UPSERT 전략: 이미 같은 상품명이 존재하면 skip이 아닌 UPDATE (오늘만 이 가격 섹션 1순위 보호)
         existing_idx = next((i for i, p in enumerate(existing) if p.get('name') == name), None)
         if existing_idx is not None:
-            # 기존 항목 현재 정보로 갱신 (링크, 이미지, 섹션, 만료일 최신화)
+            # 1순위 보호 규칙: 만약 기존 섹션이 today_price(오늘만 이 가격)이면 2순위 best_seller로 덮어쓰지 않음!
+            current_sec = existing[existing_idx].get('section')
+            new_sec = d.get('section', 'best_seller')
+            if current_sec == 'today_price' and new_sec == 'best_seller':
+                new_sec = 'today_price'
+                new_prio = 1
+            else:
+                new_prio = d.get('priority', 2)
+
             existing[existing_idx]['toss_link'] = share_link
             existing[existing_idx]['affiliate_links'][0]['url'] = share_link
             existing[existing_idx]['thumbnail'] = thumb
-            existing[existing_idx]['section'] = d.get('section', 'best_seller')
-            existing[existing_idx]['priority'] = d.get('priority', 2)
+            existing[existing_idx]['section'] = new_sec
+            existing[existing_idx]['priority'] = new_prio
             existing[existing_idx]['price'] = price
             existing[existing_idx]['discount_rate'] = discount
             existing[existing_idx]['expiry_date'] = (now + timedelta(hours=48)).isoformat()
-            print_log(f"  🔄 [UPSERT 갱신] {name[:28]} ➔ 링크/이미지 최신화 완료")
+            print_log(f"  🔄 [UPSERT 갱신] {name[:28]} ➔ 링크/이미지 최신화 완료 (Section: {new_sec})")
             count_added += 1
             continue
+
 
         slug = f"toss_{int(time.time())}_{count_added}"
         expiry_date = (now + timedelta(hours=48)).isoformat()
