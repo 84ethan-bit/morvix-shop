@@ -393,7 +393,7 @@ def harvest_sharelink_portal():
                         clean_raw = re.sub(r'수익', '', clean_raw)
                         clean_raw = re.sub(r'30일\s*최저가', '', clean_raw)
 
-                        # 개당 N원 및 수량(N개, N봉, N팩) 감지 자동 총액 계산 보정
+                        # 개당 N원 및 수량(N개, N봉, N팩, N롤) 감지 자동 총액 계산 보정
                         unit_match = re.search(r'개당\s*([\d,]+)\s*원', raw)
                         qty_match = re.search(r'([\d,]+)\s*(개|봉|팩|롤|병|정|포)', title)
 
@@ -402,40 +402,40 @@ def harvest_sharelink_portal():
                         valid_prices = [p for p in prices_int if p >= 500]
                         price = valid_prices[0] if valid_prices else 9900
 
-                        # 보정: 만약 추출된 가격이 2000원 미만이고 단가*수량이 정황상 맞으면 총액으로 계산
-                        if price < 2500 and qty_match:
+                        # 보정 규칙: 상품명에 수량(예: 10개, 2팩)이 있고 1개당 단가가 적혀있다면 총액으로 계산 (단가 1,490원 × 10개 = 14,900원)
+                        if qty_match:
                             try:
                                 qty_num = int(qty_match.group(1).replace(',', ''))
-                                if unit_match:
-                                    unit_val = int(unit_match.group(1).replace(',', ''))
-                                    calculated_total = unit_val * qty_num
-                                    if calculated_total >= 2000:
-                                        price = calculated_total
-                                elif price * qty_num >= 2000 and qty_num > 1:
-                                    price = price * qty_num
+                                if qty_num > 1:
+                                    if unit_match:
+                                        unit_val = int(unit_match.group(1).replace(',', ''))
+                                        price = unit_val * qty_num
+                                    elif price < 3500:
+                                        price = price * qty_num
                             except Exception:
                                 pass
 
                         # 5대 검증 (할인율 미표기도 정상 허용)
                         is_valid_name = len(title) >= 3
-                        is_valid_price = isinstance(price, int) and price >= 500
+                        is_valid_price = isinstance(price, int) and price >= 1000
                         is_valid_thumb = bool(img_url and img_url.startswith('http') and len(img_url) >= 15)
                         if not (is_valid_name and is_valid_price and is_valid_thumb):
                             print_log(f"    🛑 [검증 실패] {title[:20]} (Name:{is_valid_name} Price:{is_valid_price} Thumb:{is_valid_thumb})")
                             continue
 
-                        # 정가 계산 (할인율이 있으면 역산, 없으면 30% 추정 정가)
+                        # 정가 계산 (할인율 역산: discount_rate = 54% 이면 정가 = price / (1 - 0.54))
                         if discount_rate:
                             try:
                                 rate_num = int(re.search(r'\d+', discount_rate).group())
-                                if 0 < rate_num < 100:
-                                    original_price = int(price / (1 - rate_num / 100))
+                                if 0 < rate_num < 95:
+                                    original_price = int(price / (1 - rate_num / 100.0))
                                 else:
-                                    original_price = int(price * 1.3)
+                                    original_price = int(price * 1.35)
                             except Exception:
-                                original_price = int(price * 1.3)
+                                original_price = int(price * 1.35)
                         else:
-                            original_price = int(price * 1.3)
+                            original_price = int(price * 1.35)
+
 
 
 
