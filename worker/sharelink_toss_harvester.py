@@ -68,6 +68,9 @@ def harvest_sharelink_portal():
 
     harvested_deals = []
 
+    browser_id = f"BROWSER-{int(time.time())}-{uuid.uuid4().hex[:6]}"
+    print_log(f"🆔 [브라우저 인스턴스 생성] Browser ID: {browser_id}")
+
     with sync_playwright() as p:
         browser = p.chromium.launch(
             headless=True,
@@ -97,7 +100,11 @@ def harvest_sharelink_portal():
             ctx_opts["storage_state"] = SESSION_PATH
 
         ctx = browser.new_context(**ctx_opts)
+        ctx_id = f"CTX-{uuid.uuid4().hex[:6]}"
+        print_log(f"🆔 [컨텍스트 인스턴스 준비] Context ID: {ctx_id} (Browser: {browser_id})")
+
         if use_session:
+
             try:
                 with open(SESSION_PATH, "r", encoding="utf-8") as f:
                     sdata = json.load(f)
@@ -297,6 +304,11 @@ def harvest_sharelink_portal():
                 print_log(f"  📌 클릭 후 Page Title: {curr_title}")
                 print_log(f"  📄 DOM Text Snippet (앞 400자): {body_text_snippet}")
 
+                frames = page.frames
+                print_log(f"  🖼️ 감지된 iframe 개수: {len(frames)}개")
+                for f_idx, frame in enumerate(frames):
+                    print_log(f"     └─ iframe #{f_idx+1} URL: {frame.url}")
+
                 try:
                     ss_name = f"see_all_{section_key}_{int(time.time())}.png"
                     ss_path = os.path.join(BASE_DIR, "scratch", ss_name)
@@ -304,6 +316,7 @@ def harvest_sharelink_portal():
                     print_log(f"  📸 진입 화면 스크린샷 저장 완료 ➔ {ss_path}")
                 except Exception as ss_err:
                     print_log(f"  ⚠️ 스크린샷 저장 실패: {ss_err}")
+
 
                 last_card_count = 0
                 for scroll_step in range(1, 35):
