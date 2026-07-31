@@ -488,7 +488,7 @@ def harvest_sharelink_portal():
                         return origReplace.apply(this, args);
                     };
 
-                    // 6. React Fiber & Props / Event Handlers 수색
+                    // 6. React Fiber Props toString() & __next_f 스트리밍 데이터 계측
                     const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
                     for (const h of headers) {
                         const txt = (h.innerText || '').trim();
@@ -503,11 +503,41 @@ def harvest_sharelink_portal():
                                         const reactPropsKey = Object.keys(btn).find(k => k.startsWith('__reactProps$') || k.startsWith('__reactEventHandlers$'));
                                         const reactFiberKey = Object.keys(btn).find(k => k.startsWith('__reactFiber$') || k.startsWith('__reactInternalInstance$'));
                                         const props = reactPropsKey ? btn[reactPropsKey] : null;
+                                        
+                                        // onClick.toString() 추출
+                                        let onClickFnStr = 'N/A';
+                                        if (props && props.onClick) {
+                                            try { onClickFnStr = props.onClick.toString().slice(0, 300); } catch(e) {}
+                                        }
+
+                                        // props 객체 키-값 덤프
+                                        let propsDump = {};
+                                        if (props) {
+                                            for (const k of Object.keys(props)) {
+                                                if (typeof props[k] !== 'function') {
+                                                    try { propsDump[k] = String(props[k]).slice(0, 100); } catch(e) {}
+                                                }
+                                            }
+                                        }
+
+                                        // __next_f 스트리밍 파티션 수색
+                                        let nextFCount = 0;
+                                        let nextFProductsEstimate = 0;
+                                        if (window.__next_f && Array.isArray(window.__next_f)) {
+                                            nextFCount = window.__next_f.length;
+                                            const fullStr = JSON.stringify(window.__next_f);
+                                            const matches = fullStr.match(/(?:product|deal|item|price|title)/g);
+                                            nextFProductsEstimate = matches ? matches.length : 0;
+                                        }
+
                                         window._reactFiberInfo = {
                                             hasPropsKey: !!reactPropsKey,
                                             hasFiberKey: !!reactFiberKey,
                                             hasOnClick: !!(props && props.onClick),
-                                            propsKeys: props ? Object.keys(props) : []
+                                            onClickFnStr: onClickFnStr,
+                                            propsDump: propsDump,
+                                            nextFCount: nextFCount,
+                                            nextFProductsEstimate: nextFProductsEstimate
                                         };
                                         break;
                                     }
@@ -517,6 +547,7 @@ def harvest_sharelink_portal():
                         }
                     }
                 }""")
+
 
 
 
@@ -611,15 +642,16 @@ def harvest_sharelink_portal():
                     };
                 }""")
 
+                rf_info = react_post_report.get('reactFiberInfo', {})
                 print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                print_log("🔍 [대표님 지정] React 내부 오류 & JS Exception 정밀 계측 리포트")
+                print_log("🔍 [대표님 지정] React Fiber Props & __next_f 정밀 계측 리포트")
                 print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                print_log(f" 📌 JS Uncaught Errors 수량      : {len(react_post_report['jsErrorLogs'])}개 ({react_post_report['jsErrorLogs']})")
-                print_log(f" 📌 Unhandled Promise Rejections : {len([e for e in react_post_report['jsErrorLogs'] if e.get('type') == 'unhandled_rejection'])}개")
-                print_log(f" 📌 console.error / console.warn : {len(react_post_report['consoleLogs'])}개 ({react_post_report['consoleLogs']})")
-                print_log(f" 📌 클릭 후 Network(fetch/XHR)   : {len(react_post_report['networkLogs'])}개")
-                print_log(f" 📌 History API(pushState)       : {len(react_post_report['historyLogs'])}개")
+                print_log(f" 1️⃣ onClick 함수 representation  : {rf_info.get('onClickFnStr')}")
+                print_log(f" 2️⃣ 버튼 React Props 객체 덤프   : {rf_info.get('propsDump')}")
+                print_log(f" 3️⃣ __next_f 스트리밍 파티션 수 : {rf_info.get('nextFCount')}개")
+                print_log(f" 4️⃣ __next_f 키워드(product/deal) : 추정 {rf_info.get('nextFProductsEstimate')}개 포함")
                 print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
 
 
 
