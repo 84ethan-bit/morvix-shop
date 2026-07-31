@@ -507,14 +507,14 @@
       "short_url": "morvix.kr/toss_1785513883_14",
       "name": "대용량 한입쥐포, 30미, 300g 내외, 1봉",
       "subtitle": "토스 파트너 특가 30% 적용",
-      "section": "best_seller",
-      "priority": 2,
+      "section": "today_price",
+      "priority": 1,
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 9900,
+      "price": 8900,
       "original_price": 13365,
-      "discount_rate": "30%",
+      "discount_rate": "70%",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -541,7 +541,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-02T16:04:43.416287"
+      "expiry_date": "2026-08-02T16:37:16.195235"
     },
     {
       "id": "TOSS-AUTO-1785513883-7",
@@ -549,14 +549,14 @@
       "short_url": "morvix.kr/toss_1785513883_7",
       "name": "소소락 통망고 스틱, 60g, 10봉",
       "subtitle": "토스 파트너 특가 39% 적용",
-      "section": "best_seller",
-      "priority": 2,
+      "section": "today_price",
+      "priority": 1,
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
       "price": 8970,
       "original_price": 12109,
-      "discount_rate": "39% 특가",
+      "discount_rate": "39%",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -583,7 +583,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-02T16:04:43.416287"
+      "expiry_date": "2026-08-02T16:37:16.195235"
     },
     {
       "id": "TOSS-AUTO-1785513883-6",
@@ -591,14 +591,14 @@
       "short_url": "morvix.kr/toss_1785513883_6",
       "name": "썬키스트 사과주스, 1.35L, 12개",
       "subtitle": "토스 파트너 특가 54% 적용",
-      "section": "best_seller",
-      "priority": 2,
+      "section": "today_price",
+      "priority": 1,
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 11900,
+      "price": 14280,
       "original_price": 19278,
-      "discount_rate": "54% 특가",
+      "discount_rate": "54%",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -625,7 +625,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-02T16:04:43.416287"
+      "expiry_date": "2026-08-02T16:37:16.195235"
     },
     {
       "id": "TOSS-AUTO-1785513883-5",
@@ -633,14 +633,14 @@
       "short_url": "morvix.kr/toss_1785513883_5",
       "name": "프롬바이오 위건강엔 매스틱, 3g, 28포, 4박스",
       "subtitle": "토스 파트너 특가 88% 적용",
-      "section": "best_seller",
-      "priority": 2,
+      "section": "today_price",
+      "priority": 1,
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 32900,
+      "price": 92120,
       "original_price": 124362,
-      "discount_rate": "88% 특가",
+      "discount_rate": "88%",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -667,7 +667,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-02T16:04:43.416287"
+      "expiry_date": "2026-08-02T16:37:16.195235"
     },
     {
       "id": "TOSS-AUTO-1785513883-4",
@@ -675,14 +675,14 @@
       "short_url": "morvix.kr/toss_1785513883_4",
       "name": "오가닉프렌즈 정성 한포 육수 분말 스틱, 멸치 다시마, 80g, 20개입, 1개",
       "subtitle": "토스 파트너 특가 39% 적용",
-      "section": "best_seller",
-      "priority": 2,
+      "section": "today_price",
+      "priority": 1,
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 7800,
+      "price": 15600,
       "original_price": 21060,
-      "discount_rate": "39% 특가",
+      "discount_rate": "39%",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -709,7 +709,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-02T16:04:43.416287"
+      "expiry_date": "2026-08-02T16:37:16.195235"
     },
     {
       "id": "TOSS-AUTO-1785513883-3",
@@ -717,14 +717,14 @@
       "short_url": "morvix.kr/toss_1785513883_3",
       "name": "고른 우거지 감자탕, 1000g, 4개",
       "subtitle": "토스 파트너 특가 43% 적용",
-      "section": "best_seller",
-      "priority": 2,
+      "section": "today_price",
+      "priority": 1,
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 22500,
+      "price": 9000,
       "original_price": 12150,
-      "discount_rate": "43% 특가",
+      "discount_rate": "43%",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -751,7 +751,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-02T16:04:43.416287"
+      "expiry_date": "2026-08-02T16:37:16.195235"
     },
     {
       "id": "TOSS-AUTO-1785513883-2",
@@ -759,14 +759,14 @@
       "short_url": "morvix.kr/toss_1785513883_2",
       "name": "뉴클 100W PD CtoC 고속충전 릴 케이블, 화이트, 1m, 2개",
       "subtitle": "토스 파트너 특가 81% 적용",
-      "section": "best_seller",
-      "priority": 2,
+      "section": "today_price",
+      "priority": 1,
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
-      "price": 9800,
+      "price": 1960,
       "original_price": 2646,
-      "discount_rate": "81% 특가",
+      "discount_rate": "81%",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -793,7 +793,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-02T16:04:43.416287"
+      "expiry_date": "2026-08-02T16:37:16.195235"
     },
     {
       "id": "TOSS-AUTO-1785513883-1",
@@ -850,7 +850,7 @@
       "is_featured": true,
       "price": 8900,
       "original_price": 12015,
-      "discount_rate": "65% 특가",
+      "discount_rate": "65%",
       "rating": 4.9,
       "review_count": 128,
       "usps": [
@@ -877,7 +877,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T16:04:43.416287",
-      "expiry_date": "2026-08-02T16:04:43.416287"
+      "expiry_date": "2026-08-02T16:37:16.195235"
     }
   ]
 }
