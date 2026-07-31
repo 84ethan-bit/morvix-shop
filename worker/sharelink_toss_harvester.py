@@ -983,16 +983,39 @@ def harvest_sharelink_portal():
             print_log(f"시즌 특가 / 추천 : {section_counts['season_special'] + section_counts['other']}개 수집")
             print_log("==========================================================")
             print_log(f"총 {len(harvested_deals)}개 저장 완료")
-            print_log("==========================================================")
-
-
         except Exception as e:
             print_log(f"❌ 수집 중 오류: {e}")
 
         browser.close()
 
+    # ⚡ [API Interceptor] 도청된 백엔드 JSON 데이터를 harvested_deals에 최우선 병합
+    if captured_api_products:
+        print_log(f"📡 [API Interceptor] 토스 백엔드 JSON 원본 {len(captured_api_products)}개 도청 획득 완료!")
+        for api_item in captured_api_products:
+            matched = False
+            for d in harvested_deals:
+                if api_item["name"] in d["name"] or d["name"] in api_item["name"]:
+                    d["price"] = api_item["price"]
+                    d["original_price"] = api_item["original_price"]
+                    if api_item["discount_rate"]: d["discount_rate"] = api_item["discount_rate"]
+                    if api_item["share_link"] and api_item["share_link"].startswith("http"): d["share_link"] = api_item["share_link"]
+                    matched = True
+                    break
+            if not matched and api_item.get("share_link"):
+                harvested_deals.append({
+                    "name": api_item["name"],
+                    "price": api_item["price"],
+                    "discount_rate": api_item["discount_rate"],
+                    "thumbnail": api_item["thumbnail"],
+                    "share_link": api_item["share_link"],
+                    "section": "best_seller",
+                    "priority": 2
+                })
+
+
     if harvested_deals:
         update_db_with_deals(harvested_deals)
+
 
 def update_db_with_deals(deals):
     """수집된 핫딜을 morvix_shop_db.json에 반영 (5대 항목 100% 무결성 검증 게이트적용)"""
