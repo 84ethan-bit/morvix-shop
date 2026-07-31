@@ -579,23 +579,41 @@ def harvest_sharelink_portal():
                         page.wait_for_timeout(2000)
                         collect_from_full_page("하루특가", "today_price", 1)
                     else:
-                        # 직접 클릭 시도 (JS return '__CLICK__' 또는 셀렉터 지원)
                         clicked = False
                         try:
                             btn = page.locator("text='오늘만 이 가격' >> xpath=../..//button[contains(.,'전체')] | text='오늘만 이 가격' >> xpath=../..//a[contains(.,'전체')]").first
                             if btn.count() > 0:
-                                btn.click(timeout=3000)
+                                btn.click(timeout=3000, force=True)
                                 page.wait_for_timeout(2000)
                                 clicked = True
                         except Exception:
                             pass
-                        
+
+                        if not clicked:
+                            try:
+                                clicked = page.evaluate("""() => {
+                                    const els = [...document.querySelectorAll('a, button, div, span')];
+                                    for (const el of els) {
+                                        const t = (el.innerText || '').trim();
+                                        if (t === '전체 보기' || t === '전체보기' || t === '더보기' || t === '더 보기') {
+                                            el.click();
+                                            return true;
+                                        }
+                                    }
+                                    return false;
+                                }""")
+                                if clicked:
+                                    page.wait_for_timeout(2000)
+                            except Exception:
+                                pass
+
                         if clicked:
-                            print_log("  👆 하루특가 '전체 보기' 직접 클릭 성공!")
+                            print_log("  👆 하루특가 '전체 보기' 클릭 성공!")
                             collect_from_full_page("하루특가", "today_price", 1)
                         else:
                             print_log("  ⚠️ 전체 보기 링크 없음 → 홈 하루특가 섹션 직접 수집")
                             collect_from_full_page("하루특가(홈)", "today_price", 1)
+
 
 
             except Exception as e:
