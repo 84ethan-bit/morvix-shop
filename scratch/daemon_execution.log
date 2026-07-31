@@ -73,3 +73,14 @@
 [2026-08-01 02:43:41] [MORVIX-365] 🧹 [TTL ENGINE] 만료 핫딜 자동 검사 및 Purge 스캔 중...
 [2026-08-01 02:43:41] [MORVIX-365] ℹ️ [TTL ENGINE] 만료된 핫딜 없음 (현재 활성 핫딜: 90개)
 [2026-08-01 02:43:41] [MORVIX-365] 🔄 [수집 사이클 가동] sharelink.toss.im 포털 핫딜 동기화 시작
+[2026-08-01 03:09:55] [MORVIX-365] =========================================================================
+[2026-08-01 03:09:55] [MORVIX-365] 🛡️ MORVIX SHOP OS - 365-DAY UNATTENDED AUTONOMOUS DAEMON INITIALIZED
+[2026-08-01 03:09:55] [MORVIX-365]    • 실행 모드: 매일 00:01 자정 자동 가동 모드
+[2026-08-01 03:09:55] [MORVIX-365]    • DB 경로: C:\옵시디언\Jarvis_Starter_Pack-jarvis-starter-pack-v2\NEXORA\MORVIX_Shop_OS\morvix_shop_db.json
+[2026-08-01 03:09:55] [MORVIX-365]    • 저널 로그: C:\옵시디언\Jarvis_Starter_Pack-jarvis-starter-pack-v2\NEXORA\MORVIX_Shop_OS\scratch\daemon_execution.log
+[2026-08-01 03:09:55] [MORVIX-365] =========================================================================
+[2026-08-01 03:09:55] [MORVIX-365] 🧹 [TTL ENGINE] 만료 핫딜 자동 검사 및 Purge 스캔 중...
+[2026-08-01 03:09:55] [MORVIX-365] ℹ️ [TTL ENGINE] 만료된 핫딜 없음 (현재 활성 핫딜: 119개)
+[2026-08-01 03:09:55] [MORVIX-365] 🔄 [수집 사이클 가동] sharelink.toss.im 포털 핫딜 동기화 시작
+[2026-08-01 03:11:46] [MORVIX-365] ✅ [수집 사이클 완료] 파이프라인 정상 가동 완료
+[2026-08-01 03:11:46] [MORVIX-365] 🚀 [배포 검증] Git commit & push 시도: auto: ⚡ 365-Day Unattended Harvester Sync [03:11]
