@@ -453,19 +453,39 @@ def harvest_sharelink_portal():
 
                 today_see_all = page.locator("a:has-text('전체 보기'), button:has-text('전체 보기'), a:has-text('더 보기'), button:has-text('더 보기')").first
                 if today_see_all.count() > 0 or True:
-                    # 하루특가 섹션의 전체 보기 탐색
+                    # 하루특가 섹션의 전체 보기 탐색 (DOM 다각도 탐색)
                     see_all_link = page.evaluate("""() => {
-                        const headers = [...document.querySelectorAll('h1, h2, h3, p, span, div')];
+                        // 1. 텍스트 직접 매칭 탐색
+                        const allEls = [...document.querySelectorAll('a, button, div, span')];
+                        for (const el of allEls) {
+                            const txt = (el.innerText || '').trim();
+                            if ((txt === '전체 보기' || txt === '전체보기' || txt === '더보기' || txt === '더 보기') && (el.href || el.tagName === 'BUTTON' || el.onclick || el.getAttribute('role') === 'button')) {
+                                // 섹션 근처인지 확인
+                                let p = el.parentElement;
+                                for (let i = 0; i < 5; i++) {
+                                    if (!p) break;
+                                    const pTxt = p.innerText || '';
+                                    if (pTxt.includes('오늘만') || pTxt.includes('하루특가')) {
+                                        return el.href || el.getAttribute('href') || '__CLICK__';
+                                    }
+                                    p = p.parentElement;
+                                }
+                            }
+                        }
+                        // 2. 헤더 기준 근처 버튼/링크 탐색
+                        const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
                         for (const h of headers) {
                             const txt = h.innerText || '';
                             if (txt.includes('오늘만 이 가격') || txt.includes('하루특가')) {
                                 let parent = h.parentElement;
-                                for (let i = 0; i < 5; i++) {
+                                for (let i = 0; i < 6; i++) {
                                     if (!parent) break;
-                                    const link = parent.querySelector('a[href], button');
-                                    const linkTxt = link ? (link.innerText || '') : '';
-                                    if (linkTxt.includes('전체') || linkTxt.includes('더 보기')) {
-                                        return link.href || link.getAttribute('href') || '__CLICK__';
+                                    const link = parent.querySelector('a, button, [role="button"]');
+                                    if (link) {
+                                        const linkTxt = (link.innerText || '').trim();
+                                        if (linkTxt.includes('전체') || linkTxt.includes('더')) {
+                                            return link.href || link.getAttribute('href') || '__CLICK__';
+                                        }
                                     }
                                     parent = parent.parentElement;
                                 }
@@ -475,14 +495,29 @@ def harvest_sharelink_portal():
                     }""")
                     print_log(f"  🔗 하루특가 '전체 보기' 링크: {see_all_link}")
 
-                    if see_all_link and see_all_link != '__CLICK__':
+                    if see_all_link and see_all_link != '__CLICK__' and see_all_link.startswith('http'):
                         page.goto(see_all_link, wait_until="domcontentloaded", timeout=30000)
                         page.wait_for_timeout(2000)
                         collect_from_full_page("하루특가", "today_price", 1)
                     else:
-                        # 전체 보기 링크 없으면 홈에서 하루특가 카드 직접 수집
-                        print_log("  ⚠️ 전체 보기 링크 없음 → 홈 하루특가 섹션 직접 수집")
-                        collect_from_full_page("하루특가(홈)", "today_price", 1)
+                        # 직접 클릭 시도 (JS return '__CLICK__' 또는 셀렉터 지원)
+                        clicked = False
+                        try:
+                            btn = page.locator("text='오늘만 이 가격' >> xpath=../..//button[contains(.,'전체')] | text='오늘만 이 가격' >> xpath=../..//a[contains(.,'전체')]").first
+                            if btn.count() > 0:
+                                btn.click(timeout=3000)
+                                page.wait_for_timeout(2000)
+                                clicked = True
+                        except Exception:
+                            pass
+                        
+                        if clicked:
+                            print_log("  👆 하루특가 '전체 보기' 직접 클릭 성공!")
+                            collect_from_full_page("하루특가", "today_price", 1)
+                        else:
+                            print_log("  ⚠️ 전체 보기 링크 없음 → 홈 하루특가 섹션 직접 수집")
+                            collect_from_full_page("하루특가(홈)", "today_price", 1)
+
 
             except Exception as e:
                 print_log(f"  ❌ 하루특가 전체 보기 오류: {e}")
@@ -507,17 +542,34 @@ def harvest_sharelink_portal():
                 page.wait_for_timeout(1500)
 
                 best_see_all_link = page.evaluate("""() => {
-                    const headers = [...document.querySelectorAll('h1, h2, h3, p, span, div')];
+                    const allEls = [...document.querySelectorAll('a, button, div, span')];
+                    for (const el of allEls) {
+                        const txt = (el.innerText || '').trim();
+                        if ((txt === '전체 보기' || txt === '전체보기' || txt === '더보기' || txt === '더 보기') && (el.href || el.tagName === 'BUTTON' || el.onclick || el.getAttribute('role') === 'button')) {
+                            let p = el.parentElement;
+                            for (let i = 0; i < 5; i++) {
+                                if (!p) break;
+                                const pTxt = p.innerText || '';
+                                if (pTxt.includes('많이 팔리는') || pTxt.includes('BEST') || pTxt.includes('베스트')) {
+                                    return el.href || el.getAttribute('href') || '__CLICK__';
+                                }
+                                p = p.parentElement;
+                            }
+                        }
+                    }
+                    const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
                     for (const h of headers) {
                         const txt = h.innerText || '';
                         if (txt.includes('지금 많이 팔리는') || txt.includes('BEST') || txt.includes('베스트')) {
                             let parent = h.parentElement;
-                            for (let i = 0; i < 5; i++) {
+                            for (let i = 0; i < 6; i++) {
                                 if (!parent) break;
-                                const link = parent.querySelector('a[href], button');
-                                const linkTxt = link ? (link.innerText || '') : '';
-                                if (linkTxt.includes('전체') || linkTxt.includes('더 보기')) {
-                                    return link.href || link.getAttribute('href') || '__CLICK__';
+                                const link = parent.querySelector('a, button, [role="button"]');
+                                if (link) {
+                                    const linkTxt = (link.innerText || '').trim();
+                                    if (linkTxt.includes('전체') || linkTxt.includes('더')) {
+                                        return link.href || link.getAttribute('href') || '__CLICK__';
+                                    }
                                 }
                                 parent = parent.parentElement;
                             }
@@ -527,13 +579,28 @@ def harvest_sharelink_portal():
                 }""")
                 print_log(f"  🔗 베스트 '전체 보기' 링크: {best_see_all_link}")
 
-                if best_see_all_link and best_see_all_link != '__CLICK__':
+                if best_see_all_link and best_see_all_link != '__CLICK__' and best_see_all_link.startswith('http'):
                     page.goto(best_see_all_link, wait_until="domcontentloaded", timeout=30000)
                     page.wait_for_timeout(2000)
                     collect_from_full_page("지금 많이 팔리는 BEST", "best_seller", 2)
                 else:
-                    print_log("  ⚠️ 전체 보기 링크 없음 → 홈 베스트 섹션 직접 수집")
-                    collect_from_full_page("베스트(홈)", "best_seller", 2)
+                    clicked = False
+                    try:
+                        btn = page.locator("text='BEST' >> xpath=../..//button[contains(.,'전체')] | text='BEST' >> xpath=../..//a[contains(.,'전체')] | text='지금 많이 팔리는' >> xpath=../..//button[contains(.,'전체')]").first
+                        if btn.count() > 0:
+                            btn.click(timeout=3000)
+                            page.wait_for_timeout(2000)
+                            clicked = True
+                    except Exception:
+                        pass
+
+                    if clicked:
+                        print_log("  👆 베스트 '전체 보기' 직접 클릭 성공!")
+                        collect_from_full_page("지금 많이 팔리는 BEST", "best_seller", 2)
+                    else:
+                        print_log("  ⚠️ 전체 보기 링크 없음 → 홈 베스트 섹션 직접 수집")
+                        collect_from_full_page("베스트(홈)", "best_seller", 2)
+
 
             except Exception as e:
                 print_log(f"  ❌ 베스트 전체 보기 오류: {e}")
