@@ -429,24 +429,30 @@ def harvest_sharelink_portal():
                 page._last_url_before_click = before_url
                 page._last_clicked_html = btn_info.get('html', 'N/A')
 
-                # [대표님 지정] MutationObserver 기반 DOM 변경 추적 장치 설치
+                # [대표님 지정] Event Dispatch 및 React SyntheticEvent 계측 모듈
+                print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print_log("🔍 [EVENT DISPATCH TRACER] 이벤트 전파 및 캡처 계측 준비")
+                print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
                 page.evaluate("""() => {
-                    window._mutationLogs = [];
-                    const observer = new MutationObserver((mutations) => {
-                        for (const m of mutations) {
-                            const targetTag = m.target.tagName + (m.target.className ? '.' + String(m.target.className).slice(0, 30) : '');
-                            const addedNodes = [...m.addedNodes].map(n => n.nodeType === 1 ? n.tagName + (n.className ? '.' + String(n.className).slice(0, 30) : '') : 'text');
-                            window._mutationLogs.push({
-                                type: m.type,
+                    window._eventLogs = [];
+                    const events = ['mousedown', 'mouseup', 'click'];
+                    events.forEach(evtType => {
+                        document.addEventListener(evtType, (e) => {
+                            const targetTag = e.target ? (e.target.tagName + (e.target.className ? '.' + String(e.target.className).slice(0, 30) : '')) : 'N/A';
+                            window._eventLogs.push({
+                                type: e.type,
                                 target: targetTag,
-                                addedCount: m.addedNodes.length,
-                                addedSample: addedNodes.slice(0, 5),
-                                attributeName: m.attributeName || 'N/A'
+                                bubbles: e.bubbles,
+                                cancelable: e.cancelable,
+                                defaultPrevented: e.defaultPrevented,
+                                timeStamp: Math.round(e.timeStamp)
                             });
-                        }
+                        }, true); // Capture phase listener
                     });
-                    observer.observe(document.body, { childList: true, subtree: true, attributes: true, characterData: true });
                 }""")
+
+
 
                 # [대표님 지정] 실제 클릭 대상 요소 및 좌표 정밀 계측 (elementFromPoint, pointer-events, boundingBox)
                 target_element_diag = page.evaluate("""() => {
@@ -527,27 +533,25 @@ def harvest_sharelink_portal():
                 # React SPA 상태 변경 및 렌더링 대기
                 page.wait_for_timeout(3000)
 
-                mutation_report = page.evaluate("""() => {
-                    const logs = window._mutationLogs || [];
-                    const targets = [...new Set(logs.map(l => l.target))];
+                event_report = page.evaluate("""() => {
+                    const logs = window._eventLogs || [];
                     return {
-                        totalMutations: logs.length,
-                        uniqueTargets: targets.slice(0, 10),
-                        firstMutation: logs.length > 0 ? logs[0] : null,
-                        lastMutation: logs.length > 0 ? logs[logs.length - 1] : null
+                        totalEvents: logs.length,
+                        eventSequence: logs.map(l => `${l.type} -> ${l.target}`),
+                        hasClick: logs.some(l => l.type === 'click'),
+                        defaultPrevented: logs.some(l => l.defaultPrevented)
                     };
                 }""")
 
                 print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                print_log("🔍 [대표님 지정] MutationObserver DOM 변경 추적 계측 리포트")
+                print_log("🔍 [대표님 지정] Event Dispatch 및 React SyntheticEvent 계측 리포트")
                 print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                print_log(f" 📌 총 Mutation 이벤트 수   : {mutation_report['totalMutations']}회")
-                print_log(f" 📌 변경 대상 노드(Targets) : {mutation_report['uniqueTargets']}")
-                if mutation_report['firstMutation']:
-                    print_log(f" 📌 최초 Mutation           : {mutation_report['firstMutation']}")
-                if mutation_report['lastMutation']:
-                    print_log(f" 📌 최종 Mutation           : {mutation_report['lastMutation']}")
+                print_log(f" 📌 디스패치된 총 Event 수: {event_report['totalEvents']}회")
+                print_log(f" 📌 이벤트 시퀀스 (mousedown -> mouseup -> click): {event_report['eventSequence']}")
+                print_log(f" 📌 click 이벤트 수신 여부 : {event_report['hasClick']}")
+                print_log(f" 📌 defaultPrevented 여부  : {event_report['defaultPrevented']}")
                 print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
 
 
 
