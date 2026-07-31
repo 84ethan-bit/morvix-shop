@@ -533,14 +533,17 @@ def check_midnight_today_price_reset():
 # [준비 기능 2] 전수 카탈로그 수집 완료 시 자동 멈춤/대기 전환 모듈
 # ─────────────────────────────────────────────────
 def check_full_catalog_completed(no_new_item_streak):
-    """현재 26개 수집 완료 후 00:00 KST 자정까지 대기 모드 전환 모듈"""
-    now = datetime.now()
-    from datetime import timedelta
-    tomorrow_midnight = (now + timedelta(days=1)).replace(hour=0, minute=1, second=0, microsecond=0)
-    sleep_sec = max((tomorrow_midnight - now).total_seconds(), 60)
-    print(f"😴 [자정 대기 모드] 00:00 KST까지 {int(sleep_sec//3600)}시간 {int((sleep_sec%3600)//60)}분 대기 후 정각 00:01에 수집 재개", flush=True)
-    time.sleep(sleep_sec)
-    return True
+    """3회 연속 신규/갱신 없을 시 자정까지 대기 모드 전환"""
+    if no_new_item_streak >= 3:
+        now = datetime.now()
+        from datetime import timedelta
+        tomorrow_midnight = (now + timedelta(days=1)).replace(hour=0, minute=1, second=0, microsecond=0)
+        sleep_sec = max((tomorrow_midnight - now).total_seconds(), 60)
+        print(f"😴 [자정 대기 모드] 00:00 KST까지 {int(sleep_sec//3600)}시간 {int((sleep_sec%3600)//60)}분 대기 후 정각 00:01에 수집 재개", flush=True)
+        time.sleep(sleep_sec)
+        return True
+    return False
+
 
 
 
