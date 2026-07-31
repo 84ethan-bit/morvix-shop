@@ -111,7 +111,7 @@ def run_harvest_and_sync_cycle():
         from worker.sharelink_toss_harvester import harvest_sharelink_portal
         harvest_sharelink_portal()
         write_journal_log("✅ [수집 사이클 완료] 파이프라인 정상 가동 완료")
-        
+
         # Git Push Sync
         run_git_deploy_with_retry(f"auto: ⚡ 365-Day Unattended Harvester Sync [{datetime.now().strftime('%H:%M')}]")
     except Exception as e:

@@ -314,61 +314,7 @@ def harvest_sharelink_portal():
 
             # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             # [대표님 지정 1단계 검증] __NEXT_DATA__ 존재 여부, 크기, Key 구조, 상품 배열 덤프 진단
-            print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-            print_log("🔍 [JSON CHECK] __NEXT_DATA__ 스크립트 태그 정밀 진단 시작")
-            print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-            next_data_diag = page.evaluate("""() => {
-                const el = document.getElementById('__NEXT_DATA__');
-                if (!el) return { found: false };
-                const text = el.innerText || '';
-                const size = text.length;
-                try {
-                    const json = JSON.parse(text);
-                    const topKeys = Object.keys(json);
-                    const pagePropsKeys = json.pageProps ? Object.keys(json.pageProps) : [];
-                    
-                    // 수색: JSON 내부 배열 및 상품 키 찾기
-                    const searchArrays = (obj, path = '', depth = 0) => {
-                        let res = [];
-                        if (depth > 5 || !obj || typeof obj !== 'object') return res;
-                        for (const k in obj) {
-                            const newPath = path ? `${path}.${k}` : k;
-                            if (Array.isArray(obj[k])) {
-                                if (obj[k].length > 0 && typeof obj[k][0] === 'object') {
-                                    res.push({ path: newPath, count: obj[k].length, sample: obj[k][0] });
-                                }
-                            } else if (typeof obj[k] === 'object') {
-                                res = res.concat(searchArrays(obj[k], newPath, depth + 1));
-                            }
-                        }
-                        return res;
-                    };
-                    
-                    const foundArrays = searchArrays(json);
-                    return {
-                        found: true,
-                        size: size,
-                        topKeys: topKeys,
-                        pagePropsKeys: pagePropsKeys,
-                        foundArrays: foundArrays.map(a => `${a.path} (${a.count}개)`).slice(0, 10),
-                        sampleArray: foundArrays.length > 0 ? { path: foundArrays[0].path, sample: foundArrays[0].sample } : null
-                    };
-                } catch (e) {
-                    return { found: true, size: size, parseError: e.toString() };
-                }
-            }""")
-
-            print_log(f"📌 __NEXT_DATA__ Found : {next_data_diag.get('found')}")
-            if next_data_diag.get('found'):
-                print_log(f"📌 Size                 : {next_data_diag.get('size')} bytes")
-                print_log(f"📌 Top Keys             : {next_data_diag.get('topKeys')}")
-                print_log(f"📌 pageProps Keys       : {next_data_diag.get('pagePropsKeys')}")
-                print_log(f"📌 Found Array Paths    : {next_data_diag.get('foundArrays')}")
-                if next_data_diag.get('sampleArray'):
-                    print_log(f"📌 Sample Array Path    : {next_data_diag['sampleArray']['path']}")
-                    print_log(f"📌 Sample Object Keys   : {list(next_data_diag['sampleArray']['sample'].keys()) if isinstance(next_data_diag['sampleArray']['sample'], dict) else 'N/A'}")
-            print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-
+            print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
             seen_titles = set()
             section_counts = {}
             TARGET_PER_SECTION = 200
@@ -381,9 +327,6 @@ def harvest_sharelink_portal():
                 page.goto(target_deals_url, wait_until="networkidle")
                 page.wait_for_timeout(3000)
 
-                after_url = page.url
-                print_log(f"📍 진입 후 URL: {after_url}")
-
                 # 80개+ 전수 마운트를 위한 인피니티 스크롤 수행
                 print_log("📜 핫딜 전수 마운트를 위한 무한 스크롤 수행 중...")
                 prev_btn_count = 0
@@ -391,156 +334,33 @@ def harvest_sharelink_portal():
                     page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
                     page.wait_for_timeout(1000)
                     cur_btn_count = page.locator("button:has-text('링크 발급')").count()
-                    print_log(f"  [Scroll #{scroll_idx:02d}] '링크 발급' 버튼 수: {cur_btn_count}개")
                     if cur_btn_count == prev_btn_count and scroll_idx >= 5:
-                        print_log("  ✅ 스크롤 최하단 도달 (전수 카드 마운트 완료)")
                         break
                     prev_btn_count = cur_btn_count
 
-                # 상품 전수 수집 진행
+                # 하루특가 수집 진행
                 collect_from_full_page("하루특가", "today_price", 1)
-
             except Exception as e:
                 print_log(f"  ❌ 하루특가 수집 프로세스 오류: {e}")
 
-
-
-
-
-
-                # [대표님 지정] 실제 클릭 대상 요소 및 좌표 정밀 계측 (elementFromPoint, pointer-events, boundingBox)
-                target_element_diag = page.evaluate("""() => {
-                    const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
-                    for (const h of headers) {
-                        const txt = (h.innerText || '').trim();
-                        if (txt.includes('오늘만 이 가격') || txt.includes('하루특가')) {
-                            let parent = h.parentElement;
-                            for (let i = 0; i < 7; i++) {
-                                if (!parent) break;
-                                const btn = parent.querySelector('a, button, [role="button"]');
-                                if (btn) {
-                                    const btnTxt = (btn.innerText || '').trim();
-                                    if (btnTxt.includes('전체') || btnTxt.includes('더')) {
-                                        const rect = btn.getBoundingClientRect();
-                                        const cx = rect.x + rect.width / 2;
-                                        const cy = rect.y + rect.height / 2;
-                                        const topEl = document.elementFromPoint(cx, cy);
-                                        const style = window.getComputedStyle(btn);
-                                        return {
-                                            found: true,
-                                            tagName: btn.tagName,
-                                            outerHTML: btn.outerHTML.slice(0, 300),
-                                            rect: { x: rect.x, y: rect.y, w: rect.width, h: rect.height },
-                                            pointerEvents: style.pointerEvents,
-                                            display: style.display,
-                                            visibility: style.visibility,
-                                            topElementAtCenter: topEl ? topEl.tagName + (topEl.className ? '.' + String(topEl.className).slice(0, 30) : '') : 'N/A',
-                                            topElementHTML: topEl ? topEl.outerHTML.slice(0, 200) : 'N/A'
-                                        };
-                                    }
-                                }
-                                parent = parent.parentElement;
-                            }
-                        }
-                    }
-                    return { found: false };
-                }""")
-
-                print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                print_log("🔍 [대표님 지정] 실제 클릭 대상 요량 및 좌표 정밀 계측 리포트")
-                print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                print_log(f" 📌 클릭 대상 감지 여부 : {target_element_diag.get('found')}")
-                if target_element_diag.get('found'):
-                    print_log(f" 📌 클릭 대상 TagName   : {target_element_diag.get('tagName')}")
-                    print_log(f" 📌 BoundingClientRect  : {target_element_diag.get('rect')}")
-                    print_log(f" 📌 pointer-events Style: {target_element_diag.get('pointerEvents')}")
-                    print_log(f" 📌 display / visibility: {target_element_diag.get('display')} / {target_element_diag.get('visibility')}")
-                    print_log(f" 📌 좌표 중앙 최상위 요소: {target_element_diag.get('topElementAtCenter')}")
-                    print_log(f" 📌 좌표 중앙 최상위 HTML: {target_element_diag.get('topElementHTML')}")
-                print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-
-                # 섹션 내부 전체보기 클릭
-                click_executed = page.evaluate("""() => {
-                    const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
-                    for (const h of headers) {
-                        const txt = (h.innerText || '').trim();
-                        if (txt.includes('오늘만 이 가격') || txt.includes('하루특가')) {
-                            let parent = h.parentElement;
-                            for (let i = 0; i < 7; i++) {
-                                if (!parent) break;
-                                const btn = parent.querySelector('a, button, [role="button"]');
-                                if (btn) {
-                                    const btnTxt = (btn.innerText || '').trim();
-                                    if (btnTxt.includes('전체') || btnTxt.includes('더')) {
-                                        btn.click();
-                                        return true;
-                                    }
-                                }
-                                parent = parent.parentElement;
-                            }
-                        }
-                    }
-                    return false;
-                }""")
-
-                
-                # React SPA 상태 변경 및 렌더링 대기
+            # ── 2순위: 지금 많이 팔리는 BEST 전수 수집 ──
+            print_log("━━━ [2순위] 지금 많이 팔리는 BEST 전수 수집 프로세스 가동 ━━━")
+            try:
+                target_best_url = "https://sharelink.toss.im/links/best-ranking"
+                print_log(f"🎯 [BEST 랭킹 라우트 직접 진입] -> {target_best_url}")
+                page.goto(target_best_url, wait_until="networkidle")
                 page.wait_for_timeout(3000)
 
-                react_post_report = page.evaluate("""() => {
-                    return {
-                        networkLogs: window._networkLogs || [],
-                        historyLogs: window._historyLogs || [],
-                        reactFiberInfo: window._reactFiberInfo || {},
-                        jsErrorLogs: window._jsErrorLogs || [],
-                        consoleLogs: window._consoleLogs || []
-                    };
-                }""")
+                print_log("📜 BEST 상품 마운트를 위한 스크롤 수행 중...")
+                for scroll_idx in range(1, 6):
+                    page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                    page.wait_for_timeout(1000)
 
-                rf_info = react_post_report.get('reactFiberInfo', {})
-                print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                print_log("🔍 [대표님 지정] React Fiber Props & __next_f 정밀 계측 리포트")
-                print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                print_log(f" 1️⃣ onClick 함수 representation  : {rf_info.get('onClickFnStr')}")
-                print_log(f" 2️⃣ 버튼 React Props 객체 덤프   : {rf_info.get('propsDump')}")
-                print_log(f" 3️⃣ __next_f 스트리밍 파티션 수 : {rf_info.get('nextFCount')}개")
-                print_log(f" 4️⃣ __next_f 키워드(product/deal) : 추정 {rf_info.get('nextFProductsEstimate')}개 포함")
-                print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-
-
-
-
-
-
-
-
-                # [STEP 6] URL 검증
-                is_bad_route = any(bad in after_url for bad in ["settlement", "guide", "info", "member", "dashboard"])
-                print_log(f"📌 [STEP 6] URL 검증 | Expected: 상품 리스트 라우트 | Actual: {after_url} | Bad Route Detected: {is_bad_route}")
-
-                if is_bad_route or not click_executed:
-                    # [STEP 8] 실패 시 after_click.png 및 after_click.html 저장
-                    print_log("🚨 [STEP 8] 진입 실패 감지 ➔ after_click.png 및 after_click.html 덤프 저장 시작...")
-                    try:
-                        fail_ss = os.path.join(BASE_DIR, "scratch", "after_click.png")
-                        page.screenshot(path=fail_ss, full_page=True)
-                        print_log(f"  📸 after_click.png 저장 완료 ➔ {fail_ss}")
-                    except Exception as ss_e:
-                        print_log(f"  ⚠️ 스크린샷 저장 실패: {ss_e}")
-
-                    try:
-                        fail_html = os.path.join(BASE_DIR, "scratch", "after_click.html")
-                        with open(fail_html, "w", encoding="utf-8") as f:
-                            f.write(page.content())
-                        print_log(f"  📄 after_click.html DOM 덤프 저장 완료 ➔ {fail_html}")
-                    except Exception as html_e:
-                        print_log(f"  ⚠️ HTML 덤프 저장 실패: {html_e}")
-                else:
-                    # [STEP 7] 상품 목록 검증 및 수집 진행
-                    collect_from_full_page("하루특가", "today_price", 1)
-
+                # BEST 랭킹 수집 진행
+                collect_from_full_page("지금 많이 팔리는 BEST", "best_seller", 2)
             except Exception as e:
-                print_log(f"  ❌ 하루특가 수집 프로세스 오류: {e}")
+                print_log(f"  ❌ BEST 랭킹 수집 프로세스 오류: {e}")
+
 
             def collect_from_full_page(section_name, section_key, priority_val):
                 """현재 '전체 보기' 페이지에서 인피니티 스크롤로 전체 핫딜 전수 수집 및 단계별 상세 수량 출력"""
