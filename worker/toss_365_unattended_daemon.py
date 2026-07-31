@@ -117,11 +117,20 @@ def run_harvest_and_sync_cycle():
     except Exception as e:
         write_journal_log(f"⚠️ [수집 사이클 예외 발생 - 자동 복구] {e}")
 
-def run_365_unattended_daemon(interval_minutes=30, run_once=False):
+def sleep_until_next_midnight(target_hour=0, target_minute=1):
+    now = datetime.now()
+    next_run = now.replace(hour=target_hour, minute=target_minute, second=0, microsecond=0)
+    if now >= next_run:
+        next_run += timedelta(days=1)
+    sleep_seconds = (next_run - now).total_seconds()
+    write_journal_log(f"⏰ [MIDNIGHT SCHEDULER] 다음 실행 예정 시각: {next_run.strftime('%Y-%m-%d %H:%M:%S')} ({int(sleep_seconds)}초 / 약 {round(sleep_seconds/3600, 1)}시간 대기)")
+    return sleep_seconds
+
+def run_365_unattended_daemon(interval_minutes=30, run_once=False, is_midnight=False):
     """365일 무인 가동 메인 루프"""
     write_journal_log("=========================================================================")
     write_journal_log("🛡️ MORVIX SHOP OS - 365-DAY UNATTENDED AUTONOMOUS DAEMON INITIALIZED")
-    write_journal_log(f"   • 수집 주기: 매 {interval_minutes}분마다 자동 실행")
+    write_journal_log(f"   • 실행 모드: {'매일 00:01 자정 자동 가동 모드' if is_midnight else f'매 {interval_minutes}분 주기 모드'}")
     write_journal_log(f"   • DB 경로: {DB_PATH}")
     write_journal_log(f"   • 저널 로그: {LOG_PATH}")
     write_journal_log("=========================================================================")
@@ -131,7 +140,7 @@ def run_365_unattended_daemon(interval_minutes=30, run_once=False):
             # 1. 만료 핫딜 스캔 및 Purge
             run_ttl_expiration_purge()
 
-            # 2. 신규 핫딜 수집 및 DB 동기화
+            # 2. 신규 핫딜 수집 및 DB 동기화 (오늘만 이 가격 + BEST 139개)
             run_harvest_and_sync_cycle()
 
         except Exception as main_e:
@@ -141,9 +150,14 @@ def run_365_unattended_daemon(interval_minutes=30, run_once=False):
             write_journal_log("🏁 1회 실행 완료 (--once 모드)")
             break
 
-        write_journal_log(f"💤 다음 수집 주기까지 {interval_minutes}분간 대기 중...")
-        time.sleep(interval_minutes * 60)
+        if is_midnight:
+            sleep_sec = sleep_until_next_midnight(0, 1)
+            time.sleep(sleep_sec)
+        else:
+            write_journal_log(f"💤 다음 수집 주기까지 {interval_minutes}분간 대기 중...")
+            time.sleep(interval_minutes * 60)
 
 if __name__ == "__main__":
     is_once = ("--once" in sys.argv)
-    run_365_unattended_daemon(interval_minutes=30, run_once=is_once)
+    is_midnight = ("--midnight" in sys.argv)
+    run_365_unattended_daemon(interval_minutes=30, run_once=is_once, is_midnight=is_midnight)

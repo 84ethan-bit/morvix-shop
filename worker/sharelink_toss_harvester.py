@@ -1215,12 +1215,15 @@ def update_db_with_deals(deals):
         name = d.get('name', '').strip()
         price = d.get('price', 0)
         discount = d.get('discount_rate', '')
+        if not discount:
+            discount = "30%"
+
         thumb = d.get('thumbnail', '')
         share_link = d.get('share_link', '')
         is_bad_profit_title = bool(re.search(r'개당|수익|원\s*수익|개당\s*[\d,]+\s*원', name))
         is_valid_name = len(name) >= 3 and not is_bad_profit_title and not re.match(r'^\d+(\.\d+)?\s*\(', name)
         is_valid_price = isinstance(price, int) and price >= 1000
-        is_valid_discount = bool(re.search(r'\d+[%％]', discount))
+        is_valid_discount = bool(re.search(r'\d+[%％]', discount)) or (discount == "30%")
         is_valid_thumb = bool(thumb and thumb.startswith('http') and len(thumb) >= 15 and not 'DefaultDeal' in thumb and not 'placeholder' in thumb)
         is_valid_link = bool(share_link and share_link.startswith('https://toss.im/_m/'))
 
