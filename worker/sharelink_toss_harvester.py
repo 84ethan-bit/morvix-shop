@@ -567,20 +567,11 @@ def harvest_sharelink_portal():
                             print_log(f"    🛑 [검증 실패] {title[:20]} (Name:{is_valid_name} Price:{is_valid_price} Thumb:{is_valid_thumb})")
                             continue
 
-                        # 정가(Original Price) 계산 (2번째 추출 가격이 있거나, 없으면 비율 산정)
+                        # 정가(Original Price): DOM 상에 정가(2번째 가격)가 진짜 존재하는 경우에만 1:1 수집, 없으면 0 (억지 역산/곱셈 100% 삭제)
                         if len(valid_prices) >= 2 and valid_prices[1] > price:
                             original_price = valid_prices[1]
-                        elif discount_rate:
-                            try:
-                                rate_num = int(re.search(r'\d+', discount_rate).group())
-                                if 0 < rate_num < 95:
-                                    original_price = int(price / (1 - rate_num / 100.0))
-                                else:
-                                    original_price = int(price * 1.3)
-                            except Exception:
-                                original_price = int(price * 1.3)
                         else:
-                            original_price = int(price * 1.3)
+                            original_price = 0
 
 
 

@@ -564,31 +564,13 @@ def git_push_db():
         else:
             subprocess.run(["git", "remote", "set-url", "origin", repo_url], cwd=BASE_DIR)
 
-        if not gh_token:
-            print("⚠️ GH_TOKEN 미설정 - Git Push 생략 (무한 대기 방지)", flush=True)
-            return
-
-        # DB 및 승인된 세션 파일(toss_sharelink_session.json) 동시 Git 스테이징 ➔ Render 재부팅 시에도 2FA 세션 영구 보존
-        subprocess.run(["git", "add", "morvix_shop_db.json", "scratch/toss_sharelink_session.json"], cwd=BASE_DIR, timeout=15)
-
-        diff = subprocess.run(["git", "diff", "--staged", "--quiet"], cwd=BASE_DIR, timeout=10)
-        if diff.returncode != 0:
-            now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
-            subprocess.run(["git", "commit", "-m", f"chore(render): Auto-ingest Toss deals @ {now_str}"], cwd=BASE_DIR, timeout=15)
-            push_res = subprocess.run(["git", "push", "origin", "HEAD:main"], cwd=BASE_DIR, capture_output=True, text=True, timeout=30)
-            if push_res.returncode == 0:
-                print(f"[{now_str}] ✅ Git Push 성공 ➔ Vercel 라이브 자동 배포 완료! 🎉", flush=True)
-            else:
-                print(f"⚠️ Git Push 응답: {push_res.stderr.strip()}", flush=True)
-        else:
-            print(f"[{datetime.now().strftime('%H:%M:%S')}] ℹ️ 변경사항 없음 - Push 생략", flush=True)
-    except Exception as e:
-        print(f"❌ Git Push 오류: {e}", flush=True)
-
-
+def git_push_db():
+    """🛑 Git Push 완전 봉인 (사용자 지침 준수)"""
+    print("🛑 [git push 완전 봉인] 사용자 명시적 승인 전 git push 실행 금지", flush=True)
+    return
 
 def autonomous_harvest_loop():
-    """HARVEST_INTERVAL마다 토스 수집 → DB 갱신 → Git Push 자동 루프 (실시간 라인 스트리밍)"""
+    """HARVEST_INTERVAL마다 토스 수집 → DB 갱신 자동 루프 (Git Push 봉인)"""
     print(f"🤖 [AUTO LOOP] 자율 수집 루프 시작 ({HARVEST_INTERVAL//60}분 간격)", flush=True)
     no_new_item_streak = 0
 
@@ -612,8 +594,8 @@ def autonomous_harvest_loop():
 
             proc.wait()
             if proc.returncode == 0:
-                print(f"[{datetime.now().strftime('%H:%M:%S')}] ✅ 수집 완료 → Git Push 시작", flush=True)
-                git_push_db()  # 수집 완료 즉시 Push → Vercel 자동 배포 → 홈페이지 반영
+                print(f"[{datetime.now().strftime('%H:%M:%S')}] ✅ 수집 완료 (git push 봉인 중)", flush=True)
+                # git_push_db()  # 사용자 지침에 따라 주석 처리
 
                 if last_added_count == 0:
                     no_new_item_streak += 1

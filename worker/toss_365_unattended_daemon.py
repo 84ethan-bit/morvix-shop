@@ -35,26 +35,27 @@ def write_journal_log(msg):
         print(f"⚠️ Log writing error: {e}")
 
 def run_git_deploy_with_retry(commit_msg, max_retries=3):
-    """5. 배포 검증: Git Push / Vercel 배포 자동 재시도 루틴"""
-    write_journal_log(f"🚀 [배포 검증] Git commit & push 시도: {commit_msg}")
-    for attempt in range(1, max_retries + 1):
-        try:
-            # Git add & commit
-            subprocess.run(["git", "add", "."], cwd=BASE_DIR, check=True)
-            commit_res = subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True, text=True)
-            
-            # Git pull rebase & push
-            subprocess.run(["git", "pull", "origin", "main", "--rebase"], cwd=BASE_DIR, check=True)
-            push_res = subprocess.run(["git", "push", "origin", "main"], cwd=BASE_DIR, capture_output=True, text=True, check=True)
-            
-            write_journal_log(f"✅ [배포 성공] GitHub & Vercel 라이브 반영 완료 (시도 {attempt}/{max_retries})")
-            return True
-        except Exception as e:
-            write_journal_log(f"⚠️ [배포 재시도 {attempt}/{max_retries}] Git 작업 예외: {e}")
-            time.sleep(3 * attempt)
-    
-    write_journal_log("❌ [배포 경고] 3회 재시도 후에도 Push 실패. 다음 스케줄 주기에서 자동 복구 시도.")
-    return False
+    """5. 배포 검증: Git Push 완전 봉인 (사용자 무단 git push 금지 지침 준수)"""
+    write_journal_log(f"🛑 [git push 완전 봉인] 사용자 명시적 승인 전 git push 실행 금지: {commit_msg}")
+    return True
+    # for attempt in range(1, max_retries + 1):
+    #     try:
+    #         # Git add & commit
+    #         subprocess.run(["git", "add", "."], cwd=BASE_DIR, check=True)
+    #         commit_res = subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True, text=True)
+    #         
+    #         # Git pull rebase & push
+    #         subprocess.run(["git", "pull", "origin", "main", "--rebase"], cwd=BASE_DIR, check=True)
+    #         push_res = subprocess.run(["git", "push", "origin", "main"], cwd=BASE_DIR, capture_output=True, text=True, check=True)
+    #         
+    #         write_journal_log(f"✅ [배포 성공] GitHub & Vercel 라이브 반영 완료 (시도 {attempt}/{max_retries})")
+    #         return True
+    #     except Exception as e:
+    #         write_journal_log(f"⚠️ [배포 재시도 {attempt}/{max_retries}] Git 작업 예외: {e}")
+    #         time.sleep(3 * attempt)
+    # 
+    # write_journal_log("❌ [배포 경고] 3회 재시도 후에도 Push 실패. 다음 스케줄 주기에서 자동 복구 시도.")
+    # return False
 
 def run_ttl_expiration_purge():
     """3. 만료 처리 (TTL Auto-Purge Engine): 24h/48h 지난 핫딜 자동 삭제/EXPIRED 처리"""
@@ -93,7 +94,7 @@ def run_ttl_expiration_purge():
             with open(DB_PATH, "w", encoding="utf-8") as f:
                 json.dump(db, f, ensure_ascii=False, indent=2)
             write_journal_log(f"✅ [TTL ENGINE] 총 {purged_count}개 만료 핫딜 자동 제거 완료 (현재 활성: {len(active_products)}개)")
-            run_git_deploy_with_retry(f"auto: 🧹 TTL Auto-Purge {purged_count} expired deals")
+            # run_git_deploy_with_retry(f"auto: 🧹 TTL Auto-Purge {purged_count} expired deals")
         else:
             write_journal_log(f"ℹ️ [TTL ENGINE] 만료된 핫딜 없음 (현재 활성 핫딜: {len(active_products)}개)")
 
@@ -113,7 +114,7 @@ def run_harvest_and_sync_cycle():
         write_journal_log("✅ [수집 사이클 완료] 파이프라인 정상 가동 완료")
 
         # Git Push Sync
-        run_git_deploy_with_retry(f"auto: ⚡ 365-Day Unattended Harvester Sync [{datetime.now().strftime('%H:%M')}]")
+        # run_git_deploy_with_retry(f"auto: ⚡ 365-Day Unattended Harvester Sync [{datetime.now().strftime('%H:%M')}]")
     except Exception as e:
         write_journal_log(f"⚠️ [수집 사이클 예외 발생 - 자동 복구] {e}")
 
