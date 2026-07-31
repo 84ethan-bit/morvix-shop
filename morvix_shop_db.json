@@ -40,6 +40,258 @@
   ],
   "products": [
     {
+      "id": "TOSS-AUTO-1785458664-56",
+      "slug": "toss_1785458664_56",
+      "short_url": "morvix.kr/toss_1785458664_56",
+      "name": "개당 2,990원 수익",
+      "subtitle": "토스 파트너 특가 76% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 2990,
+      "original_price": 4036,
+      "discount_rate": "76%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/zEEgnj3r",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/zEEgnj3r",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-05-18%2F8935aa4f-1959-440c-ac11-e5d5f05c6533.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T00:44:24.922586",
+      "expiry_date": "2026-08-02T00:44:24.922586"
+    },
+    {
+      "id": "TOSS-AUTO-1785458664-55",
+      "slug": "toss_1785458664_55",
+      "short_url": "morvix.kr/toss_1785458664_55",
+      "name": "개당 2,390원 수익",
+      "subtitle": "토스 파트너 특가 25% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 2390,
+      "original_price": 3226,
+      "discount_rate": "25%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/ZyAGSlr3",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/ZyAGSlr3",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fstatic.toss.im%2Fphotos%2F0611-10.jpg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T00:44:24.922586",
+      "expiry_date": "2026-08-02T00:44:24.922586"
+    },
+    {
+      "id": "TOSS-AUTO-1785458664-35",
+      "slug": "toss_1785458664_35",
+      "short_url": "morvix.kr/toss_1785458664_35",
+      "name": "내일도착",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 8000,
+      "original_price": 10800,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/d76dCdND",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/d76dCdND",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-06-18%2F33e44606-b749-4079-b050-d0d8be35a84f.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T00:44:24.922586",
+      "expiry_date": "2026-08-02T00:44:24.922586"
+    },
+    {
+      "id": "TOSS-AUTO-1785458664-29",
+      "slug": "toss_1785458664_29",
+      "short_url": "morvix.kr/toss_1785458664_29",
+      "name": "셰프초이스 제육 불고기, 1.5kg, 1개",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 8600,
+      "original_price": 11610,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/fZ9MiYYv",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/fZ9MiYYv",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2025-10-27%2Fbf8e8958-22c7-445b-ac7a-b8adecf1abdb.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T00:44:24.922586",
+      "expiry_date": "2026-08-02T00:44:24.922586"
+    },
+    {
+      "id": "TOSS-AUTO-1785458664-9",
+      "slug": "toss_1785458664_9",
+      "short_url": "morvix.kr/toss_1785458664_9",
+      "name": "개당 860원 수익",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 8600,
+      "original_price": 11610,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/fZ9MiYYv",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/fZ9MiYYv",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2025-10-27%2Fbf8e8958-22c7-445b-ac7a-b8adecf1abdb.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T00:44:24.922586",
+      "expiry_date": "2026-08-02T00:44:24.922586"
+    },
+    {
+      "id": "TOSS-AUTO-1785458664-7",
+      "slug": "toss_1785458664_7",
+      "short_url": "morvix.kr/toss_1785458664_7",
+      "name": "개당 490원 수익",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 4900,
+      "original_price": 6615,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/dRW8m0Z6",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/dRW8m0Z6",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-22%2F42ccdee0-093c-4592-a70c-6a1da7b3aa97.png",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T00:44:24.922586",
+      "expiry_date": "2026-08-02T00:44:24.922586"
+    },
+    {
       "id": "TOSS-AUTO-1785458217-34",
       "slug": "toss_1785458217_34",
       "short_url": "morvix.kr/toss_1785458217_34",
@@ -79,7 +331,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:36:57.713089",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785458217-33",
@@ -163,7 +415,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:36:57.713089",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785458217-22",
@@ -171,8 +423,8 @@
       "short_url": "morvix.kr/toss_1785458217_22",
       "name": "개당 800원 수익",
       "subtitle": "토스 파트너 특가 30% 적용",
-      "section": "best_seller",
-      "priority": 2,
+      "section": "today_price",
+      "priority": 1,
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
@@ -205,7 +457,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:36:57.713089",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785458217-21",
@@ -213,8 +465,8 @@
       "short_url": "morvix.kr/toss_1785458217_21",
       "name": "개당 550원 수익",
       "subtitle": "토스 파트너 특가 30% 적용",
-      "section": "best_seller",
-      "priority": 2,
+      "section": "today_price",
+      "priority": 1,
       "category": "life",
       "status": "ACTIVE",
       "is_featured": true,
@@ -247,7 +499,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:36:57.713089",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456663-28",
@@ -289,7 +541,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:11:03.442148",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456663-21",
@@ -331,7 +583,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:11:03.442148",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456663-20",
@@ -541,7 +793,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:11:03.442148",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456663-15",
@@ -625,7 +877,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:11:03.442148",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456663-13",
@@ -709,7 +961,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:11:03.442148",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456663-11",
@@ -751,7 +1003,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:11:03.442148",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456663-10",
@@ -793,7 +1045,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:11:03.442148",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456663-9",
@@ -835,7 +1087,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:11:03.442148",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456663-8",
@@ -877,7 +1129,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:11:03.442148",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-58",
@@ -919,7 +1171,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:11:03.442148"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-57",
@@ -961,7 +1213,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-56",
@@ -1045,7 +1297,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-54",
@@ -1129,7 +1381,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-52",
@@ -1171,7 +1423,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-51",
@@ -1213,7 +1465,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-50",
@@ -1255,7 +1507,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-49",
@@ -1339,7 +1591,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-40",
@@ -1549,7 +1801,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-35",
@@ -1633,7 +1885,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-33",
@@ -1675,7 +1927,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-32",
@@ -1717,7 +1969,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-31",
@@ -1759,7 +2011,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-30",
@@ -1801,7 +2053,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-29",
@@ -1843,7 +2095,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-28",
@@ -1885,7 +2137,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-27",
@@ -1927,7 +2179,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-26",
@@ -1969,7 +2221,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-25",
@@ -2011,7 +2263,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-24",
@@ -2053,7 +2305,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-23",
@@ -2095,7 +2347,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-22",
@@ -2137,7 +2389,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-21",
@@ -2179,7 +2431,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-20",
@@ -2221,7 +2473,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-19",
@@ -2263,7 +2515,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-6",
@@ -2305,7 +2557,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-5",
@@ -2347,7 +2599,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-4",
@@ -2389,7 +2641,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-3",
@@ -2431,7 +2683,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-2",
@@ -2473,7 +2725,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-1",
@@ -2515,7 +2767,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     },
     {
       "id": "TOSS-AUTO-1785456070-0",
@@ -2557,7 +2809,7 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T00:01:10.638960",
-      "expiry_date": "2026-08-02T00:36:57.713089"
+      "expiry_date": "2026-08-02T00:44:24.922586"
     }
   ]
 }
