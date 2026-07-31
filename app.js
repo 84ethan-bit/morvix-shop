@@ -152,8 +152,8 @@ async function initShopOS() {
     }
   } catch (err) {
     console.warn("Primary DB fetch warning, checking LocalStorage fallback:", err);
-    loadMasterDbFromStorage();
   }
+
 
   updateProductLifecycleStates();
   renderCategories();
