@@ -33,9 +33,10 @@ const INITIAL_DB_DATA = {
 };
 
 let dbData = INITIAL_DB_DATA;
-let currentCategory = 'all';
+let currentCategory = 'today_price';
 let currentSort = 'popular';
 let displayedProductCount = 16;
+
 
 // --------------------------------------------------------------------------
 // 1. Smart Category Auto Classifier (hot-deal-studio Engine Ported & Extended)
@@ -161,13 +162,47 @@ async function initShopOS() {
   setupAdminEvents();
 }
 
+// Render Exactly 2 Dedicated Core Categories: 오늘만 이 가격 & 지금 많이 팔리는 BEST
 function renderCategories() {
   const container = document.getElementById('category-container');
-  if (container) {
-    container.style.display = 'none';
-    if (container.parentElement) container.parentElement.style.display = 'none';
-  }
+  if (!container) return;
+
+  const categories = [
+    { id: 'today_price', name: '⏰ 오늘만 이 가격', icon: '🔥', style: 'background: #FF4757; color: #fff; border: none; font-weight: 800;' },
+    { id: 'best_seller', name: '🏆 지금 많이 팔리는 BEST', icon: '🏆', style: 'background: #191F28; color: #FFD700; border: none; font-weight: 800;' }
+  ];
+
+  container.style.display = 'flex';
+  if (container.parentElement) container.parentElement.style.display = 'block';
+
+  container.innerHTML = categories.map(cat => {
+    const isActive = currentCategory === cat.id;
+    let pillStyle = cat.style;
+    if (!isActive) {
+      if (cat.id === 'today_price') {
+        pillStyle = 'background: #FFF5F5; color: #FF4757; border: 1.5px solid #FF4757; font-weight: 700;';
+      } else {
+        pillStyle = 'background: #F8FAFC; color: #191F28; border: 1.5px solid #CBD5E1; font-weight: 700;';
+      }
+    }
+
+    return `
+      <button class="cat-pill ${isActive ? 'active' : ''}" data-cat="${cat.id}" style="${pillStyle} padding: 10px 20px; font-size: 0.95rem; border-radius: 20px; margin-right: 8px; cursor: pointer; transition: all 0.2s ease;">
+        ${cat.name}
+      </button>
+    `;
+  }).join('');
+
+  container.querySelectorAll('.cat-pill').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      currentCategory = e.currentTarget.getAttribute('data-cat');
+      displayedProductCount = 16;
+      renderCategories();
+      renderProducts();
+    });
+  });
 }
+
 
 
 // Real-time Countdown Clock Engine for Section 1 Time Attack
@@ -327,25 +362,17 @@ function renderProducts() {
   let activeProducts = dbData.products.filter(p => p && p.name && p.thumbnail && (p.status === 'ACTIVE' || !p.status));
   let filtered = activeProducts;
 
-  if (currentCategory === 'timeattack') {
+  if (currentCategory === 'today_price') {
     filtered = activeProducts.filter(p => p.section === 'today_price');
-    if (title) title.textContent = '⏰ 오늘만 이 가격! 하루특가 전체보기';
-  } else if (currentCategory === 'featured') {
-    filtered = activeProducts.filter(p => p.is_featured);
-    if (title) title.textContent = '🌟 오늘의 MORVIX 추천';
-  } else if (currentCategory === 'reels') {
-    filtered = activeProducts.filter(p => p.episode_id || p.episode_label);
-    if (title) title.textContent = '🎬 릴스/쇼츠에서 본 바로 그 제품';
-  } else if (currentCategory === 'best100') {
+    if (title) title.textContent = '⏰ 오늘만 이 가격! 하루특가 모음집';
+  } else if (currentCategory === 'best_seller') {
     filtered = activeProducts.filter(p => p.section === 'best_seller' || !p.section);
-    if (title) title.textContent = '🏆 MORVIX 베스트 100 히트 라인업';
-  } else if (currentCategory !== 'all') {
-    filtered = activeProducts.filter(p => p.category === currentCategory);
-    const catObj = dbData.categories.find(c => c.id === currentCategory);
-    if (title) title.textContent = `${catObj ? catObj.icon || '' : ''} ${catObj ? catObj.name : '제품'} 검증 제품`;
+    if (title) title.textContent = '🏆 지금 많이 팔리는 BEST 모음집';
   } else {
-    if (title) title.textContent = '🏆 지금 많이 팔리는 BEST';
+    filtered = activeProducts.filter(p => p.section === 'today_price');
+    if (title) title.textContent = '⏰ 오늘만 이 가격! 하루특가 모음집';
   }
+
 
 
   // Apply Sorting

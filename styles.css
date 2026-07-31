@@ -55,12 +55,10 @@ body {
 /* Hide header action buttons on BOTH PC and Mobile version for pure clean logo GNB */
 .header-actions,
 .header-action-btn,
-.btn-admin,
-.category-nav-v2,
-.category-pills-wrap,
-#category-container {
+.btn-admin {
   display: none !important;
 }
+
 
 
 /* --- Mobile Responsiveness --- */
