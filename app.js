@@ -240,14 +240,17 @@ function startCountdownClock() {
 function renderUniversalProductCard(p, badgeHTML = '', extraCardStyle = '') {
   if (!p || !p.name || !p.thumbnail) return '';
 
-  // 1. 상품명 2차 안전 정제 (혹시 남아있을 개당/수익 배지 문구 예방 제거)
+  // 1. 상품명 2차 안전 정제 (개당/수익/원/단가 찌꺼기 텍스트 100% 무조건 잘라내기)
   let cleanTitle = (p.name || '').trim();
-  cleanTitle = cleanTitle.replace(/개당\s*[\d,]+\s*원\s*수익/g, '')
-                         .replace(/[\d,]+\s*원\s*수익/g, '')
-                         .replace(/개당\s*[\d,]+\s*원/g, '')
-                         .replace(/베스트판매자|내일도착|오늘출발|역대급특가|30일 최저가/g, '')
+  cleanTitle = cleanTitle.replace(/개당\s*[\d,]+\s*원\s*수익/gi, '')
+                         .replace(/[\d,]+\s*원\s*수익/gi, '')
+                         .replace(/개당\s*[\d,]+\s*원/gi, '')
+                         .replace(/개당\s*[\d,]+/gi, '')
+                         .replace(/수익/gi, '')
+                         .replace(/베스트판매자|내일도착|오늘출발|역대급특가|30일 최저가/gi, '')
                          .trim();
-  if (!cleanTitle) cleanTitle = p.name;
+  if (!cleanTitle || cleanTitle.length < 2) cleanTitle = p.name;
+
 
   // 2. 판매가 및 정가 정밀 포맷팅
   const numPrice = typeof p.price === 'number' ? p.price : parseInt(String(p.price).replace(/[^0-9]/g, '')) || 0;
