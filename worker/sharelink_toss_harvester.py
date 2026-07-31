@@ -180,7 +180,10 @@ def harvest_sharelink_portal():
 
         try:
             print_log("📡 https://sharelink.toss.im/home 접속 중...")
-            page.goto("https://sharelink.toss.im/home", wait_until="networkidle", timeout=60000)
+            try:
+                page.goto("https://sharelink.toss.im/home", wait_until="domcontentloaded", timeout=30000)
+            except Exception:
+                page.goto("https://sharelink.toss.im/", wait_until="domcontentloaded", timeout=30000)
             page.wait_for_timeout(3000)
 
             # React SPA 초기화 대기: '링크 발급' 버튼 또는 '로그인/이메일' 입력창이 뜰 때까지 대기 (최대 15초)
@@ -195,7 +198,9 @@ def harvest_sharelink_portal():
 
             # URL 및 DOM 요소를 동시에 검사하여 SPA 로그인 화면 감지
             has_login_input = page.locator("input[name='email']").count() > 0 or page.locator("button:has-text('로그인')").count() > 0 or page.locator("button:has-text('이메일/ID')").count() > 0
-            is_login_page = "login" in current_url or "auth" in current_url or "sign-in" in current_url or "sharelink.toss.im/home" not in current_url or has_login_input
+            has_share_btn = page.locator("button:has-text('링크 발급')").count() > 0 or page.locator("text=링크 발급").count() > 0
+            is_login_page = (("login" in current_url or "auth" in current_url or "sign-in" in current_url) and not has_share_btn) or has_login_input
+
 
             if is_login_page:
                 print_log("🚫 [2. 로그인 필요 상태 감지]: True - 자동 로그인 진입")
