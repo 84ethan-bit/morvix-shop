@@ -382,11 +382,16 @@ def harvest_sharelink_portal():
                         capture_lock[0] = card_key
                         captured_links.pop(card_key, None)
                         try:
-                            btn.click(timeout=1000, force=True)
+                            btn.click(timeout=2000, force=True)
                         except Exception:
                             pass
-                        page.wait_for_timeout(200)
+                        page.wait_for_timeout(600)
                         share_link = captured_links.get(card_key)
+
+                        # 네트워크 응답 지연 시 2차 대기 (안전망 구축)
+                        if not share_link:
+                            page.wait_for_timeout(600)
+                            share_link = captured_links.get(card_key)
 
                         # 모달 DOM 정밀 검사
                         if not share_link:
