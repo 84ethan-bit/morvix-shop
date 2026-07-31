@@ -119,21 +119,64 @@ def harvest_sharelink_portal():
 
 
         captured_links = {}
+        captured_api_products = []  # ⚡ [API Interceptor] 토스 백엔드 JSON 원본 상품 수집함
         capture_lock = [0]  # [현재 캡처 대상 idx] - Race Condition 방어용 원자적 단방향 잠금
 
-        # 네트워크 요청에서 생성되는 toss.im/_m/ 쉐어링크 캐치 (Race Condition 방어: per-card idx 독립 키)
+        # ⚡ [API Interceptor] 토스 백엔드 JSON response 도청 모듈
         def on_response(response):
             try:
-                if "toss.im/_m/" in response.url or "share" in response.url:
+                url = response.url
+                # 1. 기존 쉐어링크 캡처
+                if "toss.im/_m/" in url or "share" in url:
                     text = response.text()
                     m = re.search(r'(https?://toss\.im/_m/[A-Za-z0-9_-]+)', text)
                     if m:
-                        # 현재 캡처 대상 카드 idx에만 1:1 원자적 저장 → 교차 덮어쓰기 100% 차단
                         captured_links[capture_lock[0]] = m.group(1)
-            except:
+
+                # 2. 토스 백엔드 API JSON 도청 (상품/딜 목록 API)
+                if "application/json" in (response.headers.get("content-type") or "") and any(k in url for k in ["deal", "product", "home", "partner", "api"]):
+                    try:
+                        json_data = response.json()
+                        # JSON 수색: items, products, deals, content 리스트 파싱
+                        items = []
+                        if isinstance(json_data, dict):
+                            for k in ["data", "items", "products", "deals", "content", "result"]:
+                                if k in json_data and isinstance(json_data[k], list):
+                                    items = json_data[k]
+                                    break
+                                elif k in json_data and isinstance(json_data[k], dict):
+                                    for sub_k in ["items", "products", "deals", "content"]:
+                                        if sub_k in json_data[k] and isinstance(json_data[k][sub_k], list):
+                                            items = json_data[k][sub_k]
+                                            break
+                        elif isinstance(json_data, list):
+                            items = json_data
+
+                        for item in items:
+                            if isinstance(item, dict):
+                                name = item.get("title") or item.get("name") or item.get("productName") or item.get("dealName")
+                                price = item.get("price") or item.get("salePrice") or item.get("discountPrice") or item.get("discountedPrice")
+                                orig_price = item.get("originalPrice") or item.get("regularPrice") or item.get("marketPrice")
+                                disc_rate = item.get("discountRate") or item.get("discountPercent")
+                                thumb = item.get("imageUrl") or item.get("thumbnail") or item.get("image") or item.get("thumbnailUrl")
+                                share_url = item.get("shareUrl") or item.get("shareLink") or item.get("tossLink") or item.get("link")
+
+                                if name and price and isinstance(price, (int, float)) and price >= 500:
+                                    captured_api_products.append({
+                                        "name": str(name).strip(),
+                                        "price": int(price),
+                                        "original_price": int(orig_price) if orig_price else int(price * 1.3),
+                                        "discount_rate": f"{disc_rate}%" if disc_rate else "",
+                                        "thumbnail": str(thumb).strip() if thumb else "",
+                                        "share_link": str(share_url).strip() if share_url else ""
+                                    })
+                    except Exception:
+                        pass
+            except Exception:
                 pass
 
         page.on("response", on_response)
+
 
         try:
             print_log("📡 https://sharelink.toss.im/home 접속 중...")
