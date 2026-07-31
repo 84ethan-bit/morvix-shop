@@ -286,29 +286,147 @@ def harvest_sharelink_portal():
             # 2-섹션 전용 수집 전략:
             #  1순위) "오늘만 이가격" 하루특가  → 전체 보기 클릭 → 전체 상품 수집
             #  2순위) "지금 많이 팔리는 BEST"  → 전체 보기 클릭 → 전체 상품 수집
+
+            # [STEP 1] 홈 접속 성공
+            print_log(f"📌 [STEP 1] 홈 접속 성공 | URL: {page.url} | Title: {page.title()}")
+
+            # [STEP 2] 팝업 존재 여부 및 닫기
             def dismiss_popups():
-                """'활동 정보 등록이 필요해요' 및 각종 모달/팝업 레이어 자동 감지 및 닫기"""
                 try:
                     close_btns = page.locator("button:has-text('닫기'), button:has-text('나중에 하기'), button:has-text('확인'), [aria-label='닫기'], .modal-close")
-                    if close_btns.count() > 0:
-                        print_log(f"🚨 [팝업 레이어 감지] {close_btns.count()}개 팝업 닫기 시도...")
-                        for i in range(close_btns.count()):
+                    pop_count = close_btns.count()
+                    has_pop = pop_count > 0
+                    print_log(f"📌 [STEP 2] 팝업 존재 여부 | Popup detected: {has_pop} ({pop_count}개)")
+                    if has_pop:
+                        for i in range(pop_count):
                             try:
                                 close_btns.nth(i).click(timeout=1500, force=True)
                                 page.wait_for_timeout(500)
                             except Exception:
                                 pass
-                        print_log("✅ 팝업 레이어 닫기 완료!")
+                        print_log(f"📌 [STEP 2] 팝업 처리 결과 | Popup dismissed: True")
+                    else:
+                        print_log(f"📌 [STEP 2] 팝업 처리 결과 | Popup dismissed: False")
                 except Exception as p_err:
-                    print_log(f"⚠️ 팝업 처리 생략: {p_err}")
+                    print_log(f"⚠️ [STEP 2] 팝업 처리 오류: {p_err}")
 
-            # 홈 접속 직후 팝업 자동 감지 및 닫기
             dismiss_popups()
 
             section_counts = {"today_price": 0, "best_seller": 0}
-
             seen_titles = set()
-            TARGET_PER_SECTION = 200  # 전체 상품 100% 무제한 풀 수집
+            TARGET_PER_SECTION = 200
+
+            # ── 1순위: 오늘만 이가격 (하루특가) 전체 보기 ──
+            print_log("━━━ [1순위] 오늘만 이가격 하루특가 전체 보기 프로세스 ━━━")
+            try:
+                # [STEP 3] "오늘만 이 가격" Section 발견 여부
+                sec_info = page.evaluate("""() => {
+                    const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
+                    for (const h of headers) {
+                        const txt = (h.innerText || '').trim();
+                        if (txt.includes('오늘만 이 가격') || txt.includes('하루특가')) {
+                            let p = h.parentElement;
+                            for (let i = 0; i < 7; i++) {
+                                if (!p) break;
+                                if (p.querySelector('a, button, [role="button"]')) {
+                                    return { found: true, text: txt, html: p.outerHTML.slice(0, 300) };
+                                }
+                                p = p.parentElement;
+                            }
+                        }
+                    }
+                    return { found: false, text: '', html: '' };
+                }""")
+                print_log(f"📌 [STEP 3] '오늘만 이 가격' Section 발견 여부 | Found Section: {sec_info.get('found')} | Section Text: {sec_info.get('text')}")
+
+                # [STEP 4] Section 내부 "전체보기" 버튼 발견
+                btn_info = page.evaluate("""() => {
+                    const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
+                    for (const h of headers) {
+                        const txt = (h.innerText || '').trim();
+                        if (txt.includes('오늘만 이 가격') || txt.includes('하루특가')) {
+                            let parent = h.parentElement;
+                            for (let i = 0; i < 7; i++) {
+                                if (!parent) break;
+                                const btn = parent.querySelector('a, button, [role="button"]');
+                                if (btn) {
+                                    const btnTxt = (btn.innerText || '').trim();
+                                    if (btnTxt.includes('전체') || btnTxt.includes('더')) {
+                                        const rect = btn.getBoundingClientRect();
+                                        return {
+                                            found: true,
+                                            html: btn.outerHTML,
+                                            box: { x: rect.x, y: rect.y, w: rect.width, h: rect.height }
+                                        };
+                                    }
+                                }
+                                parent = parent.parentElement;
+                            }
+                        }
+                    }
+                    return { found: false, html: 'N/A', box: {} };
+                }""")
+                print_log(f"📌 [STEP 4] Section 내부 '전체보기' 발견 | Found Button: {btn_info.get('found')} | OuterHTML: {btn_info.get('html')} | BoundingBox: {btn_info.get('box')}")
+
+                # [STEP 5] 클릭 & URL 이동
+                before_url = page.url
+                page._last_url_before_click = before_url
+                page._last_clicked_html = btn_info.get('html', 'N/A')
+
+                # 섹션 내부 전체보기 클릭
+                click_executed = page.evaluate("""() => {
+                    const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
+                    for (const h of headers) {
+                        const txt = (h.innerText || '').trim();
+                        if (txt.includes('오늘만 이 가격') || txt.includes('하루특가')) {
+                            let parent = h.parentElement;
+                            for (let i = 0; i < 7; i++) {
+                                if (!parent) break;
+                                const btn = parent.querySelector('a, button, [role="button"]');
+                                if (btn) {
+                                    const btnTxt = (btn.innerText || '').trim();
+                                    if (btnTxt.includes('전체') || btnTxt.includes('더')) {
+                                        btn.click();
+                                        return true;
+                                    }
+                                }
+                                parent = parent.parentElement;
+                            }
+                        }
+                    }
+                    return false;
+                }""")
+                page.wait_for_timeout(2500)
+                after_url = page.url
+                print_log(f"📌 [STEP 5] 클릭 실행 | Executed: {click_executed} | Before URL: {before_url} | After URL: {after_url}")
+
+                # [STEP 6] URL 검증
+                is_bad_route = any(bad in after_url for bad in ["settlement", "guide", "info", "member", "dashboard"])
+                print_log(f"📌 [STEP 6] URL 검증 | Expected: 상품 리스트 라우트 | Actual: {after_url} | Bad Route Detected: {is_bad_route}")
+
+                if is_bad_route or not click_executed:
+                    # [STEP 8] 실패 시 after_click.png 및 after_click.html 저장
+                    print_log("🚨 [STEP 8] 진입 실패 감지 ➔ after_click.png 및 after_click.html 덤프 저장 시작...")
+                    try:
+                        fail_ss = os.path.join(BASE_DIR, "scratch", "after_click.png")
+                        page.screenshot(path=fail_ss, full_page=True)
+                        print_log(f"  📸 after_click.png 저장 완료 ➔ {fail_ss}")
+                    except Exception as ss_e:
+                        print_log(f"  ⚠️ 스크린샷 저장 실패: {ss_e}")
+
+                    try:
+                        fail_html = os.path.join(BASE_DIR, "scratch", "after_click.html")
+                        with open(fail_html, "w", encoding="utf-8") as f:
+                            f.write(page.content())
+                        print_log(f"  📄 after_click.html DOM 덤프 저장 완료 ➔ {fail_html}")
+                    except Exception as html_e:
+                        print_log(f"  ⚠️ HTML 덤프 저장 실패: {html_e}")
+                else:
+                    # [STEP 7] 상품 목록 검증 및 수집 진행
+                    collect_from_full_page("하루특가", "today_price", 1)
+
+            except Exception as e:
+                print_log(f"  ❌ 하루특가 수집 프로세스 오류: {e}")
 
             def collect_from_full_page(section_name, section_key, priority_val):
                 """현재 '전체 보기' 페이지에서 인피니티 스크롤로 전체 핫딜 전수 수집 및 단계별 상세 수량 출력"""
@@ -587,43 +705,43 @@ def harvest_sharelink_portal():
                 page.evaluate("window.scrollTo(0, 0)")
                 page.wait_for_timeout(1500)
 
-                today_see_all = page.locator("a:has-text('전체 보기'), button:has-text('전체 보기'), a:has-text('더 보기'), button:has-text('더 보기')").first
-                    # [수칙 2] "오늘만 이 가격" section 내부의 "전체보기"만 클릭 (섹션 한정 돔 매칭)
-                    click_res = page.evaluate("""() => {
-                        const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
-                        for (const h of headers) {
-                            const txt = (h.innerText || '').trim();
-                            if (txt.includes('오늘만 이 가격') || txt.includes('하루특가')) {
-                                let parent = h.parentElement;
-                                for (let i = 0; i < 7; i++) {
-                                    if (!parent) break;
-                                    const btn = parent.querySelector('a, button, [role="button"]');
-                                    if (btn) {
-                                        const btnTxt = (btn.innerText || '').trim();
-                                        if (btnTxt.includes('전체') || btnTxt.includes('더')) {
-                                            const href = btn.href || btn.getAttribute('href');
-                                            btn.click();
-                                            return { success: true, href: href || '__CLICKED__', html: btn.outerHTML };
-                                        }
+                # [수칙 2] "오늘만 이 가격" section 내부의 "전체보기"만 클릭 (섹션 한정 돔 매칭)
+                click_res = page.evaluate("""() => {
+                    const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
+                    for (const h of headers) {
+                        const txt = (h.innerText || '').trim();
+                        if (txt.includes('오늘만 이 가격') || txt.includes('하루특가')) {
+                            let parent = h.parentElement;
+                            for (let i = 0; i < 7; i++) {
+                                if (!parent) break;
+                                const btn = parent.querySelector('a, button, [role="button"]');
+                                if (btn) {
+                                    const btnTxt = (btn.innerText || '').trim();
+                                    if (btnTxt.includes('전체') || btnTxt.includes('더')) {
+                                        const href = btn.href || btn.getAttribute('href');
+                                        btn.click();
+                                        return { success: true, href: href || '__CLICKED__', html: btn.outerHTML };
                                     }
-                                    parent = parent.parentElement;
                                 }
+                                parent = parent.parentElement;
                             }
                         }
-                        return { success: false };
-                    }""")
+                    }
+                    return { success: false };
+                }""")
 
-                    page._last_url_before_click = page.url
-                    page._last_clicked_html = click_res.get('html', 'N/A')
-                    print_log(f"  🔗 '오늘만 이 가격' 섹션 한정 전체보기 클릭 결과: {click_res}")
-                    page.wait_for_timeout(2500)
+                page._last_url_before_click = page.url
+                page._last_clicked_html = click_res.get('html', 'N/A')
+                print_log(f"  🔗 '오늘만 이 가격' 섹션 한정 전체보기 클릭 결과: {click_res}")
+                page.wait_for_timeout(2500)
 
-                    # [수칙 3] 클릭 후 URL 검증: /settlements 또는 관리자 라우트로 이탈 시 즉시 실패 처리
-                    post_click_url = page.url
-                    if any(bad_route in post_click_url for bad_route in ["settlement", "guide", "info", "member", "dashboard"]):
-                        print_log(f"🚨 [라우팅 오류 실패] 엉뚱한 관리자/정산 페이지로 이동 감지! URL: {post_click_url}")
-                    else:
-                        collect_from_full_page("하루특가", "today_price", 1)
+                # [수칙 3] 클릭 후 URL 검증: /settlements 또는 관리자 라우트로 이탈 시 즉시 실패 처리
+                post_click_url = page.url
+                if any(bad_route in post_click_url for bad_route in ["settlement", "guide", "info", "member", "dashboard"]):
+                    print_log(f"🚨 [라우팅 오류 실패] 엉뚱한 관리자/정산 페이지로 이동 감지! URL: {post_click_url}")
+                else:
+                    collect_from_full_page("하루특가", "today_price", 1)
+
 
 
 
