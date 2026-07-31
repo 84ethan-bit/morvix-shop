@@ -285,21 +285,25 @@ def harvest_sharelink_portal():
             TARGET_PER_SECTION = 200  # 전체 상품 100% 무제한 풀 수집
 
             def collect_from_full_page(section_name, section_key, priority_val):
-                """현재 '전체 보기' 페이지에서 인피니티 스크롤로 전체 핫딜 전수 수집"""
+                """현재 '전체 보기' 페이지에서 인피니티 스크롤로 전체 핫딜 전수 수집 및 단계별 상세 수량 출력"""
                 nonlocal seen_titles
 
-                print_log(f"  📜 [{section_name}] 전수 수집 인피니티 딥스크롤 시작...")
-                last_height = 0
-                for scroll_step in range(1, 15):
+                print_log(f"━━━ [{section_name}] 전체보기 진입 성공 ━━━")
+                last_card_count = 0
+                for scroll_step in range(1, 20):
                     try:
-                        page.evaluate(f"window.scrollTo(0, document.body.scrollHeight)")
-                        page.wait_for_timeout(400)
-                        new_height = page.evaluate("document.body.scrollHeight")
-                        if new_height == last_height:
+                        page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                        page.wait_for_timeout(600)
+                        current_btns = page.query_selector_all("button:has-text('링크 발급')")
+                        current_count = len(current_btns)
+                        print_log(f"  📜 스크롤 {scroll_step}회 ➔ 탐지 상품 {current_count}개")
+
+                        if current_count == last_card_count and current_count > 0:
+                            print_log(f"  ℹ️ 추가 로딩 없음 ➔ 스크롤 탐색 종료")
                             break
-                        last_height = new_height
-                    except Exception:
-                        pass
+                        last_card_count = current_count
+                    except Exception as sc_err:
+                        print_log(f"  ⚠️ 스크롤 #{scroll_step} 오류: {sc_err}")
 
                 try:
                     page.evaluate("window.scrollTo(0, 0)")
@@ -307,10 +311,9 @@ def harvest_sharelink_portal():
                     pass
                 page.wait_for_timeout(500)
 
-
-
                 btns = page.query_selector_all("button:has-text('링크 발급')")
-                print_log(f"  📊 [{section_name}] 탐지된 '링크 발급' 버튼: {len(btns)}개")
+                print_log(f"  🎯 [{section_name}] 최종 카드 로딩 완료: 총 {len(btns)}개")
+
 
                 collected = 0
                 for idx, btn in enumerate(btns):
