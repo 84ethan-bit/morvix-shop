@@ -240,19 +240,19 @@ def harvest_sharelink_portal():
                 """현재 '전체 보기' 페이지에서 링크 발급 버튼 전수 수집"""
                 nonlocal seen_titles
 
-                # 전체 페이지 딥스크롤 (10단계)
+                # 전체 페이지 딥스크롤 최적화 (4단계 × 150ms)
                 print_log(f"  📜 [{section_name}] 딥스크롤 시작...")
-                for step in range(1, 11):
+                for step in range(1, 5):
                     try:
-                        page.evaluate(f"window.scrollTo(0, (document.body.scrollHeight / 10) * {step})")
+                        page.evaluate(f"window.scrollTo(0, (document.body.scrollHeight / 4) * {step})")
                     except Exception:
                         pass
-                    page.wait_for_timeout(600)
+                    page.wait_for_timeout(150)
                 try:
                     page.evaluate("window.scrollTo(0, 0)")
                 except Exception:
                     pass
-                page.wait_for_timeout(2000)
+                page.wait_for_timeout(500)
 
                 btns = page.query_selector_all("button:has-text('링크 발급')")
                 print_log(f"  📊 [{section_name}] 탐지된 '링크 발급' 버튼: {len(btns)}개")
@@ -382,10 +382,10 @@ def harvest_sharelink_portal():
                         capture_lock[0] = card_key
                         captured_links.pop(card_key, None)
                         try:
-                            btn.click(timeout=2000, force=True)
+                            btn.click(timeout=1000, force=True)
                         except Exception:
                             pass
-                        page.wait_for_timeout(600)
+                        page.wait_for_timeout(200)
                         share_link = captured_links.get(card_key)
 
                         # 모달 DOM 정밀 검사
