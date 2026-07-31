@@ -304,12 +304,14 @@ def harvest_sharelink_portal():
                                 continue
                             lines_raw.append(l)
 
-                        # ── 2단계: 상품명 추출 (가장 긴 줄 우선, 최소 5글자) ──
+                        # ── 2단계: 상품명 추출 (가장 긴 줄 우선, 최소 5글자, '개당/수익' 금지) ──
                         name_candidates = [
                             l for l in lines_raw
                             if len(l) >= 5
                             and not re.match(r'^[\d,%원\-~★☆.()\[\]]+$', l)
                             and '%' not in l
+                            and '개당' not in l
+                            and '수익' not in l
                         ]
                         title = max(name_candidates, key=len) if name_candidates else ''
                         if not title or title in seen_titles:
