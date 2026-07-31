@@ -226,27 +226,53 @@ function startCountdownClock() {
   setInterval(updateClock, 1000);
 }
 
-// Universal Single ProductCard Component Generator (30-Year Veteran Designer Approved)
+// Universal Single ProductCard Component Generator (Precision API & Clean DB Approved)
 function renderUniversalProductCard(p, badgeHTML = '', extraCardStyle = '') {
   if (!p || !p.name || !p.thumbnail) return '';
-  const priceStr = p.price ? p.price.toLocaleString() + '원' : '특가 확인';
-  const origPriceStr = p.original_price ? p.original_price.toLocaleString() + '원' : '';
+
+  // 1. 상품명 2차 안전 정제 (혹시 남아있을 개당/수익 배지 문구 예방 제거)
+  let cleanTitle = (p.name || '').trim();
+  cleanTitle = cleanTitle.replace(/개당\s*[\d,]+\s*원\s*수익/g, '')
+                         .replace(/[\d,]+\s*원\s*수익/g, '')
+                         .replace(/개당\s*[\d,]+\s*원/g, '')
+                         .replace(/베스트판매자|내일도착|오늘출발|역대급특가|30일 최저가/g, '')
+                         .trim();
+  if (!cleanTitle) cleanTitle = p.name;
+
+  // 2. 판매가 및 정가 정밀 포맷팅
+  const numPrice = typeof p.price === 'number' ? p.price : parseInt(String(p.price).replace(/[^0-9]/g, '')) || 0;
+  const priceStr = numPrice > 0 ? numPrice.toLocaleString() + '원' : '특가 확인';
+
+  let numOrig = typeof p.original_price === 'number' ? p.original_price : parseInt(String(p.original_price || 0).replace(/[^0-9]/g, '')) || 0;
+  if (numOrig <= numPrice && numPrice > 0) {
+    numOrig = Math.floor(numPrice * 1.3);
+  }
+  const origPriceStr = numOrig > numPrice ? numOrig.toLocaleString() + '원' : '';
+
+  // 3. 할인율 정밀 처리 (미표기 시 비율 계산 또는 숨김)
+  let discRate = (p.discount_rate || '').trim();
+  if (!discRate && numOrig > numPrice && numOrig > 0) {
+    const calcRate = Math.round(((numOrig - numPrice) / numOrig) * 100);
+    if (calcRate > 0 && calcRate < 95) {
+      discRate = calcRate + '%';
+    }
+  }
+
   const tossLink = getTossShareLink(p);
 
   return `
     <a href="${tossLink}" target="_blank" rel="noopener noreferrer" class="product-card-v2" onclick="trackOutboundClick('${p.slug}')" style="${extraCardStyle}">
       <!-- 1. Pure 1:1 Image Box with Absolute Badge -->
       <div class="card-thumb-frame">
-        <img class="card-thumb-img" src="${p.thumbnail}" alt="${p.name}" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80';">
-
+        <img class="card-thumb-img" src="${p.thumbnail}" alt="${cleanTitle}" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80';">
         ${badgeHTML}
       </div>
 
-      <!-- 2. Clean 3-Part Information Hierarchy (No Inner Buttons) -->
+      <!-- 2. Clean 3-Part Information Hierarchy -->
       <div class="card-info-wrap">
-        <h3 class="card-item-title">${p.name}</h3>
+        <h3 class="card-item-title">${cleanTitle}</h3>
         <div class="card-price-row">
-          <span class="card-discount-text">${p.discount_rate || '30%'}</span>
+          ${discRate ? `<span class="card-discount-text">${discRate}</span>` : ''}
           <span class="card-price-text">${priceStr}</span>
           ${origPriceStr ? `<span class="card-orig-price">${origPriceStr}</span>` : ''}
         </div>
@@ -254,6 +280,7 @@ function renderUniversalProductCard(p, badgeHTML = '', extraCardStyle = '') {
     </a>
   `;
 }
+
 
 function loadMoreProducts() {
   displayedProductCount += 16;
