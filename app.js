@@ -405,113 +405,22 @@ function renderProducts() {
   }).join('');
 }
 
-// Open Product Detail Modal
+// Open Product Detail (Direct Link Bypass - No Modal Pop-up)
 function openProductDetail(slug) {
   if (!dbData || !dbData.products) return;
   const product = dbData.products.find(p => p.slug === slug || p.id === slug);
-  if (!product) {
-    console.warn("Product not found for slug:", slug);
-    return;
-  }
+  if (!product) return;
 
   try {
     trackOutboundClick(slug);
-  } catch (e) {
-    console.warn("trackOutboundClick warning:", e);
+  } catch (e) {}
+
+  const tossLink = getTossShareLink(product);
+  if (tossLink && tossLink !== '#') {
+    window.open(tossLink, '_blank', 'noopener,noreferrer');
   }
-
-  const modal = document.getElementById('product-modal');
-  const body = document.getElementById('modal-body');
-  if (!modal || !body) return;
-
-  let linksArray = [];
-  if (Array.isArray(product.affiliate_links) && product.affiliate_links.length > 0) {
-    linksArray = product.affiliate_links.slice().sort((a, b) => (a.priority || 99) - (b.priority || 99));
-  } else if (product.toss_link) {
-    linksArray.push({ platform: 'toss', label: '💙 토스 최저가 구매하기 ↗', url: product.toss_link, bg_gradient: 'linear-gradient(135deg, #0052cc, #2684ff)' });
-  } else if (product.coupang_link) {
-    linksArray.push({ platform: 'coupang', label: '🛒 쿠팡 파트너스 최저가 확인 ↗', url: product.coupang_link, bg_gradient: 'linear-gradient(135deg, #ff4757, #ff6b81)' });
-  } else {
-    linksArray.push({ platform: 'toss', label: '💙 토스 최저가 구매하기 ↗', url: 'https://toss.im', bg_gradient: 'linear-gradient(135deg, #0052cc, #2684ff)' });
-  }
-
-  let uspsList = [];
-  if (Array.isArray(product.usps)) {
-    uspsList = product.usps;
-  } else if (typeof product.usps === 'string') {
-    uspsList = product.usps.split('\n').map(s => s.trim()).filter(s => s.length > 0);
-  }
-
-  const relatedProds = dbData.products.filter(p => p.slug !== slug && p.id !== product.id && (p.status === 'ACTIVE' || !p.status)).slice(0, 3);
-
-  const fallbackImg = "https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=600&auto=format&fit=crop&q=80";
-  const imgSrc = (product.thumbnail && !product.thumbnail.startsWith('images/')) ? product.thumbnail : fallbackImg;
-
-  body.innerHTML = `
-    <div class="detail-grid">
-      <div class="detail-left">
-        <img class="detail-image" src="${imgSrc}" alt="${product.name}" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='${fallbackImg}';">
-      </div>
-      <div class="detail-right">
-        <span class="detail-slug-box">morvix.kr/${product.slug}</span>
-        <h2 class="detail-title">${product.name}</h2>
-        <div class="detail-rating">★★★★★ ${product.rating || 4.9} / 5.0 (실사용 만족도 검증 완료)</div>
-        <p style="color: var(--text-muted); font-size: 0.95rem;">"${product.subtitle || ''}"</p>
-        
-        <ul class="usps-list">
-          ${uspsList.map(u => `<li>✔ ${u}</li>`).join('')}
-        </ul>
-
-        <div class="affiliate-cta-group" style="display: flex; flex-direction: column; gap: 10px; margin-top: 18px;">
-          ${linksArray.map(link => `
-            <a href="${link.url}" target="_blank" class="btn-affiliate-cta" onclick="openTossMobileView('${link.url}', event); registerAffiliateConversion('${product.slug}', '${link.platform}')" style="background: ${link.bg_gradient || 'linear-gradient(135deg, #00f2fe, #4facfe)'}; color: #fff; text-align: center; padding: 14px; border-radius: var(--radius-md); font-weight: 700; text-decoration: none; display: block; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-              ${link.label}
-            </a>
-          `).join('')}
-        </div>
-      </div>
-    </div>
-
-    <!-- ⚡ Hot Deal Studio V2 Content Generator Suite (Blog, Threads, Shorts Script) -->
-    <div style="margin-top: 24px; background: rgba(0, 82, 204, 0.08); border: 1px solid rgba(38, 132, 255, 0.3); border-radius: 12px; padding: 18px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <h4 style="color: #38bdf8; font-size: 0.98rem; font-weight: 800; margin: 0;">🔥 Hot Deal Studio V2 - AI 바이럴 콘텐츠 자동 생성 엔진</h4>
-        <span style="background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">100% AUTO COPY</span>
-      </div>
-
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 12px;">
-        <button type="button" onclick="generateContentDraft('${product.slug}', 'blog')" style="background: linear-gradient(135deg, #0052cc, #2684ff); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 0.85rem;">
-          📝 SEO 블로그 원고 1초 복사
-        </button>
-        <button type="button" onclick="generateContentDraft('${product.slug}', 'threads')" style="background: linear-gradient(135deg, #a855f7, #ec4899); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 0.85rem;">
-          💬 스레드(Threads) 원고 1초 복사
-        </button>
-        <button type="button" onclick="generateContentDraft('${product.slug}', 'shorts')" style="background: linear-gradient(135deg, #ff4757, #ff6b81); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 0.85rem;">
-          🎬 15초 릴스/쇼츠 콘티 1초 복사
-        </button>
-      </div>
-
-      <div id="content-generator-preview" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px; font-size: 0.83rem; color: #38bdf8; font-family: monospace; white-space: pre-wrap; word-break: break-all; display: none;"></div>
-    </div>
-
-    <!-- Related Cross-Selling Cluster -->
-    <div style="margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 18px;">
-      <h4 style="color: var(--primary-accent); font-size: 0.98rem; font-weight: 800; margin-bottom: 12px;">🔗 함께 둘러보면 일상의 억까가 풀리는 연관 추천 클러스터</h4>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
-        ${relatedProds.map(rp => `
-          <div onclick="openProductDetail('${rp.slug}')" style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 10px; cursor: pointer; transition: transform 0.2s;">
-            <img src="${rp.thumbnail}" style="width: 100%; height: 90px; object-fit: cover; border-radius: 4px; margin-bottom: 6px;">
-            <div style="font-size: 0.82rem; font-weight: 700; color: #fff; line-height: 1.2; height: 2rem; overflow: hidden;">${rp.name}</div>
-            <div style="font-size: 0.78rem; color: #2684ff; margin-top: 6px; font-weight: 600;">💙 토스할인가 확인 ➔</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-  `;
-
-  modal.style.display = 'flex';
-  modal.classList.add('active');
 }
+
 
 // Hot Deal Studio V2 - AI Content Draft Generator (Blog, Threads, Shorts)
 function generateContentDraft(slug, type) {
