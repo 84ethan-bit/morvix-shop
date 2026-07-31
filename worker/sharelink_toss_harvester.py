@@ -290,7 +290,7 @@ def harvest_sharelink_portal():
 
                 print_log(f"━━━ [{section_name}] 전체보기 진입 성공 ━━━")
                 last_card_count = 0
-                for scroll_step in range(1, 20):
+                for scroll_step in range(1, 35):
                     try:
                         page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
                         page.wait_for_timeout(600)
@@ -299,7 +299,7 @@ def harvest_sharelink_portal():
                         print_log(f"  📜 스크롤 {scroll_step}회 ➔ 탐지 상품 {current_count}개")
 
                         if current_count == last_card_count and current_count > 0:
-                            print_log(f"  ℹ️ 추가 로딩 없음 ➔ 스크롤 탐색 종료")
+                            print_log(f"  ℹ️ 추가 로딩 없음 (최종 {current_count}개) ➔ 스크롤 탐색 완수")
                             break
                         last_card_count = current_count
                     except Exception as sc_err:
@@ -312,7 +312,8 @@ def harvest_sharelink_portal():
                 page.wait_for_timeout(500)
 
                 btns = page.query_selector_all("button:has-text('링크 발급')")
-                print_log(f"  🎯 [{section_name}] 최종 카드 로딩 완료: 총 {len(btns)}개")
+                print_log(f"  🎯 [{section_name}] 최종 카드 로딩 완료: 총 {len(btns)}개 (목표 100개+ 전수 파싱 시작)")
+
 
 
                 collected = 0
