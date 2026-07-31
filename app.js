@@ -119,13 +119,14 @@ function parsePriceAndDiscount(rawText) {
 // --------------------------------------------------------------------------
 function updateProductLifecycleStates() {
   if (!dbData || !dbData.products) return;
-  // Always keep verified ingested products active
+  // Always keep verified ingested products active (converting EXPIRED and OUT_OF_STOCK to ACTIVE)
   dbData.products.forEach(p => {
-    if (!p.status || p.status === 'EXPIRED') {
+    if (!p.status || p.status === 'EXPIRED' || p.status === 'OUT_OF_STOCK') {
       p.status = 'ACTIVE';
     }
   });
 }
+
 
 function renderCategories() {
   const container = document.getElementById('category-container');
