@@ -448,6 +448,57 @@ def harvest_sharelink_portal():
                     observer.observe(document.body, { childList: true, subtree: true, attributes: true, characterData: true });
                 }""")
 
+                # [대표님 지정] 실제 클릭 대상 요소 및 좌표 정밀 계측 (elementFromPoint, pointer-events, boundingBox)
+                target_element_diag = page.evaluate("""() => {
+                    const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
+                    for (const h of headers) {
+                        const txt = (h.innerText || '').trim();
+                        if (txt.includes('오늘만 이 가격') || txt.includes('하루특가')) {
+                            let parent = h.parentElement;
+                            for (let i = 0; i < 7; i++) {
+                                if (!parent) break;
+                                const btn = parent.querySelector('a, button, [role="button"]');
+                                if (btn) {
+                                    const btnTxt = (btn.innerText || '').trim();
+                                    if (btnTxt.includes('전체') || btnTxt.includes('더')) {
+                                        const rect = btn.getBoundingClientRect();
+                                        const cx = rect.x + rect.width / 2;
+                                        const cy = rect.y + rect.height / 2;
+                                        const topEl = document.elementFromPoint(cx, cy);
+                                        const style = window.getComputedStyle(btn);
+                                        return {
+                                            found: true,
+                                            tagName: btn.tagName,
+                                            outerHTML: btn.outerHTML.slice(0, 300),
+                                            rect: { x: rect.x, y: rect.y, w: rect.width, h: rect.height },
+                                            pointerEvents: style.pointerEvents,
+                                            display: style.display,
+                                            visibility: style.visibility,
+                                            topElementAtCenter: topEl ? topEl.tagName + (topEl.className ? '.' + String(topEl.className).slice(0, 30) : '') : 'N/A',
+                                            topElementHTML: topEl ? topEl.outerHTML.slice(0, 200) : 'N/A'
+                                        };
+                                    }
+                                }
+                                parent = parent.parentElement;
+                            }
+                        }
+                    }
+                    return { found: false };
+                }""")
+
+                print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print_log("🔍 [대표님 지정] 실제 클릭 대상 요량 및 좌표 정밀 계측 리포트")
+                print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print_log(f" 📌 클릭 대상 감지 여부 : {target_element_diag.get('found')}")
+                if target_element_diag.get('found'):
+                    print_log(f" 📌 클릭 대상 TagName   : {target_element_diag.get('tagName')}")
+                    print_log(f" 📌 BoundingClientRect  : {target_element_diag.get('rect')}")
+                    print_log(f" 📌 pointer-events Style: {target_element_diag.get('pointerEvents')}")
+                    print_log(f" 📌 display / visibility: {target_element_diag.get('display')} / {target_element_diag.get('visibility')}")
+                    print_log(f" 📌 좌표 중앙 최상위 요소: {target_element_diag.get('topElementAtCenter')}")
+                    print_log(f" 📌 좌표 중앙 최상위 HTML: {target_element_diag.get('topElementHTML')}")
+                print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
                 # 섹션 내부 전체보기 클릭
                 click_executed = page.evaluate("""() => {
                     const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
@@ -471,6 +522,7 @@ def harvest_sharelink_portal():
                     }
                     return false;
                 }""")
+
                 
                 # React SPA 상태 변경 및 렌더링 대기
                 page.wait_for_timeout(3000)
