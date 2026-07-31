@@ -680,44 +680,46 @@ def harvest_sharelink_portal():
                     page.goto(best_see_all_link, wait_until="domcontentloaded", timeout=30000)
                     page.wait_for_timeout(2000)
                     collect_from_full_page("지금 많이 팔리는 BEST", "best_seller", 2)
-                    else:
-                        # 직접 클릭 시도 (Playwright / JS 강제 클릭 엔진)
-                        clicked = False
+                else:
+                    # 직접 클릭 시도 (Playwright / JS 강제 클릭 엔진)
+                    clicked = False
+
+                    try:
+                        # 1. Playwright 셀렉터 클릭
+                        btn = page.locator("text='전체 보기', text='전체보기', text='더보기', text='더 보기'").first
+                        if btn.count() > 0:
+                            btn.click(timeout=3000, force=True)
+                            page.wait_for_timeout(2000)
+                            clicked = True
+                    except Exception:
+                        pass
+
+                    if not clicked:
                         try:
-                            # 1. Playwright 셀렉터 클릭
-                            btn = page.locator("text='전체 보기', text='전체보기', text='더보기', text='더 보기'").first
-                            if btn.count() > 0:
-                                btn.click(timeout=3000, force=True)
+                            # 2. JS DOM 직접 클릭
+                            clicked = page.evaluate("""() => {
+                                const els = [...document.querySelectorAll('a, button, div, span')];
+                                for (const el of els) {
+                                    const t = (el.innerText || '').trim();
+                                    if (t === '전체 보기' || t === '전체보기' || t === '더보기' || t === '더 보기') {
+                                        el.click();
+                                        return true;
+                                    }
+                                }
+                                return false;
+                            }""")
+                            if clicked:
                                 page.wait_for_timeout(2000)
-                                clicked = True
                         except Exception:
                             pass
 
-                        if not clicked:
-                            try:
-                                # 2. JS DOM 직접 클릭
-                                clicked = page.evaluate("""() => {
-                                    const els = [...document.querySelectorAll('a, button, div, span')];
-                                    for (const el of els) {
-                                        const t = (el.innerText || '').trim();
-                                        if (t === '전체 보기' || t === '전체보기' || t === '더보기' || t === '더 보기') {
-                                            el.click();
-                                            return true;
-                                        }
-                                    }
-                                    return false;
-                                }""")
-                                if clicked:
-                                    page.wait_for_timeout(2000)
-                            except Exception:
-                                pass
+                    if clicked:
+                        print_log("  👆 베스트 '전체 보기' 강제 클릭 성공!")
+                        collect_from_full_page("지금 많이 팔리는 BEST", "best_seller", 2)
+                    else:
+                        print_log("  ⚠️ 전체 보기 클릭 실패 → 홈 베스트 섹션 수집")
+                        collect_from_full_page("베스트(홈)", "best_seller", 2)
 
-                        if clicked:
-                            print_log("  👆 베스트 '전체 보기' 강제 클릭 성공!")
-                            collect_from_full_page("지금 많이 팔리는 BEST", "best_seller", 2)
-                        else:
-                            print_log("  ⚠️ 전체 보기 클릭 실패 → 홈 베스트 섹션 수집")
-                            collect_from_full_page("베스트(홈)", "best_seller", 2)
 
 
 
