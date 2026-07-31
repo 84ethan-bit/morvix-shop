@@ -38,5 +38,846 @@
       "icon": "🏠"
     }
   ],
-  "products": []
+  "products": [
+    {
+      "id": "TOSS-AUTO-1785513883-27",
+      "slug": "toss_1785513883_27",
+      "short_url": "morvix.kr/toss_1785513883_27",
+      "name": "터치 라이트 아토캡 고농축 캡슐세제, 8g, 120개입, 1개",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 4500,
+      "original_price": 6075,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/XokjNZsh",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/XokjNZsh",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftaca%2Fai%2Fv2%2FMDVjMTIx%2FRWtYZzhmbERxT0hGaDdMVGZVYjh5emh6NGsyRmhzUEdRYytybXhZNEhqdz0.png",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    },
+    {
+      "id": "TOSS-AUTO-1785513883-26",
+      "slug": "toss_1785513883_26",
+      "short_url": "morvix.kr/toss_1785513883_26",
+      "name": "일양약품 눈건강 루테인 골드, 500mg, 30캡슐, 6박스",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 10800,
+      "original_price": 14580,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/vd88aYqd",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/vd88aYqd",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2025-04-17%2Feb14e497-d99c-44b1-b6cf-828c7d796914.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    },
+    {
+      "id": "TOSS-AUTO-1785513883-25",
+      "slug": "toss_1785513883_25",
+      "short_url": "morvix.kr/toss_1785513883_25",
+      "name": "구워먹는 할루미치즈, 200g, 3개",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 7600,
+      "original_price": 10260,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/ZvYUOFxx",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/ZvYUOFxx",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-06-30%2Fade7ab0a-5ebe-489c-a02a-66196e0122ca.png",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    },
+    {
+      "id": "TOSS-AUTO-1785513883-24",
+      "slug": "toss_1785513883_24",
+      "short_url": "morvix.kr/toss_1785513883_24",
+      "name": "내일도착",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 8000,
+      "original_price": 10800,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/d76dCdND",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/d76dCdND",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-06-18%2F33e44606-b749-4079-b050-d0d8be35a84f.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    },
+    {
+      "id": "TOSS-AUTO-1785513883-23",
+      "slug": "toss_1785513883_23",
+      "short_url": "morvix.kr/toss_1785513883_23",
+      "name": "라버비 허그코튼 초고농축 드라이시트, 120매, 2개",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 6900,
+      "original_price": 9315,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/LDgtzOhd",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/LDgtzOhd",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-02-03%2Fcda6a953-de9c-4f7e-a6dc-5e616092971c.png",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    },
+    {
+      "id": "TOSS-AUTO-1785513883-22",
+      "slug": "toss_1785513883_22",
+      "short_url": "morvix.kr/toss_1785513883_22",
+      "name": "에브리워터 무라벨, 500ml, 40개",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 4400,
+      "original_price": 5940,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/P18ePs1q",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/P18ePs1q",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-02-17%2F32d41410-98f1-42d9-a442-9e8820fad904.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    },
+    {
+      "id": "TOSS-AUTO-1785513883-21",
+      "slug": "toss_1785513883_21",
+      "short_url": "morvix.kr/toss_1785513883_21",
+      "name": "케라시스 화이트 데이지 퍼퓸 샴푸, 1L, 1개 + 데미지 클리닉 트리트먼트, 300ml, 2개",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 4900,
+      "original_price": 6615,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/dRW8m0Z6",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/dRW8m0Z6",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-22%2F42ccdee0-093c-4592-a70c-6a1da7b3aa97.png",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    },
+    {
+      "id": "TOSS-AUTO-1785513883-20",
+      "slug": "toss_1785513883_20",
+      "short_url": "morvix.kr/toss_1785513883_20",
+      "name": "이롬 황성주 박사의 과채습관 퍼플, 190ml, 16개",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 5500,
+      "original_price": 7425,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/JO1oqcKf",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/JO1oqcKf",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-06-18%2F77a7dccc-fcf9-486c-9662-56bb886771a2.png",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    },
+    {
+      "id": "TOSS-AUTO-1785513883-19",
+      "slug": "toss_1785513883_19",
+      "short_url": "morvix.kr/toss_1785513883_19",
+      "name": "모나리자 스마트 다용도 키친타올, 250매, 12롤, 1팩",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 6900,
+      "original_price": 9315,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/bRkTyZBf",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/bRkTyZBf",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-06-25%2F994377eb-d4e9-489f-90f7-d2f695720259.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    },
+    {
+      "id": "TOSS-AUTO-1785513883-18",
+      "slug": "toss_1785513883_18",
+      "short_url": "morvix.kr/toss_1785513883_18",
+      "name": "셰프초이스 제육 불고기, 1.5kg, 1개",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 8600,
+      "original_price": 11610,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/fZ9MiYYv",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/fZ9MiYYv",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2025-10-27%2Fbf8e8958-22c7-445b-ac7a-b8adecf1abdb.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    },
+    {
+      "id": "TOSS-AUTO-1785513883-17",
+      "slug": "toss_1785513883_17",
+      "short_url": "morvix.kr/toss_1785513883_17",
+      "name": "스파클 생수, 무라벨, 2L, 24개",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 7200,
+      "original_price": 9720,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/xENNJjuo",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/xENNJjuo",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=560,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-03-18%2F268e4c6a-1595-43e9-9c1b-f101e5774429.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    },
+    {
+      "id": "TOSS-AUTO-1785513883-14",
+      "slug": "toss_1785513883_14",
+      "short_url": "morvix.kr/toss_1785513883_14",
+      "name": "대용량 한입쥐포, 30미, 300g 내외, 1봉",
+      "subtitle": "토스 파트너 특가 30% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 9900,
+      "original_price": 13365,
+      "discount_rate": "30%",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/lILf79ne",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/lILf79ne",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-31%2Fd4d86233-5e8b-4e36-88bd-b4907f26262c.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    },
+    {
+      "id": "TOSS-AUTO-1785513883-7",
+      "slug": "toss_1785513883_7",
+      "short_url": "morvix.kr/toss_1785513883_7",
+      "name": "소소락 통망고 스틱, 60g, 10봉",
+      "subtitle": "토스 파트너 특가 39% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 8970,
+      "original_price": 12109,
+      "discount_rate": "39% 특가",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/9m7KPCtd",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/9m7KPCtd",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-04-24%2Fdfe0a179-0b39-42f5-9f35-7932a226a517.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    },
+    {
+      "id": "TOSS-AUTO-1785513883-6",
+      "slug": "toss_1785513883_6",
+      "short_url": "morvix.kr/toss_1785513883_6",
+      "name": "썬키스트 사과주스, 1.35L, 12개",
+      "subtitle": "토스 파트너 특가 54% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 11900,
+      "original_price": 19278,
+      "discount_rate": "54% 특가",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/frvh6Kr8",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/frvh6Kr8",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-06-17%2Ff323bfa7-749c-436f-b645-d549083fc78e.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    },
+    {
+      "id": "TOSS-AUTO-1785513883-5",
+      "slug": "toss_1785513883_5",
+      "short_url": "morvix.kr/toss_1785513883_5",
+      "name": "프롬바이오 위건강엔 매스틱, 3g, 28포, 4박스",
+      "subtitle": "토스 파트너 특가 88% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 32900,
+      "original_price": 124362,
+      "discount_rate": "88% 특가",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/duRSmJE4",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/duRSmJE4",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2025-12-23%2F55c28187-ca5a-431b-862a-ebc489515ec7.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    },
+    {
+      "id": "TOSS-AUTO-1785513883-4",
+      "slug": "toss_1785513883_4",
+      "short_url": "morvix.kr/toss_1785513883_4",
+      "name": "오가닉프렌즈 정성 한포 육수 분말 스틱, 멸치 다시마, 80g, 20개입, 1개",
+      "subtitle": "토스 파트너 특가 39% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 7800,
+      "original_price": 21060,
+      "discount_rate": "39% 특가",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/lBgpdvc2",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/lBgpdvc2",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-28%2Fec950f9e-b5de-446f-b076-74fcfe7f4036.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    },
+    {
+      "id": "TOSS-AUTO-1785513883-3",
+      "slug": "toss_1785513883_3",
+      "short_url": "morvix.kr/toss_1785513883_3",
+      "name": "고른 우거지 감자탕, 1000g, 4개",
+      "subtitle": "토스 파트너 특가 43% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 22500,
+      "original_price": 12150,
+      "discount_rate": "43% 특가",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/HBjlX8aB",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/HBjlX8aB",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-23%2F14e60f96-01fc-4ba1-8822-69db13d6d820.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    },
+    {
+      "id": "TOSS-AUTO-1785513883-2",
+      "slug": "toss_1785513883_2",
+      "short_url": "morvix.kr/toss_1785513883_2",
+      "name": "뉴클 100W PD CtoC 고속충전 릴 케이블, 화이트, 1m, 2개",
+      "subtitle": "토스 파트너 특가 81% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 9800,
+      "original_price": 2646,
+      "discount_rate": "81% 특가",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/zcKqTbqx",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/zcKqTbqx",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-30%2F4e5e396b-87ba-432e-abdd-76c21e05c16b.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    },
+    {
+      "id": "TOSS-AUTO-1785513883-1",
+      "slug": "toss_1785513883_1",
+      "short_url": "morvix.kr/toss_1785513883_1",
+      "name": "에어보나 무선 데스크팬 AB-25PF, 화이트, 2개",
+      "subtitle": "토스 파트너 특가 61% 적용",
+      "section": "best_seller",
+      "priority": 2,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 35900,
+      "original_price": 9693,
+      "discount_rate": "61% 특가",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/VdbuIqGt",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/VdbuIqGt",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-03-30%2Ffc2df5fd-1fbe-4f2b-b7c2-80aff1866656.jpeg",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    },
+    {
+      "id": "TOSS-AUTO-1785513883-0",
+      "slug": "toss_1785513883_0",
+      "short_url": "morvix.kr/toss_1785513883_0",
+      "name": "공기처럼 가벼운 노라인 에어핏 심리스 팬티, 7종 세트, 실크핏 L(95)",
+      "subtitle": "토스 파트너 특가 65% 적용",
+      "section": "today_price",
+      "priority": 1,
+      "category": "life",
+      "status": "ACTIVE",
+      "is_featured": true,
+      "price": 8900,
+      "original_price": 12015,
+      "discount_rate": "65% 특가",
+      "rating": 4.9,
+      "review_count": 128,
+      "usps": [
+        "토스 쉐어링크 공식 제휴 특가",
+        "실사용자 만족도 1위"
+      ],
+      "toss_link": "https://toss.im/_m/P5b3rmne",
+      "affiliate_links": [
+        {
+          "platform": "toss",
+          "label": "💙 토스할인가 확인 ➔",
+          "url": "https://toss.im/_m/P5b3rmne",
+          "priority": 1,
+          "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"
+        }
+      ],
+      "thumbnail": "https://resources-fe.toss.im/image-optimize/width=1440,quality=75/https%3A%2F%2Fshopping.toss.im%2Flive%2Ftemp%2F2026-07-30%2Ff9c6ff0a-9a09-4c6e-9363-8ff3ea984614.png",
+      "analytics": {
+        "clicks_count": 1,
+        "platform_clicks": {
+          "toss": 1
+        },
+        "conversions_count": 0,
+        "ctr": 5.0
+      },
+      "added_date": "2026-07-31T16:04:43.416287",
+      "expiry_date": "2026-08-02T16:04:43.416287"
+    }
+  ]
 }
