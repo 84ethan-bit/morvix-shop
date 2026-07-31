@@ -132,6 +132,15 @@ function updateProductLifecycleStates() {
   });
 }
 
+function renderCategories() {
+  const container = document.getElementById('category-container');
+  if (container) {
+    container.style.display = 'none';
+    if (container.parentElement) container.parentElement.style.display = 'none';
+  }
+  return;
+}
+
 // --------------------------------------------------------------------------
 // Initialize MORVIX SHOP OS
 // --------------------------------------------------------------------------
@@ -158,51 +167,14 @@ async function initShopOS() {
   setupAdminEvents();
 }
 
-// Render Categories with 🔥 하루특가 and 🏆 BEST at the very front
 function renderCategories() {
   const container = document.getElementById('category-container');
-  if (!container) return;
-
-  const categories = [
-    { id: 'timeattack', name: '🔥 하루특가', isPoint: true },
-    { id: 'best100', name: '🏆 BEST', isPoint: true },
-    { id: 'all', name: '전체' },
-    { id: 'summer', name: '여름/장마' },
-    { id: 'cleaning', name: '청소/위생' },
-    { id: 'kitchen', name: '주방/요리' },
-    { id: 'it', name: 'IT/디지털' },
-    { id: 'life', name: '생활용품' },
-    { id: 'beauty', name: '뷰티' },
-    { id: 'fashion', name: '패션' },
-    { id: 'car', name: '자동차' },
-    { id: 'pet', name: '반려동물' }
-  ];
-
-  container.innerHTML = categories.map(cat => {
-    const isActive = currentCategory === cat.id;
-    let extraStyle = '';
-    if (cat.id === 'timeattack') {
-      extraStyle = isActive ? 'background: #FF4757; color: #fff; border-color: #FF4757;' : 'color: #FF4757; border-color: rgba(255,71,87,0.4); background: #FFF5F5; font-weight: 800;';
-    } else if (cat.id === 'best100') {
-      extraStyle = isActive ? 'background: #191F28; color: #FFD700; border-color: #191F28;' : 'color: #191F28; border-color: #CBD5E1; background: #FFFDF0; font-weight: 800;';
-    }
-
-    return `
-      <button class="cat-pill ${isActive ? 'active' : ''}" data-cat="${cat.id}" style="${extraStyle}">
-        ${cat.name}
-      </button>
-    `;
-  }).join('');
-
-  container.querySelectorAll('.cat-pill').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      currentCategory = e.currentTarget.getAttribute('data-cat');
-      displayedProductCount = 16; // Reset pagination count on category change
-      renderCategories();
-      renderProducts();
-    });
-  });
+  if (container) {
+    container.style.display = 'none';
+    if (container.parentElement) container.parentElement.style.display = 'none';
+  }
 }
+
 
 // Real-time Countdown Clock Engine for Section 1 Time Attack
 function startCountdownClock() {
