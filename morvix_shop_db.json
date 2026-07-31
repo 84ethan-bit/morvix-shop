@@ -48,7 +48,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 1190,
       "original_price": 1606,
@@ -79,7 +79,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:34:29.486645",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 1190,
+          "date": "2026-07-31T08:46:39.068830"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 1,190원 수익 28%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 1190원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 개당 1,190원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:46:40.902638",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785486487-39",
@@ -90,7 +104,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 990,
       "original_price": 1336,
@@ -121,7 +135,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:28:07.349688",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 990,
+          "date": "2026-07-31T08:46:40.902654"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 990원 수익 33%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 990원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 개당 990원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:46:42.972994",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785486487-35",
@@ -132,7 +160,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 829,
       "original_price": 1119,
@@ -163,7 +191,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:28:07.349688",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 829,
+          "date": "2026-07-31T08:46:42.973011"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 829원 수익 60%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 829원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 개당 829원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:46:44.974285",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-44",
@@ -174,7 +216,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 2690,
       "original_price": 3631,
@@ -205,7 +247,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:34:29.486645"
+      "expiry_date": "2026-08-02T08:34:29.486645",
+      "price_history": [
+        {
+          "price": 2690,
+          "date": "2026-07-31T08:46:44.974303"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '크리넥스 순수소프트 알로에 화장지, 3겹, 24롤, 28m, 2팩 43%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 2690원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 크리넥스 순수소프트 알로에 화장지, 3겹, 24롤, 28m, 2팩 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:46:46.917508",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-43",
@@ -216,7 +272,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 1490,
       "original_price": 2011,
@@ -247,7 +303,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 1490,
+          "date": "2026-07-31T08:46:46.917525"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 1,490원 수익 28%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 1490원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 개당 1,490원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:46:48.938880",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-42",
@@ -258,7 +328,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 940,
       "original_price": 1269,
@@ -289,7 +359,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:34:29.486645"
+      "expiry_date": "2026-08-02T08:34:29.486645",
+      "price_history": [
+        {
+          "price": 940,
+          "date": "2026-07-31T08:46:48.938897"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 940원 수익 64%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 940원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 개당 940원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:46:51.074989",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-41",
@@ -300,7 +384,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 990,
       "original_price": 1336,
@@ -331,7 +415,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 990,
+          "date": "2026-07-31T08:46:51.075005"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '센토 프라임 고불소 구취케어 치약 아쿠아민트향, 120g, 4개 53%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 990원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 센토 프라임 고불소 구취케어 치약 아쿠아민트향, 120g, 4개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:46:53.041606",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-40",
@@ -342,7 +440,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 990,
       "original_price": 1336,
@@ -373,7 +471,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 990,
+          "date": "2026-07-31T08:46:53.041623"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '광천김 파래 도시락김 카카오프렌즈, 4g, 27봉 44%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 990원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 광천김 파래 도시락김 카카오프렌즈, 4g, 27봉 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:46:54.684940",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-39",
@@ -384,7 +496,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 1090,
       "original_price": 1471,
@@ -415,7 +527,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 1090,
+          "date": "2026-07-31T08:46:54.684957"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 1,090원 수익 64%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 1090원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 개당 1,090원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:46:56.328216",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-38",
@@ -426,7 +552,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 1970,
       "original_price": 2659,
@@ -457,7 +583,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 1970,
+          "date": "2026-07-31T08:46:56.328232"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 1,970원 수익 76%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 1970원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 개당 1,970원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:46:58.362073",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-37",
@@ -468,7 +608,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 1180,
       "original_price": 1593,
@@ -499,7 +639,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 1180,
+          "date": "2026-07-31T08:46:58.362090"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 1,180원 수익 73%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 1180원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 개당 1,180원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:00.001234",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-36",
@@ -510,7 +664,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 1890,
       "original_price": 2551,
@@ -541,7 +695,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 1890,
+          "date": "2026-07-31T08:47:00.001251"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 1,890원 수익 48%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 1890원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 개당 1,890원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:01.558323",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-35",
@@ -552,7 +720,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 2690,
       "original_price": 3631,
@@ -583,7 +751,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 2690,
+          "date": "2026-07-31T08:47:01.558340"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 2,690원 수익 32%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 2690원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 개당 2,690원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:03.486341",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-34",
@@ -594,7 +776,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 690,
       "original_price": 931,
@@ -625,7 +807,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 690,
+          "date": "2026-07-31T08:47:03.486359"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 690원 수익 56%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 690원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 개당 690원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:05.421047",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-33",
@@ -636,7 +832,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 849,
       "original_price": 1146,
@@ -667,7 +863,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 849,
+          "date": "2026-07-31T08:47:05.421063"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '개당 849원 수익 71%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 849원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 개당 849원 수익 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:07.108763",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-31",
@@ -678,7 +888,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 11500,
       "original_price": 15525,
@@ -709,7 +919,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 11500,
+          "date": "2026-07-31T08:47:07.108783"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '맛생각 시골 전통 된장찌개, 600g, 5개 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 11500원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 맛생각 시골 전통 된장찌개, 600g, 5개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:08.621518",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-30",
@@ -720,7 +944,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 5700,
       "original_price": 7695,
@@ -751,7 +975,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 5700,
+          "date": "2026-07-31T08:47:08.621541"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '맘스럽 아토워시 프렌치 라벤더 캡슐세제 파우치형, 실내건조형, 200개입, 1개 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 5700원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 맘스럽 아토워시 프렌치 라벤더 캡슐세제 파우치형, 실내건조형, 200개입, 1개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:10.314519",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-29",
@@ -762,7 +1000,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 10800,
       "original_price": 14580,
@@ -793,7 +1031,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 10800,
+          "date": "2026-07-31T08:47:10.314536"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '일양약품 눈건강 루테인 골드, 500mg, 30캡슐, 6박스 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 10800원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 일양약품 눈건강 루테인 골드, 500mg, 30캡슐, 6박스 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:12.028188",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-28",
@@ -804,7 +1056,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 4500,
       "original_price": 6075,
@@ -835,7 +1087,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 4500,
+          "date": "2026-07-31T08:47:12.028204"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '유한메디카 징코 플러스엔탑 혈행 기억력 케어, 60정, 1개 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 4500원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 유한메디카 징코 플러스엔탑 혈행 기억력 케어, 60정, 1개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:13.956041",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-27",
@@ -846,7 +1112,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 7600,
       "original_price": 10260,
@@ -877,7 +1143,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 7600,
+          "date": "2026-07-31T08:47:13.956057"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '구워먹는 할루미치즈, 200g, 3개 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 7600원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 구워먹는 할루미치즈, 200g, 3개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:15.609860",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-26",
@@ -888,7 +1168,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 6900,
       "original_price": 9315,
@@ -919,7 +1199,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 6900,
+          "date": "2026-07-31T08:47:15.609877"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '라버비 허그코튼 초고농축 드라이시트, 120매, 2개 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 6900원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 라버비 허그코튼 초고농축 드라이시트, 120매, 2개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:17.651426",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-25",
@@ -930,7 +1224,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 8000,
       "original_price": 10800,
@@ -961,7 +1255,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 8000,
+          "date": "2026-07-31T08:47:17.651442"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '내일도착 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 8000원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 내일도착 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:19.539648",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-24",
@@ -972,7 +1280,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 4400,
       "original_price": 5940,
@@ -1003,7 +1311,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 4400,
+          "date": "2026-07-31T08:47:19.539665"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '에브리워터 무라벨, 500ml, 40개 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 4400원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 에브리워터 무라벨, 500ml, 40개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:21.289814",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-23",
@@ -1014,7 +1336,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 6900,
       "original_price": 9315,
@@ -1045,7 +1367,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 6900,
+          "date": "2026-07-31T08:47:21.289828"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '모나리자 스마트 다용도 키친타올, 250매, 12롤, 1팩 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 6900원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 모나리자 스마트 다용도 키친타올, 250매, 12롤, 1팩 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:22.965793",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-22",
@@ -1056,7 +1392,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 4900,
       "original_price": 6615,
@@ -1087,7 +1423,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 4900,
+          "date": "2026-07-31T08:47:22.965812"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '케라시스 화이트 데이지 퍼퓸 샴푸, 1L, 1개 + 데미지 클리닉 트리트먼트, 300ml, 2개 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 4900원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 케라시스 화이트 데이지 퍼퓸 샴푸, 1L, 1개 + 데미지 클리닉 트리트먼트, 300ml, 2개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:24.536467",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-21",
@@ -1098,7 +1448,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 8600,
       "original_price": 11610,
@@ -1129,7 +1479,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:34:29.486645"
+      "expiry_date": "2026-08-02T08:34:29.486645",
+      "price_history": [
+        {
+          "price": 8600,
+          "date": "2026-07-31T08:47:24.536483"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '셰프초이스 제육 불고기, 1.5kg, 1개 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 8600원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 셰프초이스 제육 불고기, 1.5kg, 1개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:26.101936",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-20",
@@ -1140,7 +1504,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 5500,
       "original_price": 7425,
@@ -1171,7 +1535,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 5500,
+          "date": "2026-07-31T08:47:26.101954"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '이롬 황성주 박사의 과채습관 퍼플, 190ml, 16개 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 5500원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 이롬 황성주 박사의 과채습관 퍼플, 190ml, 16개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:27.726406",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-19",
@@ -1182,7 +1560,7 @@
       "section": "best_seller",
       "priority": 2,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 7200,
       "original_price": 9720,
@@ -1213,7 +1591,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 7200,
+          "date": "2026-07-31T08:47:27.726422"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '스파클 생수, 무라벨, 2L, 24개 30%할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 7200원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 스파클 생수, 무라벨, 2L, 24개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:29.269124",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-9",
@@ -1224,7 +1616,7 @@
       "section": "today_price",
       "priority": 1,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 12900,
       "original_price": 17415,
@@ -1255,7 +1647,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 12900,
+          "date": "2026-07-31T08:47:29.269539"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '고당도 망고복숭아, 9-12과, 1kg, 1박스 72% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 12900원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 고당도 망고복숭아, 9-12과, 1kg, 1박스 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:31.070298",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-8",
@@ -1266,7 +1672,7 @@
       "section": "today_price",
       "priority": 1,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 8900,
       "original_price": 12015,
@@ -1297,7 +1703,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 8900,
+          "date": "2026-07-31T08:47:31.070314"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '진한식품 바른 압도적 도가니탕, 1.5kg, 1개 24% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 8900원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 진한식품 바른 압도적 도가니탕, 1.5kg, 1개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:33.009478",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-7",
@@ -1308,7 +1728,7 @@
       "section": "today_price",
       "priority": 1,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 10900,
       "original_price": 14715,
@@ -1339,7 +1759,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 10900,
+          "date": "2026-07-31T08:47:33.009494"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '고당도 하우스 수박, 5kg, 1박스 64% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 10900원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 고당도 하우스 수박, 5kg, 1박스 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:34.808012",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-6",
@@ -1350,7 +1784,7 @@
       "section": "today_price",
       "priority": 1,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 19700,
       "original_price": 26595,
@@ -1381,7 +1815,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 19700,
+          "date": "2026-07-31T08:47:34.808027"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '쉬젤 아티 내열유리 혼합 10종 세트, 320ml 3개 + 400ml 3개 + 520ml 2개 + 640ml 2개, 1세트 76% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 19700원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 쉬젤 아티 내열유리 혼합 10종 세트, 320ml 3개 + 400ml 3개 + 520ml 2개 + 640ml 2개, 1세트 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:36.342128",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-5",
@@ -1392,7 +1840,7 @@
       "section": "today_price",
       "priority": 1,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 11800,
       "original_price": 15930,
@@ -1423,7 +1871,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 11800,
+          "date": "2026-07-31T08:47:36.342145"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '비기온 맛밤, 30g, 15개 73% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 11800원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 비기온 맛밤, 30g, 15개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:37.929149",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-4",
@@ -1434,7 +1896,7 @@
       "section": "today_price",
       "priority": 1,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 8290,
       "original_price": 11191,
@@ -1465,7 +1927,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 8290,
+          "date": "2026-07-31T08:47:37.929169"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '순삭 떡볶이, 보통맛, 200g, 5팩 60% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 8290원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 순삭 떡볶이, 보통맛, 200g, 5팩 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:39.483574",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-3",
@@ -1476,7 +1952,7 @@
       "section": "today_price",
       "priority": 1,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 18900,
       "original_price": 25515,
@@ -1507,7 +1983,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 18900,
+          "date": "2026-07-31T08:47:39.483590"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '홍주부 수제 두바이 쫀득 쿠키, 45g, 10개 48% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 18900원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 홍주부 수제 두바이 쫀득 쿠키, 45g, 10개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:40.988727",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-2",
@@ -1518,7 +2008,7 @@
       "section": "today_price",
       "priority": 1,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 26900,
       "original_price": 36315,
@@ -1549,7 +2039,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 26900,
+          "date": "2026-07-31T08:47:40.988742"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '산지로드 소갈비살, 1kg, 1개 32% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 26900원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 산지로드 소갈비살, 1kg, 1개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:42.482114",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-1",
@@ -1560,7 +2064,7 @@
       "section": "today_price",
       "priority": 1,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 6900,
       "original_price": 9315,
@@ -1591,7 +2095,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 6900,
+          "date": "2026-07-31T08:47:42.482131"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '터치 프리미엄 워싱소다, 5kg, 1팩 56% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 6900원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 터치 프리미엄 워싱소다, 5kg, 1팩 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:44.043421",
+      "image_status": "Verified"
     },
     {
       "id": "TOSS-AUTO-1785485897-0",
@@ -1602,7 +2120,7 @@
       "section": "today_price",
       "priority": 1,
       "category": "life",
-      "status": "ACTIVE",
+      "status": "OUT_OF_STOCK",
       "is_featured": true,
       "price": 8490,
       "original_price": 11461,
@@ -1633,7 +2151,21 @@
         "ctr": 5.0
       },
       "added_date": "2026-07-31T08:18:17.925350",
-      "expiry_date": "2026-08-02T08:40:35.296400"
+      "expiry_date": "2026-08-02T08:40:35.296400",
+      "price_history": [
+        {
+          "price": 8490,
+          "date": "2026-07-31T08:47:44.043437"
+        }
+      ],
+      "content_assets": {
+        "reels_script_idea": "🔥 [15초 릴스 콘티] '외갓집 진심 육개장, 600g, 3개 71% 특가할인 억까 탈출! 실제 사용 후기 3초 요약'",
+        "webtoon_idea": "🎨 [4컷 웹툰] 1컷: 가격 부담 땀뻘뻘 -> 2컷: 모르빅스 핫딜 발견 -> 3컷: 8490원 득템 -> 4컷: 극락 경험",
+        "seo_copy": "📝 [SEO 블로그] 외갓집 진심 육개장, 600g, 3개 구매 전 필수 체크 포인트 3가지 및 쿠팡/네이버 최저가 가격 비교"
+      },
+      "version": 2,
+      "last_synced_at": "2026-07-31T08:47:45.710316",
+      "image_status": "Verified"
     }
   ]
 }
