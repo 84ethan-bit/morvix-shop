@@ -277,25 +277,26 @@ def harvest_sharelink_portal():
 
             section_counts = {"today_price": 0, "best_seller": 0}
             seen_titles = set()
-            TARGET_PER_SECTION = 30  # 섹션당 최대 30개
+            TARGET_PER_SECTION = 60  # 섹션당 최대 60개 확대 (전체 상품 풀 수집)
 
             def collect_from_full_page(section_name, section_key, priority_val):
                 """현재 '전체 보기' 페이지에서 링크 발급 버튼 전수 수집"""
                 nonlocal seen_titles
 
-                # 전체 페이지 딥스크롤 최적화 (4단계 × 150ms)
+                # 전체 페이지 딥스크롤 최적화 (8단계 × 300ms) - 전체 핫딜 100% 노출 유발
                 print_log(f"  📜 [{section_name}] 딥스크롤 시작...")
-                for step in range(1, 5):
+                for step in range(1, 9):
                     try:
-                        page.evaluate(f"window.scrollTo(0, (document.body.scrollHeight / 4) * {step})")
+                        page.evaluate(f"window.scrollTo(0, (document.body.scrollHeight / 8) * {step})")
                     except Exception:
                         pass
-                    page.wait_for_timeout(150)
+                        page.wait_for_timeout(300)
                 try:
                     page.evaluate("window.scrollTo(0, 0)")
                 except Exception:
                     pass
                 page.wait_for_timeout(500)
+
 
                 btns = page.query_selector_all("button:has-text('링크 발급')")
                 print_log(f"  📊 [{section_name}] 탐지된 '링크 발급' 버튼: {len(btns)}개")
