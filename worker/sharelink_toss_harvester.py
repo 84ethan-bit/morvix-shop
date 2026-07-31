@@ -288,7 +288,23 @@ def harvest_sharelink_portal():
                 """현재 '전체 보기' 페이지에서 인피니티 스크롤로 전체 핫딜 전수 수집 및 단계별 상세 수량 출력"""
                 nonlocal seen_titles
 
-                print_log(f"━━━ [{section_name}] 전체보기 진입 성공 ━━━")
+                curr_url = page.url
+                curr_title = page.title()
+                body_text_snippet = page.locator("body").inner_text()[:400].replace("\n", " ")
+
+                print_log(f"━━━ [{section_name}] 전체보기 진입 검증 ━━━")
+                print_log(f"  📍 클릭 후 URL: {curr_url}")
+                print_log(f"  📌 클릭 후 Page Title: {curr_title}")
+                print_log(f"  📄 DOM Text Snippet (앞 400자): {body_text_snippet}")
+
+                try:
+                    ss_name = f"see_all_{section_key}_{int(time.time())}.png"
+                    ss_path = os.path.join(BASE_DIR, "scratch", ss_name)
+                    page.screenshot(path=ss_path, full_page=True)
+                    print_log(f"  📸 진입 화면 스크린샷 저장 완료 ➔ {ss_path}")
+                except Exception as ss_err:
+                    print_log(f"  ⚠️ 스크린샷 저장 실패: {ss_err}")
+
                 last_card_count = 0
                 for scroll_step in range(1, 35):
                     try:
@@ -313,6 +329,7 @@ def harvest_sharelink_portal():
 
                 btns = page.query_selector_all("button:has-text('링크 발급')")
                 print_log(f"  🎯 [{section_name}] 최종 카드 로딩 완료: 총 {len(btns)}개 (목표 100개+ 전수 파싱 시작)")
+
 
 
 
