@@ -548,7 +548,7 @@ def check_full_catalog_completed(no_new_item_streak):
 def git_push_db():
 
     try:
-        subprocess.run(["git", "config", "user.name",  "MORVIX Render Server"], cwd=BASE_DIR)
+        subprocess.run(["git", "config", "user.name", "MORVIX Render Worker Node v1.3.1 (Force Process Restart & Clean Code Reload)"], cwd=BASE_DIR)
         subprocess.run(["git", "config", "user.email", "render@morvix.io"],      cwd=BASE_DIR)
 
         gh_token = os.environ.get("GH_TOKEN", os.environ.get("GITHUB_TOKEN", "")).strip()
