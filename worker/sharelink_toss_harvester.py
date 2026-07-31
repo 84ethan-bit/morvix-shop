@@ -429,10 +429,24 @@ def harvest_sharelink_portal():
                 page._last_url_before_click = before_url
                 page._last_clicked_html = btn_info.get('html', 'N/A')
 
-                # [대표님 지정] 전체보기 클릭 직후 React SPA 상태 변화 5대 계측
-                dom_len_before = page.evaluate("document.body.innerHTML.length")
-                card_count_before = page.locator("[class*='ProductCard']").count()
-                react_children_before = page.evaluate("document.body.firstElementChild ? document.body.firstElementChild.childElementCount : 0")
+                # [대표님 지정] MutationObserver 기반 DOM 변경 추적 장치 설치
+                page.evaluate("""() => {
+                    window._mutationLogs = [];
+                    const observer = new MutationObserver((mutations) => {
+                        for (const m of mutations) {
+                            const targetTag = m.target.tagName + (m.target.className ? '.' + String(m.target.className).slice(0, 30) : '');
+                            const addedNodes = [...m.addedNodes].map(n => n.nodeType === 1 ? n.tagName + (n.className ? '.' + String(n.className).slice(0, 30) : '') : 'text');
+                            window._mutationLogs.push({
+                                type: m.type,
+                                target: targetTag,
+                                addedCount: m.addedNodes.length,
+                                addedSample: addedNodes.slice(0, 5),
+                                attributeName: m.attributeName || 'N/A'
+                            });
+                        }
+                    });
+                    observer.observe(document.body, { childList: true, subtree: true, attributes: true, characterData: true });
+                }""")
 
                 # 섹션 내부 전체보기 클릭
                 click_executed = page.evaluate("""() => {
@@ -461,38 +475,28 @@ def harvest_sharelink_portal():
                 # React SPA 상태 변경 및 렌더링 대기
                 page.wait_for_timeout(3000)
 
-                dom_len_after = page.evaluate("document.body.innerHTML.length")
-                card_count_after = page.locator("[class*='ProductCard']").count()
-                react_children_after = page.evaluate("document.body.firstElementChild ? document.body.firstElementChild.childElementCount : 0")
-                after_url = page.url
-
-                # [대표님 지정] 3.7KB 증가 DOM 레이어의 정확한 부착 위치 및 속성 진단
-                diff_layer_info = page.evaluate("""() => {
-                    const dialogs = document.querySelectorAll('[role="dialog"], [aria-modal="true"]');
-                    const portals = document.querySelectorAll('[data-radix-portal], [id*="portal"], [class*="portal"]');
-                    const fixeds = document.querySelectorAll('[style*="fixed"], [style*="absolute"]');
-                    const bodyDirectChildren = [...document.body.children].map(el => el.tagName + (el.className ? '.' + el.className.slice(0, 30) : ''));
-                    
+                mutation_report = page.evaluate("""() => {
+                    const logs = window._mutationLogs || [];
+                    const targets = [...new Set(logs.map(l => l.target))];
                     return {
-                        dialogCount: dialogs.length,
-                        portalCount: portals.length,
-                        fixedCount: fixeds.length,
-                        bodyDirectCount: document.body.childElementCount,
-                        bodyChildrenSample: bodyDirectChildren.slice(0, 10),
-                        portalHTML: portals.length > 0 ? portals[0].outerHTML.slice(0, 300) : 'N/A'
+                        totalMutations: logs.length,
+                        uniqueTargets: targets.slice(0, 10),
+                        firstMutation: logs.length > 0 ? logs[0] : null,
+                        lastMutation: logs.length > 0 ? logs[logs.length - 1] : null
                     };
                 }""")
 
                 print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                print_log("🔍 [대표님 지정] 3.7KB 증가 DOM 레이어 위치/속성 정밀 계측 리포트")
+                print_log("🔍 [대표님 지정] MutationObserver DOM 변경 추적 계측 리포트")
                 print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                print_log(f" 1️⃣ 클릭 전 HTML DOM 길이   : {dom_len_before:,} bytes")
-                print_log(f" 2️⃣ 클릭 후 HTML DOM 길이   : {dom_len_after:,} bytes (변화량: {dom_len_after - dom_len_before:+} bytes)")
-                print_log(f" 3️⃣ body 직계 자식 노드 수  : {diff_layer_info['bodyDirectCount']}개 (샘플: {diff_layer_info['bodyChildrenSample']})")
-                print_log(f" 4️⃣ dialog/modal 요소 수    : role='dialog' / aria-modal: {diff_layer_info['dialogCount']}개")
-                print_log(f" 5️⃣ Radix/Portal 레이어 수 : {diff_layer_info['portalCount']}개 (Portal HTML: {diff_layer_info['portalHTML']})")
-                print_log(f" 6️⃣ position: fixed/abs 수   : {diff_layer_info['fixedCount']}개")
+                print_log(f" 📌 총 Mutation 이벤트 수   : {mutation_report['totalMutations']}회")
+                print_log(f" 📌 변경 대상 노드(Targets) : {mutation_report['uniqueTargets']}")
+                if mutation_report['firstMutation']:
+                    print_log(f" 📌 최초 Mutation           : {mutation_report['firstMutation']}")
+                if mutation_report['lastMutation']:
+                    print_log(f" 📌 최종 Mutation           : {mutation_report['lastMutation']}")
                 print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
 
 
 
