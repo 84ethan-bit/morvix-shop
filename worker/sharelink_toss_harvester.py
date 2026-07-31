@@ -282,12 +282,36 @@ def harvest_sharelink_portal():
                             continue
 
                         raw = card_container.evaluate("el => el.innerText || ''")
-                        lines_raw = [l.strip() for l in raw.split('\n') if l.strip() and '링크 발급' not in l]
 
-                        # 상품명: 숫자/기호만 있는 줄 제외, 최소 5글자 이상
-                        title = next((l for l in lines_raw if len(l) >= 5 and not re.match(r'^[\d,%원\-~]+$', l)
-                                      and '특가' not in l and '최저가' not in l and '오늘출발' not in l
-                                      and '베스트판매자' not in l and '내일도착' not in l), '')
+                        # ── 1단계: 수익/배송/판매자 배지 줄 완전 제거 후 정제 텍스트 생성 ──
+                        NOISE_PATTERNS = [
+                            r'개당\s*[\d,]+\s*원\s*수익',
+                            r'[\d,]+\s*원\s*수익',
+                            r'^\d+$',
+                            r'^[\d,]+원$',
+                        ]
+                        NOISE_WORDS = ['링크 발급', '베스트판매자', '내일도착', '오늘출발',
+                                       '역대급특가', '30일 최저가', '최저가', '수익', '베스트판매']
+
+                        lines_raw = []
+                        for l in raw.split('\n'):
+                            l = l.strip()
+                            if not l:
+                                continue
+                            if any(w in l for w in NOISE_WORDS):
+                                continue
+                            if any(re.search(p, l) for p in NOISE_PATTERNS):
+                                continue
+                            lines_raw.append(l)
+
+                        # ── 2단계: 상품명 추출 (가장 긴 줄 우선, 최소 5글자) ──
+                        name_candidates = [
+                            l for l in lines_raw
+                            if len(l) >= 5
+                            and not re.match(r'^[\d,%원\-~★☆.()\[\]]+$', l)
+                            and '%' not in l
+                        ]
+                        title = max(name_candidates, key=len) if name_candidates else ''
                         if not title or title in seen_titles:
                             continue
                         seen_titles.add(title)
@@ -315,24 +339,41 @@ def harvest_sharelink_portal():
                         if ' ' in img_url:
                             img_url = img_url.split(' ')[0]
 
-                        # 할인율
-                        discount_match = re.search(r'(\d+[%％]\s*특가|\d+[%％]\s*할인|\d+[%％])', raw)
-                        discount_rate = discount_match.group(1) if discount_match else '30%'
+                        # ── 3단계: 할인율 추출 (없으면 빈값) ──
+                        discount_match = re.search(r'(\d+)[%％]', raw)
+                        discount_rate = f"{discount_match.group(1)}%" if discount_match else ''
 
-                        # 가격 (개당/수익 텍스트 제거 후)
+                        # ── 4단계: 실제 판매가 추출 ──
                         clean_raw = re.sub(r'개당\s*[\d,]+\s*원\s*수익', '', raw)
                         clean_raw = re.sub(r'[\d,]+\s*원\s*수익', '', clean_raw)
-                        price_match = re.search(r'([\d,]+)\s*원', clean_raw)
-                        price = int(price_match.group(1).replace(',', '')) if price_match else 9900
+                        clean_raw = re.sub(r'수익', '', clean_raw)
+                        clean_raw = re.sub(r'30일\s*최저가', '', clean_raw)
+                        prices_found = re.findall(r'([\d,]+)\s*원', clean_raw)
+                        prices_int = [int(p.replace(',', '')) for p in prices_found]
+                        valid_prices = [p for p in prices_int if p >= 500]
+                        price = valid_prices[0] if valid_prices else 9900
 
-                        # 5대 검증
+                        # 5대 검증 (할인율 미표기도 정상 허용)
                         is_valid_name = len(title) >= 3
                         is_valid_price = isinstance(price, int) and price >= 500
-                        is_valid_discount = bool(re.search(r'\d+[%％]', discount_rate))
                         is_valid_thumb = bool(img_url and img_url.startswith('http') and len(img_url) >= 15)
-                        if not (is_valid_name and is_valid_price and is_valid_discount and is_valid_thumb):
-                            print_log(f"    🛑 [검증 실패] {title[:20]} (Name:{is_valid_name} Price:{is_valid_price} Disc:{is_valid_discount} Thumb:{is_valid_thumb})")
+                        if not (is_valid_name and is_valid_price and is_valid_thumb):
+                            print_log(f"    🛑 [검증 실패] {title[:20]} (Name:{is_valid_name} Price:{is_valid_price} Thumb:{is_valid_thumb})")
                             continue
+
+                        # 정가 계산
+                        if discount_rate:
+                            try:
+                                rate_num = int(re.search(r'\d+', discount_rate).group())
+                                if 0 < rate_num < 100:
+                                    original_price = int(price / (1 - rate_num / 100))
+                                else:
+                                    original_price = price
+                            except Exception:
+                                original_price = price
+                        else:
+                            original_price = price
+
 
                         # Race Condition 방어: per-card idx 독립 키
                         card_key = (priority_val * 10000) + idx
