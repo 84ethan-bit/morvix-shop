@@ -466,15 +466,34 @@ def harvest_sharelink_portal():
                 react_children_after = page.evaluate("document.body.firstElementChild ? document.body.firstElementChild.childElementCount : 0")
                 after_url = page.url
 
+                # [대표님 지정] 3.7KB 증가 DOM 레이어의 정확한 부착 위치 및 속성 진단
+                diff_layer_info = page.evaluate("""() => {
+                    const dialogs = document.querySelectorAll('[role="dialog"], [aria-modal="true"]');
+                    const portals = document.querySelectorAll('[data-radix-portal], [id*="portal"], [class*="portal"]');
+                    const fixeds = document.querySelectorAll('[style*="fixed"], [style*="absolute"]');
+                    const bodyDirectChildren = [...document.body.children].map(el => el.tagName + (el.className ? '.' + el.className.slice(0, 30) : ''));
+                    
+                    return {
+                        dialogCount: dialogs.length,
+                        portalCount: portals.length,
+                        fixedCount: fixeds.length,
+                        bodyDirectCount: document.body.childElementCount,
+                        bodyChildrenSample: bodyDirectChildren.slice(0, 10),
+                        portalHTML: portals.length > 0 ? portals[0].outerHTML.slice(0, 300) : 'N/A'
+                    };
+                }""")
+
                 print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                print_log("🔍 [대표님 지정] 전체보기 클릭 전/후 React SPA 5대 변화 계측 리포트")
+                print_log("🔍 [대표님 지정] 3.7KB 증가 DOM 레이어 위치/속성 정밀 계측 리포트")
                 print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
                 print_log(f" 1️⃣ 클릭 전 HTML DOM 길이   : {dom_len_before:,} bytes")
                 print_log(f" 2️⃣ 클릭 후 HTML DOM 길이   : {dom_len_after:,} bytes (변화량: {dom_len_after - dom_len_before:+} bytes)")
-                print_log(f" 3️⃣ ProductCard 요소 수 변화: {card_count_before}개 ➔ {card_count_after}개 (변화량: {card_count_after - card_count_before:+}개)")
-                print_log(f" 4️⃣ React Root 자식 노드 변화: {react_children_before}개 ➔ {react_children_after}개")
-                print_log(f" 5️⃣ 클릭 실행 여부 및 URL   : Executed: {click_executed} | Before URL: {before_url} | After URL: {after_url}")
+                print_log(f" 3️⃣ body 직계 자식 노드 수  : {diff_layer_info['bodyDirectCount']}개 (샘플: {diff_layer_info['bodyChildrenSample']})")
+                print_log(f" 4️⃣ dialog/modal 요소 수    : role='dialog' / aria-modal: {diff_layer_info['dialogCount']}개")
+                print_log(f" 5️⃣ Radix/Portal 레이어 수 : {diff_layer_info['portalCount']}개 (Portal HTML: {diff_layer_info['portalHTML']})")
+                print_log(f" 6️⃣ position: fixed/abs 수   : {diff_layer_info['fixedCount']}개")
                 print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
 
 
                 # [STEP 6] URL 검증
