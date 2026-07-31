@@ -370,183 +370,38 @@ def harvest_sharelink_portal():
             print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
             seen_titles = set()
+            section_counts = {}
             TARGET_PER_SECTION = 200
 
-            # ── 1순위: 오늘만 이가격 (하루특가) 전체 보기 ──
-            print_log("━━━ [1순위] 오늘만 이가격 하루특가 전체 보기 프로세스 ━━━")
+            # ── 1순위: 오늘만 이가격 (하루특가) 전수 수집 ──
+            print_log("━━━ [1순위] 오늘만 이가격 하루특가 전수 수집 프로세스 가동 ━━━")
             try:
-                # [STEP 3] "오늘만 이 가격" Section 발견 여부
-                sec_info = page.evaluate("""() => {
-                    const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
-                    for (const h of headers) {
-                        const txt = (h.innerText || '').trim();
-                        if (txt.includes('오늘만 이 가격') || txt.includes('하루특가')) {
-                            let p = h.parentElement;
-                            for (let i = 0; i < 7; i++) {
-                                if (!p) break;
-                                if (p.querySelector('a, button, [role="button"]')) {
-                                    return { found: true, text: txt, html: p.outerHTML.slice(0, 300) };
-                                }
-                                p = p.parentElement;
-                            }
-                        }
-                    }
-                    return { found: false, text: '', html: '' };
-                }""")
-                print_log(f"📌 [STEP 3] '오늘만 이 가격' Section 발견 여부 | Found Section: {sec_info.get('found')} | Section Text: {sec_info.get('text')}")
+                target_deals_url = "https://sharelink.toss.im/links/best-ranking/daily-deals?sectionCode=TODAY_DEAL"
+                print_log(f"🎯 [핫딜 전용 라우트 직접 진입] -> {target_deals_url}")
+                page.goto(target_deals_url, wait_until="networkidle")
+                page.wait_for_timeout(3000)
 
-                # [STEP 4] Section 내부 "전체보기" 버튼 발견
-                btn_info = page.evaluate("""() => {
-                    const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
-                    for (const h of headers) {
-                        const txt = (h.innerText || '').trim();
-                        if (txt.includes('오늘만 이 가격') || txt.includes('하루특가')) {
-                            let parent = h.parentElement;
-                            for (let i = 0; i < 7; i++) {
-                                if (!parent) break;
-                                const btn = parent.querySelector('a, button, [role="button"]');
-                                if (btn) {
-                                    const btnTxt = (btn.innerText || '').trim();
-                                    if (btnTxt.includes('전체') || btnTxt.includes('더')) {
-                                        const rect = btn.getBoundingClientRect();
-                                        return {
-                                            found: true,
-                                            html: btn.outerHTML,
-                                            box: { x: rect.x, y: rect.y, w: rect.width, h: rect.height }
-                                        };
-                                    }
-                                }
-                                parent = parent.parentElement;
-                            }
-                        }
-                    }
-                    return { found: false, html: 'N/A', box: {} };
-                }""")
-                print_log(f"📌 [STEP 4] Section 내부 '전체보기' 발견 | Found Button: {btn_info.get('found')} | OuterHTML: {btn_info.get('html')} | BoundingBox: {btn_info.get('box')}")
+                after_url = page.url
+                print_log(f"📍 진입 후 URL: {after_url}")
 
-                # [STEP 5] 클릭 & URL 이동
-                before_url = page.url
-                page._last_url_before_click = before_url
-                page._last_clicked_html = btn_info.get('html', 'N/A')
+                # 80개+ 전수 마운트를 위한 인피니티 스크롤 수행
+                print_log("📜 핫딜 전수 마운트를 위한 무한 스크롤 수행 중...")
+                prev_btn_count = 0
+                for scroll_idx in range(1, 12):
+                    page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                    page.wait_for_timeout(1000)
+                    cur_btn_count = page.locator("button:has-text('링크 발급')").count()
+                    print_log(f"  [Scroll #{scroll_idx:02d}] '링크 발급' 버튼 수: {cur_btn_count}개")
+                    if cur_btn_count == prev_btn_count and scroll_idx >= 5:
+                        print_log("  ✅ 스크롤 최하단 도달 (전수 카드 마운트 완료)")
+                        break
+                    prev_btn_count = cur_btn_count
 
-                # [대표님 지정] JS Exception, Unhandled Promise Rejection, Console Error/Warn 수집 모듈
-                page.evaluate("""() => {
-                    window._jsErrorLogs = [];
-                    window._consoleLogs = [];
+                # 상품 전수 수집 진행
+                collect_from_full_page("하루특가", "today_price", 1)
 
-                    // 1. JS Runtime Exception 수색
-                    window.addEventListener('error', (e) => {
-                        window._jsErrorLogs.push({
-                            type: 'uncaught_error',
-                            message: e.message || String(e),
-                            filename: e.filename || 'N/A',
-                            lineno: e.lineno || 0
-                        });
-                    });
-
-                    // 2. Unhandled Promise Rejection 수색
-                    window.addEventListener('unhandledrejection', (e) => {
-                        window._jsErrorLogs.push({
-                            type: 'unhandled_rejection',
-                            reason: e.reason ? (e.reason.message || String(e.reason)) : 'Unknown Promise Rejection'
-                        });
-                    });
-
-                    // 3. console.error / console.warn 후킹
-                    const origErr = console.error;
-                    console.error = function(...args) {
-                        window._consoleLogs.push({ type: 'error', msg: args.map(a => String(a)).join(' ') });
-                        return origErr.apply(this, args);
-                    };
-                    const origWarn = console.warn;
-                    console.warn = function(...args) {
-                        window._consoleLogs.push({ type: 'warn', msg: args.map(a => String(a)).join(' ') });
-                        return origWarn.apply(this, args);
-                    };
-
-                    // 4. fetch/XHR 후킹
-                    const origFetch = window.fetch;
-                    window.fetch = function(...args) {
-                        window._networkLogs.push({ type: 'fetch', url: String(args[0]) });
-                        return origFetch.apply(this, args);
-                    };
-                    const origOpen = XMLHttpRequest.prototype.open;
-                    XMLHttpRequest.prototype.open = function(method, url) {
-                        window._networkLogs.push({ type: 'xhr', url: String(url) });
-                        return origOpen.apply(this, arguments);
-                    };
-
-                    // 5. History API (pushState / replaceState) 후킹
-                    const origPush = history.pushState;
-                    history.pushState = function(...args) {
-                        window._historyLogs.push({ type: 'pushState', state: args[0], url: args[2] });
-                        return origPush.apply(this, args);
-                    };
-                    const origReplace = history.replaceState;
-                    history.replaceState = function(...args) {
-                        window._historyLogs.push({ type: 'replaceState', state: args[0], url: args[2] });
-                        return origReplace.apply(this, args);
-                    };
-
-                    // 6. React Fiber Props toString() & __next_f 스트리밍 데이터 계측
-                    const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
-                    for (const h of headers) {
-                        const txt = (h.innerText || '').trim();
-                        if (txt.includes('오늘만 이 가격') || txt.includes('하루특가')) {
-                            let parent = h.parentElement;
-                            for (let i = 0; i < 7; i++) {
-                                if (!parent) break;
-                                const btn = parent.querySelector('a, button, [role="button"]');
-                                if (btn) {
-                                    const btnTxt = (btn.innerText || '').trim();
-                                    if (btnTxt.includes('전체') || btnTxt.includes('더')) {
-                                        const reactPropsKey = Object.keys(btn).find(k => k.startsWith('__reactProps$') || k.startsWith('__reactEventHandlers$'));
-                                        const reactFiberKey = Object.keys(btn).find(k => k.startsWith('__reactFiber$') || k.startsWith('__reactInternalInstance$'));
-                                        const props = reactPropsKey ? btn[reactPropsKey] : null;
-                                        
-                                        // onClick.toString() 추출
-                                        let onClickFnStr = 'N/A';
-                                        if (props && props.onClick) {
-                                            try { onClickFnStr = props.onClick.toString().slice(0, 300); } catch(e) {}
-                                        }
-
-                                        // props 객체 키-값 덤프
-                                        let propsDump = {};
-                                        if (props) {
-                                            for (const k of Object.keys(props)) {
-                                                if (typeof props[k] !== 'function') {
-                                                    try { propsDump[k] = String(props[k]).slice(0, 100); } catch(e) {}
-                                                }
-                                            }
-                                        }
-
-                                        // __next_f 스트리밍 파티션 수색
-                                        let nextFCount = 0;
-                                        let nextFProductsEstimate = 0;
-                                        if (window.__next_f && Array.isArray(window.__next_f)) {
-                                            nextFCount = window.__next_f.length;
-                                            const fullStr = JSON.stringify(window.__next_f);
-                                            const matches = fullStr.match(/(?:product|deal|item|price|title)/g);
-                                            nextFProductsEstimate = matches ? matches.length : 0;
-                                        }
-
-                                        window._reactFiberInfo = {
-                                            hasPropsKey: !!reactPropsKey,
-                                            hasFiberKey: !!reactFiberKey,
-                                            hasOnClick: !!(props && props.onClick),
-                                            onClickFnStr: onClickFnStr,
-                                            propsDump: propsDump,
-                                            nextFCount: nextFCount,
-                                            nextFProductsEstimate: nextFProductsEstimate
-                                        };
-                                        break;
-                                    }
-                                }
-                                parent = parent.parentElement;
-                            }
-                        }
-                    }
-                }""")
+            except Exception as e:
+                print_log(f"  ❌ 하루특가 수집 프로세스 오류: {e}")
 
 
 
