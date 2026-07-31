@@ -549,31 +549,17 @@ def harvest_sharelink_portal():
                         discount_match = re.search(r'(\d+)[%％]', raw)
                         discount_rate = f"{discount_match.group(1)}%" if discount_match else ''
 
-                        # ── 4단계: 실제 판매가 추출 및 자동 단가-수량 보정 엔진 ──
+                        # ── 4단계: 토스 카드 최상위 실판매가 1:1 직결 추출 (임의 단가/수량 곱셈 제거) ──
                         clean_raw = re.sub(r'[\d,]+\s*원\s*수익', '', raw)
                         clean_raw = re.sub(r'수익', '', clean_raw)
                         clean_raw = re.sub(r'30일\s*최저가', '', clean_raw)
-
-                        # '수익' 문구가 제거된 clean_raw에서 '개당 N원' 및 수량(N개, N봉) 감지
-                        unit_match = re.search(r'개당\s*([\d,]+)\s*원', clean_raw)
-                        qty_match = re.search(r'([\d,]+)\s*(개|봉|팩|롤|병|정|포)', title)
 
                         prices_found = re.findall(r'([\d,]+)\s*원', clean_raw)
                         prices_int = [int(p.replace(',', '')) for p in prices_found]
                         valid_prices = [p for p in prices_int if p >= 500]
                         price = valid_prices[0] if valid_prices else 9900
 
-                        # 보정 규칙: '수익'이 아닌 진짜 상품 개당 단가가 존재할 경우에만 총액 보정
-                        if qty_match and unit_match:
-                            try:
-                                qty_num = int(qty_match.group(1).replace(',', ''))
-                                unit_val = int(unit_match.group(1).replace(',', ''))
-                                if qty_num > 1 and unit_val >= 100:
-                                    price = unit_val * qty_num
-                            except Exception:
-                                pass
-
-                        # 5대 검증 (할인율 미표기도 정상 허용)
+                        # 5대 검증
                         is_valid_name = len(title) >= 3
                         is_valid_price = isinstance(price, int) and price >= 1000
                         is_valid_thumb = bool(img_url and img_url.startswith('http') and len(img_url) >= 15)
@@ -581,18 +567,20 @@ def harvest_sharelink_portal():
                             print_log(f"    🛑 [검증 실패] {title[:20]} (Name:{is_valid_name} Price:{is_valid_price} Thumb:{is_valid_thumb})")
                             continue
 
-                        # 정가 계산 (할인율 역산: discount_rate = 54% 이면 정가 = price / (1 - 0.54))
-                        if discount_rate:
+                        # 정가(Original Price) 계산 (2번째 추출 가격이 있거나, 없으면 비율 산정)
+                        if len(valid_prices) >= 2 and valid_prices[1] > price:
+                            original_price = valid_prices[1]
+                        elif discount_rate:
                             try:
                                 rate_num = int(re.search(r'\d+', discount_rate).group())
                                 if 0 < rate_num < 95:
                                     original_price = int(price / (1 - rate_num / 100.0))
                                 else:
-                                    original_price = int(price * 1.35)
+                                    original_price = int(price * 1.3)
                             except Exception:
-                                original_price = int(price * 1.35)
+                                original_price = int(price * 1.3)
                         else:
-                            original_price = int(price * 1.35)
+                            original_price = int(price * 1.3)
 
 
 
@@ -1212,15 +1200,12 @@ def update_db_with_deals(deals):
         name = d.get('name', '').strip()
         price = d.get('price', 0)
         discount = d.get('discount_rate', '')
-        if not discount:
-            discount = "30%"
-
         thumb = d.get('thumbnail', '')
         share_link = d.get('share_link', '')
         is_bad_profit_title = bool(re.search(r'개당|수익|원\s*수익|개당\s*[\d,]+\s*원', name))
         is_valid_name = len(name) >= 3 and not is_bad_profit_title and not re.match(r'^\d+(\.\d+)?\s*\(', name)
         is_valid_price = isinstance(price, int) and price >= 1000
-        is_valid_discount = bool(re.search(r'\d+[%％]', discount)) or (discount == "30%")
+        is_valid_discount = True  # 원본 할인율 그대로 보존
         is_valid_thumb = bool(thumb and thumb.startswith('http') and len(thumb) >= 15 and not 'DefaultDeal' in thumb and not 'placeholder' in thumb)
         is_valid_link = bool(share_link and share_link.startswith('https://toss.im/_m/'))
 
