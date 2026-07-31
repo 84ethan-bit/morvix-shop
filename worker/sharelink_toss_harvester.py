@@ -1143,8 +1143,10 @@ def update_db_with_deals(deals):
             existing[existing_idx]['priority'] = new_prio
             existing[existing_idx]['price'] = price
             existing[existing_idx]['discount_rate'] = discount
+            existing[existing_idx]['status'] = 'ACTIVE'
             existing[existing_idx]['expiry_date'] = (now + timedelta(hours=48)).isoformat()
             print_log(f"  🔄 [UPSERT 갱신] {name[:28]} ➔ 링크/이미지 최신화 완료 (Section: {new_sec})")
+
             count_added += 1
             continue
 
