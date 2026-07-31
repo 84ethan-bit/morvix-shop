@@ -684,11 +684,25 @@ def harvest_sharelink_portal():
             except Exception as e:
                 print_log(f"  ❌ 베스트 전체 보기 오류: {e}")
 
+            # ── 3순위: 카테고리 탭 순회 (식품, 생활, 패션, 뷰티, 가전 등 전체 수집) ──
+            TAB_KEYWORDS = ['식품', '생활', '패션', '뷰티', '가전', '유아', '스포츠', '반려']
+            for tab_kw in TAB_KEYWORDS:
+                try:
+                    tab_btn = page.locator(f"button:has-text('{tab_kw}'), a:has-text('{tab_kw}')")
+                    if tab_btn.count() > 0:
+                        print_log(f"  📂 [{tab_kw}] 카테고리 탭 이동 수집...")
+                        tab_btn.first.click(timeout=2000)
+                        page.wait_for_timeout(1500)
+                        collect_from_full_page(f"카테고리:{tab_kw}", "best_seller", 2)
+                except Exception:
+                    pass
+
             print_log("==========================================================")
             print_log(f"🏆 오늘만 이가격(하루특가) : {section_counts['today_price']}개 수집")
             print_log(f"🔥 지금 많이 팔리는 BEST  : {section_counts['best_seller']}개 수집")
             print_log(f"📦 총 합계               : {len(harvested_deals)}개")
             print_log("==========================================================")
+
 
 
 
