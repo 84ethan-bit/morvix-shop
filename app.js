@@ -178,6 +178,7 @@ function renderCategories() {
 
   const categories = [
     { id: 'all', name: '📦 전체' },
+    { id: 'fruit', name: '🍎 과일·신선' },
     { id: 'food', name: '🥦 식품' },
     { id: 'living', name: '🏠 생활·주방' },
     { id: 'car', name: '🚗 차량용품' },
@@ -366,6 +367,7 @@ function renderProducts() {
   let activeProducts = dbData.products.filter(p => p && p.name && p.thumbnail && (p.status === 'ACTIVE' || !p.status));
   const catTitles = {
     'all': '📦 전체 핫딜 모음집',
+    'fruit': '🍎 과일·신선 핫딜 모음집',
     'food': '🥦 식품 핫딜 모음집',
     'living': '🏠 생활·주방 핫딜 모음집',
     'car': '🚗 차량용품 핫딜 모음집',
