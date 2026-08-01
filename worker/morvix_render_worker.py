@@ -543,31 +543,10 @@ def check_full_catalog_completed(no_new_item_streak):
     return False
 
 
-
-
 def git_push_db():
-
-    try:
-        subprocess.run(["git", "config", "user.name", "MORVIX Render Worker Node v1.3.1 (Force Process Restart & Clean Code Reload)"], cwd=BASE_DIR)
-        subprocess.run(["git", "config", "user.email", "render@morvix.io"],      cwd=BASE_DIR)
-
-        gh_token = os.environ.get("GH_TOKEN", os.environ.get("GITHUB_TOKEN", "")).strip()
-        if gh_token:
-            repo_url = f"https://x-access-token:{gh_token}@github.com/84ethan-bit/morvix-shop.git"
-        else:
-            repo_url = "https://github.com/84ethan-bit/morvix-shop.git"
-
-        # Git Remote origin 존재 여부 검사 및 설정
-        remote_check = subprocess.run(["git", "remote", "get-url", "origin"], cwd=BASE_DIR, capture_output=True, text=True)
-        if remote_check.returncode != 0:
-            subprocess.run(["git", "remote", "add", "origin", repo_url], cwd=BASE_DIR)
-        else:
-            subprocess.run(["git", "remote", "set-url", "origin", repo_url], cwd=BASE_DIR)
-
-def git_push_db():
-    """🛑 Git Push 완전 봉인 (사용자 지침 준수)"""
-    print("🛑 [git push 완전 봉인] 사용자 명시적 승인 전 git push 실행 금지", flush=True)
+    print("🛑 [git push 완전 봉인] 사용자 명시적 승인 전 git push 차단")
     return
+
 
 def autonomous_harvest_loop():
     """HARVEST_INTERVAL마다 토스 수집 → DB 갱신 자동 루프 (Git Push 봉인)"""
