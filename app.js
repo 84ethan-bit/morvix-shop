@@ -33,9 +33,9 @@ const INITIAL_DB_DATA = {
 };
 
 let dbData = INITIAL_DB_DATA;
-let currentCategory = 'today_price';
+let currentCategory = 'all';
 let currentSort = 'popular';
-let displayedProductCount = 16;
+let displayedProductCount = 24;
 
 
 // --------------------------------------------------------------------------
@@ -395,24 +395,22 @@ function renderProducts() {
     filtered = filtered.slice().sort((a, b) => ((b.analytics ? b.analytics.clicks_count : b.clicks_count) || 0) - ((a.analytics ? a.analytics.clicks_count : a.clicks_count) || 0));
   }
 
-  // SECTION 1: Authentic Time Attack Deals (Strict p.section === 'today_price' only - No fake fallbacks)
+  // SECTION 1: Authentic Time Attack Deals (Filtered strictly by selected category)
   let timeAttackDeals = [];
   if (timeAttackGrid) {
-    timeAttackDeals = activeProducts.filter(p => p.section === 'today_price');
+    if (currentCategory && currentCategory !== 'all') {
+      timeAttackDeals = activeProducts.filter(p => p.section === 'today_price' && p.category === currentCategory);
+    } else {
+      timeAttackDeals = activeProducts.filter(p => p.section === 'today_price');
+    }
     const badgeHTML = `<span class="badge-minimal" style="background: #FF4757; color: #fff;">⏰ 하루특가</span>`;
     timeAttackGrid.innerHTML = timeAttackDeals.map(p => renderUniversalProductCard(p, badgeHTML, 'border: 1.5px solid #FF4757; background: #ffffff;')).join('');
   }
 
 
-  // Deduplication: Exclude Section 1 Time Attack items from Section 2 BEST grid
-  const timeAttackSlugs = new Set(timeAttackDeals.map(p => p.slug || p.id));
-  if (currentCategory === 'all' || currentCategory === 'best100') {
-    filtered = filtered.filter(p => !timeAttackSlugs.has(p.slug || p.id));
-  }
-
   if (count) count.textContent = `총 ${filtered.length}개 핫딜 노출 중`;
 
-  // SECTION 2: Best Ranking Grid with Pagination Slicing (Deduplicated)
+  // SECTION 2: Complete Catalog Grid with Pagination (100% All Products Included)
   if (filtered.length === 0) {
     grid.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
