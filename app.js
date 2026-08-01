@@ -177,26 +177,29 @@ function renderCategories() {
   if (!container) return;
 
   const categories = [
-    { id: 'today_price', name: '⏰ 오늘만 이 가격', icon: '🔥', style: 'background: #FF4757; color: #fff; border: none; font-weight: 800;' },
-    { id: 'best_seller', name: '🏆 지금 많이 팔리는 BEST', icon: '🏆', style: 'background: #191F28; color: #FFD700; border: none; font-weight: 800;' }
+    { id: 'all', name: '📦 전체' },
+    { id: 'food', name: '🥦 식품' },
+    { id: 'living', name: '🏠 생활·주방' },
+    { id: 'car', name: '🚗 차량용품' },
+    { id: 'fashion', name: '👔 패션·뷰티' },
+    { id: 'health', name: '💊 건강' }
   ];
 
   container.style.display = 'flex';
+  container.style.overflowX = 'auto';
+  container.style.padding = '4px 0 12px';
+  container.style.gap = '8px';
+  container.style.webkitOverflowScrolling = 'touch';
   if (container.parentElement) container.parentElement.style.display = 'block';
 
   container.innerHTML = categories.map(cat => {
-    const isActive = currentCategory === cat.id;
-    let pillStyle = cat.style;
-    if (!isActive) {
-      if (cat.id === 'today_price') {
-        pillStyle = 'background: #FFF5F5; color: #FF4757; border: 1.5px solid #FF4757; font-weight: 700;';
-      } else {
-        pillStyle = 'background: #F8FAFC; color: #191F28; border: 1.5px solid #CBD5E1; font-weight: 700;';
-      }
-    }
+    const isActive = (currentCategory === cat.id) || (!currentCategory && cat.id === 'all');
+    const activeStyle = 'background: #0F172A; color: #FFFFFF; border: 1.5px solid #0F172A; font-weight: 800; box-shadow: 0 4px 12px rgba(15,23,42,0.18);';
+    const inactiveStyle = 'background: #F8FAFC; color: #475569; border: 1.5px solid #E2E8F0; font-weight: 700;';
+    const style = isActive ? activeStyle : inactiveStyle;
 
     return `
-      <button class="cat-pill ${isActive ? 'active' : ''}" data-cat="${cat.id}" style="${pillStyle} padding: 10px 20px; font-size: 0.95rem; border-radius: 20px; margin-right: 8px; cursor: pointer; transition: all 0.2s ease;">
+      <button class="cat-pill ${isActive ? 'active' : ''}" data-cat="${cat.id}" style="${style} padding: 10px 20px; font-size: 0.92rem; border-radius: 24px; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; white-space: nowrap; font-family: 'Pretendard', sans-serif;">
         ${cat.name}
       </button>
     `;
@@ -361,17 +364,21 @@ function renderProducts() {
 
   // Filter out any invalid/null product entries
   let activeProducts = dbData.products.filter(p => p && p.name && p.thumbnail && (p.status === 'ACTIVE' || !p.status));
-  let filtered = activeProducts;
+  const catTitles = {
+    'all': '📦 전체 핫딜 모음집',
+    'food': '🥦 식품 핫딜 모음집',
+    'living': '🏠 생활·주방 핫딜 모음집',
+    'car': '🚗 차량용품 핫딜 모음집',
+    'fashion': '👔 패션·뷰티 핫딜 모음집',
+    'health': '💊 건강 핫딜 모음집'
+  };
 
-  if (currentCategory === 'today_price') {
-    filtered = activeProducts.filter(p => p.section === 'today_price');
-    if (title) title.textContent = '⏰ 오늘만 이 가격! 하루특가 모음집';
-  } else if (currentCategory === 'best_seller') {
-    filtered = activeProducts.filter(p => p.section === 'best_seller' || !p.section);
-    if (title) title.textContent = '🏆 지금 많이 팔리는 BEST 모음집';
+  if (currentCategory && currentCategory !== 'all') {
+    filtered = activeProducts.filter(p => p.category === currentCategory);
+    if (title) title.textContent = catTitles[currentCategory] || '📦 핫딜 모음집';
   } else {
-    filtered = activeProducts.filter(p => p.section === 'today_price');
-    if (title) title.textContent = '⏰ 오늘만 이 가격! 하루특가 모음집';
+    filtered = activeProducts;
+    if (title) title.textContent = '📦 전체 핫딜 모음집';
   }
 
 
