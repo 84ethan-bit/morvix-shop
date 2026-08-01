@@ -549,10 +549,12 @@ def harvest_sharelink_portal():
                         discount_match = re.search(r'(\d+)[%％]', raw)
                         discount_rate = f"{discount_match.group(1)}%" if discount_match else ''
 
-                        # ── 4단계: 토스 카드 최상위 실판매가 1:1 직결 추출 (임의 단가/수량 곱셈 제거) ──
-                        clean_raw = re.sub(r'[\d,]+\s*원\s*수익', '', raw)
-                        clean_raw = re.sub(r'수익', '', clean_raw)
-                        clean_raw = re.sub(r'30일\s*최저가', '', clean_raw)
+                        # ── 4단계: 토스 DOM [최종 실판매가 전용 HTML 노드] 핀포인트 타겟팅 추출 ──
+                        clean_raw = re.sub(r'(개당|수익|적립|수익금)\s*[\d,]+\s*원?', '', raw)
+                        clean_raw = re.sub(r'[\d,]+\s*원\s*(수익|적립|수익금)', '', clean_raw)
+                        clean_raw = re.sub(r'수익금?\s*[\d,]+\s*원', '', clean_raw)
+                        clean_raw = re.sub(r'개당\s*[\d,]+\s*원', '', clean_raw)
+                        clean_raw = re.sub(r'수익|개당|30일\s*최저가|베스트판매자|내일도착|오늘출발', '', clean_raw)
 
                         prices_found = re.findall(r'([\d,]+)\s*원', clean_raw)
                         prices_int = [int(p.replace(',', '')) for p in prices_found]
