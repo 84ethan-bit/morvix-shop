@@ -202,27 +202,25 @@ def harvest_sharelink_portal():
             except Exception as e:
                 pass
 
-                        for item in items:
-                            if isinstance(item, dict):
-                                name = item.get("title") or item.get("name") or item.get("productName") or item.get("dealName")
-                                price = item.get("price") or item.get("salePrice") or item.get("discountPrice") or item.get("discountedPrice")
-                                orig_price = item.get("originalPrice") or item.get("regularPrice") or item.get("marketPrice")
-                                disc_rate = item.get("discountRate") or item.get("discountPercent")
-                                thumb = item.get("imageUrl") or item.get("thumbnail") or item.get("image") or item.get("thumbnailUrl")
-                                share_url = item.get("shareUrl") or item.get("shareLink") or item.get("tossLink") or item.get("link")
+for item in items:
+                if isinstance(item, dict):
+                    name = item.get("title")
+                    price = item.get("price")
+                    orig_price = item.get("originalPrice")
+                    disc_rate = item.get("discountRate")
+                    thumb = item.get("imageUrl")
+                    share_url = item.get("shareUrl")
 
-                                if name and price and isinstance(price, (int, float)) and price >= 500:
-                                    captured_api_products.append({
-                                        "name": str(name).strip(),
-                                        "price": int(price),
-                                        "original_price": int(orig_price) if orig_price else int(price * 1.3),
-                                        "discount_rate": f"{disc_rate}%" if disc_rate else "",
-                                        "thumbnail": str(thumb).strip() if thumb else "",
-                                        "share_link": str(share_url).strip() if share_url else ""
-                                    })
-                    except Exception:
-                        pass
-            except Exception:
+                    if name and price:
+                        captured_api_products.append({
+                            "name": str(name),
+                            "price": int(price),
+                            "original_price": orig_price,
+                            "discount_rate": disc_rate,
+                            "thumbnail": str(thumb) if thumb else "",
+                            "share_link": str(share_url) if share_url else ""
+                        })
+        except Exception:
                 pass
 
         page.on("response", on_response)
