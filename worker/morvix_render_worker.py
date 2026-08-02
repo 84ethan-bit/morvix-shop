@@ -127,7 +127,21 @@ def autonomous_harvest_loop():
             check_midnight_today_price_reset()
 
             print(f"\n[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 🕐 토스 파트너 정시 수집 시작...", flush=True)
-            cmd = [sys.executable, "-u", os.path.join(BASE_DIR, "worker", "sharelink_toss_harvester.py")]
+            
+            # 🎯 파일 경로 중복 방지 정밀 탐색
+            script_candidate1 = os.path.join(BASE_DIR, "worker", "sharelink_toss_harvester.py")
+            script_candidate2 = os.path.join(BASE_DIR, "sharelink_toss_harvester.py")
+            
+            if os.path.exists(script_candidate1):
+                harvester_script = script_candidate1
+            elif os.path.exists(script_candidate2):
+                harvester_script = script_candidate2
+            else:
+                harvester_script = script_candidate1 # Fallback
+
+            print(f"📍 수집기 실행 파일 경로: {harvester_script}", flush=True)
+
+            cmd = [sys.executable, "-u", harvester_script]
             env = dict(os.environ)
             env["PYTHONUNBUFFERED"] = "1"
             proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, cwd=BASE_DIR, env=env, bufsize=1)
