@@ -222,19 +222,19 @@ def harvest_sharelink_portal():
             except Exception:
                 pass
             
-        page.on("response", on_response)
+   page.on("response", on_response)
+     try:
+        print_log("📡 https://sharelink.toss.im/home 접속 중...")
+        try:
+            page.goto("https://sharelink.toss.im/home", timeout=30000)
+        except Exception as e:
+            print_log(f"⚠️ /home 접속 지연, 메인 페이지 재접속...")
             try:
-            print_log("📡 https://sharelink.toss.im/home 접속 중...")
-            try:
-                page.goto("https://sharelink.toss.im/home", wait_until="domcontentloaded", timeout=30000)
-            except Exception as e:
-                print_log(f"⚠️ /home 접속 지연, 메인 페이지로 우회 시도: {e}")
-                try:
-                    page.goto("https://sharelink.toss.im/", wait_until="domcontentloaded", timeout=30000)
-                except Exception as e2:
-                    print_log(f"⚠️ 메인 페이지 접속 도중 예외 발생: {e2}")
-            
-            page.wait_for_timeout(3000)
+                page.goto("https://sharelink.toss.im/home", timeout=60000)
+            except Exception as e2:
+                print_log(f"⚠️ 메인 페이지 접속 도중 오류: {e2}")
+
+        page.wait_for_timeout(3000)
 
             # React SPA 초기화 대기
             try:
