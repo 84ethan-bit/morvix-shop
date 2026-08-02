@@ -161,45 +161,42 @@ def harvest_sharelink_portal():
 
             return collected_count
 
-        # ⚡ [API Interceptor] 토스 백엔드 JSON response 도청 모듈
+       # ⚡ [API Interceptor] 토스 백엔드 JSON response 도청 모듈
         def on_response(response):
             try:
                 url = response.url
-                # 1. 기존 쉐어링크 캡처 (text() 호출 시 예외 안전 처리)
                 if "toss.im/_m/" in url or "share" in url:
                     try:
-                        text = response.text()
-                        m = re.search(r'(https?://toss\.im/_m/[A-Za-z0-9_-]+)', text)
-                        if m:
-                            captured_links[capture_lock[0]] = m.group(1)
+                        res_json = response.json()
+                        if isinstance(res_json, dict):
+                            data = res_json.get("data", res_json)
+                            items = []
+                            if isinstance(data, dict):
+                                items = data.get("items", []) or data.get("products", []) or data.get("list", [])
+                            elif isinstance(data, list):
+                                items = data
+
+                            for item in items:
+                                if isinstance(item, dict):
+                                    name = item.get("title")
+                                    price = item.get("price")
+                                    orig_price = item.get("originalPrice")
+                                    disc_rate = item.get("discountRate")
+                                    thumb = item.get("imageUrl")
+                                    share_url = item.get("shareUrl")
+
+                                    if name and price:
+                                        captured_api_products.append({
+                                            "name": str(name),
+                                            "price": int(price),
+                                            "original_price": orig_price,
+                                            "discount_rate": disc_rate,
+                                            "thumbnail": str(thumb) if thumb else "",
+                                            "share_link": str(share_url) if share_url else ""
+                                        })
                     except Exception:
                         pass
-
-                # 2. 토스 백엔드 API JSON 도청 (상품/딜 목록 API)
-                content_type = response.headers.get("content-type", "") or ""
-                if "application/json" in content_type and any(k in url for k in ["deal", "product", "home", "partner", "api"]):
-                    try:
-                        json_data = response.json()
-                        # JSON 수색: items, products, deals, content 리스트 파싱
-                        items = []
-                        if isinstance(json_data, dict):
-                            for k in ["data", "items", "products", "deals", "content", "result"]:
-                                if k in json_data and isinstance(json_data[k], list):
-                                    items = json_data[k]
-                                    break
-                                elif k in json_data and isinstance(json_data[k], dict):
-                                    for sub_k in ["items", "products", "deals", "content"]:
-                                        if sub_k in json_data[k] and isinstance(json_data[k][sub_k], list):
-                                            items = json_data[k][sub_k]
-                                            break
-                        elif isinstance(json_data, list):
-                            items = json_data
-
-                        if items:
-                            captured_api_products.extend(items)
-                    except Exception:
-                        pass
-            except Exception as e:
+            except Exception:
                 pass
 
 for item in items:
