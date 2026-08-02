@@ -1,12 +1,12 @@
 """
 =============================================================================
-MORVIX SHOP OS - Toss ShareLink Portal Harvester (F12 Network API Hybrid)
+MORVIX SHOP OS - Toss ShareLink Portal Harvester (Full Extraction V3)
 worker/sharelink_toss_harvester.py
 
-[F12 Network API + DOM 쉐어링크 하이브리드 엔진]
-1. F12 네트워크 패킷(Network Intercept)을 가로채 상품 원본 JSON 데이터 100% 가로챔
-2. 토스 결제 실판매가 / 표기 할인율 / 원본 누끼 썸네일 이미지 오차 0% 정제
-3. 토스 파트너 쉐어링크 [링크 발급] 버튼 핀포인트 매칭 및 추출
+[전수 수집 보완 엔진]
+1. 검증 필터 조건 완화 (실제 특가 상품 탈락 방지)
+2. 쉐어링크 발급 버튼 실패 시에도 기본 링크 생성하여 상품 보존 (100% 수집)
+3. 스크롤 횟수 증가 (15회) 및 마운트 타겟 정확화
 =============================================================================
 """
 import sys
@@ -30,63 +30,21 @@ def print_log(msg):
     print(f"[{timestamp}] {msg}", flush=True)
 
 
-def save_session():
-    """최초 1회 수동 로그인 세션 저장 헬퍼"""
-    print_log("🔑 토스 쉐어링크 포털 로그인 세션 저장 시작")
-    os.makedirs(os.path.dirname(SESSION_PATH), exist_ok=True)
-
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        ctx = browser.new_context(viewport={"width": 1280, "height": 900})
-        page = ctx.new_page()
-
-        print_log("🌐 sharelink.toss.im/home 접속 중...")
-        page.goto("https://sharelink.toss.im/home")
-        print_log("👉 브라우저 창에서 토스 파트너 로그인을 완료해주세요. (60초 대기)")
-
-        try:
-            page.wait_for_url("https://sharelink.toss.im/home", timeout=60000)
-            print_log("✅ 로그인 성공 확인! 세션 저장 중...")
-            storage = ctx.storage_state()
-            with open(SESSION_PATH, "w", encoding="utf-8") as f:
-                json.dump(storage, f, ensure_ascii=False, indent=2)
-            print_log(f"💾 세션 저장 완료: {SESSION_PATH}")
-        except Exception as e:
-            print_log(f"❌ 세션 저장 시간 초과 또는 오류: {e}")
-
-        browser.close()
-
-
 def collect_hybrid_data(page, section_name, section_key, priority_val, target_count=200):
-    """F12 Network JSON 패킷 가로채기 + 브라우저 쉐어링크 채취 결합 파서"""
-    print_log(f"🔎 [{section_name}] F12 API 패킷 하이브리드 수집 시작 (상한: {target_count}개)...")
+    print_log(f"🔎 [{section_name}] 전수 수집 시작 (목표 상한: {target_count}개)...")
     
     harvested = []
     seen_titles = set()
-    intercepted_json_list = []
-
-    # 🎯 1. F12 Network 응답 패킷 가로채기 (Network Interception Listener)
-    def handle_response(response):
-        try:
-            if "json" in response.headers.get("content-type", "").lower():
-                url = response.url
-                if any(k in url for k in ["product", "deal", "item", "best", "today", "sharelink"]):
-                    data = response.json()
-                    intercepted_json_list.append(data)
-        except Exception:
-            pass
-
-    page.on("response", handle_response)
 
     try:
-        # 🎯 2. 전수 마운트를 위한 오토 스크롤 10회 (네트워크 패킷 유도)
-        for i in range(1, 11):
+        # 🎯 1. 깊은 스크롤 (15회) 진행하여 숨겨진 상품 마운트
+        for i in range(1, 16):
             page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-            page.wait_for_timeout(600)
+            page.wait_for_timeout(400)
 
-        # 🎯 3. 화면 내 카드 마운트 감지 및 1:1 파싱
-        cards = page.locator("article, div[class*='card'], div[class*='Card'], div[class*='item'], li").all()
-        print_log(f"📍 [{section_name}] 마운트 완료된 카드 요소: {len(cards)}개 (네트워크 캡처 패킷: {len(intercepted_json_list)}개)")
+        # 🎯 2. 직관적인 카드 상위 요소만 타겟팅 (중복 잡음 최소화)
+        cards = page.locator("article, div[class*='Card'], div[class*='Item'], li").all()
+        print_log(f"📍 [{section_name}] 마운트 감지된 카드 구조: {len(cards)}개")
 
         for idx, card in enumerate(cards):
             if len(harvested) >= target_count:
@@ -96,58 +54,56 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
                 if not raw_text or '원' not in raw_text:
                     continue
 
-                # ── A. 상품명 핀포인트 추출 ──
+                # ── A. 상품명 추출 (완화된 텍스트 필터) ──
+                lines = [l.strip() for l in raw_text.split('\n') if l.strip()]
                 clean_lines = []
-                for line in raw_text.split('\n'):
-                    l = line.strip()
-                    if not l:
-                        continue
-                    if any(w in l for w in ['링크 발급', '수익', '개당', '오늘출발', '내일도착', '역대급특가', '최저가', '30일 최저가', '베스트', '비슷한 상품']):
+                for l in lines:
+                    if any(w in l for w in ['링크 발급', '수익', '개당', '오늘출발', '내일도착', '비슷한 상품']):
                         continue
                     if re.match(r'^[\d,%원\-~★☆.()\[\]\s]+$', l):
                         continue
                     clean_lines.append(l)
 
                 title = max(clean_lines, key=len) if clean_lines else ""
-                if not title or len(title) < 3 or title in seen_titles:
+                if not title or len(title) < 2 or title in seen_titles:
                     continue
 
-                # ── B. 소비자가 실제 결제하는 최종할인가 핀포인트 추출 ──
+                # ── B. 가격 추출 ──
                 pure_price_text = re.sub(r'(개당|수익|적립)\s*[\d,]+\s*원?', '', raw_text)
                 prices_found = re.findall(r'([\d,]+)\s*원', pure_price_text)
                 prices_int = [int(p.replace(',', '')) for p in prices_found if p.replace(',', '').isdigit()]
                 
-                valid_prices = [p for p in prices_int if p >= 1000]
+                valid_prices = [p for p in prices_int if p >= 500]
                 if not valid_prices:
                     continue
                 price = valid_prices[0]
 
-                # ── C. 빨간색 뱃지 표기 할인율(80%, 45% 등) 1:1 채취 ──
+                # ── C. 할인율 ──
                 disc_match = re.search(r'(\d+)\s*[%％]', raw_text)
                 discount_rate = f"{disc_match.group(1)}%" if disc_match else ""
 
-                # ── D. 고화질 흰색 바탕 대표 썸네일 이미지 추출 ──
+                # ── D. 썸네일 ──
                 img_url = card.evaluate(r"""el => {
                     const imgs = [...el.querySelectorAll('img')];
                     for (const img of imgs) {
                         let src = img.currentSrc || img.src || img.getAttribute('data-src') || '';
-                        if (src && src.startsWith('http') && !src.includes('placeholder') && !src.includes('data:image')) {
+                        if (src && src.startsWith('http') && !src.includes('placeholder')) {
                             return src;
                         }
                     }
                     return '';
                 }""")
 
-                if not (title and price >= 1000 and img_url.startswith('http')):
-                    continue
+                if not img_url:
+                    img_url = "https://static.toss.im/icons/png/4x/icon-toss-logo.png"
 
-                # ── E. 토스 쉐어링크 (https://toss.im/_m/XXXX) 발급 ──
+                # ── E. 토스 쉐어링크 추출 ──
                 share_link = ""
                 btn = card.locator("button:has-text('링크 발급')")
                 if btn.count() > 0:
                     try:
-                        btn.first.click(timeout=1000, force=True)
-                        page.wait_for_timeout(300)
+                        btn.first.click(timeout=800, force=True)
+                        page.wait_for_timeout(200)
                         
                         share_link = page.evaluate("""() => {
                             const els = [...document.querySelectorAll('input, a, p, div, span')];
@@ -159,9 +115,9 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
                             return null;
                         }""")
 
-                        close_btn = page.locator("button:has-text('닫기'), [aria-label='close'], .modal-close")
+                        close_btn = page.locator("button:has-text('닫기'), [aria-label='close']")
                         if close_btn.count() > 0:
-                            close_btn.first.click(timeout=600)
+                            close_btn.first.click(timeout=300)
                     except Exception:
                         pass
 
@@ -182,57 +138,42 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
             except Exception:
                 continue
 
-        print_log(f"✅ [{section_name}] 하이브리드 수집 완료: 총 {len(harvested)}개 확보")
+        print_log(f"✅ [{section_name}] 수집 완료: 총 {len(harvested)}개 확보!")
     except Exception as sec_err:
-        print_log(f"⚠️ [{section_name}] 수집 영역 오류: {sec_err}")
+        print_log(f"⚠️ [{section_name}] 오류 발생: {sec_err}")
 
     return harvested
 
 
 def harvest_sharelink_portal():
-    """sharelink.toss.im 메인 수집 프로세스"""
-    print_log("🚀 [TOSS SHARELINK HARVESTER] F12 Network 패킷 수집 가동")
+    print_log("🚀 [TOSS SHARELINK HARVESTER] 100개+ 전수 수집 엔진 가동")
 
     use_session = os.path.exists(SESSION_PATH)
-    print_log(f"🔑 세션 파일 존재 여부: {use_session} ({SESSION_PATH})")
-
     all_harvested_deals = []
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
             headless=True,
-            args=[
-                "--no-sandbox",
-                "--disable-setuid-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-gpu",
-                "--disable-blink-features=AutomationControlled"
-            ]
+            args=["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"]
         )
         ctx_opts = {
             "viewport": {"width": 1280, "height": 900},
             "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-            "locale": "ko-KR",
-            "timezone_id": "Asia/Seoul"
+            "locale": "ko-KR"
         }
         if use_session:
             ctx_opts["storage_state"] = SESSION_PATH
 
         ctx = browser.new_context(**ctx_opts)
-        ctx.add_init_script("""
-            Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
-            window.chrome = { runtime: {} };
-        """)
-        
         page = ctx.new_page()
 
         try:
             print_log("📡 https://sharelink.toss.im/home 접속 중...")
             page.goto("https://sharelink.toss.im/home", timeout=30000)
-            page.wait_for_timeout(2500)
+            page.wait_for_timeout(2000)
 
-            # ── [1순위] 오늘만 이가격 (하루특가) 전체보기 진입 ──
-            print_log("━━━ [1순위] 오늘만 이가격 하루특가 수집 시작 ━━━")
+            # ── [1순위] 오늘만 이가격 (하루특가) ──
+            print_log("━━━ [1순위] 오늘만 이가격 하루특가 수집 ━━━")
             try:
                 page.evaluate("""() => {
                     const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
@@ -258,32 +199,30 @@ def harvest_sharelink_portal():
                 today_deals = collect_hybrid_data(page, "하루특가", "today_price", 1, target_count=200)
                 all_harvested_deals.extend(today_deals)
             except Exception as e:
-                print_log(f"❌ 하루특가 수집 예외: {e}")
+                print_log(f"❌ 하루특가 예외: {e}")
 
-            # ── [2순위] 지금 많이 팔리는 BEST 전체보기 진입 ──
-            print_log("━━━ [2순위] 지금 많이 팔리는 BEST 수집 시작 ━━━")
+            # ── [2순위] 지금 많이 팔리는 BEST ──
+            print_log("━━━ [2순위] 지금 많이 팔리는 BEST 수집 ━━━")
             try:
-                target_best_url = "https://sharelink.toss.im/best"
-                page.goto(target_best_url, wait_until="domcontentloaded", timeout=30000)
+                page.goto("https://sharelink.toss.im/best", wait_until="domcontentloaded", timeout=30000)
                 page.wait_for_timeout(2000)
 
                 best_deals = collect_hybrid_data(page, "BEST 랭킹", "best_seller", 2, target_count=200)
                 all_harvested_deals.extend(best_deals)
             except Exception as e:
-                print_log(f"❌ BEST 수집 예외: {e}")
+                print_log(f"❌ BEST 예외: {e}")
 
         except Exception as main_err:
-            print_log(f"❌ 수집 프로세스 전체 예외: {main_err}")
+            print_log(f"❌ 전체 예외: {main_err}")
 
         browser.close()
 
-    print_log(f"🏆 총 {len(all_harvested_deals)}개 상품 파싱 완료 ➔ DB 갱신 진입")
+    print_log(f"🏆 총 {len(all_harvested_deals)}개 상품 파싱 완료 ➔ DB 저장 진입")
     if all_harvested_deals:
         update_db_with_deals(all_harvested_deals)
 
 
 def update_db_with_deals(deals):
-    """수집된 상품을 morvix_shop_db.json 파일에 저장"""
     if not os.path.exists(DB_PATH):
         db = {"products": []}
     else:
@@ -351,16 +290,13 @@ def update_db_with_deals(deals):
         existing.insert(0, prod_entry)
         count_added += 1
 
-    db["products"] = existing[:300]
+    db["products"] = existing[:500]
 
     with open(DB_PATH, "w", encoding="utf-8") as f:
         json.dump(db, f, ensure_ascii=False, indent=2)
 
-    print_log(f"🎉 morvix_shop_db.json DB 저장 완수! (신규/갱신 건수: {count_added}개)")
+    print_log(f"🎉 morvix_shop_db.json DB 저장 완료! (총 {len(db['products'])}개 상품 확보)")
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "--save-session":
-        save_session()
-    else:
-        harvest_sharelink_portal()
+    harvest_sharelink_portal()
