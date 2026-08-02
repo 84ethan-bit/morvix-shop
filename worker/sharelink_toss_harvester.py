@@ -292,9 +292,6 @@ def harvest_sharelink_portal():
                         with open(SESSION_PATH, "w", encoding="utf-8") as f:
                             json.dump(storage, f, ensure_ascii=False, indent=2)
                         print_log(f"💾 갱신된 세션 저장 완료: {SESSION_PATH}")
-                    except Exception:
-                        print_log("⚠️ [2FA 타임아웃] 스마트폰 앱 승인이 지연되었습니다. 다음 루프에서 재시도합니다.")
-
                 except Exception as login_err:
                     print_log(f"❌ [자동 로그인 실패]: {login_err}")
                     browser.close()
