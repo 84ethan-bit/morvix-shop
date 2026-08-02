@@ -1,12 +1,13 @@
 """
 =============================================================================
-MORVIX SHOP OS - Toss ShareLink Portal Harvester (Direct URL Perfect V19 - Precision Parser)
+MORVIX SHOP OS - Toss ShareLink Portal Harvester (Direct URL Perfect V20 - Ultimate)
 worker/sharelink_toss_harvester.py
 
 [핵심 개편 사항]
-1. '100g당 XX원', '개당 XX원 수익' 등 더미 텍스트/수익금 라인 완전 제거
-2. 진짜 상품명과 진짜 결제 판매가(Price)만 1:1 정밀 짝지음 매핑
-3. Render 환경 세션 자동 복원 & GitHub Auto Push (Vercel 배포 트리거) 완결
+1. Render 클라우드 환경 스크롤 대기시간 최적화 -> 외부 서버 수집 개수 200개+ 확보
+2. '67% 특가', '100g당 XX원', '개당 XX원 수익' 등 더미/배지 텍스트 완전 차단
+3. 진짜 상품명과 진짜 결제 판매가(Price)만 1:1 정밀 짝지음 매핑
+4. Render 환경 세션 자동 복원 & GitHub Auto Push (Vercel 배포 트리거) 완결
 =============================================================================
 """
 import sys
@@ -69,7 +70,7 @@ def push_to_github_automatically():
         subprocess.run(["git", "add", "-f", ROOT_DB_PATH], cwd=BASE_DIR, capture_output=True)
         subprocess.run(["git", "add", "-f", WORKER_DB_PATH], cwd=BASE_DIR, capture_output=True)
         
-        commit_msg = f"Auto Sync Toss Deals (Fix Price Mapping): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        commit_msg = f"Auto Sync Toss Deals (V20 Precision Parser): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
         
         push_res = subprocess.run(["git", "push", repo_url, "HEAD:main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
@@ -84,25 +85,36 @@ def push_to_github_automatically():
 
 
 def collect_hybrid_data(page, section_name, section_key, priority_val, target_count=300):
-    print_log(f"🔎 [{section_name}] 전수 수집 스크롤 다운 시작...")
+    print_log(f"🔎 [{section_name}] 전수 수집 스마트 스크롤 다운 시작...")
     
     harvested = []
     seen_titles = set()
 
-    # 파싱 시 완전히 배제할 노이즈/더미 키워드 목록
+    # 파싱 시 완전히 배제할 노이즈/더미 키워드 목록 (배제 키워드 강화)
     JUNK_KEYWORDS = [
         '수익', '당 ', '개당', '100g', '100ml', '10g', '1포당', 
         '1롤당', '1매당', '1매입당', '1마리당', '1세트당', '1정당', 
-        '링크 발급', '최저가', '내일출발', '오늘출발', '베스트판매자', '전체 보기', '전체보기'
+        '링크 발급', '최저가', '내일출발', '오늘출발', '베스트판매자', 
+        '전체 보기', '전체보기', '특가', '오늘만'
     ]
 
     try:
-        # 무한 스크롤 다운 (35회)
-        for _ in range(35):
-            page.evaluate("window.scrollBy(0, 1000)")
-            page.wait_for_timeout(250)
+        # Render 클라우드 맞춤형 스마트 무한 스크롤 (최대 40회)
+        last_height = page.evaluate("document.body.scrollHeight")
+        for i in range(40):
+            page.evaluate("window.scrollTo(0, document.body.scrollHeight);")
+            page.wait_for_timeout(1000)  # Render 서버 로딩 대기시간 1초 확보
+            
+            new_height = page.evaluate("document.body.scrollHeight")
+            if new_height == last_height:
+                page.wait_for_timeout(1500)  # 지연 로딩 2차 대기
+                new_height = page.evaluate("document.body.scrollHeight")
+                if new_height == last_height:
+                    print_log(f"   - {i+1}회 스크롤 후 바닥 도달 완료")
+                    break
+            last_height = new_height
 
-        page.wait_for_timeout(1500)
+        page.wait_for_timeout(2000)  # 최종 DOM 안정화 대기
 
         # 전체 카드 구조 포착
         cards = page.locator("article, div[class*='Card'], div[class*='Item'], div[class*='Product'], a[href*='product']").all()
@@ -118,21 +130,23 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
 
                 lines = [l.strip() for l in raw_text.split('\n') if l.strip()]
                 
-                # 1. 진짜 상품명 후보 추출 (더미 라인 차단)
+                # 1. 진짜 상품명 후보 추출 (더미/배지/수익금 라인 철저 차단)
                 candidate_titles = []
                 for l in lines:
+                    # 숫자/기호로만 구성된 라인 제외 & 길이 3자 이상
                     if len(l) >= 3 and not re.match(r'^[\d,%원\-~★☆.()\s]+$', l):
-                        if not any(k in l for k in JUNK_KEYWORDS):
+                        # % 할인율 표기나 정크 키워드가 포함된 라인 완전 배제
+                        if not any(k in l for k in JUNK_KEYWORDS) and '%' not in l:
                             candidate_titles.append(l)
 
                 if not candidate_titles:
                     continue
                 
-                title = max(candidate_titles, key=len)
+                title = max(candidate_titles, key=len)  # 가장 긴 텍스트를 진짜 상품명으로 지정
                 if title in seen_titles:
                     continue
 
-                # 2. 진짜 판매가 파싱 (단위 가격 및 수익금 라인 차단)
+                # 2. 진짜 결제 판매가 파싱 (단위 가격 및 수익금 라인 차단)
                 price_lines = [l for l in lines if '원' in l and not any(k in l for k in ['당 ', '수익', '개당'])]
                 valid_prices = []
                 for pl in price_lines:
@@ -156,7 +170,7 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
                 else:
                     discount_rate = "특가"
 
-                # 4. 썸네일 및 링크
+                # 4. 썸네일 및 단축 링크
                 img_url = card.evaluate(r"""el => {
                     const img = el.querySelector('img');
                     return img ? (img.currentSrc || img.src || img.getAttribute('data-src') || '') : '';
