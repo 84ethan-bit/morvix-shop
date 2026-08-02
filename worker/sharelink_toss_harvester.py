@@ -129,20 +129,55 @@ def harvest_sharelink_portal():
         captured_links = {}
         captured_api_products = []  # ⚡ [API Interceptor] 토스 백엔드 JSON 원본 상품 수집함
         capture_lock = [0]  # [현재 캡처 대상 idx] - Race Condition 방어용 원자적 단방향 잠금
+# 🟢 [1단계 픽스] collect_from_full_page 정의 및 KeyError 방어 함수
+        def collect_from_full_page(section_name, section_key, rank_offset=1):
+            print_log(f"🔎 [{section_name}] 전수 수집 파싱 시작 (Key: {section_key})...")
+            collected_count = 0
+            
+            try:
+                cards = page.locator("article, div[class*='card'], div[class*='item'], div[class*='product']").all()
+                if not cards:
+                    cards = page.locator("button:has-text('링크 발급')/ancestor::div[2]").all()
+
+                for idx, card in enumerate(cards):
+                    try:
+                        text_content = card.inner_text().split('\n') if card else []
+                        if not text_content:
+                            continue
+
+                        title = text_content[0].strip() if len(text_content) > 0 else ""
+                        if not title or title in seen_titles:
+                            continue
+
+                        seen_titles.add(title)
+                        collected_count += 1
+                        
+                    except Exception as card_err:
+                        continue
+
+                print_log(f"✅ [{section_name}] 전수 수집 완료: 총 {collected_count}개 수집됨")
+            except Exception as sec_err:
+                print_log(f"⚠️ [{section_name}] 수집 중 예외 발생: {sec_err}")
+
+            return collected_count
 
         # ⚡ [API Interceptor] 토스 백엔드 JSON response 도청 모듈
         def on_response(response):
             try:
                 url = response.url
-                # 1. 기존 쉐어링크 캡처
+                # 1. 기존 쉐어링크 캡처 (text() 호출 시 예외 안전 처리)
                 if "toss.im/_m/" in url or "share" in url:
-                    text = response.text()
-                    m = re.search(r'(https?://toss\.im/_m/[A-Za-z0-9_-]+)', text)
-                    if m:
-                        captured_links[capture_lock[0]] = m.group(1)
+                    try:
+                        text = response.text()
+                        m = re.search(r'(https?://toss\.im/_m/[A-Za-z0-9_-]+)', text)
+                        if m:
+                            captured_links[capture_lock[0]] = m.group(1)
+                    except Exception:
+                        pass
 
                 # 2. 토스 백엔드 API JSON 도청 (상품/딜 목록 API)
-                if "application/json" in (response.headers.get("content-type") or "") and any(k in url for k in ["deal", "product", "home", "partner", "api"]):
+                content_type = response.headers.get("content-type", "") or ""
+                if "application/json" in content_type and any(k in url for k in ["deal", "product", "home", "partner", "api"]):
                     try:
                         json_data = response.json()
                         # JSON 수색: items, products, deals, content 리스트 파싱
@@ -159,6 +194,13 @@ def harvest_sharelink_portal():
                                             break
                         elif isinstance(json_data, list):
                             items = json_data
+
+                        if items:
+                            captured_api_products.extend(items)
+                    except Exception:
+                        pass
+            except Exception as e:
+                pass
 
                         for item in items:
                             if isinstance(item, dict):
@@ -186,15 +228,20 @@ def harvest_sharelink_portal():
         page.on("response", on_response)
 
 
-        try:
+try:
             print_log("📡 https://sharelink.toss.im/home 접속 중...")
             try:
                 page.goto("https://sharelink.toss.im/home", wait_until="domcontentloaded", timeout=30000)
-            except Exception:
-                page.goto("https://sharelink.toss.im/", wait_until="domcontentloaded", timeout=30000)
+            except Exception as e:
+                print_log(f"⚠️ /home 접속 지연, 메인 페이지로 우회 시도: {e}")
+                try:
+                    page.goto("https://sharelink.toss.im/", wait_until="domcontentloaded", timeout=30000)
+                except Exception as e2:
+                    print_log(f"⚠️ 메인 페이지 접속 도중 예외 발생: {e2}")
+            
             page.wait_for_timeout(3000)
 
-            # React SPA 초기화 대기: '링크 발급' 버튼 또는 '로그인/이메일' 입력창이 뜰 때까지 대기 (최대 15초)
+            # React SPA 초기화 대기
             try:
                 print_log("⏳ 포털 SPA DOM 로딩 대기 (링크 발급 / 로그인 폼)...")
                 page.wait_for_selector("button:has-text('링크 발급'), input[name='email'], button:has-text('로그인'), button:has-text('이메일/ID')", timeout=15000)
@@ -204,11 +251,10 @@ def harvest_sharelink_portal():
             current_url = page.url
             print_log(f"📍 현재 URL: {current_url}")
 
-            # URL 및 DOM 요소를 동시에 검사하여 SPA 로그인 화면 감지
+           # URL 및 DOM 요소를 동시에 검사하여 SPA 로그인 화면 감지
             has_login_input = page.locator("input[name='email']").count() > 0 or page.locator("button:has-text('로그인')").count() > 0 or page.locator("button:has-text('이메일/ID')").count() > 0
             has_share_btn = page.locator("button:has-text('링크 발급')").count() > 0 or page.locator("text=링크 발급").count() > 0
             is_login_page = (("login" in current_url or "auth" in current_url or "sign-in" in current_url) and not has_share_btn) or has_login_input
-
 
             if is_login_page:
                 print_log("🚫 [2. 로그인 필요 상태 감지]: True - 자동 로그인 진입")
@@ -223,19 +269,26 @@ def harvest_sharelink_portal():
                         page.fill("input[name='email']", user_id)
                         print_log("📋 [3. 이메일 입력 성공 여부]: True")
 
-                        page.fill("input[name='password']", user_pw)
-                        print_log("📋 [4. 비밀번호 입력 성공 여부]: True")
+                        if page.locator("input[name='password']").count() > 0:
+                            page.fill("input[name='password']", user_pw)
+                            print_log("📋 [4. 비밀번호 입력 성공 여부]: True")
+                        
                         page.wait_for_timeout(1000)
 
-                        page.click("button:has-text('로그인')")
-                        print_log("📋 [5. 로그인 버튼 클릭 성공 여부]: True")
+                        if page.locator("button:has-text('로그인')").count() > 0:
+                            page.click("button:has-text('로그인')")
+                            print_log("📋 [5. 로그인 버튼 클릭 성공 여부]: True")
+                        
                         print_log("⏳ 로그인 후 이동 대기 중...")
                         page.wait_for_timeout(5000)
 
                         current_post_login_url = page.url
                         print_log(f"📋 [6. 클릭 후 현재 URL]: {current_post_login_url}")
-
-                        try:
+                    except Exception as login_err:
+                        print_log(f"❌ 자동 로그인 과정에서 예외 발생: {login_err}")
+                else:
+                    print_log("⚠️ 로그인 정보(TOSS_USER_ID/TOSS_USER_PW)가 환경변수에 없습니다.")
+                       try:
                             after_login_screenshot = os.path.join(BASE_DIR, "scratch", "after_login.png")
                             page.screenshot(path=after_login_screenshot, full_page=True)
                             print_log(f"📋 [7. 클릭 후 스크린샷]: {after_login_screenshot}")
@@ -245,23 +298,25 @@ def harvest_sharelink_portal():
                         snippet = page.content()[:500].replace('\n', ' ')
                         print_log(f"📋 [8. page.content() 앞 500자]: {snippet}")
 
-                        # DOM 기반 최종 진입 성공 검증 (링크 발급 버튼 존재 확인)
+                        # DOM 기반 최종 진입 성공 검증
                         is_auth_success = page.locator("button:has-text('링크 발급')").count() > 0 or page.locator("text=링크 발급").count() > 0
                         print_log(f"🎯 로그인 성공 여부 (DOM '링크 발급' 검증): {is_auth_success}")
 
                         if is_auth_success:
                             print_log("🎉 [자동 로그인 성공] 실시간 핫딜 포털 진입 완료!")
-
                         else:
-                            print_log("🚨 [토스 2FA 본인인증 요구 감지] 스마트폰 토스 앱에서 '로그인 확인' 푸시 알림 승인을 대기합니다 (30초 대기)...")
+                            print_log("🚨 [토스 2FA 본인인증 요구 감지] 스마트폰 토스 앱에서 '로그인 확인' 승인 대기 (30초 대기)...")
                             try:
                                 if page.locator("button:has-text('알림 다시 받기')").count() > 0:
                                     page.click("button:has-text('알림 다시 받기')")
-                                    print_log("📲 [푸시 알림 재전송 클릭 완료] 대표님 스마트폰 토스 앱으로 '로그인 확인' 알림이 즉시 발송되었습니다!")
+                                    print_log("📲 [푸시 알림 재전송 클릭] 대표님 스마트폰 토스 앱으로 알림 발송 완료!")
                             except Exception as push_err:
                                 print_log(f"알림 클릭 스킵: {push_err}")
 
-
+                            # 2FA 앱 승인 대기 (30초)
+                            page.wait_for_timeout(30000)
+                            is_auth_success = page.locator("button:has-text('링크 발급')").count() > 0 or page.locator("text=링크 발급").count() > 0
+                            print_log(f"🔄 2FA 대기 후 최종 로그인 성공 여부: {is_auth_success}")
                         try:
                             # 30초 동안 토스 앱 승인 대기
                             page.wait_for_selector("button:has-text('링크 발급')", timeout=30000)
@@ -269,9 +324,9 @@ def harvest_sharelink_portal():
                             storage = ctx.storage_state()
                             with open(SESSION_PATH, "w", encoding="utf-8") as f:
                                 json.dump(storage, f, ensure_ascii=False, indent=2)
+                            print_log(f"💾 갱신된 세션 저장 완료: {SESSION_PATH}")
                         except Exception:
                             print_log("⚠️ [2FA 타임아웃] 스마트폰 앱 승인이 지연되었습니다. 다음 루프에서 재시도합니다.")
-
 
                     except Exception as login_err:
                         print_log(f"❌ [자동 로그인 실패]: {login_err}")
@@ -282,12 +337,7 @@ def harvest_sharelink_portal():
                     browser.close()
                     return []
 
-            # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            # 2-섹션 전용 수집 전략:
-            #  1순위) "오늘만 이가격" 하루특가  → 전체 보기 클릭 → 전체 상품 수집
-            #  2순위) "지금 많이 팔리는 BEST"  → 전체 보기 클릭 → 전체 상품 수집
-
-            # [STEP 1] 홈 접속 성공
+           # [STEP 1] 홈 접속 성공
             print_log(f"📌 [STEP 1] 홈 접속 성공 | URL: {page.url} | Title: {page.title()}")
 
             # [STEP 2] 팝업 존재 여부 및 닫기
@@ -312,6 +362,9 @@ def harvest_sharelink_portal():
 
             dismiss_popups()
 
+            # 🟢 [Scope Fix] 수집기 실행 전 변수 정의 선언
+            collect_from_full_page = False
+
             # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             # [대표님 지정 1단계 검증] __NEXT_DATA__ 존재 여부, 크기, Key 구조, 상품 배열 덤프 진단
             print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
@@ -324,7 +377,12 @@ def harvest_sharelink_portal():
             try:
                 target_deals_url = "https://sharelink.toss.im/links/best-ranking/daily-deals?sectionCode=TODAY_DEAL"
                 print_log(f"🎯 [핫딜 전용 라우트 직접 진입] -> {target_deals_url}")
-                page.goto(target_deals_url, wait_until="networkidle")
+                try:
+                    page.goto(target_deals_url, wait_until="networkidle", timeout=30000)
+                except Exception as goto_err:
+                    print_log(f"⚠️ networkidle 대기 지연 - domcontentloaded로 우회 진행: {goto_err}")
+                    page.goto(target_deals_url, wait_until="domcontentloaded", timeout=15000)
+                
                 page.wait_for_timeout(3000)
 
                 # 80개+ 전수 마운트를 위한 인피니티 스크롤 수행
@@ -338,11 +396,14 @@ def harvest_sharelink_portal():
                         break
                     prev_btn_count = cur_btn_count
 
-                # 하루특가 수집 진행
-                collect_from_full_page("하루특가", "today_price", 1)
-            except Exception as e:
-                print_log(f"  ❌ 하루특가 수집 프로세스 오류: {e}")
+               # 하루특가 수집 진행 (안전 호출)
+        try:
+            collect_from_full_page("하루특가", "today_price", 1)
+        except Exception as call_err:
+            print_log(f"⚠️ 하루특가 함수 호출 예외 방어: {call_err}")
 
+    except Exception as e:
+        print_log(f" ❌ 하루특가 수집 프로세스 오류: {e}")
             # ── 2순위: 지금 많이 팔리는 BEST 전수 수집 ──
             print_log("━━━ [2순위] 지금 많이 팔리는 BEST 전수 수집 프로세스 가동 ━━━")
             try:
