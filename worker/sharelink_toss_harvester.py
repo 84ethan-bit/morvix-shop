@@ -164,7 +164,7 @@ def harvest_sharelink_portal():
 
         # ⚡ [API Interceptor] 토스 백엔드 JSON response 도청 모듈
          def on_response(response):
-            try:
+             try:
                 if "sharelink.toss.im" in response.url:
                     data = response.json()
                     items = data.get("result", {}).get("items", [])
