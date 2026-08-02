@@ -1,12 +1,12 @@
 """
 =============================================================================
-MORVIX SHOP OS - Toss ShareLink Portal Harvester (Full Extraction V3)
+MORVIX SHOP OS - Toss ShareLink Portal Harvester (365 Auto-Sync V4)
 worker/sharelink_toss_harvester.py
 
-[전수 수집 보완 엔진]
-1. 검증 필터 조건 완화 (실제 특가 상품 탈락 방지)
-2. 쉐어링크 발급 버튼 실패 시에도 기본 링크 생성하여 상품 보존 (100% 수집)
-3. 스크롤 횟수 증가 (15회) 및 마운트 타겟 정확화
+[365일 무인 자동화 수집 & 자동 Push 엔진]
+1. 완화된 검증 규칙으로 하루특가 / BEST 상품 100개 이상 대량 수집
+2. Render 수집 완료 즉시 GH_TOKEN 기반 GitHub Auto-Push 실행
+3. Vercel 쇼핑몰 실시간 100% 자동 연동 반영
 =============================================================================
 """
 import sys
@@ -14,6 +14,8 @@ import os
 import json
 import time
 import re
+import subprocess
+import shutil
 from datetime import datetime, timedelta
 from playwright.sync_api import sync_playwright
 
@@ -21,13 +23,54 @@ if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DB_PATH = os.path.join(BASE_DIR, "morvix_shop_db.json")
+WORKER_DIR = os.path.dirname(os.path.abspath(__file__))
+
+ROOT_DB_PATH = os.path.join(BASE_DIR, "morvix_shop_db.json")
+WORKER_DB_PATH = os.path.join(WORKER_DIR, "morvix_shop_db.json")
 SESSION_PATH = os.path.join(BASE_DIR, "scratch", "toss_sharelink_session.json")
 
 
 def print_log(msg):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{timestamp}] {msg}", flush=True)
+
+
+def push_to_github_automatically():
+    """Render 수집 완료 즉시 GH_TOKEN을 활용하여 GitHub 저장소로 Auto Push"""
+    try:
+        gh_token = os.environ.get("GH_TOKEN", "").strip()
+        print_log("🚀 [AUTO GIT PUSH ENGINE] Render ➔ GitHub 자동 동기화 시도...")
+
+        # 1. worker DB와 최상위 루트 DB 복사 및 위치 동기화
+        if os.path.exists(WORKER_DB_PATH) and WORKER_DB_PATH != ROOT_DB_PATH:
+            shutil.copy(WORKER_DB_PATH, ROOT_DB_PATH)
+            print_log("📋 [DB COPY] worker DB ➔ 루트 DB 복사 완료")
+
+        if not gh_token:
+            print_log("⚠️ [GH_TOKEN 미설정] Render 환경변수 GH_TOKEN을 확인해 주세요.")
+            return
+
+        # 2. Git 자격 증명 설정 및 Push 실행
+        repo_url = f"https://84ethan-bit:{gh_token}@github.com/84ethan-bit/morvix-shop.git"
+        
+        subprocess.run(["git", "config", "user.name", "Morvix Auto Bot"], cwd=BASE_DIR, capture_output=True)
+        subprocess.run(["git", "config", "user.email", "bot@morvix.kr"], cwd=BASE_DIR, capture_output=True)
+        
+        # staging
+        subprocess.run(["git", "add", "morvix_shop_db.json", "worker/morvix_shop_db.json"], cwd=BASE_DIR, capture_output=True)
+        
+        commit_msg = f"Auto: 365 Daily Toss deals sync [{datetime.now().strftime('%Y-%m-%d %H:%M')}]"
+        subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
+        
+        push_res = subprocess.run(["git", "push", repo_url, "main"], cwd=BASE_DIR, capture_output=True, text=True)
+        
+        if push_res.returncode == 0:
+            print_log("🎉 [365 AUTO PUSH SUCCESS] Render가 GitHub로 최신 DB를 성공적으로 푸시했습니다! (Vercel 쇼핑몰 자동 반영 완료)")
+        else:
+            print_log(f"⚠️ Git Push 실패 로그: {push_res.stderr.strip()}")
+
+    except Exception as e:
+        print_log(f"❌ Auto Git Push 예외 발생: {e}")
 
 
 def collect_hybrid_data(page, section_name, section_key, priority_val, target_count=200):
@@ -37,12 +80,11 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
     seen_titles = set()
 
     try:
-        # 🎯 1. 깊은 스크롤 (15회) 진행하여 숨겨진 상품 마운트
+        # 오토 스크롤 (15회)
         for i in range(1, 16):
             page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
             page.wait_for_timeout(400)
 
-        # 🎯 2. 직관적인 카드 상위 요소만 타겟팅 (중복 잡음 최소화)
         cards = page.locator("article, div[class*='Card'], div[class*='Item'], li").all()
         print_log(f"📍 [{section_name}] 마운트 감지된 카드 구조: {len(cards)}개")
 
@@ -54,7 +96,6 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
                 if not raw_text or '원' not in raw_text:
                     continue
 
-                # ── A. 상품명 추출 (완화된 텍스트 필터) ──
                 lines = [l.strip() for l in raw_text.split('\n') if l.strip()]
                 clean_lines = []
                 for l in lines:
@@ -68,7 +109,6 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
                 if not title or len(title) < 2 or title in seen_titles:
                     continue
 
-                # ── B. 가격 추출 ──
                 pure_price_text = re.sub(r'(개당|수익|적립)\s*[\d,]+\s*원?', '', raw_text)
                 prices_found = re.findall(r'([\d,]+)\s*원', pure_price_text)
                 prices_int = [int(p.replace(',', '')) for p in prices_found if p.replace(',', '').isdigit()]
@@ -78,11 +118,9 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
                     continue
                 price = valid_prices[0]
 
-                # ── C. 할인율 ──
                 disc_match = re.search(r'(\d+)\s*[%％]', raw_text)
                 discount_rate = f"{disc_match.group(1)}%" if disc_match else ""
 
-                # ── D. 썸네일 ──
                 img_url = card.evaluate(r"""el => {
                     const imgs = [...el.querySelectorAll('img')];
                     for (const img of imgs) {
@@ -97,7 +135,6 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
                 if not img_url:
                     img_url = "https://static.toss.im/icons/png/4x/icon-toss-logo.png"
 
-                # ── E. 토스 쉐어링크 추출 ──
                 share_link = ""
                 btn = card.locator("button:has-text('링크 발급')")
                 if btn.count() > 0:
@@ -146,7 +183,7 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
 
 
 def harvest_sharelink_portal():
-    print_log("🚀 [TOSS SHARELINK HARVESTER] 100개+ 전수 수집 엔진 가동")
+    print_log("🚀 [TOSS SHARELINK HARVESTER] 365 무인 수집 & Auto-Push 엔진 가동")
 
     use_session = os.path.exists(SESSION_PATH)
     all_harvested_deals = []
@@ -223,10 +260,14 @@ def harvest_sharelink_portal():
 
 
 def update_db_with_deals(deals):
-    if not os.path.exists(DB_PATH):
+    target_path = ROOT_DB_PATH
+    if not os.path.exists(target_path):
+        target_path = WORKER_DB_PATH
+
+    if not os.path.exists(target_path):
         db = {"products": []}
     else:
-        with open(DB_PATH, "r", encoding="utf-8") as f:
+        with open(target_path, "r", encoding="utf-8") as f:
             try:
                 db = json.load(f)
             except Exception:
@@ -292,10 +333,17 @@ def update_db_with_deals(deals):
 
     db["products"] = existing[:500]
 
-    with open(DB_PATH, "w", encoding="utf-8") as f:
+    # 저장
+    with open(ROOT_DB_PATH, "w", encoding="utf-8") as f:
         json.dump(db, f, ensure_ascii=False, indent=2)
 
-    print_log(f"🎉 morvix_shop_db.json DB 저장 완료! (총 {len(db['products'])}개 상품 확보)")
+    with open(WORKER_DB_PATH, "w", encoding="utf-8") as f:
+        json.dump(db, f, ensure_ascii=False, indent=2)
+
+    print_log(f"🎉 morvix_shop_db.json DB 저장 완료! (총 {len(db['products'])}개 상품 확정)")
+    
+    # 💥 핵심: 저장 완료 후 GitHub로 365 무인 Auto Push 쏘기!
+    push_to_github_automatically()
 
 
 if __name__ == "__main__":
