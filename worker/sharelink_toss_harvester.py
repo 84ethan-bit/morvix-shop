@@ -162,37 +162,37 @@ def harvest_sharelink_portal():
 
             return collected_count
 
-       # ⚡ [API Interceptor] 토스 백엔드 JSON response 도청 모듈
- def on_response(response):
-        try:
-            if "sharelink.toss.im" in response.url:
-                data = response.json()
-                items = data.get("result", {}).get("items", [])
-                for item in items:
-                    try:
-                        if isinstance(item, dict):
-                            name = item.get("title")
-                            price = item.get("price")
-                            orig_price = item.get("originalPrice")
-                            disc_rate = item.get("discountRate")
-                            thumb = item.get("imageUrl")
-                            share_url = item.get("shareUrl")
+        # ⚡ [API Interceptor] 토스 백엔드 JSON response 도청 모듈
+         def on_response(response):
+            try:
+                if "sharelink.toss.im" in response.url:
+                    data = response.json()
+                    items = data.get("result", {}).get("items", [])
+                    for item in items:
+                        try:
+                            if isinstance(item, dict):
+                                name = item.get("title")
+                                price = item.get("price")
+                                orig_price = item.get("originalPrice")
+                                disc_rate = item.get("discountRate")
+                                thumb = item.get("imageUrl")
+                                share_url = item.get("shareUrl")
 
-                            if name and price:
-                                captured_api_products.append({
-                                    "name": str(name),
-                                    "price": int(price),
-                                    "original_price": orig_price,
-                                    "discount_rate": disc_rate,
-                                    "thumbnail": str(thumb) if thumb else None,
-                                    "share_link": str(share_url) if share_url else None
-                                })
-                    except Exception:
-                        pass
-        except Exception:
-            pass
+                                if name and price:
+                                    captured_api_products.append({
+                                        "name": str(name),
+                                        "price": int(price),
+                                        "original_price": orig_price,
+                                        "discount_rate": disc_rate,
+                                        "thumbnail": str(thumb) if thumb else None,
+                                        "share_link": str(share_url) if share_url else None
+                                    })
+                        except Exception:
+                            pass
+            except Exception:
+                pass
 
-    page.on("response", on_response)
+        page.on("response", on_response)
 
   for item in items:
             try:
