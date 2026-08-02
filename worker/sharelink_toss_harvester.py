@@ -284,18 +284,24 @@ def harvest_sharelink_portal():
                         page.wait_for_timeout(30000)
                         is_auth_success = page.locator("button:has-text('링크 발급')").count() > 0 or page.locator("text=링크 발급").count() > 0
                         print_log(f"🔄 2FA 대기 후 최종 로그인 성공 여부: {is_auth_success}")
-                    try:
-                        # 30초 동안 토스 앱 승인 대기
-                        page.wait_for_selector("button:has-text('링크 발급')", timeout=30000)
-                        print_log("🎉 [토스 앱 2FA 승인 확인] 핫딜 포털 공식 진입 성공!")
-                        storage = ctx.storage_state()
-                        with open(SESSION_PATH, "w", encoding="utf-8") as f:
-                            json.dump(storage, f, ensure_ascii=False, indent=2)
-                        print_log(f"💾 갱신된 세션 저장 완료: {SESSION_PATH}")
-                except Exception as login_err:
-                    print_log(f"❌ [자동 로그인 실패]: {login_err}")
-                    browser.close()
-                    return []
+                try:
+                    page.wait_for_selector("button:has-text('승인')", timeout=10000)
+                    print_log("🎉 [토스 앱 2FA 승인 완료]")
+                    storage = ctx.storage_state()
+                    with open(SESSION_PATH, "w", encoding="utf-8") as f:
+                        json.dump(storage, f, ensure_ascii=False, indent=2)
+                    print_log(f"💾 갱신된 세션 저장 완료")
+                except Exception as inner_e:
+                    print_log(f"⚠️ [2FA 타임아웃 또는 승인 실패]: {inner_e}")
+
+            except Exception as login_err:
+                print_log(f"❌ [자동 로그인 실패]: {login_err}")
+                browser.close()
+                return []
+            else:
+                print_log("⚠️ TOSS_USER_ID / TOSS_USER_PW 설정 없음")
+                browser.close()
+                return []
             else:
                 print_log("⚠️ TOSS_USER_ID / TOSS_USER_PW 환경변수가 외부 서버에 등록되지 않았습니다.")
                 browser.close()
