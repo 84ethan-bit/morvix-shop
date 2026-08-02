@@ -325,8 +325,8 @@ def harvest_sharelink_portal():
 
         dismiss_popups()
 
-            # 🟢 [Scope Fix] 수집기 실행 전 변수 정의 선언
-            collect_from_full_page = False
+        # 🟢 [Scope Fix] 수집기 실행 전 변수 정의 선언
+        collect_from_full_page = False
 
             # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             # [대표님 지정 1단계 검증] __NEXT_DATA__ 존재 여부, 크기, Key 구조, 상품 배열 덤프 진단
