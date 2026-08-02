@@ -1,12 +1,12 @@
 """
 =============================================================================
-MORVIX SHOP OS - Toss ShareLink Portal Harvester (Tab Click Navigation V6)
+MORVIX SHOP OS - Toss ShareLink Portal Harvester (Max Yield Harvester V8)
 worker/sharelink_toss_harvester.py
 
-[핵심 수정]
-1. URL 이동 대신 상단 탭('하루특가', 'BEST')을 직접 클릭하여 실제 개별 페이지 진입
-2. 섹션별 중복 감지 문제 완벽 해결
-3. 수집 완료 즉시 GH_TOKEN 기반 GitHub Auto Push 가동
+[최대 수집 확보 보완]
+1. 깊은 무한 스크롤(25회)로 200개+ 숨겨진 카드 마운트
+2. 상품 링크(a[href*='product']) & 카드 상자 정밀 타겟팅으로 유효 상품 탈락률 0% 지향
+3. 현 구조 유지 (기존 DB 누적 유지) -> 수집량 검증용
 =============================================================================
 """
 import sys
@@ -36,14 +36,13 @@ def print_log(msg):
 
 
 def push_to_github_automatically():
-    """Render 수집 완료 즉시 GH_TOKEN을 활용하여 GitHub 저장소로 Auto Push"""
+    """Render 수집 완료 즉시 GH_TOKEN을 활용하여 GitHub & Vercel로 Auto Push"""
     try:
         gh_token = os.environ.get("GH_TOKEN", "").strip()
         print_log("🚀 [AUTO GIT PUSH ENGINE] Render ➔ GitHub 자동 동기화 시도...")
 
-        if os.path.exists(WORKER_DB_PATH) and WORKER_DB_PATH != ROOT_DB_PATH:
+        if os.path.exists(WORKER_DB_PATH):
             shutil.copy(WORKER_DB_PATH, ROOT_DB_PATH)
-            print_log("📋 [DB COPY] worker DB ➔ 루트 DB 복사 완료")
 
         if not gh_token:
             print_log("⚠️ [GH_TOKEN 미설정] Render 환경변수 GH_TOKEN을 확인해 주세요.")
@@ -53,36 +52,42 @@ def push_to_github_automatically():
         
         subprocess.run(["git", "config", "user.name", "Morvix Auto Bot"], cwd=BASE_DIR, capture_output=True)
         subprocess.run(["git", "config", "user.email", "bot@morvix.kr"], cwd=BASE_DIR, capture_output=True)
-        subprocess.run(["git", "add", "morvix_shop_db.json", "worker/morvix_shop_db.json"], cwd=BASE_DIR, capture_output=True)
         
-        commit_msg = f"Auto: 365 Daily Toss deals sync [{datetime.now().strftime('%Y-%m-%d %H:%M')}]"
+        subprocess.run(["git", "add", "-f", ROOT_DB_PATH], cwd=BASE_DIR, capture_output=True)
+        subprocess.run(["git", "add", "-f", WORKER_DB_PATH], cwd=BASE_DIR, capture_output=True)
+        
+        commit_msg = f"Auto Harvest Check: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
         
-        push_res = subprocess.run(["git", "push", repo_url, "main"], cwd=BASE_DIR, capture_output=True, text=True)
+        push_res = subprocess.run(["git", "push", repo_url, "main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
         
         if push_res.returncode == 0:
-            print_log("🎉 [365 AUTO PUSH SUCCESS] Render가 GitHub로 최신 DB를 성공적으로 푸시했습니다! (Vercel 쇼핑몰 자동 반영 완료)")
+            print_log("🎉 [AUTO PUSH SUCCESS] 깃허브 반영 완료")
         else:
-            print_log(f"⚠️ Git Push 실패 로그: {push_res.stderr.strip()}")
+            print_log(f"⚠️ Git Push 실패: {push_res.stderr.strip()}")
 
     except Exception as e:
-        print_log(f"❌ Auto Git Push 예외 발생: {e}")
+        print_log(f"❌ Auto Git Push 예외: {e}")
 
 
-def collect_hybrid_data(page, section_name, section_key, priority_val, target_count=200):
-    print_log(f"🔎 [{section_name}] 전수 수집 시작 (목표 상한: {target_count}개)...")
+def collect_hybrid_data(page, section_name, section_key, priority_val, target_count=300):
+    print_log(f"🔎 [{section_name}] 최대 확보 수집 시작 (목표: {target_count}개)...")
     
     harvested = []
     seen_titles = set()
 
     try:
-        # 천천히 스크롤하며 마운트
-        for _ in range(12):
-            page.evaluate("window.scrollBy(0, 800)")
-            page.wait_for_timeout(300)
+        # 1. 무한 스크롤 깊게 수행 (25회)
+        print_log(f"📜 [{section_name}] 스크롤 다운 진행 중...")
+        for _ in range(25):
+            page.evaluate("window.scrollBy(0, 1000)")
+            page.wait_for_timeout(250)
 
-        cards = page.locator("article, div[class*='Card'], div[class*='Item'], a[href*='product']").all()
-        print_log(f"📍 [{section_name}] 감지된 카드 구조: {len(cards)}개")
+        page.wait_for_timeout(1000)
+
+        # 2. 카드 요소 다각도 포착 (중복 껍데기 제거하고 상품 단위 요소 추출)
+        cards = page.locator("a[href*='product'], div[class*='Product'], div[class*='ItemCard'], article").all()
+        print_log(f"📍 [{section_name}] 감지된 전체 카드 구조: {len(cards)}개")
 
         for idx, card in enumerate(cards):
             if len(harvested) >= target_count:
@@ -94,10 +99,11 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
 
                 lines = [l.strip() for l in raw_text.split('\n') if l.strip()]
                 
+                # 상품명 유연성 확보 (탈락 최소화)
                 candidate_titles = []
                 for l in lines:
-                    if len(l) >= 4 and not re.match(r'^[\d,%원\-~★☆.()\s]+$', l):
-                        if not any(k in l for k in ['링크 발급', '수익금', '무료배송', '적립', '오늘출발']):
+                    if len(l) >= 3 and not re.match(r'^[\d,%원\-~★☆.()\s]+$', l):
+                        if not any(k == l for k in ['링크 발급', '오늘특가', '무료배송', '적립', '오늘출발', '혜택']):
                             candidate_titles.append(l)
 
                 if not candidate_titles:
@@ -107,23 +113,26 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
                 if title in seen_titles:
                     continue
 
+                # 가격 정밀 파싱
                 prices = re.findall(r'([\d,]+)\s*원', raw_text)
                 valid_prices = []
                 for p in prices:
                     num = int(p.replace(',', ''))
-                    if 500 <= num <= 10000000:
+                    if 500 <= num <= 20000000:
                         valid_prices.append(num)
 
                 if not valid_prices:
                     continue
                 price = min(valid_prices)
 
+                # 할인율
                 disc_match = re.search(r'(\d+)\s*[%％]', raw_text)
                 discount_rate = f"{disc_match.group(1)}%" if disc_match else ""
 
+                # 썸네일
                 img_url = card.evaluate(r"""el => {
                     const img = el.querySelector('img');
-                    return img ? (img.currentSrc || img.src || '') : '';
+                    return img ? (img.currentSrc || img.src || img.getAttribute('data-src') || '') : '';
                 }""")
                 if not img_url or not img_url.startswith('http'):
                     img_url = "https://static.toss.im/icons/png/4x/icon-toss-logo.png"
@@ -152,7 +161,7 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
 
 
 def harvest_sharelink_portal():
-    print_log("🚀 [TOSS SHARELINK HARVESTER] 탭 직접 클릭 방식 전수 수집 가동")
+    print_log("🚀 [TOSS SHARELINK HARVESTER] 최대 수집 확보 파서 가동")
 
     use_session = os.path.exists(SESSION_PATH)
     all_harvested_deals = []
@@ -178,10 +187,10 @@ def harvest_sharelink_portal():
             page.goto("https://sharelink.toss.im/home", timeout=30000)
             page.wait_for_timeout(3000)
 
-            # ── [1순위] 오늘만 이가격 (하루특가) 탭 직접 클릭 ──
-            print_log("━━━ [1순위] '오늘만 이가격/하루특가' 영역 클릭 진입 ━━━")
+            # 1. 하루특가 수집
+            print_log("━━━ [1순위] 하루특가 영역 수집 ━━━")
             try:
-                clicked = page.evaluate("""() => {
+                page.evaluate("""() => {
                     const btns = [...document.querySelectorAll('button, a, div, span')];
                     for (const b of btns) {
                         const txt = (b.innerText || '').trim();
@@ -192,21 +201,20 @@ def harvest_sharelink_portal():
                     }
                     return false;
                 }""")
-                print_log(f"📍 하루특가 탭 클릭 결과: {clicked}")
-                page.wait_for_timeout(2000)
+                page.wait_for_timeout(2500)
 
-                today_deals = collect_hybrid_data(page, "하루특가", "today_price", 1, target_count=200)
+                today_deals = collect_hybrid_data(page, "하루특가", "today_price", 1, target_count=300)
                 all_harvested_deals.extend(today_deals)
             except Exception as e:
                 print_log(f"❌ 하루특가 예외: {e}")
 
-            # ── [2순위] BEST 탭 직접 클릭 ──
-            print_log("━━━ [2순위] 'BEST' 탭 클릭 진입 ━━━")
+            # 2. BEST 수집
+            print_log("━━━ [2순위] BEST 영역 수집 ━━━")
             try:
                 page.goto("https://sharelink.toss.im/home", timeout=30000)
                 page.wait_for_timeout(2000)
 
-                clicked = page.evaluate("""() => {
+                page.evaluate("""() => {
                     const btns = [...document.querySelectorAll('button, a, div, span')];
                     for (const b of btns) {
                         const txt = (b.innerText || '').trim();
@@ -217,10 +225,9 @@ def harvest_sharelink_portal():
                     }
                     return false;
                 }""")
-                print_log(f"📍 BEST 탭 클릭 결과: {clicked}")
-                page.wait_for_timeout(2000)
+                page.wait_for_timeout(2500)
 
-                best_deals = collect_hybrid_data(page, "BEST 랭킹", "best_seller", 2, target_count=200)
+                best_deals = collect_hybrid_data(page, "BEST 랭킹", "best_seller", 2, target_count=300)
                 all_harvested_deals.extend(best_deals)
             except Exception as e:
                 print_log(f"❌ BEST 예외: {e}")
@@ -230,7 +237,7 @@ def harvest_sharelink_portal():
 
         browser.close()
 
-    print_log(f"🏆 총 {len(all_harvested_deals)}개 상품 파싱 완료 ➔ DB 저장 진입")
+    print_log(f"🏆 총 {len(all_harvested_deals)}개 신규 수집 완료 ➔ DB 저장 진입")
     if all_harvested_deals:
         update_db_with_deals(all_harvested_deals)
 
@@ -315,7 +322,7 @@ def update_db_with_deals(deals):
     with open(WORKER_DB_PATH, "w", encoding="utf-8") as f:
         json.dump(db, f, ensure_ascii=False, indent=2)
 
-    print_log(f"🎉 morvix_shop_db.json DB 저장 완료! (총 {len(db['products'])}개 상품 확정)")
+    print_log(f"🎉 morvix_shop_db.json DB 저장 완료! (현재 총 {len(db['products'])}개 상품 유지 중)")
     
     push_to_github_automatically()
 
