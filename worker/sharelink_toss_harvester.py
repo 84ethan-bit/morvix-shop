@@ -218,7 +218,7 @@ def harvest_sharelink_portal():
             current_url = page.url
             print_log(f"📍 현재 URL: {current_url}")
 
-           # URL 및 DOM 요소를 동시에 검사하여 SPA 로그인 화면 감지
+            # URL 및 DOM 요소를 동시에 검사하여 SPA 로그인 화면 감지
             has_login_input = page.locator("input[name='email']").count() > 0 or page.locator("button:has-text('로그인')").count() > 0 or page.locator("button:has-text('이메일/ID')").count() > 0
             has_share_btn = page.locator("button:has-text('링크 발급')").count() > 0 or page.locator("text=링크 발급").count() > 0
             is_login_page = (("login" in current_url or "auth" in current_url or "sign-in" in current_url) and not has_share_btn) or has_login_input
@@ -239,13 +239,13 @@ def harvest_sharelink_portal():
                         if page.locator("input[name='password']").count() > 0:
                             page.fill("input[name='password']", user_pw)
                             print_log("📋 [4. 비밀번호 입력 성공 여부]: True")
-                        
+
                         page.wait_for_timeout(1000)
 
                         if page.locator("button:has-text('로그인')").count() > 0:
                             page.click("button:has-text('로그인')")
                             print_log("📋 [5. 로그인 버튼 클릭 성공 여부]: True")
-                        
+
                         print_log("⏳ 로그인 후 이동 대기 중...")
                         page.wait_for_timeout(5000)
 
@@ -253,6 +253,18 @@ def harvest_sharelink_portal():
                         print_log(f"📋 [6. 클릭 후 현재 URL]: {current_post_login_url}")
                     except Exception as login_err:
                         print_log(f"❌ 자동 로그인 과정에서 예외 발생: {login_err}")
+
+                    # 2FA 승인 세션 저장 처리
+                    try:
+                        page.wait_for_selector("button:has-text('승인')", timeout=10000)
+                        print_log("🎉 [토스 앱 2FA 승인 완료]")
+                        storage = ctx.storage_state()
+                        with open(SESSION_PATH, "w", encoding="utf-8") as f:
+                            json.dump(storage, f, ensure_ascii=False, indent=2)
+                        print_log(f"💾 갱신된 세션 저장 완료")
+                    except Exception as inner_e:
+                        print_log(f"⚠️ [2FA 타임아웃 또는 승인 실패]: {inner_e}")
+
                 else:
                     print_log("⚠️ 로그인 정보(TOSS_USER_ID/TOSS_USER_PW)가 환경변수에 없습니다.")
                     try:
@@ -284,53 +296,34 @@ def harvest_sharelink_portal():
                         page.wait_for_timeout(30000)
                         is_auth_success = page.locator("button:has-text('링크 발급')").count() > 0 or page.locator("text=링크 발급").count() > 0
                         print_log(f"🔄 2FA 대기 후 최종 로그인 성공 여부: {is_auth_success}")
-                try:
-                    page.wait_for_selector("button:has-text('승인')", timeout=10000)
-                    print_log("🎉 [토스 앱 2FA 승인 완료]")
-                    storage = ctx.storage_state()
-                    with open(SESSION_PATH, "w", encoding="utf-8") as f:
-                        json.dump(storage, f, ensure_ascii=False, indent=2)
-                    print_log(f"💾 갱신된 세션 저장 완료")
-                except Exception as inner_e:
-                    print_log(f"⚠️ [2FA 타임아웃 또는 승인 실패]: {inner_e}")
 
-            except Exception as login_err:
-                print_log(f"❌ [자동 로그인 실패]: {login_err}")
-                browser.close()
-                return []
-            else:
-                print_log("⚠️ TOSS_USER_ID / TOSS_USER_PW 설정 없음")
-                browser.close()
-                return []
-            else:
-                print_log("⚠️ TOSS_USER_ID / TOSS_USER_PW 환경변수가 외부 서버에 등록되지 않았습니다.")
-                browser.close()
-                return []
+        except Exception as main_err:
+            print_log(f"❌ 전체 수집 과정 오작동: {main_err}")
 
-           # [STEP 1] 홈 접속 성공
-            print_log(f"📌 [STEP 1] 홈 접속 성공 | URL: {page.url} | Title: {page.title()}")
+        # [STEP 1] 홈 접속 성공
+        print_log(f"📌 [STEP 1] 홈 접속 성공 | URL: {page.url} | Title: {page.title()}")
 
-            # [STEP 2] 팝업 존재 여부 및 닫기
-            def dismiss_popups():
-                try:
-                    close_btns = page.locator("button:has-text('닫기'), button:has-text('나중에 하기'), button:has-text('확인'), [aria-label='닫기'], .modal-close")
-                    pop_count = close_btns.count()
-                    has_pop = pop_count > 0
-                    print_log(f"📌 [STEP 2] 팝업 존재 여부 | Popup detected: {has_pop} ({pop_count}개)")
-                    if has_pop:
-                        for i in range(pop_count):
-                            try:
-                                close_btns.nth(i).click(timeout=1500, force=True)
-                                page.wait_for_timeout(500)
-                            except Exception:
-                                pass
-                        print_log(f"📌 [STEP 2] 팝업 처리 결과 | Popup dismissed: True")
-                    else:
-                        print_log(f"📌 [STEP 2] 팝업 처리 결과 | Popup dismissed: False")
-                except Exception as p_err:
-                    print_log(f"⚠️ [STEP 2] 팝업 처리 오류: {p_err}")
+        # [STEP 2] 팝업 존재 여부 및 닫기
+        def dismiss_popups():
+            try:
+                close_btns = page.locator("button:has-text('닫기'), button:has-text('나중에 하기'), button:has-text('확인'), [aria-label='닫기'], .modal-close")
+                pop_count = close_btns.count()
+                has_pop = pop_count > 0
+                print_log(f"📌 [STEP 2] 팝업 존재 여부 | Popup detected: {has_pop} ({pop_count}개)")
+                if has_pop:
+                    for i in range(pop_count):
+                        try:
+                            close_btns.nth(i).click(timeout=1500, force=True)
+                            page.wait_for_timeout(500)
+                        except Exception:
+                            pass
+                    print_log(f"📌 [STEP 2] 팝업 처리 결과 | Popup dismissed: True")
+                else:
+                    print_log(f"📌 [STEP 2] 팝업 처리 결과 | Popup dismissed: False")
+            except Exception as p_err:
+                print_log(f"⚠️ [STEP 2] 팝업 처리 오류: {p_err}")
 
-            dismiss_popups()
+        dismiss_popups()
 
             # 🟢 [Scope Fix] 수집기 실행 전 변수 정의 선언
             collect_from_full_page = False
