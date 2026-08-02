@@ -201,6 +201,7 @@ def harvest_sharelink_portal():
                 pass
 
 for item in items:
+            try:
                 if isinstance(item, dict):
                     name = item.get("title")
                     price = item.get("price")
@@ -215,12 +216,11 @@ for item in items:
                             "price": int(price),
                             "original_price": orig_price,
                             "discount_rate": disc_rate,
-                            "thumbnail": str(thumb) if thumb else "",
-                            "share_link": str(share_url) if share_url else ""
+                            "thumbnail": str(thumb) if thumb else None,
+                            "share_link": str(share_url) if share_url else None
                         })
-        except Exception:
+            except Exception:
                 pass
-
         page.on("response", on_response)
 
 
