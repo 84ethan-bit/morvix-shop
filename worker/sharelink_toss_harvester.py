@@ -140,20 +140,26 @@ def harvest_sharelink_portal():
         captured_links = {}
         captured_api_products = []  # ⚡ [API Interceptor] 토스 백엔드 JSON 원본 상품 수집함
         capture_lock = [0]  # [현재 캡처 대상 idx] - Race Condition 방어용 원자적 단방향 잠금
-# 🟢 [1단계 픽스] collect_from_full_page 정의
+# 🟢 [수정] 대기시간 강화 및 선택자 보강 버전
         def collect_from_full_page(section_name, section_key, rank_offset=1):
-            print_log(
-                f"🔎 [{section_name}] 전수 수집 파싱 시작 (Key: {section_key})...")
+            print_log(f"🔎 [{section_name}] 전수 수집 파싱 시작 (Key: {section_key})...")
             
             seen_titles = set()
             collected_count = 0
 
             try:
+                # 1) 요소를 확실히 그리도록 3초 확실하게 대기
+                page.wait_for_timeout(3000)
+
+                # 2) 토스 특유의 텍스트/버튼 기반 및 카드 요소 다각도 탐색
                 cards = page.locator(
-                    "article, div[class*='card'], div[class*='item'], div[class*='product']").all()
+                    "article, div[class*='card'], div[class*='item'], div[class*='product'], div[class*='List'], li"
+                ).all()
+                
                 if not cards:
-                    cards = page.locator(
-                        "button:has-text('링크 발급')/ancestor::div[2]").all()
+                    cards = page.locator("button:has-text('링크 발급')/ancestor::div[2]").all()
+
+                print_log(f"📍 [{section_name}] 감지된 카드 요소 개수: {len(cards)}개")
 
                 for idx, card in enumerate(cards):
                     try:
@@ -161,7 +167,14 @@ def harvest_sharelink_portal():
                         if not text_content:
                             continue
 
-                        title = text_content[0].strip() if len(text_content) > 0 else ""
+                        # 공백 제거 및 유효한 상품명 추출
+                        title = ""
+                        for line in text_content:
+                            line_str = line.strip()
+                            if len(line_str) > 1 and "링크" not in line_str and "발급" not in line_str:
+                                title = line_str
+                                break
+
                         if not title or title in seen_titles:
                             continue
 
@@ -171,8 +184,7 @@ def harvest_sharelink_portal():
                     except Exception as card_err:
                         continue
 
-                print_log(
-                    f"✅ [{section_name}] 전수 수집 완료: 총 {collected_count}개 수집됨")
+                print_log(f"✅ [{section_name}] 전수 수집 완료: 총 {collected_count}개 수집됨")
             except Exception as sec_err:
                 print_log(f"⚠️ [{section_name}] 수집 중 예외 발생: {sec_err}")
 
@@ -1377,4 +1389,3 @@ if __name__ == "__main__":
         save_session()
     else:
         harvest_sharelink_portal()
-# Force deploy update
