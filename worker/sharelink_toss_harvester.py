@@ -400,28 +400,25 @@ def harvest_sharelink_portal():
                 if cur_btn_count == prev_btn_count and scroll_idx >= 5:
                     break
                 prev_btn_count = cur_btn_count
-
-            # 하루특가 수집 진행 (안전 호출)
+        # 하루특가 수집 진행 (안전 호출)
         try:
-            collect_from_full_page("하루특가", "today_price", 1)
+            collect_from_full_page("하루특가", "today_price")
         except Exception as call_err:
             print_log(f"⚠️ 하루특가 함수 호출 예외 방어: {call_err}")
 
-    except Exception as e:
-        print_log(f" ❌ 하루특가 수집 프로세스 오류: {e}")
-          # ── 2순위: 지금 많이 팔리는 BEST 전수 수집 ──
-          print_log("━━━ [2순위] 지금 많이 팔리는 BEST 전수 수집 프로세스 가동 ━━━")
-           try:
-                target_best_url = "https://sharelink.toss.im/links/best-ranking"
-                print_log(f"🎯 [BEST 랭킹 라우트 직접 진입] -> {target_best_url}")
-                page.goto(target_best_url, wait_until="networkidle")
-                page.wait_for_timeout(3000)
+        # --------------------------------------------------
+        # — 2순위: 지금 많이 팔리는 BEST 전수 수집 —
+        print_log("— [2순위] 지금 많이 팔리는 BEST 전수 수집 —")
+        try:
+            target_best_url = "https://sharelink.toss.im/best"
+            print_log(f"🎯 [BEST 랭킹 라우트 직접 진입]: {target_best_url}")
+            page.goto(target_best_url, wait_until="networkidle")
+            page.wait_for_timeout(3000)
 
-                print_log("📜 BEST 상품 마운트를 위한 스크롤 수행 중...")
-                for scroll_idx in range(1, 6):
-                    page.evaluate(
-                        "window.scrollTo(0, document.body.scrollHeight)")
-                    page.wait_for_timeout(1000)
+            print_log("📜 BEST 상품 마운트를 위한 스크롤 진행...")
+            for scroll_idx in range(1, 6):
+                page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                page.wait_for_timeout(1000)
 
                 # BEST 랭킹 수집 진행
                 collect_from_full_page("지금 많이 팔리는 BEST", "best_seller", 2)
