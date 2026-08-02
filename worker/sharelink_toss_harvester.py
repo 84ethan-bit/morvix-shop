@@ -140,13 +140,12 @@ def harvest_sharelink_portal():
         captured_links = {}
         captured_api_products = []  # ⚡ [API Interceptor] 토스 백엔드 JSON 원본 상품 수집함
         capture_lock = [0]  # [현재 캡처 대상 idx] - Race Condition 방어용 원자적 단방향 잠금
-# 🟢 [1단계 픽스] collect_from_full_page 정의 및 KeyError 방어 함수
+# 🟢 [1단계 픽스] collect_from_full_page 정의
         def collect_from_full_page(section_name, section_key, rank_offset=1):
             print_log(
                 f"🔎 [{section_name}] 전수 수집 파싱 시작 (Key: {section_key})...")
             
-            # 외부/상위 스코프 변수 안전 참조
-            nonlocal seen_titles
+            seen_titles = set()
             collected_count = 0
 
             try:
@@ -162,8 +161,7 @@ def harvest_sharelink_portal():
                         if not text_content:
                             continue
 
-                        title = text_content[0].strip() if len(
-                            text_content) > 0 else ""
+                        title = text_content[0].strip() if len(text_content) > 0 else ""
                         if not title or title in seen_titles:
                             continue
 
@@ -179,7 +177,6 @@ def harvest_sharelink_portal():
                 print_log(f"⚠️ [{section_name}] 수집 중 예외 발생: {sec_err}")
 
             return collected_count
-
         # ⚡ [API Interceptor] 토스 백엔드 JSON response
         def on_response(response):
             try:
@@ -363,7 +360,6 @@ def harvest_sharelink_portal():
         dismiss_popups()
 
         # 🟢 [Scope Fix] 수집기 실행 전 변수 정의
-        collect_from_full_page = False
 
         print_log("--------------------------------------------------")
 # --------------------------------------------------
