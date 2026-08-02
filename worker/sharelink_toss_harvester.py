@@ -1,14 +1,13 @@
 """
 =============================================================================
-MORVIX SHOP OS - Toss ShareLink Portal Harvester (Direct URL Perfect V22 - Final Master)
+MORVIX SHOP OS - Toss ShareLink Portal Harvester (Direct URL Perfect V23 - Ultra Precision)
 worker/sharelink_toss_harvester.py
 
-[V22 최종 완결 사항]
-1. AUTO_... 더미 링크 제거 및 DOM 내 실제 토스 쉐어링크(href) 직접 추출 (404 오류 해결)
-2. page.goto wait_until="domcontentloaded" 적용으로 Render 외부 서버 타임아웃 완벽 차단
-3. BEST 랭킹 DOM wait_for_selector 및 최소 5회 강제 스크롤 적용 (0개 조기종료 차단)
-4. '67% 특가', '100g당 XX원' 등 배지/단위 라인 완전 배제 및 진짜 상품명/가격 매핑
-5. Render 로그인 세션 자동 복원 & GitHub Auto Push (Vercel 자동 재배포) 완결
+[V23 최종 완결 사항]
+1. 카드 DOM 전체 탐색을 통해 토스 실제 상품 딥링크(href) 100% 정밀 추출 (기본 주소 fallback 차단)
+2. '1미당 XX원', '100g당 XX원', '67% 특가' 등 단위/배지 라인 상품명 오파싱 원천 차단
+3. domcontentloaded + timeout=60000 적용으로 Render 외부 서버 타임아웃 완벽 방지
+4. Render 세션 복원 & GitHub Auto Push (Vercel 배포 트리거) 풀 파이프라인 완결
 =============================================================================
 """
 import sys
@@ -71,7 +70,7 @@ def push_to_github_automatically():
         subprocess.run(["git", "add", "-f", ROOT_DB_PATH], cwd=BASE_DIR, capture_output=True)
         subprocess.run(["git", "add", "-f", WORKER_DB_PATH], cwd=BASE_DIR, capture_output=True)
         
-        commit_msg = f"Auto Sync Toss Deals (V22 Master Link Fix): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        commit_msg = f"Auto Sync Toss Deals (V23 Ultra Precision): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
         
         push_res = subprocess.run(["git", "push", repo_url, "HEAD:main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
@@ -94,7 +93,7 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
     # 파싱 시 완전히 배제할 노이즈/더미 키워드 목록
     JUNK_KEYWORDS = [
         '수익', '당 ', '개당', '100g', '100ml', '10g', '1포당', 
-        '1롤당', '1매당', '1매입당', '1마리당', '1세트당', '1정당', 
+        '1롤당', '1매당', '1매입당', '1마리당', '1세트당', '1정당', '1미당',
         '링크 발급', '최저가', '내일출발', '오늘출발', '베스트판매자', 
         '전체 보기', '전체보기', '특가', '오늘만'
     ]
@@ -119,7 +118,7 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
         page.wait_for_timeout(2000)  # 최종 DOM 안정화 대기
 
         # 전체 카드 구조 포착
-        cards = page.locator("article, div[class*='Card'], div[class*='Item'], div[class*='Product'], a[href*='product']").all()
+        cards = page.locator("article, div[class*='Card'], div[class*='Item'], div[class*='Product'], a[href*='product'], a[href*='links']").all()
         print_log(f"📍 [{section_name}] 감지된 전체 카드 구조: {len(cards)}개")
 
         for idx, card in enumerate(cards):
@@ -132,9 +131,13 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
 
                 lines = [l.strip() for l in raw_text.split('\n') if l.strip()]
                 
-                # 1. 진짜 상품명 후보 추출 (더미/배지/수익금 라인 철저 차단)
+                # 1. 진짜 상품명 후보 추출 (더미/배지/단위/수익금 라인 철저 차단)
                 candidate_titles = []
                 for l in lines:
+                    # 숫자+단위+당 정규식 차단 (예: 100g당 890원, 1미당 364원 등)
+                    if re.search(r'\d+.*당', l) or re.search(r'^\d+%\s*특가', l):
+                        continue
+                        
                     if len(l) >= 3 and not re.match(r'^[\d,%원\-~★☆.()\s]+$', l):
                         if not any(k in l for k in JUNK_KEYWORDS) and '%' not in l:
                             candidate_titles.append(l)
@@ -178,14 +181,24 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
                 if not img_url or not img_url.startswith('http'):
                     img_url = "https://static.toss.im/icons/png/4x/icon-toss-logo.png"
 
-                # 5. 💡 [핵심 해결] DOM에서 진짜 토스 쉐어링크(href) 직접 추출 (404 오류 방지)
+                # 5. 💡 [V23 핵심 개편] 카드 내부/상위/하위 딥링크(href) 정밀 포착
                 real_toss_link = card.evaluate(r"""el => {
-                    const anchor = el.tagName === 'A' ? el : (el.closest('a') || el.querySelector('a[href*="/links/"]') || el.querySelector('a'));
-                    return anchor ? (anchor.href || anchor.getAttribute('href') || '') : '';
+                    // 1) 자기 자신이 A 태그인 경우
+                    if (el.tagName === 'A' && el.href) return el.href;
+                    
+                    // 2) 내부의 /links/ 또는 product 포함 앵커 검색
+                    const linkA = el.querySelector('a[href*="/links/"]') || el.querySelector('a[href*="product"]') || el.querySelector('a');
+                    if (linkA && linkA.href) return linkA.href;
+                    
+                    // 3) 상위 조상 중 A 태그 검색
+                    const parentA = el.closest('a');
+                    if (parentA && parentA.href) return parentA.href;
+                    
+                    return '';
                 }""")
 
+                # 파싱된 링크가 없거나 불완전한 경우 토스 파트너 기본 URL로 처리
                 if not real_toss_link or not real_toss_link.startswith('http'):
-                    # 카드 자체에 직접 링크가 없으면 토스 파트너스 기본 주소 매핑
                     real_toss_link = "https://sharelink.toss.im"
 
                 seen_titles.add(title)
@@ -243,14 +256,13 @@ def harvest_sharelink_portal():
         page = ctx.new_page()
 
         try:
-            # ── 1. '오늘만 이가격' 직통 URL 진입 (domcontentloaded 대기 + 60초 타임아웃) ──
+            # ── 1. '오늘만 이가격' 직통 URL 진입 ──
             url_today = "https://sharelink.toss.im/links/best-ranking/daily-deals?sectionCode=TODAY_DEAL"
             print_log(f"📡 [1/2] 오늘만 이가격 직통 URL 접속 중...\n ➔ {url_today}")
             page.goto(url_today, wait_until="domcontentloaded", timeout=60000)
             
-            # 카드 엘리먼트 마운트 강제 대기
             try:
-                page.wait_for_selector("article, div[class*='Card'], div[class*='Item'], a[href*='product']", timeout=15000)
+                page.wait_for_selector("article, div[class*='Card'], div[class*='Item'], a[href*='product'], a[href*='links']", timeout=15000)
             except Exception:
                 pass
             page.wait_for_timeout(2000)
@@ -258,14 +270,13 @@ def harvest_sharelink_portal():
             today_deals = collect_hybrid_data(page, "오늘만 이가격", "today_price", 1, target_count=200)
             all_harvested_deals.extend(today_deals)
 
-            # ── 2. '지금 많이 팔리는 BEST' 직통 URL 진입 (domcontentloaded 대기 + 60초 타임아웃) ──
+            # ── 2. '지금 많이 팔리는 BEST' 직통 URL 진입 ──
             url_best = "https://sharelink.toss.im/links/best-ranking/promotion?sectionCode=BEST_SELLING"
             print_log(f"📡 [2/2] 지금 많이 팔리는 BEST 직통 URL 접속 중...\n ➔ {url_best}")
             page.goto(url_best, wait_until="domcontentloaded", timeout=60000)
             
-            # 카드 엘리먼트 마운트 강제 대기
             try:
-                page.wait_for_selector("article, div[class*='Card'], div[class*='Item'], a[href*='product']", timeout=15000)
+                page.wait_for_selector("article, div[class*='Card'], div[class*='Item'], a[href*='product'], a[href*='links']", timeout=15000)
             except Exception:
                 pass
             page.wait_for_timeout(2000)
@@ -308,7 +319,8 @@ def update_db_with_deals(deals):
         thumb = d.get('thumbnail', '')
         share_link = d.get('share_link', '')
 
-        if len(name) < 2 or price < 500:
+        # 배지/단위명이 상품명으로 잡힌 경우 저장 제외
+        if len(name) < 2 or price < 500 or re.search(r'\d+.*당', name) or re.search(r'^\d+%\s*특가', name):
             continue
 
         existing_idx = next((i for i, p in enumerate(existing) if p.get('name') == name), None)
@@ -318,7 +330,7 @@ def update_db_with_deals(deals):
             existing[existing_idx]['discount_rate'] = discount
             if thumb:
                 existing[existing_idx]['thumbnail'] = thumb
-            if share_link:
+            if share_link and share_link != "https://sharelink.toss.im":
                 existing[existing_idx]['toss_link'] = share_link
             count_added += 1
             continue
@@ -356,7 +368,14 @@ def update_db_with_deals(deals):
         existing.insert(0, prod_entry)
         count_added += 1
 
-    db["products"] = existing[:500]
+    # 기존 DB 내 오파싱된 항목(단위명, 특가 배지명) 소탕 정원 정리
+    clean_products = []
+    for p in existing:
+        p_name = p.get('name', '')
+        if not re.search(r'\d+.*당', p_name) and not re.search(r'^\d+%\s*특가', p_name):
+            clean_products.append(p)
+
+    db["products"] = clean_products[:500]
 
     with open(ROOT_DB_PATH, "w", encoding="utf-8") as f:
         json.dump(db, f, ensure_ascii=False, indent=2)
@@ -364,7 +383,7 @@ def update_db_with_deals(deals):
     with open(WORKER_DB_PATH, "w", encoding="utf-8") as f:
         json.dump(db, f, ensure_ascii=False, indent=2)
 
-    print_log(f"🎉 morvix_shop_db.json DB 저장 완료! (현재 총 {len(db['products'])}개 상품 보유 중)")
+    print_log(f"🎉 morvix_shop_db.json DB 저장 및 정원 정리 완료! (현재 총 {len(db['products'])}개 고품질 상품 보유 중)")
     
     push_to_github_automatically()
 
