@@ -200,7 +200,7 @@ def harvest_sharelink_portal():
             except Exception:
                 pass
 
-        for item in items:
+  for item in items:
             try:
                 if isinstance(item, dict):
                     name = item.get("title")
@@ -221,20 +221,21 @@ def harvest_sharelink_portal():
                         })
             except Exception:
                 pass
-            
-   page.on("response", on_response)
-     try:
-        print_log("📡 https://sharelink.toss.im/home 접속 중...")
-        try:
-            page.goto("https://sharelink.toss.im/home", timeout=30000)
-        except Exception as e:
-            print_log(f"⚠️ /home 접속 지연, 메인 페이지 재접속...")
-            try:
-                page.goto("https://sharelink.toss.im/home", timeout=60000)
-            except Exception as e2:
-                print_log(f"⚠️ 메인 페이지 접속 도중 오류: {e2}")
 
-        page.wait_for_timeout(3000)
+        page.on("response", on_response)
+
+        try:
+            print_log("📡 https://sharelink.toss.im/home 접속 중...")
+            try:
+                page.goto("https://sharelink.toss.im/home", timeout=30000)
+            except Exception as e:
+                print_log(f"⚠️ /home 접속 지연, 메인 페이지 재접속...")
+                try:
+                    page.goto("https://sharelink.toss.im/home", timeout=60000)
+                except Exception as e2:
+                    print_log(f"⚠️ 메인 페이지 접속 도중 오류: {e2}")
+
+            page.wait_for_timeout(3000)
 
             # React SPA 초기화 대기
             try:
