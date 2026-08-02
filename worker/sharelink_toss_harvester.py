@@ -255,54 +255,54 @@ def harvest_sharelink_portal():
                         print_log(f"❌ 자동 로그인 과정에서 예외 발생: {login_err}")
                 else:
                     print_log("⚠️ 로그인 정보(TOSS_USER_ID/TOSS_USER_PW)가 환경변수에 없습니다.")
-                       try:
-                            after_login_screenshot = os.path.join(BASE_DIR, "scratch", "after_login.png")
-                            page.screenshot(path=after_login_screenshot, full_page=True)
-                            print_log(f"📋 [7. 클릭 후 스크린샷]: {after_login_screenshot}")
-                        except Exception as ss_err:
-                            print_log(f"스크린샷 저장 실패: {ss_err}")
+                    try:
+                        after_login_screenshot = os.path.join(BASE_DIR, "scratch", "after_login.png")
+                        page.screenshot(path=after_login_screenshot, full_page=True)
+                        print_log(f"📋 [7. 클릭 후 스크린샷]: {after_login_screenshot}")
+                    except Exception as ss_err:
+                        print_log(f"스크린샷 저장 실패: {ss_err}")
 
-                        snippet = page.content()[:500].replace('\n', ' ')
-                        print_log(f"📋 [8. page.content() 앞 500자]: {snippet}")
+                    snippet = page.content()[:500].replace('\n', ' ')
+                    print_log(f"📋 [8. page.content() 앞 500자]: {snippet}")
 
-                        # DOM 기반 최종 진입 성공 검증
-                        is_auth_success = page.locator("button:has-text('링크 발급')").count() > 0 or page.locator("text=링크 발급").count() > 0
-                        print_log(f"🎯 로그인 성공 여부 (DOM '링크 발급' 검증): {is_auth_success}")
+                    # DOM 기반 최종 진입 성공 검증
+                    is_auth_success = page.locator("button:has-text('링크 발급')").count() > 0 or page.locator("text=링크 발급").count() > 0
+                    print_log(f"🎯 로그인 성공 여부 (DOM '링크 발급' 검증): {is_auth_success}")
 
-                        if is_auth_success:
-                            print_log("🎉 [자동 로그인 성공] 실시간 핫딜 포털 진입 완료!")
-                        else:
-                            print_log("🚨 [토스 2FA 본인인증 요구 감지] 스마트폰 토스 앱에서 '로그인 확인' 승인 대기 (30초 대기)...")
-                            try:
-                                if page.locator("button:has-text('알림 다시 받기')").count() > 0:
-                                    page.click("button:has-text('알림 다시 받기')")
-                                    print_log("📲 [푸시 알림 재전송 클릭] 대표님 스마트폰 토스 앱으로 알림 발송 완료!")
-                            except Exception as push_err:
-                                print_log(f"알림 클릭 스킵: {push_err}")
-
-                            # 2FA 앱 승인 대기 (30초)
-                            page.wait_for_timeout(30000)
-                            is_auth_success = page.locator("button:has-text('링크 발급')").count() > 0 or page.locator("text=링크 발급").count() > 0
-                            print_log(f"🔄 2FA 대기 후 최종 로그인 성공 여부: {is_auth_success}")
+                    if is_auth_success:
+                        print_log("🎉 [자동 로그인 성공] 실시간 핫딜 포털 진입 완료!")
+                    else:
+                        print_log("🚨 [토스 2FA 본인인증 요구 감지] 스마트폰 토스 앱에서 '로그인 확인' 승인 대기 (30초 대기)...")
                         try:
-                            # 30초 동안 토스 앱 승인 대기
-                            page.wait_for_selector("button:has-text('링크 발급')", timeout=30000)
-                            print_log("🎉 [토스 앱 2FA 승인 확인] 핫딜 포털 공식 진입 성공!")
-                            storage = ctx.storage_state()
-                            with open(SESSION_PATH, "w", encoding="utf-8") as f:
-                                json.dump(storage, f, ensure_ascii=False, indent=2)
-                            print_log(f"💾 갱신된 세션 저장 완료: {SESSION_PATH}")
-                        except Exception:
-                            print_log("⚠️ [2FA 타임아웃] 스마트폰 앱 승인이 지연되었습니다. 다음 루프에서 재시도합니다.")
+                            if page.locator("button:has-text('알림 다시 받기')").count() > 0:
+                                page.click("button:has-text('알림 다시 받기')")
+                                print_log("📲 [푸시 알림 재전송 클릭] 대표님 스마트폰 토스 앱으로 알림 발송 완료!")
+                        except Exception as push_err:
+                            print_log(f"알림 클릭 스킵: {push_err}")
 
-                    except Exception as login_err:
-                        print_log(f"❌ [자동 로그인 실패]: {login_err}")
-                        browser.close()
-                        return []
-                else:
-                    print_log("⚠️ TOSS_USER_ID / TOSS_USER_PW 환경변수가 외부 서버에 등록되지 않았습니다.")
+                        # 2FA 앱 승인 대기 (30초)
+                        page.wait_for_timeout(30000)
+                        is_auth_success = page.locator("button:has-text('링크 발급')").count() > 0 or page.locator("text=링크 발급").count() > 0
+                        print_log(f"🔄 2FA 대기 후 최종 로그인 성공 여부: {is_auth_success}")
+                    try:
+                        # 30초 동안 토스 앱 승인 대기
+                        page.wait_for_selector("button:has-text('링크 발급')", timeout=30000)
+                        print_log("🎉 [토스 앱 2FA 승인 확인] 핫딜 포털 공식 진입 성공!")
+                        storage = ctx.storage_state()
+                        with open(SESSION_PATH, "w", encoding="utf-8") as f:
+                            json.dump(storage, f, ensure_ascii=False, indent=2)
+                        print_log(f"💾 갱신된 세션 저장 완료: {SESSION_PATH}")
+                    except Exception:
+                        print_log("⚠️ [2FA 타임아웃] 스마트폰 앱 승인이 지연되었습니다. 다음 루프에서 재시도합니다.")
+
+                except Exception as login_err:
+                    print_log(f"❌ [자동 로그인 실패]: {login_err}")
                     browser.close()
                     return []
+            else:
+                print_log("⚠️ TOSS_USER_ID / TOSS_USER_PW 환경변수가 외부 서버에 등록되지 않았습니다.")
+                browser.close()
+                return []
 
            # [STEP 1] 홈 접속 성공
             print_log(f"📌 [STEP 1] 홈 접속 성공 | URL: {page.url} | Title: {page.title()}")
