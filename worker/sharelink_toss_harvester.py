@@ -162,9 +162,11 @@ def harvest_sharelink_portal():
 
             return collected_count
 
-        # ⚡ [API Interceptor] 토스 백엔드 JSON response 도청 모듈
-         def on_response(response):
-             try:
+        return collected_count
+
+        # ⚡ [API Interceptor] 토스 백엔드 JSON response
+        def on_response(response):
+            try:
                 if "sharelink.toss.im" in response.url:
                     data = response.json()
                     items = data.get("result", {}).get("items", [])
@@ -194,30 +196,6 @@ def harvest_sharelink_portal():
 
         page.on("response", on_response)
 
-  for item in items:
-            try:
-                if isinstance(item, dict):
-                    name = item.get("title")
-                    price = item.get("price")
-                    orig_price = item.get("originalPrice")
-                    disc_rate = item.get("discountRate")
-                    thumb = item.get("imageUrl")
-                    share_url = item.get("shareUrl")
-
-                    if name and price:
-                        captured_api_products.append({
-                            "name": str(name),
-                            "price": int(price),
-                            "original_price": orig_price,
-                            "discount_rate": disc_rate,
-                            "thumbnail": str(thumb) if thumb else None,
-                            "share_link": str(share_url) if share_url else None
-                        })
-            except Exception:
-                pass
-
-        page.on("response", on_response)
-
         try:
             print_log("📡 https://sharelink.toss.im/home 접속 중...")
             try:
@@ -230,7 +208,6 @@ def harvest_sharelink_portal():
                     print_log(f"⚠️ 메인 페이지 접속 도중 오류: {e2}")
 
             page.wait_for_timeout(3000)
-
             # React SPA 초기화 대기
             try:
                 print_log("⏳ 포털 SPA DOM 로딩 대기 (링크 발급 / 로그인 폼)...")
