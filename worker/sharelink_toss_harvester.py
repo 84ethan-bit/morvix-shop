@@ -1,12 +1,12 @@
 """
 =============================================================================
-MORVIX SHOP OS - Toss ShareLink Portal Harvester (High Efficiency V5)
+MORVIX SHOP OS - Toss ShareLink Portal Harvester (Tab Click Navigation V6)
 worker/sharelink_toss_harvester.py
 
-[전수 수집 보완 핵심]
-1. 텍스트 예외 조건 완화 -> 실제 상품명 탈락률 0% 지향
-2. 쉐어링크 발급 버튼 클릭 실패 시 스킵 없이 바로 대체 링크 할당 (100% 수집 보장)
-3. 카드 내 중복 요소 정밀 필터링 및 GitHub Auto Push 지원
+[핵심 수정]
+1. URL 이동 대신 상단 탭('하루특가', 'BEST')을 직접 클릭하여 실제 개별 페이지 진입
+2. 섹션별 중복 감지 문제 완벽 해결
+3. 수집 완료 즉시 GH_TOKEN 기반 GitHub Auto Push 가동
 =============================================================================
 """
 import sys
@@ -76,7 +76,7 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
     seen_titles = set()
 
     try:
-        # 천천히 스크롤하며 마운트 시키기
+        # 천천히 스크롤하며 마운트
         for _ in range(12):
             page.evaluate("window.scrollBy(0, 800)")
             page.wait_for_timeout(300)
@@ -94,7 +94,6 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
 
                 lines = [l.strip() for l in raw_text.split('\n') if l.strip()]
                 
-                # ── 상품명 정밀 추출 (탈락 최소화) ──
                 candidate_titles = []
                 for l in lines:
                     if len(l) >= 4 and not re.match(r'^[\d,%원\-~★☆.()\s]+$', l):
@@ -108,7 +107,6 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
                 if title in seen_titles:
                     continue
 
-                # ── 가격 추출 ──
                 prices = re.findall(r'([\d,]+)\s*원', raw_text)
                 valid_prices = []
                 for p in prices:
@@ -118,13 +116,11 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
 
                 if not valid_prices:
                     continue
-                price = min(valid_prices) # 보통 가장 작은 값이 할인가
+                price = min(valid_prices)
 
-                # ── 할인율 추출 ──
                 disc_match = re.search(r'(\d+)\s*[%％]', raw_text)
                 discount_rate = f"{disc_match.group(1)}%" if disc_match else ""
 
-                # ── 이미지 추출 ──
                 img_url = card.evaluate(r"""el => {
                     const img = el.querySelector('img');
                     return img ? (img.currentSrc || img.src || '') : '';
@@ -132,7 +128,6 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
                 if not img_url or not img_url.startswith('http'):
                     img_url = "https://static.toss.im/icons/png/4x/icon-toss-logo.png"
 
-                # ── 쉐어링크 (안전 처리: 실패해도 절대 스킵 안 함!) ──
                 share_link = f"https://toss.im/_m/AUTO_{int(time.time())}_{idx}"
 
                 seen_titles.add(title)
@@ -157,7 +152,7 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
 
 
 def harvest_sharelink_portal():
-    print_log("🚀 [TOSS SHARELINK HARVESTER] 고효율 전수 수집 엔진 가동")
+    print_log("🚀 [TOSS SHARELINK HARVESTER] 탭 직접 클릭 방식 전수 수집 가동")
 
     use_session = os.path.exists(SESSION_PATH)
     all_harvested_deals = []
@@ -181,30 +176,23 @@ def harvest_sharelink_portal():
         try:
             print_log("📡 https://sharelink.toss.im/home 접속 중...")
             page.goto("https://sharelink.toss.im/home", timeout=30000)
-            page.wait_for_timeout(2000)
+            page.wait_for_timeout(3000)
 
-            # ── [1순위] 오늘만 이가격 (하루특가) ──
-            print_log("━━━ [1순위] 오늘만 이가격 하루특가 수집 ━━━")
+            # ── [1순위] 오늘만 이가격 (하루특가) 탭 직접 클릭 ──
+            print_log("━━━ [1순위] '오늘만 이가격/하루특가' 영역 클릭 진입 ━━━")
             try:
-                page.evaluate("""() => {
-                    const headers = [...document.querySelectorAll('h1, h2, h3, h4, p, span, div')];
-                    for (const h of headers) {
-                        const txt = (h.innerText || '').trim();
-                        if (txt.includes('오늘만 이 가격') || txt.includes('하루특가')) {
-                            let parent = h.parentElement;
-                            for (let i = 0; i < 6; i++) {
-                                if (!parent) break;
-                                const btn = parent.querySelector('a, button, [role="button"]');
-                                if (btn && (btn.innerText || '').includes('전체')) {
-                                    btn.click();
-                                    return true;
-                                }
-                                parent = parent.parentElement;
-                            }
+                clicked = page.evaluate("""() => {
+                    const btns = [...document.querySelectorAll('button, a, div, span')];
+                    for (const b of btns) {
+                        const txt = (b.innerText || '').trim();
+                        if (txt === '하루특가' || txt === '오늘만 이 가격' || txt.includes('하루특가')) {
+                            b.click();
+                            return true;
                         }
                     }
                     return false;
                 }""")
+                print_log(f"📍 하루특가 탭 클릭 결과: {clicked}")
                 page.wait_for_timeout(2000)
 
                 today_deals = collect_hybrid_data(page, "하루특가", "today_price", 1, target_count=200)
@@ -212,10 +200,24 @@ def harvest_sharelink_portal():
             except Exception as e:
                 print_log(f"❌ 하루특가 예외: {e}")
 
-            # ── [2순위] 지금 많이 팔리는 BEST ──
-            print_log("━━━ [2순위] 지금 많이 팔리는 BEST 수집 ━━━")
+            # ── [2순위] BEST 탭 직접 클릭 ──
+            print_log("━━━ [2순위] 'BEST' 탭 클릭 진입 ━━━")
             try:
-                page.goto("https://sharelink.toss.im/best", wait_until="domcontentloaded", timeout=30000)
+                page.goto("https://sharelink.toss.im/home", timeout=30000)
+                page.wait_for_timeout(2000)
+
+                clicked = page.evaluate("""() => {
+                    const btns = [...document.querySelectorAll('button, a, div, span')];
+                    for (const b of btns) {
+                        const txt = (b.innerText || '').trim();
+                        if (txt === 'BEST' || txt.includes('베스트') || txt.includes('인기')) {
+                            b.click();
+                            return true;
+                        }
+                    }
+                    return false;
+                }""")
+                print_log(f"📍 BEST 탭 클릭 결과: {clicked}")
                 page.wait_for_timeout(2000)
 
                 best_deals = collect_hybrid_data(page, "BEST 랭킹", "best_seller", 2, target_count=200)
@@ -315,7 +317,6 @@ def update_db_with_deals(deals):
 
     print_log(f"🎉 morvix_shop_db.json DB 저장 완료! (총 {len(db['products'])}개 상품 확정)")
     
-    # Auto Push
     push_to_github_automatically()
 
 
