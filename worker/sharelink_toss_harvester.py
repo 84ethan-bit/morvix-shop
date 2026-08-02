@@ -366,67 +366,36 @@ def harvest_sharelink_portal():
         collect_from_full_page = False
 
         print_log("--------------------------------------------------")
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # [대표님 지정 1단계 검증] __NEXT_DATA__ 존재 여부, 크기, Key 구조, 상품 배열 덤프 진단
-        print_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+# --------------------------------------------------
+        # [대표님 지정 1단계 검증] __NEXT_DATA__ 존재 여부
+        print_log("--------------------------------------------------")
         seen_titles = set()
         section_counts = {}
         TARGET_PER_SECTION = 200
 
-        # ── 1순위: 오늘만 이가격 (하루특가) 전수 수집 ──
-        print_log("━━━ [1순위] 오늘만 이가격 하루특가 전수 수집 프로세스 가동 ━━━")
+        # --------------------------------------------------
+        # — 1순위: 오늘만 이가격 (하루특가) 전수 수집 —
+        print_log("— [1순위] 오늘만 이가격 (하루특가) 전수 수집 —")
         try:
-            target_deals_url = "https://sharelink.toss.im/links/best-ranking/daily-deals?sectionCode=TODAY_DEAL"
-            print_log(f"🎯 [핫딜 전용 라우트 직접 진입] -> {target_deals_url}")
-            try:
-                page.goto(target_deals_url,
-                          wait_until="networkidle", timeout=30000)
-            except Exception as goto_err:
-                print_log(
-                    f"⚠️ networkidle 대기 지연 - domcontentloaded로 우회 진행: {goto_err}")
-                page.goto(target_deals_url,
-                          wait_until="domcontentloaded", timeout=15000)
+            collect_from_full_page("하루특가", "today_price")
+        except Exception as call_err:
+            print_log(f"⚠️ 하루특가 함수 호출 예외 방어: {call_err}")
 
+        # --------------------------------------------------
+        # — 2순위: 지금 많이 팔리는 BEST 전수 수집 —
+        print_log("— [2순위] 지금 많이 팔리는 BEST 전수 수집 —")
+        try:
+            target_best_url = "https://sharelink.toss.im/best"
+            print_log(f"🎯 [BEST 랭킹 라우트 직접 진입]: {target_best_url}")
+            page.goto(target_best_url, wait_until="networkidle")
             page.wait_for_timeout(3000)
 
-            # 80개+ 전수 마운트를 위한 인피니티 스크롤 수행
-            print_log("📜 핫딜 전수 마운트를 위한 무한 스크롤 수행 중...")
-            prev_btn_count = 0
-            for scroll_idx in range(1, 12):
+            print_log("📜 BEST 상품 마운트를 위한 스크롤 진행...")
+            for scroll_idx in range(1, 6):
                 page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
                 page.wait_for_timeout(1000)
-                cur_btn_count = page.locator(
-                    "button:has-text('링크 발급')").count()
-                if cur_btn_count == prev_btn_count and scroll_idx >= 5:
-                    break
-                prev_btn_count = cur_btn_count
-
-        # 하루특가 수집 진행 (안전 호출)
-try:
-    collect_from_full_page("하루특가", "today_price")
-except Exception as call_err:
-    print_log(f"⚠️ 하루특가 함수 호출 예외 방어: {call_err}")
-
-# --------------------------------------------------
-# — 2순위: 지금 많이 팔리는 BEST 전수 수집 —
-print_log("— [2순위] 지금 많이 팔리는 BEST 전수 수집 —")
-try:
-    target_best_url = "https://sharelink.toss.im/best"
-    print_log(f"🎯 [BEST 랭킹 라우트 직접 진입]: {target_best_url}")
-    page.goto(target_best_url, wait_until="networkidle")
-    page.wait_for_timeout(3000)
-
-    print_log("📜 BEST 상품 마운트를 위한 스크롤 진행...")
-    for scroll_idx in range(1, 6):
-        page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-        page.wait_for_timeout(1000)
-except Exception as best_err:
-    print_log(f"⚠️ BEST 수집 과정 예외 방어: {best_err}")
-                # BEST 랭킹 수집 진행
-                collect_from_full_page("지금 많이 팔리는 BEST", "best_seller", 2)
-            except Exception as e:
-                print_log(f"  ❌ BEST 랭킹 수집 프로세스 오류: {e}")
-
+        except Exception as best_err:
+            print_log(f"⚠️ BEST 수집 과정 예외 방어: {best_err}")
             def collect_from_full_page(section_name, section_key, priority_val):
                 """현재 '전체 보기' 페이지에서 인피니티 스크롤로 전체 핫딜 전수 수집 및 단계별 상세 수량 출력"""
                 nonlocal seen_titles, section_counts
