@@ -14,7 +14,13 @@ worker/sharelink_toss_harvester.py
 3. morvix_shop_db.json 바인딩 ➔ GitHub/Vercel 라이브 1초 게재
 =============================================================================
 """
-import sys, os, json, time, re, requests, uuid
+import sys
+import os
+import json
+import time
+import re
+import requests
+import uuid
 from datetime import datetime, timedelta
 from playwright.sync_api import sync_playwright
 
@@ -26,9 +32,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(BASE_DIR, "morvix_shop_db.json")
 SESSION_PATH = os.path.join(BASE_DIR, "scratch", "toss_sharelink_session.json")
 
+
 def print_log(msg):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{timestamp}] {msg}")
+
 
 def save_session():
     """대표님이 최초 1회 토스 파트너 세션을 로그인하여 저장하는 헬퍼"""
@@ -55,6 +63,7 @@ def save_session():
             print_log(f"❌ 세션 저장 시간 초과 또는 오류: {e}")
 
         browser.close()
+
 
 def harvest_sharelink_portal():
     """sharelink.toss.im/home 포털에서 핫딜 및 쉐어링크 자동 수집"""
@@ -103,7 +112,8 @@ def harvest_sharelink_portal():
 
         ctx = browser.new_context(**ctx_opts)
         ctx_id = f"CTX-{uuid.uuid4().hex[:6]}"
-        print_log(f"🆔 [컨텍스트 인스턴스 준비] Context ID: {ctx_id} (Browser: {browser_id})")
+        print_log(
+            f"🆔 [컨텍스트 인스턴스 준비] Context ID: {ctx_id} (Browser: {browser_id})")
 
         if use_session:
 
@@ -112,7 +122,8 @@ def harvest_sharelink_portal():
                     sdata = json.load(f)
                 if "cookies" in sdata and len(sdata["cookies"]) > 0:
                     ctx.add_cookies(sdata["cookies"])
-                    print_log(f"🍪 [add_cookies] 쿠키 {len(sdata['cookies'])}개 수동 추가 완료")
+                    print_log(
+                        f"🍪 [add_cookies] 쿠키 {len(sdata['cookies'])}개 수동 추가 완료")
             except Exception as cook_err:
                 print_log(f"⚠️ add_cookies 오류: {cook_err}")
 
@@ -126,19 +137,22 @@ def harvest_sharelink_portal():
         """)
         page = ctx.new_page()
 
-
         captured_links = {}
         captured_api_products = []  # ⚡ [API Interceptor] 토스 백엔드 JSON 원본 상품 수집함
         capture_lock = [0]  # [현재 캡처 대상 idx] - Race Condition 방어용 원자적 단방향 잠금
 # 🟢 [1단계 픽스] collect_from_full_page 정의 및 KeyError 방어 함수
+
         def collect_from_full_page(section_name, section_key, rank_offset=1):
-            print_log(f"🔎 [{section_name}] 전수 수집 파싱 시작 (Key: {section_key})...")
+            print_log(
+                f"🔎 [{section_name}] 전수 수집 파싱 시작 (Key: {section_key})...")
             collected_count = 0
-            
+
             try:
-                cards = page.locator("article, div[class*='card'], div[class*='item'], div[class*='product']").all()
+                cards = page.locator(
+                    "article, div[class*='card'], div[class*='item'], div[class*='product']").all()
                 if not cards:
-                    cards = page.locator("button:has-text('링크 발급')/ancestor::div[2]").all()
+                    cards = page.locator(
+                        "button:has-text('링크 발급')/ancestor::div[2]").all()
 
                 for idx, card in enumerate(cards):
                     try:
@@ -146,17 +160,19 @@ def harvest_sharelink_portal():
                         if not text_content:
                             continue
 
-                        title = text_content[0].strip() if len(text_content) > 0 else ""
+                        title = text_content[0].strip() if len(
+                            text_content) > 0 else ""
                         if not title or title in seen_titles:
                             continue
 
                         seen_titles.add(title)
                         collected_count += 1
-                        
+
                     except Exception as card_err:
                         continue
 
-                print_log(f"✅ [{section_name}] 전수 수집 완료: 총 {collected_count}개 수집됨")
+                print_log(
+                    f"✅ [{section_name}] 전수 수집 완료: 총 {collected_count}개 수집됨")
             except Exception as sec_err:
                 print_log(f"⚠️ [{section_name}] 수집 중 예외 발생: {sec_err}")
 
@@ -211,7 +227,8 @@ def harvest_sharelink_portal():
             # React SPA 초기화 대기
             try:
                 print_log("⏳ 포털 SPA DOM 로딩 대기 (링크 발급 / 로그인 폼)...")
-                page.wait_for_selector("button:has-text('링크 발급'), input[name='email'], button:has-text('로그인'), button:has-text('이메일/ID')", timeout=15000)
+                page.wait_for_selector(
+                    "button:has-text('링크 발급'), input[name='email'], button:has-text('로그인'), button:has-text('이메일/ID')", timeout=15000)
             except Exception:
                 print_log("⚠️ SPA 셀렉터 대기 타임아웃 - 현재 DOM 상태로 진행")
 
@@ -219,20 +236,25 @@ def harvest_sharelink_portal():
             print_log(f"📍 현재 URL: {current_url}")
 
             # URL 및 DOM 요소를 동시에 검사하여 SPA 로그인 화면 감지
-            has_login_input = page.locator("input[name='email']").count() > 0 or page.locator("button:has-text('로그인')").count() > 0 or page.locator("button:has-text('이메일/ID')").count() > 0
-            has_share_btn = page.locator("button:has-text('링크 발급')").count() > 0 or page.locator("text=링크 발급").count() > 0
-            is_login_page = (("login" in current_url or "auth" in current_url or "sign-in" in current_url) and not has_share_btn) or has_login_input
+            has_login_input = page.locator("input[name='email']").count() > 0 or page.locator(
+                "button:has-text('로그인')").count() > 0 or page.locator("button:has-text('이메일/ID')").count() > 0
+            has_share_btn = page.locator(
+                "button:has-text('링크 발급')").count() > 0 or page.locator("text=링크 발급").count() > 0
+            is_login_page = (("login" in current_url or "auth" in current_url or "sign-in" in current_url)
+                             and not has_share_btn) or has_login_input
 
             if is_login_page:
                 print_log("🚫 [2. 로그인 필요 상태 감지]: True - 자동 로그인 진입")
                 user_id = os.environ.get("TOSS_USER_ID", "").strip()
                 user_pw = os.environ.get("TOSS_USER_PW", "").strip()
-                print_log(f"📋 [1. 환경변수 검증] TOSS_USER_ID: {bool(user_id)}, TOSS_USER_PW: {bool(user_pw)}")
+                print_log(
+                    f"📋 [1. 환경변수 검증] TOSS_USER_ID: {bool(user_id)}, TOSS_USER_PW: {bool(user_pw)}")
 
                 if user_id and user_pw:
                     try:
                         print_log(f"🔑 계정 '{user_id[:3]}***' 입력 진행 중...")
-                        page.wait_for_selector("input[name='email']", timeout=10000)
+                        page.wait_for_selector(
+                            "input[name='email']", timeout=10000)
                         page.fill("input[name='email']", user_id)
                         print_log("📋 [3. 이메일 입력 성공 여부]: True")
 
@@ -250,13 +272,15 @@ def harvest_sharelink_portal():
                         page.wait_for_timeout(5000)
 
                         current_post_login_url = page.url
-                        print_log(f"📋 [6. 클릭 후 현재 URL]: {current_post_login_url}")
+                        print_log(
+                            f"📋 [6. 클릭 후 현재 URL]: {current_post_login_url}")
                     except Exception as login_err:
                         print_log(f"❌ 자동 로그인 과정에서 예외 발생: {login_err}")
 
                     # 2FA 승인 세션 저장 처리
                     try:
-                        page.wait_for_selector("button:has-text('승인')", timeout=10000)
+                        page.wait_for_selector(
+                            "button:has-text('승인')", timeout=10000)
                         print_log("🎉 [토스 앱 2FA 승인 완료]")
                         storage = ctx.storage_state()
                         with open(SESSION_PATH, "w", encoding="utf-8") as f:
@@ -266,11 +290,15 @@ def harvest_sharelink_portal():
                         print_log(f"⚠️ [2FA 타임아웃 또는 승인 실패]: {inner_e}")
 
                 else:
-                    print_log("⚠️ 로그인 정보(TOSS_USER_ID/TOSS_USER_PW)가 환경변수에 없습니다.")
+                    print_log(
+                        "⚠️ 로그인 정보(TOSS_USER_ID/TOSS_USER_PW)가 환경변수에 없습니다.")
                     try:
-                        after_login_screenshot = os.path.join(BASE_DIR, "scratch", "after_login.png")
-                        page.screenshot(path=after_login_screenshot, full_page=True)
-                        print_log(f"📋 [7. 클릭 후 스크린샷]: {after_login_screenshot}")
+                        after_login_screenshot = os.path.join(
+                            BASE_DIR, "scratch", "after_login.png")
+                        page.screenshot(
+                            path=after_login_screenshot, full_page=True)
+                        print_log(
+                            f"📋 [7. 클릭 후 스크린샷]: {after_login_screenshot}")
                     except Exception as ss_err:
                         print_log(f"스크린샷 저장 실패: {ss_err}")
 
@@ -278,38 +306,47 @@ def harvest_sharelink_portal():
                     print_log(f"📋 [8. page.content() 앞 500자]: {snippet}")
 
                     # DOM 기반 최종 진입 성공 검증
-                    is_auth_success = page.locator("button:has-text('링크 발급')").count() > 0 or page.locator("text=링크 발급").count() > 0
-                    print_log(f"🎯 로그인 성공 여부 (DOM '링크 발급' 검증): {is_auth_success}")
+                    is_auth_success = page.locator(
+                        "button:has-text('링크 발급')").count() > 0 or page.locator("text=링크 발급").count() > 0
+                    print_log(
+                        f"🎯 로그인 성공 여부 (DOM '링크 발급' 검증): {is_auth_success}")
 
                     if is_auth_success:
                         print_log("🎉 [자동 로그인 성공] 실시간 핫딜 포털 진입 완료!")
                     else:
-                        print_log("🚨 [토스 2FA 본인인증 요구 감지] 스마트폰 토스 앱에서 '로그인 확인' 승인 대기 (30초 대기)...")
+                        print_log(
+                            "🚨 [토스 2FA 본인인증 요구 감지] 스마트폰 토스 앱에서 '로그인 확인' 승인 대기 (30초 대기)...")
                         try:
                             if page.locator("button:has-text('알림 다시 받기')").count() > 0:
                                 page.click("button:has-text('알림 다시 받기')")
-                                print_log("📲 [푸시 알림 재전송 클릭] 대표님 스마트폰 토스 앱으로 알림 발송 완료!")
+                                print_log(
+                                    "📲 [푸시 알림 재전송 클릭] 대표님 스마트폰 토스 앱으로 알림 발송 완료!")
                         except Exception as push_err:
                             print_log(f"알림 클릭 스킵: {push_err}")
 
                         # 2FA 앱 승인 대기 (30초)
                         page.wait_for_timeout(30000)
-                        is_auth_success = page.locator("button:has-text('링크 발급')").count() > 0 or page.locator("text=링크 발급").count() > 0
-                        print_log(f"🔄 2FA 대기 후 최종 로그인 성공 여부: {is_auth_success}")
+                        is_auth_success = page.locator(
+                            "button:has-text('링크 발급')").count() > 0 or page.locator("text=링크 발급").count() > 0
+                        print_log(
+                            f"🔄 2FA 대기 후 최종 로그인 성공 여부: {is_auth_success}")
 
         except Exception as main_err:
             print_log(f"❌ 전체 수집 과정 오작동: {main_err}")
 
         # [STEP 1] 홈 접속 성공
-        print_log(f"📌 [STEP 1] 홈 접속 성공 | URL: {page.url} | Title: {page.title()}")
+        print_log(
+            f"📌 [STEP 1] 홈 접속 성공 | URL: {page.url} | Title: {page.title()}")
 
         # [STEP 2] 팝업 존재 여부 및 닫기
         def dismiss_popups():
             try:
-                close_btns = page.locator("button:has-text('닫기'), button:has-text('나중에 하기'), button:has-text('확인'), [aria-label='닫기'], .modal-close")
+                close_btns = page.locator(
+                    "button:has-text('닫기'), button:has-text('나중에 하기'), button:has-text('확인'), [aria-label='닫기'], .modal-close")
                 pop_count = close_btns.count()
                 has_pop = pop_count > 0
-                print_log(f"📌 [STEP 2] 팝업 존재 여부 | Popup detected: {has_pop} ({pop_count}개)")
+                print_log(
+                    f"📌 [STEP 2] 팝업 존재 여부 | Popup detected: {has_pop} ({pop_count}개)")
                 if has_pop:
                     for i in range(pop_count):
                         try:
@@ -342,11 +379,14 @@ def harvest_sharelink_portal():
             target_deals_url = "https://sharelink.toss.im/links/best-ranking/daily-deals?sectionCode=TODAY_DEAL"
             print_log(f"🎯 [핫딜 전용 라우트 직접 진입] -> {target_deals_url}")
             try:
-                page.goto(target_deals_url, wait_until="networkidle", timeout=30000)
+                page.goto(target_deals_url,
+                          wait_until="networkidle", timeout=30000)
             except Exception as goto_err:
-                print_log(f"⚠️ networkidle 대기 지연 - domcontentloaded로 우회 진행: {goto_err}")
-                page.goto(target_deals_url, wait_until="domcontentloaded", timeout=15000)
-            
+                print_log(
+                    f"⚠️ networkidle 대기 지연 - domcontentloaded로 우회 진행: {goto_err}")
+                page.goto(target_deals_url,
+                          wait_until="domcontentloaded", timeout=15000)
+
             page.wait_for_timeout(3000)
 
             # 80개+ 전수 마운트를 위한 인피니티 스크롤 수행
@@ -355,7 +395,8 @@ def harvest_sharelink_portal():
             for scroll_idx in range(1, 12):
                 page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
                 page.wait_for_timeout(1000)
-                cur_btn_count = page.locator("button:has-text('링크 발급')").count()
+                cur_btn_count = page.locator(
+                    "button:has-text('링크 발급')").count()
                 if cur_btn_count == prev_btn_count and scroll_idx >= 5:
                     break
                 prev_btn_count = cur_btn_count
@@ -368,9 +409,9 @@ def harvest_sharelink_portal():
 
     except Exception as e:
         print_log(f" ❌ 하루특가 수집 프로세스 오류: {e}")
-            # ── 2순위: 지금 많이 팔리는 BEST 전수 수집 ──
-            print_log("━━━ [2순위] 지금 많이 팔리는 BEST 전수 수집 프로세스 가동 ━━━")
-            try:
+          # ── 2순위: 지금 많이 팔리는 BEST 전수 수집 ──
+          print_log("━━━ [2순위] 지금 많이 팔리는 BEST 전수 수집 프로세스 가동 ━━━")
+           try:
                 target_best_url = "https://sharelink.toss.im/links/best-ranking"
                 print_log(f"🎯 [BEST 랭킹 라우트 직접 진입] -> {target_best_url}")
                 page.goto(target_best_url, wait_until="networkidle")
@@ -378,7 +419,8 @@ def harvest_sharelink_portal():
 
                 print_log("📜 BEST 상품 마운트를 위한 스크롤 수행 중...")
                 for scroll_idx in range(1, 6):
-                    page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                    page.evaluate(
+                        "window.scrollTo(0, document.body.scrollHeight)")
                     page.wait_for_timeout(1000)
 
                 # BEST 랭킹 수집 진행
@@ -386,12 +428,9 @@ def harvest_sharelink_portal():
             except Exception as e:
                 print_log(f"  ❌ BEST 랭킹 수집 프로세스 오류: {e}")
 
-
             def collect_from_full_page(section_name, section_key, priority_val):
                 """현재 '전체 보기' 페이지에서 인피니티 스크롤로 전체 핫딜 전수 수집 및 단계별 상세 수량 출력"""
                 nonlocal seen_titles, section_counts
-
-
 
                 curr_url = page.url
                 curr_title = page.title()
@@ -400,11 +439,15 @@ def harvest_sharelink_portal():
                 print_log(f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
                 print_log(f"🔍 [대표님 지정 6대 핵심 검증 리포트 - {section_name}]")
                 print_log(f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                print_log(f" 1️⃣ 클릭 전 URL       : {getattr(page, '_last_url_before_click', 'https://sharelink.toss.im/home')}")
+                print_log(
+                    f" 1️⃣ 클릭 전 URL       : {getattr(page, '_last_url_before_click', 'https://sharelink.toss.im/home')}")
                 print_log(f" 2️⃣ 클릭 후 URL       : {curr_url}")
-                print_log(f" 3️⃣ 클릭한 요소 HTML  : {getattr(page, '_last_clicked_html', 'N/A')}")
-                print_log(f" 4️⃣ Network JSON 응답 : 수신 패킷 {len(captured_api_products)}개 파싱 완료")
-                print_log(f" 5️⃣ 스크린샷          : see_all_{section_key}.png 저장 시도")
+                print_log(
+                    f" 3️⃣ 클릭한 요소 HTML  : {getattr(page, '_last_clicked_html', 'N/A')}")
+                print_log(
+                    f" 4️⃣ Network JSON 응답 : 수신 패킷 {len(captured_api_products)}개 파싱 완료")
+                print_log(
+                    f" 5️⃣ 스크린샷          : see_all_{section_key}.png 저장 시도")
                 print_log(f" 6️⃣ iframe 여부       : 총 {len(frames)}개 감지됨")
                 for f_idx, frame in enumerate(frames):
                     print_log(f"    └─ iframe #{f_idx+1} URL: {frame.url}")
@@ -418,26 +461,30 @@ def harvest_sharelink_portal():
                 except Exception as ss_err:
                     print_log(f" ⚠️ [스크린샷 저장 실패]: {ss_err}")
 
-
-
                 last_card_count = 0
                 for scroll_step in range(1, 10):
                     try:
-                        page.evaluate(f"window.scrollTo(0, (document.body.scrollHeight / 10) * {scroll_step})")
+                        page.evaluate(
+                            f"window.scrollTo(0, (document.body.scrollHeight / 10) * {scroll_step})")
                         page.wait_for_timeout(600)
-                        link_btns = page.query_selector_all("button:has-text('링크 발급')")
-                        prod_cards = page.locator("[class*='ProductCard']").count()
+                        link_btns = page.query_selector_all(
+                            "button:has-text('링크 발급')")
+                        prod_cards = page.locator(
+                            "[class*='ProductCard']").count()
                         h_val = page.evaluate("document.body.scrollHeight")
-                        print_log(f"  📜 [Scroll #{scroll_step}] scrollHeight: {h_val} | '링크 발급' 버튼: {len(link_btns)}개 | ProductCard 요소: {prod_cards}개")
+                        print_log(
+                            f"  📜 [Scroll #{scroll_step}] scrollHeight: {h_val} | '링크 발급' 버튼: {len(link_btns)}개 | ProductCard 요소: {prod_cards}개")
                     except Exception as sc_err:
                         print_log(f"  ⚠️ 스크롤 #{scroll_step} 계측 오류: {sc_err}")
 
                 # 최하단 도달 후 최종 계측
                 page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
                 page.wait_for_timeout(1000)
-                final_btns = page.query_selector_all("button:has-text('링크 발급')")
+                final_btns = page.query_selector_all(
+                    "button:has-text('링크 발급')")
                 final_cards = page.locator("[class*='ProductCard']").count()
-                print_log(f"📌 [검증 2 - 최하단 최종 계측] '링크 발급' 버튼 총합: {len(final_btns)}개 | ProductCard 총합: {final_cards}개")
+                print_log(
+                    f"📌 [검증 2 - 최하단 최종 계측] '링크 발급' 버튼 총합: {len(final_btns)}개 | ProductCard 총합: {final_cards}개")
 
                 # Swiper 섹션별 계측
                 swiper_diag = page.evaluate("""() => {
@@ -456,8 +503,8 @@ def harvest_sharelink_portal():
                 }""")
                 print_log("📌 [검증 3 - Swiper별 개별 계측]")
                 for sw_item in swiper_diag:
-                    print_log(f"   └─ [{sw_item['title']}] '링크 발급': {sw_item['linkBtnCount']}개 | ProductCard: {sw_item['cardCount']}개")
-
+                    print_log(
+                        f"   └─ [{sw_item['title']}] '링크 발급': {sw_item['linkBtnCount']}개 | ProductCard: {sw_item['cardCount']}개")
 
                 try:
                     page.evaluate("window.scrollTo(0, 0)")
@@ -466,12 +513,15 @@ def harvest_sharelink_portal():
                 page.wait_for_timeout(500)
 
                 # [조건 3 & 4] Swiper Next 버튼 클릭 시도 및 수집 데이터 출처(DOM vs XHR) 명시
-                print_log(f"📌 [DATA SOURCE TRACER] 수집 출처: HTML DOM 카드 파싱 (도청된 XHR 패킷: {len(captured_api_products)}개)")
-                
+                print_log(
+                    f"📌 [DATA SOURCE TRACER] 수집 출처: HTML DOM 카드 파싱 (도청된 XHR 패킷: {len(captured_api_products)}개)")
+
                 # Swiper Next 버튼 클릭으로 가려진 카드 수율 확대
-                next_btns = page.locator("button[aria-label='다음'], .swiper-button-next, button:has(svg)")
+                next_btns = page.locator(
+                    "button[aria-label='다음'], .swiper-button-next, button:has(svg)")
                 if next_btns.count() > 0:
-                    print_log("  🔄 [Swiper Next 클릭] 슬라이더 가려진 카드 로딩 시도 (4회 클릭)...")
+                    print_log(
+                        "  🔄 [Swiper Next 클릭] 슬라이더 가려진 카드 로딩 시도 (4회 클릭)...")
                     for n_idx in range(4):
                         try:
                             next_btns.first.click(timeout=1000, force=True)
@@ -480,11 +530,8 @@ def harvest_sharelink_portal():
                             pass
 
                 btns = page.query_selector_all("button:has-text('링크 발급')")
-                print_log(f"  🎯 [{section_name}] Swiper Next 후 최종 탐지된 '링크 발급' 카드 수: 총 {len(btns)}개")
-
-
-
-
+                print_log(
+                    f"  🎯 [{section_name}] Swiper Next 후 최종 탐지된 '링크 발급' 카드 수: 총 {len(btns)}개")
 
                 collected = 0
                 for idx, btn in enumerate(btns):
@@ -510,7 +557,8 @@ def harvest_sharelink_portal():
                         if not card_container:
                             continue
 
-                        raw = card_container.evaluate("el => el.innerText || ''")
+                        raw = card_container.evaluate(
+                            "el => el.innerText || ''")
 
                         # ── 1단계: 수익/배송/판매자 배지 줄 완전 제거 후 정제 텍스트 생성 ──
                         NOISE_PATTERNS = [
@@ -542,7 +590,8 @@ def harvest_sharelink_portal():
                             and '개당' not in l
                             and '수익' not in l
                         ]
-                        title = max(name_candidates, key=len) if name_candidates else ''
+                        title = max(name_candidates,
+                                    key=len) if name_candidates else ''
                         if not title or title in seen_titles:
                             continue
                         seen_titles.add(title)
@@ -575,23 +624,30 @@ def harvest_sharelink_portal():
                         discount_rate = f"{discount_match.group(1)}%" if discount_match else ''
 
                         # ── 4단계: 토스 DOM [최종 실판매가 전용 HTML 노드] 핀포인트 타겟팅 추출 ──
-                        clean_raw = re.sub(r'(개당|수익|적립|수익금)\s*[\d,]+\s*원?', '', raw)
-                        clean_raw = re.sub(r'[\d,]+\s*원\s*(수익|적립|수익금)', '', clean_raw)
+                        clean_raw = re.sub(
+                            r'(개당|수익|적립|수익금)\s*[\d,]+\s*원?', '', raw)
+                        clean_raw = re.sub(
+                            r'[\d,]+\s*원\s*(수익|적립|수익금)', '', clean_raw)
                         clean_raw = re.sub(r'수익금?\s*[\d,]+\s*원', '', clean_raw)
                         clean_raw = re.sub(r'개당\s*[\d,]+\s*원', '', clean_raw)
-                        clean_raw = re.sub(r'수익|개당|30일\s*최저가|베스트판매자|내일도착|오늘출발', '', clean_raw)
+                        clean_raw = re.sub(
+                            r'수익|개당|30일\s*최저가|베스트판매자|내일도착|오늘출발', '', clean_raw)
 
                         prices_found = re.findall(r'([\d,]+)\s*원', clean_raw)
-                        prices_int = [int(p.replace(',', '')) for p in prices_found]
+                        prices_int = [int(p.replace(',', ''))
+                                      for p in prices_found]
                         valid_prices = [p for p in prices_int if p >= 500]
                         price = valid_prices[0] if valid_prices else 9900
 
                         # 5대 검증
                         is_valid_name = len(title) >= 3
-                        is_valid_price = isinstance(price, int) and price >= 1000
-                        is_valid_thumb = bool(img_url and img_url.startswith('http') and len(img_url) >= 15)
+                        is_valid_price = isinstance(
+                            price, int) and price >= 1000
+                        is_valid_thumb = bool(img_url and img_url.startswith(
+                            'http') and len(img_url) >= 15)
                         if not (is_valid_name and is_valid_price and is_valid_thumb):
-                            print_log(f"    🛑 [검증 실패] {title[:20]} (Name:{is_valid_name} Price:{is_valid_price} Thumb:{is_valid_thumb})")
+                            print_log(
+                                f"    🛑 [검증 실패] {title[:20]} (Name:{is_valid_name} Price:{is_valid_price} Thumb:{is_valid_thumb})")
                             continue
 
                         # 정가(Original Price): DOM 상에 정가(2번째 가격)가 진짜 존재하는 경우에만 1:1 수집, 없으면 0 (억지 역산/곱셈 100% 삭제)
@@ -599,9 +655,6 @@ def harvest_sharelink_portal():
                             original_price = valid_prices[1]
                         else:
                             original_price = 0
-
-
-
 
                         # Race Condition 방어: per-card idx 독립 키
                         card_key = (priority_val * 10000) + idx
@@ -640,7 +693,8 @@ def harvest_sharelink_portal():
 
                         # 모달 닫기
                         try:
-                            close_btn = page.locator("button:has-text('닫기'), [aria-label='close'], .modal-close, button:has-text('확인')")
+                            close_btn = page.locator(
+                                "button:has-text('닫기'), [aria-label='close'], .modal-close, button:has-text('확인')")
                             if close_btn.count() > 0:
                                 close_btn.first.click(timeout=1000)
                         except Exception:
@@ -662,7 +716,8 @@ def harvest_sharelink_portal():
                         harvested_deals.append(deal_obj)
                         section_counts[section_key] += 1
                         collected += 1
-                        print_log(f"  [{section_name}] #{collected} {title[:30]} | {price:,}원 ({discount_rate})")
+                        print_log(
+                            f"  [{section_name}] #{collected} {title[:30]} | {price:,}원 ({discount_rate})")
 
                     except Exception as card_err:
                         print_log(f"  ⚠️ 카드 #{idx+1} 파싱 오류: {card_err}")
@@ -675,7 +730,8 @@ def harvest_sharelink_portal():
                 # 홈페이지 딥스크롤 → 섹션 헤더 노출
                 for step in range(1, 6):
                     try:
-                        page.evaluate(f"window.scrollTo(0, (document.body.scrollHeight / 5) * {step})")
+                        page.evaluate(
+                            f"window.scrollTo(0, (document.body.scrollHeight / 5) * {step})")
                     except Exception:
                         pass
                     page.wait_for_timeout(500)
@@ -715,20 +771,18 @@ def harvest_sharelink_portal():
                 # [수칙 3] 클릭 후 URL 검증: /settlements 또는 관리자 라우트로 이탈 시 즉시 실패 처리
                 post_click_url = page.url
                 if any(bad_route in post_click_url for bad_route in ["settlement", "guide", "info", "member", "dashboard"]):
-                    print_log(f"🚨 [라우팅 오류 실패] 엉뚱한 관리자/정산 페이지로 이동 감지! URL: {post_click_url}")
+                    print_log(
+                        f"🚨 [라우팅 오류 실패] 엉뚱한 관리자/정산 페이지로 이동 감지! URL: {post_click_url}")
                 else:
                     collect_from_full_page("하루특가", "today_price", 1)
-
-
-
-
 
             except Exception as e:
                 print_log(f"  ❌ 하루특가 전체 보기 오류: {e}")
 
             # ── 홈으로 복귀 ──
             try:
-                page.goto("https://sharelink.toss.im/home", wait_until="domcontentloaded", timeout=30000)
+                page.goto("https://sharelink.toss.im/home",
+                          wait_until="domcontentloaded", timeout=30000)
                 page.wait_for_timeout(2000)
             except Exception:
                 pass
@@ -738,7 +792,8 @@ def harvest_sharelink_portal():
             try:
                 for step in range(1, 6):
                     try:
-                        page.evaluate(f"window.scrollTo(0, (document.body.scrollHeight / 5) * {step})")
+                        page.evaluate(
+                            f"window.scrollTo(0, (document.body.scrollHeight / 5) * {step})")
                     except Exception:
                         pass
                     page.wait_for_timeout(500)
@@ -786,7 +841,8 @@ def harvest_sharelink_portal():
                 page._last_clicked_html = f"<link target='{best_see_all_link}'>"
 
                 if best_see_all_link and best_see_all_link != '__CLICK__' and best_see_all_link.startswith('http'):
-                    page.goto(best_see_all_link, wait_until="domcontentloaded", timeout=30000)
+                    page.goto(best_see_all_link,
+                              wait_until="domcontentloaded", timeout=30000)
                     page.wait_for_timeout(2000)
                     collect_from_full_page("지금 많이 팔리는 BEST", "best_seller", 2)
 
@@ -796,7 +852,8 @@ def harvest_sharelink_portal():
 
                     try:
                         # 1. Playwright 셀렉터 클릭
-                        btn = page.locator("text='전체 보기', text='전체보기', text='더보기', text='더 보기'").first
+                        btn = page.locator(
+                            "text='전체 보기', text='전체보기', text='더보기', text='더 보기'").first
                         if btn.count() > 0:
                             btn.click(timeout=3000, force=True)
                             page.wait_for_timeout(2000)
@@ -825,13 +882,11 @@ def harvest_sharelink_portal():
 
                     if clicked:
                         print_log("  👆 베스트 '전체 보기' 강제 클릭 성공!")
-                        collect_from_full_page("지금 많이 팔리는 BEST", "best_seller", 2)
+                        collect_from_full_page(
+                            "지금 많이 팔리는 BEST", "best_seller", 2)
                     else:
                         print_log("  ⚠️ 전체 보기 클릭 실패 → 홈 베스트 섹션 수집")
                         collect_from_full_page("베스트(홈)", "best_seller", 2)
-
-
-
 
             except Exception as e:
                 print_log(f"  ❌ 베스트 전체 보기 오류: {e}")
@@ -840,30 +895,25 @@ def harvest_sharelink_portal():
             TAB_KEYWORDS = ['식품', '생활', '패션', '뷰티', '가전', '유아', '스포츠', '반려']
             for tab_kw in TAB_KEYWORDS:
                 try:
-                    tab_btn = page.locator(f"button:has-text('{tab_kw}'), a:has-text('{tab_kw}')")
+                    tab_btn = page.locator(
+                        f"button:has-text('{tab_kw}'), a:has-text('{tab_kw}')")
                     if tab_btn.count() > 0:
                         print_log(f"  📂 [{tab_kw}] 카테고리 탭 이동 수집...")
                         tab_btn.first.click(timeout=2000)
                         page.wait_for_timeout(1500)
-                        collect_from_full_page(f"카테고리:{tab_kw}", "best_seller", 2)
+                        collect_from_full_page(
+                            f"카테고리:{tab_kw}", "best_seller", 2)
                 except Exception:
                     pass
 
-            print_log("==========================================================")
+            print_log(
+                "==========================================================")
             print_log(f"🏆 오늘만 이가격(하루특가) : {section_counts['today_price']}개 수집")
-            print_log(f"🔥 지금 많이 팔리는 BEST  : {section_counts['best_seller']}개 수집")
+            print_log(
+                f"🔥 지금 많이 팔리는 BEST  : {section_counts['best_seller']}개 수집")
             print_log(f"📦 총 합계               : {len(harvested_deals)}개")
-            print_log("==========================================================")
-
-
-
-
-
-
-
-
-
-
+            print_log(
+                "==========================================================")
 
             try:
                 tabs = page.evaluate("""() => {
@@ -881,7 +931,8 @@ def harvest_sharelink_portal():
             btn_els = page.query_selector_all("button:has-text('링크 발급')")
             print_log(f"📊 탐지된 핫딜 '링크 발급' 카드 총 수량: {len(btn_els)}개")
 
-            section_counts = {"today_price": 0, "best_seller": 0, "season_special": 0, "other": 0}
+            section_counts = {"today_price": 0,
+                              "best_seller": 0, "season_special": 0, "other": 0}
             seen_titles = set()
 
             # 상한 60개로 확대 (첫 20개 고정 → 전체 섹션 풀 수집)
@@ -908,11 +959,13 @@ def harvest_sharelink_portal():
                         return card || el.parentElement;
                     }""")
 
-                    raw = card_container.evaluate("el => el ? el.innerText : ''")
+                    raw = card_container.evaluate(
+                        "el => el ? el.innerText : ''")
                     if not raw or '원' not in raw:
                         continue
 
-                    lines_txt = [l.strip() for l in raw.split('\n') if l.strip()]
+                    lines_txt = [l.strip()
+                                 for l in raw.split('\n') if l.strip()]
 
                     title = ""
                     for line in lines_txt:
@@ -949,17 +1002,19 @@ def harvest_sharelink_portal():
                     if ' ' in img_url:
                         img_url = img_url.split(' ')[0]
 
-
                     clean_price_raw = re.sub(r'개당\s*[\d,]+\s*원\s*수익', '', raw)
-                    clean_price_raw = re.sub(r'[\d,]+\s*원\s*수익', '', clean_price_raw)
+                    clean_price_raw = re.sub(
+                        r'[\d,]+\s*원\s*수익', '', clean_price_raw)
 
                     # [조건 1] 할인율 기본값 30% 임의 대입 금지 (실제 DOM/JSON 추출값만 인정, 없으면 빈값)
-                    discount_match = re.search(r'(\d+[%％]\s*특가|\d+[%％]\s*할인|\d+[%％])', raw)
-                    discount_rate = discount_match.group(1) if discount_match else ""
+                    discount_match = re.search(
+                        r'(\d+[%％]\s*특가|\d+[%％]\s*할인|\d+[%％])', raw)
+                    discount_rate = discount_match.group(
+                        1) if discount_match else ""
 
                     price_match = re.search(r'([\d,]+)\s*원', clean_price_raw)
-                    price = int(price_match.group(1).replace(',', '')) if price_match else 9900
-
+                    price = int(price_match.group(1).replace(
+                        ',', '')) if price_match else 9900
 
                     # 정밀 섹션 및 우선순위 판별 (카드 내 배지 및 이전 섹션 헤더 DOM 탐색)
                     sec = card_container.evaluate("""el => {
@@ -981,8 +1036,8 @@ def harvest_sharelink_portal():
                         return 'best_seller';
                     }""")
 
-                    priority = 1 if sec == 'today_price' else (2 if sec == 'best_seller' else 3)
-
+                    priority = 1 if sec == 'today_price' else (
+                        2 if sec == 'best_seller' else 3)
 
                     # Race Condition 방어: 현재 idx를 capture_lock에 등록하고 이전 응답 제거
                     capture_lock[0] = idx
@@ -1018,7 +1073,8 @@ def harvest_sharelink_portal():
 
                     # 모달 팝업 닫기 (이후 버튼 클릭 방해 해제)
                     try:
-                        close_btn = page.locator("button:has-text('닫기'), [aria-label='close'], .modal-close, button:has-text('확인')")
+                        close_btn = page.locator(
+                            "button:has-text('닫기'), [aria-label='close'], .modal-close, button:has-text('확인')")
                         if close_btn.count() > 0:
                             close_btn.first.click(timeout=1000)
                     except Exception:
@@ -1026,9 +1082,9 @@ def harvest_sharelink_portal():
 
                     # 🚨 100% 진짜 토스 쉐어링크가 발급되지 않은 경우 AUTO 가짜 생성 금지 및 즉시 차단
                     if not share_link or "AUTO" in share_link or not ("toss.im/_m/" in share_link or "toss.im/m/" in share_link):
-                        print_log(f"🛑 [진짜 쉐어링크 미발급 차단] {title[:25]} ➔ 더미 생성 금지 및 수집 제외")
+                        print_log(
+                            f"🛑 [진짜 쉐어링크 미발급 차단] {title[:25]} ➔ 더미 생성 금지 및 수집 제외")
                         continue
-
 
                     if sec in section_counts:
                         section_counts[sec] += 1
@@ -1045,7 +1101,8 @@ def harvest_sharelink_portal():
                         "priority": priority
                     }
                     harvested_deals.append(deal_obj)
-                    print_log(f"  [{sec}] #{len(harvested_deals)} {title[:28]} | {price:,}원 ({discount_rate}) ➔ Link: {share_link}")
+                    print_log(
+                        f"  [{sec}] #{len(harvested_deals)} {title[:28]} | {price:,}원 ({discount_rate}) ➔ Link: {share_link}")
 
                     if len(harvested_deals) >= TARGET_DEALS:
                         break
@@ -1055,16 +1112,19 @@ def harvest_sharelink_portal():
 
             # ── 카테고리 탭 순회: 아직 TARGET_DEALS 미달 시 추가 섹션에서 보충 수집 ──
             if len(harvested_deals) < TARGET_DEALS:
-                print_log(f"📂 1차 수집 {len(harvested_deals)}개 → 카테고리 탭 순회로 추가 보충 시작...")
+                print_log(
+                    f"📂 1차 수집 {len(harvested_deals)}개 → 카테고리 탭 순회로 추가 보충 시작...")
 
                 # 탭 키워드 후보 - 토스 쇼핑몰의 카테고리 탭 텍스트 매칭
-                TAB_KEYWORDS = ['전체', '식품', '생활', '패션', '뷰티', '가전', '유아', '스포츠', '반려', '문화', '여행']
+                TAB_KEYWORDS = ['전체', '식품', '생활', '패션', '뷰티',
+                                '가전', '유아', '스포츠', '반려', '문화', '여행']
 
                 for tab_kw in TAB_KEYWORDS:
                     if len(harvested_deals) >= TARGET_DEALS:
                         break
                     try:
-                        tab_btn = page.locator(f"button:has-text('{tab_kw}'), a:has-text('{tab_kw}')")
+                        tab_btn = page.locator(
+                            f"button:has-text('{tab_kw}'), a:has-text('{tab_kw}')")
                         if tab_btn.count() == 0:
                             continue
                         print_log(f"  📁 탭 클릭: [{tab_kw}]")
@@ -1074,15 +1134,18 @@ def harvest_sharelink_portal():
                         # 탭 전환 후 딥스크롤로 lazy-load 유발
                         for step in range(1, 6):
                             try:
-                                page.evaluate(f"window.scrollTo(0, (document.body.scrollHeight / 5) * {step})")
+                                page.evaluate(
+                                    f"window.scrollTo(0, (document.body.scrollHeight / 5) * {step})")
                             except Exception:
                                 pass
                             page.wait_for_timeout(500)
                         page.wait_for_timeout(1500)
 
                         # 추가 버튼 재스캔
-                        extra_btns = page.query_selector_all("button:has-text('링크 발급')")
-                        print_log(f"  📊 [{tab_kw}] 탭 내 '링크 발급' 버튼: {len(extra_btns)}개")
+                        extra_btns = page.query_selector_all(
+                            "button:has-text('링크 발급')")
+                        print_log(
+                            f"  📊 [{tab_kw}] 탭 내 '링크 발급' 버튼: {len(extra_btns)}개")
 
                         for idx2, btn2 in enumerate(extra_btns):
                             if len(harvested_deals) >= TARGET_DEALS:
@@ -1108,23 +1171,29 @@ def harvest_sharelink_portal():
                                 if not card_container:
                                     continue
 
-                                card_text = card_container.evaluate("el => el.innerText || ''")
-                                lines_text = [l.strip() for l in card_text.split('\n') if l.strip() and '링크 발급' not in l]
+                                card_text = card_container.evaluate(
+                                    "el => el.innerText || ''")
+                                lines_text = [l.strip() for l in card_text.split(
+                                    '\n') if l.strip() and '링크 발급' not in l]
 
                                 import re as _re
-                                title2 = next((l for l in lines_text if len(l) >= 5 and not _re.match(r'^[\d,%원]+$', l) and '할인' not in l and '특가' not in l and l not in seen_titles), '')
+                                title2 = next((l for l in lines_text if len(l) >= 5 and not _re.match(
+                                    r'^[\d,%원]+$', l) and '할인' not in l and '특가' not in l and l not in seen_titles), '')
                                 if not title2 or title2 in seen_titles:
                                     continue
                                 seen_titles.add(title2)
 
-                                price_m = _re.search(r'([0-9,]+)\s*원', card_text)
-                                price2 = int(price_m.group(1).replace(',', '')) if price_m else 0
+                                price_m = _re.search(
+                                    r'([0-9,]+)\s*원', card_text)
+                                price2 = int(price_m.group(1).replace(
+                                    ',', '')) if price_m else 0
                                 disc_m = _re.search(r'(\d+)\s*[%％]', card_text)
                                 disc2 = f"{disc_m.group(1)}%" if disc_m else '30%'
                                 img_el = card_container.query_selector('img')
                                 img2 = ''
                                 if img_el:
-                                    img2 = img_el.get_attribute('src') or img_el.get_attribute('data-src') or ''
+                                    img2 = img_el.get_attribute(
+                                        'src') or img_el.get_attribute('data-src') or ''
 
                                 if not (price2 >= 500 and img2.startswith('http')):
                                     continue
@@ -1151,17 +1220,21 @@ def harvest_sharelink_portal():
                                     "priority": 2
                                 }
                                 harvested_deals.append(deal_obj2)
-                                print_log(f"  [tab:{tab_kw}] #{len(harvested_deals)} {title2[:28]} | {price2:,}원 ({disc2})")
+                                print_log(
+                                    f"  [tab:{tab_kw}] #{len(harvested_deals)} {title2[:28]} | {price2:,}원 ({disc2})")
                             except Exception:
                                 pass
                     except Exception as tab_err:
                         print_log(f"  ⚠️ [{tab_kw}] 탭 순회 오류: {tab_err}")
 
-            print_log("==========================================================")
+            print_log(
+                "==========================================================")
             print_log(f"오늘만 이 가격 : {section_counts['today_price']}개 수집")
             print_log(f"많이 팔리는 베스트 : {section_counts['best_seller']}개 수집")
-            print_log(f"시즌 특가 / 추천 : {section_counts['season_special'] + section_counts['other']}개 수집")
-            print_log("==========================================================")
+            print_log(
+                f"시즌 특가 / 추천 : {section_counts['season_special'] + section_counts['other']}개 수집")
+            print_log(
+                "==========================================================")
             print_log(f"총 {len(harvested_deals)}개 저장 완료")
         except Exception as e:
             print_log(f"❌ 수집 중 오류: {e}")
@@ -1170,15 +1243,18 @@ def harvest_sharelink_portal():
 
     # ⚡ [API Interceptor] 도청된 백엔드 JSON 전수 데이터를 harvested_deals에 100% 무조건 전량 등록
     if captured_api_products:
-        print_log(f"📡 [API Interceptor] 토스 백엔드 JSON 원본 {len(captured_api_products)}개 전수 획득 완료!")
+        print_log(
+            f"📡 [API Interceptor] 토스 백엔드 JSON 원본 {len(captured_api_products)}개 전수 획득 완료!")
         for api_item in captured_api_products:
             matched = False
             for d in harvested_deals:
                 if api_item["name"] in d["name"] or d["name"] in api_item["name"]:
                     d["price"] = api_item["price"]
                     d["original_price"] = api_item["original_price"]
-                    if api_item["discount_rate"]: d["discount_rate"] = api_item["discount_rate"]
-                    if api_item["share_link"] and api_item["share_link"].startswith("http"): d["share_link"] = api_item["share_link"]
+                    if api_item["discount_rate"]:
+                        d["discount_rate"] = api_item["discount_rate"]
+                    if api_item["share_link"] and api_item["share_link"].startswith("http"):
+                        d["share_link"] = api_item["share_link"]
                     matched = True
                     break
             # 백엔드 API에서 포획된 신규 핫딜은 제한 없이 전량 추가
@@ -1193,8 +1269,6 @@ def harvest_sharelink_portal():
                     "priority": 2
                 })
 
-
-
     if harvested_deals:
         update_db_with_deals(harvested_deals)
 
@@ -1208,7 +1282,8 @@ def update_db_with_deals(deals):
             db = json.load(f)
 
     # 2026-07-31 수복 이전 구형 엇갈린 데이터 100% 자동 소탕 필터
-    existing = [p for p in db.get("products", []) if p.get("added_date", "") >= "2026-07-31T00:00:00"]
+    existing = [p for p in db.get("products", []) if p.get(
+        "added_date", "") >= "2026-07-31T00:00:00"]
     now = datetime.now()
 
     count_added = 0
@@ -1220,23 +1295,31 @@ def update_db_with_deals(deals):
         discount = d.get('discount_rate', '')
         thumb = d.get('thumbnail', '')
         share_link = d.get('share_link', '')
-        is_bad_profit_title = bool(re.search(r'개당|수익|원\s*수익|개당\s*[\d,]+\s*원', name))
-        is_valid_name = len(name) >= 3 and not is_bad_profit_title and not re.match(r'^\d+(\.\d+)?\s*\(', name)
+        is_bad_profit_title = bool(
+            re.search(r'개당|수익|원\s*수익|개당\s*[\d,]+\s*원', name))
+        is_valid_name = len(name) >= 3 and not is_bad_profit_title and not re.match(
+            r'^\d+(\.\d+)?\s*\(', name)
         is_valid_price = isinstance(price, int) and price >= 1000
         is_valid_discount = True  # 원본 할인율 그대로 보존
-        is_valid_thumb = bool(thumb and thumb.startswith('http') and len(thumb) >= 15 and not 'DefaultDeal' in thumb and not 'placeholder' in thumb)
-        is_valid_link = bool(share_link and share_link.startswith('https://toss.im/_m/'))
-
+        is_valid_thumb = bool(thumb and thumb.startswith('http') and len(
+            thumb) >= 15 and not 'DefaultDeal' in thumb and not 'placeholder' in thumb)
+        is_valid_link = bool(
+            share_link and share_link.startswith('https://toss.im/_m/'))
 
         if not (is_valid_name and is_valid_price and is_valid_discount and is_valid_thumb and is_valid_link):
             rejected_count += 1
             reasons = []
-            if not is_valid_name: reasons.append("이름 불량")
-            if not is_valid_price: reasons.append("가격 불량 (<1000원)")
-            if not is_valid_discount: reasons.append("할인율 없음/형식 불량")
-            if not is_valid_thumb: reasons.append("이미지 URL 불량")
-            if not is_valid_link: reasons.append("토스 쉐어링크 미발급")
-            
+            if not is_valid_name:
+                reasons.append("이름 불량")
+            if not is_valid_price:
+                reasons.append("가격 불량 (<1000원)")
+            if not is_valid_discount:
+                reasons.append("할인율 없음/형식 불량")
+            if not is_valid_thumb:
+                reasons.append("이미지 URL 불량")
+            if not is_valid_link:
+                reasons.append("토스 쉐어링크 미발급")
+
             print_log(f"📌 [REJECT] 상세 사유 리포트")
             print_log(f"  상품: {name}")
             print_log(f"  가격: {price}원")
@@ -1245,12 +1328,9 @@ def update_db_with_deals(deals):
             print_log(f"  차단 사유: {', '.join(reasons)}")
             continue
 
-
-
-
-
         # UPSERT 전략: 이미 같은 상품명이 존재하면 skip이 아닌 UPDATE (오늘만 이 가격 섹션 1순위 보호)
-        existing_idx = next((i for i, p in enumerate(existing) if p.get('name') == name), None)
+        existing_idx = next((i for i, p in enumerate(
+            existing) if p.get('name') == name), None)
         if existing_idx is not None:
             # 1순위 보호 규칙: 만약 기존 섹션이 today_price(오늘만 이 가격)이면 2순위 best_seller로 덮어쓰지 않음!
             current_sec = existing[existing_idx].get('section')
@@ -1269,12 +1349,13 @@ def update_db_with_deals(deals):
             existing[existing_idx]['price'] = price
             existing[existing_idx]['discount_rate'] = discount
             existing[existing_idx]['status'] = 'ACTIVE'
-            existing[existing_idx]['expiry_date'] = (now + timedelta(hours=48)).isoformat()
-            print_log(f"  🔄 [UPSERT 갱신] {name[:28]} ➔ 링크/이미지 최신화 완료 (Section: {new_sec})")
+            existing[existing_idx]['expiry_date'] = (
+                now + timedelta(hours=48)).isoformat()
+            print_log(
+                f"  🔄 [UPSERT 갱신] {name[:28]} ➔ 링크/이미지 최신화 완료 (Section: {new_sec})")
 
             count_added += 1
             continue
-
 
         slug = f"toss_{int(time.time())}_{count_added}"
         expiry_date = (now + timedelta(hours=48)).isoformat()
@@ -1314,7 +1395,6 @@ def update_db_with_deals(deals):
         existing.insert(0, prod_entry)
         count_added += 1
 
-
     # 2순위 수복: 200개 강제 슬라이싱 대신 만료일(expiry_date) 기반으로 오래된 상품 자동 정리
     now_iso = now.isoformat()
     existing = [p for p in existing if p.get('expiry_date', '9999') > now_iso]
@@ -1324,7 +1404,9 @@ def update_db_with_deals(deals):
 
         json.dump(db, f, ensure_ascii=False, indent=2)
 
-    print_log(f"🎉 morvix_shop_db.json {count_added}개 신규 정상 핫딜 등록 완료! (불량 차단: {rejected_count}개)")
+    print_log(
+        f"🎉 morvix_shop_db.json {count_added}개 신규 정상 핫딜 등록 완료! (불량 차단: {rejected_count}개)")
+
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--save-session":
