@@ -1,12 +1,12 @@
 """
 =============================================================================
-MORVIX SHOP OS - Toss ShareLink Portal Harvester (Direct URL Perfect V18 - Render Final)
+MORVIX SHOP OS - Toss ShareLink Portal Harvester (Direct URL Perfect V19 - Precision Parser)
 worker/sharelink_toss_harvester.py
 
-[직통 URL 전용 100% 수집 엔진]
-1. 오늘만 이가격 직통: https://sharelink.toss.im/links/best-ranking/daily-deals?sectionCode=TODAY_DEAL
-2. 지금 많이 팔리는 BEST 직통: https://sharelink.toss.im/links/best-ranking/promotion?sectionCode=BEST_SELLING
-3. Render 외부 서버 세션 복원 & Git Auto Push 완결판
+[핵심 개편 사항]
+1. '100g당 XX원', '개당 XX원 수익' 등 더미 텍스트/수익금 라인 완전 제거
+2. 진짜 상품명과 진짜 결제 판매가(Price)만 1:1 정밀 짝지음 매핑
+3. Render 환경 세션 자동 복원 & GitHub Auto Push (Vercel 배포 트리거) 완결
 =============================================================================
 """
 import sys
@@ -69,7 +69,7 @@ def push_to_github_automatically():
         subprocess.run(["git", "add", "-f", ROOT_DB_PATH], cwd=BASE_DIR, capture_output=True)
         subprocess.run(["git", "add", "-f", WORKER_DB_PATH], cwd=BASE_DIR, capture_output=True)
         
-        commit_msg = f"Auto Sync Toss Deals: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        commit_msg = f"Auto Sync Toss Deals (Fix Price Mapping): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
         
         push_res = subprocess.run(["git", "push", repo_url, "HEAD:main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
@@ -88,6 +88,13 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
     
     harvested = []
     seen_titles = set()
+
+    # 파싱 시 완전히 배제할 노이즈/더미 키워드 목록
+    JUNK_KEYWORDS = [
+        '수익', '당 ', '개당', '100g', '100ml', '10g', '1포당', 
+        '1롤당', '1매당', '1매입당', '1마리당', '1세트당', '1정당', 
+        '링크 발급', '최저가', '내일출발', '오늘출발', '베스트판매자', '전체 보기', '전체보기'
+    ]
 
     try:
         # 무한 스크롤 다운 (35회)
@@ -111,10 +118,11 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
 
                 lines = [l.strip() for l in raw_text.split('\n') if l.strip()]
                 
+                # 1. 진짜 상품명 후보 추출 (더미 라인 차단)
                 candidate_titles = []
                 for l in lines:
                     if len(l) >= 3 and not re.match(r'^[\d,%원\-~★☆.()\s]+$', l):
-                        if not any(k in l for k in ['링크 발급', '개당', '수익', '최저가', '내일출발', '오늘출발', '베스트판매자', '전체 보기', '전체보기']):
+                        if not any(k in l for k in JUNK_KEYWORDS):
                             candidate_titles.append(l)
 
                 if not candidate_titles:
@@ -124,13 +132,22 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
                 if title in seen_titles:
                     continue
 
-                prices = re.findall(r'([\d,]+)\s*원', raw_text)
-                valid_prices = [int(p.replace(',', '')) for p in prices if int(p.replace(',', '')) >= 500]
+                # 2. 진짜 판매가 파싱 (단위 가격 및 수익금 라인 차단)
+                price_lines = [l for l in lines if '원' in l and not any(k in l for k in ['당 ', '수익', '개당'])]
+                valid_prices = []
+                for pl in price_lines:
+                    prices = re.findall(r'([\d,]+)\s*원', pl)
+                    for p in prices:
+                        val = int(p.replace(',', ''))
+                        if val >= 500:  # 정상 상품가 최소 기준
+                            valid_prices.append(val)
 
                 if not valid_prices:
                     continue
+
                 price = min(valid_prices)
 
+                # 3. 할인율 및 배지 파싱
                 disc_match = re.search(r'(\d+)\s*[%％]', raw_text)
                 if disc_match:
                     discount_rate = f"{disc_match.group(1)}%"
@@ -139,6 +156,7 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
                 else:
                     discount_rate = "특가"
 
+                # 4. 썸네일 및 링크
                 img_url = card.evaluate(r"""el => {
                     const img = el.querySelector('img');
                     return img ? (img.currentSrc || img.src || img.getAttribute('data-src') || '') : '';
@@ -162,7 +180,7 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
             except Exception:
                 continue
 
-        print_log(f"✅ [{section_name}] 수집 완료: 총 {len(harvested)}개 확보!")
+        print_log(f"✅ [{section_name}] 수집 완료: 총 {len(harvested)}개 정밀 확보!")
 
     except Exception as sec_err:
         print_log(f"⚠️ [{section_name}] 오류 발생: {sec_err}")
@@ -171,7 +189,7 @@ def collect_hybrid_data(page, section_name, section_key, priority_val, target_co
 
 
 def harvest_sharelink_portal():
-    print_log("🚀 [TOSS SHARELINK HARVESTER] 직통 URL 무적 수집 엔진 가동")
+    print_log("🚀 [TOSS SHARELINK HARVESTER] 직통 URL 정밀 수집 엔진 가동")
 
     # Render 환경변수로부터 세션 복원
     setup_session_from_env()
@@ -180,7 +198,6 @@ def harvest_sharelink_portal():
     all_harvested_deals = []
 
     with sync_playwright() as p:
-        # Render 서버 환경 대응 headless=True 및 스텔스 옵션
         browser = p.chromium.launch(
             headless=True,
             slow_mo=100,
@@ -227,7 +244,7 @@ def harvest_sharelink_portal():
 
         browser.close()
 
-    print_log(f"🏆 총 {len(all_harvested_deals)}개 상품 파싱 완결 ➔ DB 저장 진입")
+    print_log(f"🏆 총 {len(all_harvested_deals)}개 정밀 상품 파싱 완결 ➔ DB 저장 진입")
     if all_harvested_deals:
         update_db_with_deals(all_harvested_deals)
 
@@ -263,6 +280,7 @@ def update_db_with_deals(deals):
         existing_idx = next((i for i, p in enumerate(existing) if p.get('name') == name), None)
         if existing_idx is not None:
             existing[existing_idx]['price'] = price
+            existing[existing_idx]['original_price'] = int(price * 1.35)
             existing[existing_idx]['discount_rate'] = discount
             if thumb:
                 existing[existing_idx]['thumbnail'] = thumb
