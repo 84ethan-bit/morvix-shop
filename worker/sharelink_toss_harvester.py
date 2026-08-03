@@ -23,7 +23,6 @@ def print_log(msg):
     print(f"[{timestamp}] {msg}", flush=True)
 
 
-# 🌐 [자동 세팅] 외부 서버/로컬 실행 시 Playwright 및 Chromium 바이너리 자동 체크 및 설치
 def ensure_playwright_installed():
     try:
         from playwright.sync_api import sync_playwright
@@ -40,7 +39,6 @@ def ensure_playwright_installed():
         print_log(f"⚠️ 바이너리 설치 중 예외 (이미 설치되어 있을 수 있음): {e}")
 
 
-# 스크립트 로드 시 즉시 바이너리 환경 보장
 ensure_playwright_installed()
 from playwright.sync_api import sync_playwright
 
@@ -55,41 +53,6 @@ def setup_session_from_env():
             print_log("🔑 세션 복원 완료")
         except Exception as e:
             print_log(f"⚠️ 세션 복원 예외: {e}")
-
-
-# 🚀 [깃허브 자동 푸시] 수집된 DB를 원격 깃허브 레포지토리에 동기화
-def push_to_github_automatically():
-    try:
-        gh_token = os.environ.get("GH_TOKEN", "").strip()
-        print_log("🚀 깃허브 자동 동기화 시도...")
-
-        if os.path.exists(WORKER_DB_PATH):
-            shutil.copy(WORKER_DB_PATH, ROOT_DB_PATH)
-
-        if not gh_token:
-            print_log("ℹ️ [GH_TOKEN 미설정] 로컬 테스트 완료 (Push 스킵)")
-            return
-
-        repo_url = f"https://x-access-token:{gh_token}@github.com/84ethan-bit/morvix-shop.git"
-        
-        subprocess.run(["git", "config", "user.name", "Morvix Auto Bot"], cwd=BASE_DIR, capture_output=True)
-        subprocess.run(["git", "config", "user.email", "bot@morvix.kr"], cwd=BASE_DIR, capture_output=True)
-        
-        subprocess.run(["git", "add", "-f", ROOT_DB_PATH], cwd=BASE_DIR, capture_output=True)
-        subprocess.run(["git", "add", "-f", WORKER_DB_PATH], cwd=BASE_DIR, capture_output=True)
-        
-        commit_msg = f"Auto Sync Today Deals (V56 Smart Scroll): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
-        subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
-        
-        push_res = subprocess.run(["git", "push", repo_url, "HEAD:main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
-        
-        if push_res.returncode == 0:
-            print_log("🎉 깃허브 푸시 성공!")
-        else:
-            print_log(f"⚠️ Git Push 실패: {push_res.stderr.strip()}")
-
-    except Exception as e:
-        print_log(f"❌ Auto Git Push 예외: {e}")
 
 
 def clean_product_name(raw_name):
@@ -137,7 +100,6 @@ def harvest_today_deals_exclusively(page):
             }, true);
         """)
 
-        # 🕒 [시간차 대기 강화] 페이지 초기 로딩을 확실히 기다린 후 스크롤 시작
         print_log("📜 '오늘만 이가격' 페이지 초기 렌더링 안정화 대기 중 (3초)...")
         page.wait_for_timeout(3000)
 
@@ -147,7 +109,7 @@ def harvest_today_deals_exclusively(page):
 
         for step in range(30):
             page.evaluate("window.scrollTo(0, document.body.scrollHeight);")
-            page.wait_for_timeout(3500)  # 👈 스크롤 후 컨텐츠 로딩 간격 여유 있게 3.5초 대기
+            page.wait_for_timeout(3500)
             
             new_height = page.evaluate("document.body.scrollHeight")
             if new_height == last_height:
@@ -261,8 +223,6 @@ def harvest_today_deals_exclusively(page):
                     else:
                         continue
 
-                print_log(f"   🎯 [오늘만 이가격 수집] {title} | {price}원 | {discount_rate} ➔ {real_toss_link}")
-
                 seen_titles.add(title)
                 harvested.append({
                     "name": title,
@@ -329,7 +289,6 @@ def harvest_sharelink_portal():
         except Exception as main_err:
             print_log(f"❌ 전체 예외: {main_err}")
 
-        # 🔗 [2번 수집기 연동 대비] 브라우저를 닫지 않고 유지 (browser.close 제거됨)
         print_log("🔒 1번 수집기 완료: 브라우저 세션을 유지한 채 2번 수집기 연동을 대기합니다.")
 
     if all_harvested_deals:
@@ -337,8 +296,6 @@ def harvest_sharelink_portal():
     else:
         print_log("⚠️ 수집된 상품이 0개입니다. 로그인이 정상적으로 되어 있는지 확인해 주세요.")
 
-    # 🔗 [2번 수집기(BEST) 연속 호출 파트]
-    # 1번 수집 및 DB 반영이 끝나면, 아래에서 2번 수집기 스크립트를 이어서 실행합니다.
     try:
         best_harvester_path = os.path.join(WORKER_DIR, "harvest_best_ranking.py")
         if os.path.exists(best_harvester_path):
@@ -407,8 +364,8 @@ def update_db_with_deals(deals):
     with open(WORKER_DB_PATH, "w", encoding="utf-8") as f:
         json.dump(db, f, ensure_ascii=False, indent=2)
 
-    print_log(f"🎉 [오늘만 이가격] DB 초기화 및 스마트 스크롤 적재 완료 (총 {len(db['products'])}개)")
-    push_to_github_automatically()
+    print_log(f"🎉 [오늘만 이가격] 임시 적재 완료 (총 {len(db['products'])}개) ➔ 2번 수집기 연동 대기중")
+    # 💡 1번에서는 중간 푸시를 하지 않고 2번으로 제어권을 넘김
 
 
 if __name__ == "__main__":

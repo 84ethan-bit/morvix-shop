@@ -1,8 +1,8 @@
 """
 =============================================================================
 MORVIX SHOP OS - BEST Ranking Harvester (Slow Scroll & Stable Dynamic Harvester)
-- 전용 목적: [지금 많이 팔리는 BEST] 스크롤 대기 시간 4초 보장 및 전체 상품 누락 없는 전수 수집
-- 추가 기능: 수집 완료 후 기존 메인 통합 DB(morvix_shop_db.json)와 병합 저장
+- 전용 목적: [지금 많이 팔리는 BEST] 스크롤 대기 시간 4초 보장 및 개별 상품 전수 수집
+- 추가 기능: 1번 데이터 병합 후 최종 통합 DB 구축 및 깃허브 자동 푸시 수행
 =============================================================================
 """
 import sys
@@ -10,6 +10,8 @@ import os
 import json
 import time
 import re
+import subprocess
+import shutil
 from datetime import datetime, timedelta
 from playwright.sync_api import sync_playwright
 
@@ -18,6 +20,9 @@ if hasattr(sys.stdout, 'reconfigure'):
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WORKER_DIR = os.path.dirname(os.path.abspath(__file__))
+
+ROOT_DB_PATH = os.path.join(BASE_DIR, "morvix_shop_db.json")
+WORKER_DB_PATH = os.path.join(WORKER_DIR, "morvix_shop_db.json")
 SESSION_PATH = os.path.join(BASE_DIR, "scratch", "toss_sharelink_session.json")
 BEST_DB_PATH = os.path.join(WORKER_DIR, "best_products_db.json")
 
@@ -25,6 +30,40 @@ BEST_DB_PATH = os.path.join(WORKER_DIR, "best_products_db.json")
 def print_log(msg):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{timestamp}] {msg}", flush=True)
+
+
+def push_to_github_automatically():
+    try:
+        gh_token = os.environ.get("GH_TOKEN", "").strip()
+        print_log("🚀 [최종 통합] 깃허브 자동 동기화 시도...")
+
+        if os.path.exists(WORKER_DB_PATH):
+            shutil.copy(WORKER_DB_PATH, ROOT_DB_PATH)
+
+        if not gh_token:
+            print_log("ℹ️ [GH_TOKEN 미설정] 로컬 테스트 완료 (Push 스킵)")
+            return
+
+        repo_url = f"https://x-access-token:{gh_token}@github.com/84ethan-bit/morvix-shop.git"
+        
+        subprocess.run(["git", "config", "user.name", "Morvix Auto Bot"], cwd=BASE_DIR, capture_output=True)
+        subprocess.run(["git", "config", "user.email", "bot@morvix.kr"], cwd=BASE_DIR, capture_output=True)
+        
+        subprocess.run(["git", "add", "-f", ROOT_DB_PATH], cwd=BASE_DIR, capture_output=True)
+        subprocess.run(["git", "add", "-f", WORKER_DB_PATH], cwd=BASE_DIR, capture_output=True)
+        
+        commit_msg = f"Auto Sync Final Integrated Deals (V56 Pipeline): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
+        
+        push_res = subprocess.run(["git", "push", repo_url, "HEAD:main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
+        
+        if push_res.returncode == 0:
+            print_log("🎉 [최종 통합] 깃허브 푸시 성공!")
+        else:
+            print_log(f"⚠️ Git Push 실패: {push_res.stderr.strip()}")
+
+    except Exception as e:
+        print_log(f"❌ Auto Git Push 예외: {e}")
 
 
 def clean_product_name(raw_name):
@@ -38,7 +77,7 @@ def clean_product_name(raw_name):
 
 
 def harvest_best_ranking_exclusively():
-    print_log("🏆 [BEST 수집 엔진] 4초 딥 스크롤 안정화 수집 가동...")
+    print_log("🏆 [BEST 수집 엔진] 개별 카드 정밀 인식 스캔 가동...")
     
     harvested = []
     seen_titles = set()
@@ -54,7 +93,7 @@ def harvest_best_ranking_exclusively():
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
-            headless=True,  # 서버 환경 최적화 (headless 모드 활성화)
+            headless=True,
             slow_mo=50,
             args=[
                 "--no-sandbox", 
@@ -97,85 +136,72 @@ def harvest_best_ranking_exclusively():
             page.evaluate("window.scrollTo(0, 0);")
             page.wait_for_timeout(2000)
 
-            total_processed = 0
-            
-            while True:
-                buttons = page.locator("button:has-text('링크 발급')").all()
-                unprocessed_buttons = buttons[total_processed:]
-                
-                if not unprocessed_buttons:
-                    break
+            # 💡 [핵심 수정] 버튼 기준이 아니라 개별 상품 컨테이너(카드) 단위로 리스트를 안정적으로 획득
+            card_locators = page.locator("xpath=//button[contains(text(), '링크 발급')]/ancestor::*[contains(@class, 'Card') or contains(@class, 'Item') or contains(@class, 'Product') or self::article or self::section][1]").all()
+            if not card_locators or len(card_locators) == 0:
+                card_locators = page.locator("xpath=//button[contains(text(), '링크 발급')]/ancestor::div[3]").all()
 
-                print_log(f"📍 [진행 상황] 현재까지 처리된 상품: {total_processed}개 / 발견된 전체 버튼: {len(buttons)}개")
+            print_log(f"📍 [BEST 수집] 감지된 개별 상품 카드: 총 {len(card_locators)}개")
 
-                for btn in unprocessed_buttons:
+            for idx, card in enumerate(card_locators):
+                try:
+                    raw_text = card.inner_text() if card.count() else ""
+                    if not raw_text or '원' not in raw_text:
+                        continue
+
+                    lines = [l.strip() for l in raw_text.split('\n') if l.strip()]
+                    
+                    candidate_titles = []
+                    for l in lines:
+                        if re.match(r'^\d{1,3}$', l) or re.search(r'\d+.*당', l) or re.search(r'^\d+%\s*특가', l):
+                            continue
+                        if len(l) >= 4 and not re.match(r'^[\d,%원\-~★☆.()\s]+$', l):
+                            if not any(k in l for k in JUNK_KEYWORDS) and '%' not in l:
+                                candidate_titles.append(l)
+
+                    if not candidate_titles:
+                        continue
+                    
+                    raw_title = max(candidate_titles, key=len)
+                    title = clean_product_name(raw_title)
+                    
+                    if not title or title in seen_titles:
+                        continue
+
+                    price_lines = [l for l in lines if '원' in l and not any(k in l for k in ['당 ', '수익', '개당'])]
+                    valid_prices = []
+                    for pl in price_lines:
+                        prices = re.findall(r'([\d,]+)\s*원', pl)
+                        for p in prices:
+                            val = int(p.replace(',', ''))
+                            if val >= 500:
+                                valid_prices.append(val)
+
+                    if not valid_prices:
+                        continue
+                    price = min(valid_prices)
+
+                    disc_match = re.search(r'(\d+)\s*[%％]', raw_text)
+                    if disc_match:
+                        discount_rate = f"{disc_match.group(1)}%"
+                    elif '최저가' in raw_text:
+                        discount_rate = "최저가"
+                    elif '역대급특가' in raw_text:
+                        discount_rate = "역대급특가"
+                    else:
+                        discount_rate = "BEST 특가"
+
+                    img_url = card.evaluate(r"""el => {
+                        const img = el.querySelector('img');
+                        return img ? (img.currentSrc || img.src || img.getAttribute('data-src') || '') : '';
+                    }""")
+                    if not img_url or not img_url.startswith('http'):
+                        img_url = "https://static.toss.im/icons/png/4x/icon-toss-logo.png"
+
+                    real_toss_link = None
                     try:
-                        total_processed += 1
-                        card = btn.locator("xpath=ancestor::*[contains(@class, 'Card') or contains(@class, 'Item') or contains(@class, 'Product') or self::article or self::section or count(descendant::button[text()='링크 발급']) = 1][1]")
-                        if not card or not card.count():
-                            card = btn.locator("xpath=ancestor::div[4]")
-
-                        raw_text = card.inner_text() if card.count() else ""
-                        if not raw_text or '원' not in raw_text:
-                            card = btn.locator("xpath=ancestor::div[6]")
-                            raw_text = card.inner_text() if card.count() else ""
-                            if not raw_text or '원' not in raw_text:
-                                continue
-
-                        lines = [l.strip() for l in raw_text.split('\n') if l.strip()]
-                        
-                        candidate_titles = []
-                        for l in lines:
-                            if re.match(r'^\d{1,3}$', l) or re.search(r'\d+.*당', l) or re.search(r'^\d+%\s*특가', l):
-                                continue
-                            if len(l) >= 4 and not re.match(r'^[\d,%원\-~★☆.()\s]+$', l):
-                                if not any(k in l for k in JUNK_KEYWORDS) and '%' not in l:
-                                    candidate_titles.append(l)
-
-                        if not candidate_titles:
-                            continue
-                        
-                        raw_title = max(candidate_titles, key=len)
-                        title = clean_product_name(raw_title)
-                        
-                        if not title:
-                            continue
-                        
-                        if title in seen_titles:
-                            title = f"{title}_{total_processed}"
-
-                        price_lines = [l for l in lines if '원' in l and not any(k in l for k in ['당 ', '수익', '개당'])]
-                        valid_prices = []
-                        for pl in price_lines:
-                            prices = re.findall(r'([\d,]+)\s*원', pl)
-                            for p in prices:
-                                val = int(p.replace(',', ''))
-                                if val >= 500:
-                                    valid_prices.append(val)
-
-                        if not valid_prices:
-                            continue
-                        price = min(valid_prices)
-
-                        disc_match = re.search(r'(\d+)\s*[%％]', raw_text)
-                        if disc_match:
-                            discount_rate = f"{disc_match.group(1)}%"
-                        elif '최저가' in raw_text:
-                            discount_rate = "최저가"
-                        elif '역대급특가' in raw_text:
-                            discount_rate = "역대급특가"
-                        else:
-                            discount_rate = "BEST 특가"
-
-                        img_url = card.evaluate(r"""el => {
-                            const img = el.querySelector('img');
-                            return img ? (img.currentSrc || img.src || img.getAttribute('data-src') || '') : '';
-                        }""")
-                        if not img_url or not img_url.startswith('http'):
-                            img_url = "https://static.toss.im/icons/png/4x/icon-toss-logo.png"
-
-                        real_toss_link = None
-                        try:
+                        btn = card.locator("button:has-text('링크 발급')").first
+                        if btn.count():
                             btn.scroll_into_view_if_needed()
                             page.wait_for_timeout(50)
                             btn.click(force=True)
@@ -186,58 +212,50 @@ def harvest_best_ranking_exclusively():
                                 match_link = re.search(r'https:\/\/toss\.im\/_m\/[a-zA-Z0-9]+', clip_content)
                                 if match_link:
                                     real_toss_link = match_link.group(0)
-                        except Exception:
-                            pass
-
-                        if not real_toss_link:
-                            prod_id_match = re.search(r'/product/(\d+)', img_url) or re.search(r'/ai/([a-zA-Z0-9_-]+)', img_url)
-                            if prod_id_match:
-                                token_id = prod_id_match.group(1)
-                                real_toss_link = f"https://sharelink.toss.im/links/product?id={token_id}"
-                            else:
-                                safe_token = str(abs(hash(title)))[:8]
-                                real_toss_link = f"https://sharelink.toss.im/links/product?id=best_{safe_token}"
-
-                        print_log(f"   🔥 [BEST 수집 성공] {title} | {price}원 | {discount_rate}")
-
-                        seen_titles.add(title)
-                        harvested.append({
-                            "name": title,
-                            "price": price,
-                            "discount_rate": discount_rate,
-                            "thumbnail": img_url,
-                            "share_link": real_toss_link,
-                            "section": "best_ranking",
-                            "priority": 2
-                        })
                     except Exception:
-                        continue
-                
-                new_buttons_check = page.locator("button:has-text('링크 발급')").all()
-                if len(new_buttons_check) <= len(buttons):
-                    break
+                        pass
 
-            print_log(f"✅ [BEST 상품] 안정화 전수 수집 완료: 총 {len(harvested)}개")
+                    if not real_toss_link:
+                        prod_id_match = re.search(r'/product/(\d+)', img_url) or re.search(r'/ai/([a-zA-Z0-9_-]+)', img_url)
+                        if prod_id_match:
+                            token_id = prod_id_match.group(1)
+                            real_toss_link = f"https://sharelink.toss.im/links/product?id={token_id}"
+                        else:
+                            safe_token = str(abs(hash(title)))[:8]
+                            real_toss_link = f"https://sharelink.toss.im/links/product?id=best_{safe_token}"
+
+                    print_log(f"   🔥 [BEST 수집 성공] {title} | {price}원 | {discount_rate}")
+
+                    seen_titles.add(title)
+                    harvested.append({
+                        "name": title,
+                        "price": price,
+                        "discount_rate": discount_rate,
+                        "thumbnail": img_url,
+                        "share_link": real_toss_link,
+                        "section": "best_ranking",
+                        "priority": 2
+                    })
+                except Exception:
+                    continue
+
+            print_log(f"✅ [BEST 상품] 개별 카드 전수 수집 완료: 총 {len(harvested)}개")
         except Exception as err:
             print_log(f"❌ BEST 수집 예외 발생: {err}")
 
         browser.close()
 
-    # 수집된 BEST 상품들을 기존 메인 통합 DB(morvix_shop_db.json)에 병합 저장
     if harvested:
         db = {"products": []}
         now = datetime.now()
         
-        main_db_path = os.path.join(BASE_DIR, "morvix_shop_db.json")
-        worker_main_db_path = os.path.join(WORKER_DIR, "morvix_shop_db.json")
-        target_main_db = main_db_path if os.path.exists(main_db_path) else worker_main_db_path
+        target_main_db = ROOT_DB_PATH if os.path.exists(ROOT_DB_PATH) else WORKER_DB_PATH
         
         existing_products = []
         if os.path.exists(target_main_db):
             try:
                 with open(target_main_db, "r", encoding="utf-8") as f:
                     data = json.load(f)
-                    # 1번('today_price') 상품들은 그대로 유지하고 기존 'best_ranking'만 이번 수집분으로 교체
                     existing_products = [p for p in data.get("products", []) if p.get("section") == "today_price"]
             except Exception:
                 pass
@@ -274,11 +292,9 @@ def harvest_best_ranking_exclusively():
             }
             best_products.append(prod_entry)
 
-        # 1번 상품들과 2번 BEST 상품들을 하나의 리스트로 결합
         db["products"] = existing_products + best_products
 
-        # 메인 통합 DB 경로들에 저장
-        for path_target in [main_db_path, worker_main_db_path]:
+        for path_target in [ROOT_DB_PATH, WORKER_DB_PATH]:
             try:
                 with open(path_target, "w", encoding="utf-8") as f:
                     json.dump(db, f, ensure_ascii=False, indent=2)
@@ -286,6 +302,8 @@ def harvest_best_ranking_exclusively():
                 pass
 
         print_log(f"🎉 [통합 DB 적재 완료] 오늘만 이가격({len(existing_products)}개) + BEST 상품({len(best_products)}개) ➔ 총 {len(db['products'])}개 통합 DB 구축 완료!")
+        
+        push_to_github_automatically()
 
 
 if __name__ == "__main__":
