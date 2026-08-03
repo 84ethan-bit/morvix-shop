@@ -122,23 +122,18 @@ def get_seconds_until_next_target_time():
 
 
 def run_pipeline():
-    """1번 및 2번 통합 수집 파이프라인 실행 함수"""
+    """1번 및 2번 통합 수집 파이프라인 순차 실행 함수"""
     try:
         check_midnight_today_price_reset()
 
         print(f"\n[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 🕐 토스 파트너 정시 수집 시작...", flush=True)
         
+        # 1. 1번 수집기('오늘만 이가격') 실행
         script_candidate1 = os.path.join(BASE_DIR, "worker", "sharelink_toss_harvester.py")
         script_candidate2 = os.path.join(BASE_DIR, "sharelink_toss_harvester.py")
-        
-        if os.path.exists(script_candidate1):
-            harvester_script = script_candidate1
-        elif os.path.exists(script_candidate2):
-            harvester_script = script_candidate2
-        else:
-            harvester_script = script_candidate1
+        harvester_script = script_candidate1 if os.path.exists(script_candidate1) else script_candidate2
 
-        print(f"📍 수집기 실행 파일 경로: {harvester_script}", flush=True)
+        print(f"📍 1번 수집기 실행 파일 경로: {harvester_script}", flush=True)
 
         cmd = [sys.executable, "-u", harvester_script]
         env = dict(os.environ)
@@ -150,23 +145,42 @@ def run_pipeline():
 
         proc.wait()
         if proc.returncode == 0:
-            print(f"[{datetime.now().strftime('%H:%M:%S')}] ✅ 정시 수집 완료", flush=True)
+            print(f"[{datetime.now().strftime('%H:%M:%S')}] ✅ 1번 수집 완료", flush=True)
         else:
-            print(f"❌ 수집기 returncode={proc.returncode}", flush=True)
+            print(f"❌ 1번 수집기 returncode={proc.returncode}", flush=True)
+
+        # 2. 1번 완료 직후 2번 BEST 수집기 연쇄 실행
+        best_script1 = os.path.join(BASE_DIR, "worker", "harvest_best_ranking.py")
+        best_script2 = os.path.join(BASE_DIR, "harvest_best_ranking.py")
+        best_script = best_script1 if os.path.exists(best_script1) else best_script2
+
+        if os.path.exists(best_script):
+            print(f"🚀 [연동 실행] 1번 완료 후 2번 BEST 수집기({os.path.basename(best_script)})를 가동합니다...", flush=True)
+            best_cmd = [sys.executable, "-u", best_script]
+            best_proc = subprocess.Popen(best_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, cwd=BASE_DIR, env=env, bufsize=1)
+            
+            for line in best_proc.stdout:
+                print(line, end="", flush=True)
+            best_proc.wait()
+            
+            if best_proc.returncode == 0:
+                print(f"[{datetime.now().strftime('%H:%M:%S')}] ✅ 2번 BEST 수집 및 통합 DB 적재 완료", flush=True)
+            else:
+                print(f"❌ 2번 수집기 returncode={best_proc.returncode}", flush=True)
+        else:
+            print(f"❌ 연동할 2번 BEST 수집기 파일을 찾을 수 없습니다: {best_script}", flush=True)
 
     except Exception as e:
         print(f"❌ 정시 수집 루프 예외: {e}", flush=True)
 
 
 def autonomous_harvest_loop():
-    """서버 구동 즉시 1회 실행 후, 다음 정시부터 스케줄링 루프 가동"""
+    """서버 구동 즉시 1회 실행 후, 다음 정시부터 스케줄링 루프 가동[cite: 2]"""
     print("🤖 [AUTO LOOP] 기동 즉시 수집 테스트 모드 가동", flush=True)
 
-    # 💡 [즉시 테스트 핵심] 서버가 켜지자마자 대기하지 않고 곧바로 수집을 1회 수행합니다.
     print("🚀 [즉시 실행] 서버 최초 구동 테스트를 위해 수집 파이프라인을 즉시 실행합니다...")
     run_pipeline()
 
-    # 이후부터는 다음 정시까지 대기 후 반복
     while True:
         sleep_sec = get_seconds_until_next_target_time()
         print(f"⏳ 지정된 KST 정시까지 대기 모드로 진입합니다. (대기 시간: {int(sleep_sec//3600)}시간 {int((sleep_sec%3600)//60)}분)")
