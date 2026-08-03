@@ -4,9 +4,10 @@ MORVIX SHOP OS - Render Background Worker Daemon
 morvix_render_worker.py
 
 [정시 스케줄링 관리자]
-1. KST 00:01 및 12:01 매일 정시 수집 자동 가동
-2. 자정 00:00 KST DB 전수 리셋 및 신규 수집 준비
-3. 대기 시간 동안 자원 소비 0% 휴면 모드 유지
+1. KST(한국 표준시) 기준 00:01 및 12:01 매일 정시 수집 자동 가동
+2. 서버 최초 구동 시 즉시 실행을 방지하고 다음 정시까지 안전 대기
+3. 자정 00:00 KST DB 전수 리셋 및 신규 수집 준비
+4. 대기 시간 동안 자원 소비 0% 휴면 모드 유지
 =============================================================================
 """
 import os
@@ -15,7 +16,7 @@ import sys
 import time
 import subprocess
 import threading
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta as td
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -80,8 +81,9 @@ class MorvixBridgeHandler(BaseHTTPRequestHandler):
 def check_midnight_today_price_reset():
     """매일 00:00 KST 전체 상품 DB 100% 리셋"""
     try:
-        now = datetime.now()
-        if now.hour == 0 and now.minute <= 15:
+        KST = timezone(td(hours=9))
+        now_kst = datetime.now(KST)
+        if now_kst.hour == 0 and now_kst.minute <= 15:
             db_path = os.path.join(BASE_DIR, "morvix_shop_db.json")
             if os.path.exists(db_path):
                 with open(db_path, "r", encoding="utf-8") as f:
@@ -99,28 +101,34 @@ def check_midnight_today_price_reset():
 
 
 def get_seconds_until_next_target_time():
-    """다음 목표 시각(00:01 KST 또는 12:01 KST)까지 남은 대기시간(초) 계산"""
-    now = datetime.now()
+    """타임존에 구애받지 않고 오직 실제 한국 시간(KST, UTC+9) 기준 다음 목표 시각(00:01 또는 12:01)까지 남은 초(second) 계산"""
+    KST = timezone(td(hours=9))
+    now_kst = datetime.now(KST)
     
-    target_0001_today = now.replace(hour=0, minute=1, second=0, microsecond=0)
-    target_1201_today = now.replace(hour=12, minute=1, second=0, microsecond=0)
-    target_0001_tomorrow = (now + timedelta(days=1)).replace(hour=0, minute=1, second=0, microsecond=0)
+    target_0001_today = now_kst.replace(hour=0, minute=1, second=0, microsecond=0)
+    target_1201_today = now_kst.replace(hour=12, minute=1, second=0, microsecond=0)
+    target_0001_tomorrow = (now_kst + td(days=1)).replace(hour=0, minute=1, second=0, microsecond=0)
     
-    if now < target_0001_today:
+    if now_kst < target_0001_today:
         next_target = target_0001_today
-    elif now < target_1201_today:
+    elif now_kst < target_1201_today:
         next_target = target_1201_today
     else:
         next_target = target_0001_tomorrow
         
-    wait_seconds = (next_target - now).total_seconds()
-    print(f"⏰ [정시 스케줄러] 다음 수집 예정 시각: {next_target.strftime('%Y-%m-%d %H:%M:%S')} (남은 대기시간: {int(wait_seconds//3600)}시간 {int((wait_seconds%3600)//60)}분)", flush=True)
+    wait_seconds = (next_target - now_kst).total_seconds()
+    print(f"⏰ [KST 정시 스케줄러] 현재 KST: {now_kst.strftime('%Y-%m-%d %H:%M:%S')} | 다음 수집 예정 시각: {next_target.strftime('%Y-%m-%d %H:%M:%S')} (남은 대기시간: {int(wait_seconds//3600)}시간 {int((wait_seconds%3600)//60)}분)", flush=True)
     return wait_seconds
 
 
 def autonomous_harvest_loop():
-    """00:01 KST 및 12:01 KST 정시 자동 수집 루프"""
+    """00:01 KST 및 12:01 KST 정시 자동 수집 루프 (서버 켜짐 즉시 실행 방지 버전)"""
     print("🤖 [AUTO LOOP] KST 00:01 / 12:01 정시 수집 스케줄러 가동", flush=True)
+
+    # 💡 [핵심 수정] 서버가 켜지자마자 수집을 실행하지 않고, 먼저 다음 정시까지 남은 대기 시간을 계산하여 대기합니다.
+    first_sleep_sec = get_seconds_until_next_target_time()
+    print(f"⏳ 서버 최초 구동: 지정된 KST 정시까지 대기 모드로 진입합니다. (대기 시간: {int(first_sleep_sec//3600)}시간 {int((first_sleep_sec%3600)//60)}분)")
+    time.sleep(first_sleep_sec)
 
     while True:
         try:
@@ -128,7 +136,6 @@ def autonomous_harvest_loop():
 
             print(f"\n[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 🕐 토스 파트너 정시 수집 시작...", flush=True)
             
-            # 🎯 파일 경로 중복 방지 정밀 탐색
             script_candidate1 = os.path.join(BASE_DIR, "worker", "sharelink_toss_harvester.py")
             script_candidate2 = os.path.join(BASE_DIR, "sharelink_toss_harvester.py")
             
@@ -137,7 +144,7 @@ def autonomous_harvest_loop():
             elif os.path.exists(script_candidate2):
                 harvester_script = script_candidate2
             else:
-                harvester_script = script_candidate1 # Fallback
+                harvester_script = script_candidate1
 
             print(f"📍 수집기 실행 파일 경로: {harvester_script}", flush=True)
 

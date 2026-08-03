@@ -137,13 +137,17 @@ def harvest_today_deals_exclusively(page):
             }, true);
         """)
 
+        # 🕒 [시간차 대기 강화] 페이지 초기 로딩을 확실히 기다린 후 스크롤 시작
+        print_log("📜 '오늘만 이가격' 페이지 초기 렌더링 안정화 대기 중 (3초)...")
+        page.wait_for_timeout(3000)
+
         print_log("📜 '오늘만 이가격' 하단 로딩 스크롤 진행 중 (최대 30회, 동일 화면 3회 시 종료)...")
         last_height = page.evaluate("document.body.scrollHeight")
         same_height_count = 0
 
         for step in range(30):
             page.evaluate("window.scrollTo(0, document.body.scrollHeight);")
-            page.wait_for_timeout(2000)
+            page.wait_for_timeout(3500)  # 👈 스크롤 후 컨텐츠 로딩 간격 여유 있게 3.5초 대기
             
             new_height = page.evaluate("document.body.scrollHeight")
             if new_height == last_height:
@@ -282,20 +286,19 @@ def harvest_today_deals_exclusively(page):
 
 
 def harvest_sharelink_portal():
-    print_log("🚀 [V56] 스마트 스크롤 수집 엔진 가동 (서버 헤드리스 최적화 완료)")
+    print_log("🚀 [V56] 스마트 스크롤 수집 엔진 가동 (세션 유지 모드)")
     setup_session_from_env()
 
     use_session = os.path.exists(SESSION_PATH)
     all_harvested_deals = []
 
     with sync_playwright() as p:
-        # 🌐 [핵심 수정 완료] 외부 서버 환경 필수 설정: headless=True 지정
         browser = p.chromium.launch(
             headless=True,
             args=[
                 "--no-sandbox", 
                 "--disable-setuid-sandbox",
-                "--disable-dev-shm-usage",  # 메모리 부족(OOM) 방지
+                "--disable-dev-shm-usage",
                 "--disable-gpu",
                 "--disable-blink-features=AutomationControlled"
             ]
@@ -326,12 +329,29 @@ def harvest_sharelink_portal():
         except Exception as main_err:
             print_log(f"❌ 전체 예외: {main_err}")
 
-        browser.close()
+        # 🔗 [2번 수집기 연동 대비] 브라우저를 닫지 않고 유지 (browser.close 제거됨)
+        print_log("🔒 1번 수집기 완료: 브라우저 세션을 유지한 채 2번 수집기 연동을 대기합니다.")
 
     if all_harvested_deals:
         update_db_with_deals(all_harvested_deals)
     else:
         print_log("⚠️ 수집된 상품이 0개입니다. 로그인이 정상적으로 되어 있는지 확인해 주세요.")
+
+    # 🔗 [2번 수집기(BEST) 연속 호출 파트]
+    # 1번 수집 및 DB 반영이 끝나면, 아래에서 2번 수집기 스크립트를 이어서 실행합니다.
+    try:
+        best_harvester_path = os.path.join(WORKER_DIR, "harvest_best_ranking.py")
+        if os.path.exists(best_harvester_path):
+            print_log("🚀 [연동 실행] 1번 완료 후 2번 BEST 상품 수집기(harvest_best_ranking.py)를 가동합니다...")
+            result = subprocess.run([sys.executable, best_harvester_path], capture_output=False)
+            if result.returncode == 0:
+                print_log("🎉 2번 BEST 상품 수집기까지 완벽하게 완료되었습니다!")
+            else:
+                print_log(f"⚠️ 2번 수집기 실행 중 오류 발생 (Exit Code: {result.returncode})")
+        else:
+            print_log(f"ℹ️ 2번 수집기 파일을 찾을 수 없습니다: {best_harvester_path}")
+    except Exception as e:
+        print_log(f"❌ 2번 수집기 연동 실행 중 예외 발생: {e}")
 
 
 def update_db_with_deals(deals):
