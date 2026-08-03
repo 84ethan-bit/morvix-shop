@@ -23,7 +23,6 @@ WORKER_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DB_PATH = os.path.join(BASE_DIR, "morvix_shop_db.json")
 WORKER_DB_PATH = os.path.join(WORKER_DIR, "morvix_shop_db.json")
 SESSION_PATH = os.path.join(BASE_DIR, "scratch", "toss_sharelink_session.json")
-BEST_HARVESTER_SCRIPT = os.path.join(WORKER_DIR, "harvest_best_ranking.py")
 
 
 def print_log(msg):
@@ -275,7 +274,7 @@ def harvest_sharelink_portal():
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
-            headless=True,  # 💡 서버 환경 대응 (Headless 모드 활성화)
+            headless=True,
             slow_mo=50,
             args=[
                 "--no-sandbox", 
@@ -374,15 +373,7 @@ def update_db_with_deals(deals):
         json.dump(db, f, ensure_ascii=False, indent=2)
 
     print_log(f"🎉 [오늘만 이가격] DB 초기화 및 스마트 스크롤 적재 완료 (총 {len(db['products'])}개)")
-    
-    if os.path.exists(BEST_HARVESTER_SCRIPT):
-        print_log(f"🚀 [연동 실행] 1번 완료 후 2번 BEST 상품 수집기({os.path.basename(BEST_HARVESTER_SCRIPT)})를 가동합니다...")
-        try:
-            subprocess.run([sys.executable, "-u", BEST_HARVESTER_SCRIPT], check=True)
-        except Exception as e:
-            print_log(f"❌ 2번 BEST 수집기 연동 실행 실패: {e}")
-    else:
-        print_log(f"❌ 연동할 BEST 수집기 파일을 찾을 수 없습니다: {BEST_HARVESTER_SCRIPT}")
+    # 💡 2번 파일 호출 코드 완전 제거 (완벽한 독립 실행 구조 보장)
 
 
 if __name__ == "__main__":
