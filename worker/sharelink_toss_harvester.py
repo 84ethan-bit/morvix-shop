@@ -275,11 +275,13 @@ def harvest_sharelink_portal():
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
-            headless=False,
-            slow_mo=150,
+            headless=True,  # 💡 서버 환경 대응 (Headless 모드 활성화)
+            slow_mo=50,
             args=[
                 "--no-sandbox", 
                 "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
                 "--disable-blink-features=AutomationControlled"
             ]
         )
