@@ -1,9 +1,3 @@
-"""
-=============================================================================
-MORVIX SHOP OS - Toss ShareLink Portal Harvester (V56 - Smart Scroll Stop)
-worker/sharelink_toss_harvester.py
-=============================================================================
-"""
 import sys
 import os
 import json
@@ -12,7 +6,6 @@ import re
 import subprocess
 import shutil
 from datetime import datetime, timedelta
-from playwright.sync_api import sync_playwright
 
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
@@ -30,6 +23,28 @@ def print_log(msg):
     print(f"[{timestamp}] {msg}", flush=True)
 
 
+# 🌐 [자동 세팅] 외부 서버/로컬 실행 시 Playwright 및 Chromium 바이너리 자동 체크 및 설치
+def ensure_playwright_installed():
+    try:
+        from playwright.sync_api import sync_playwright
+        print_log("🔍 Playwright 패키지 확인 완료")
+    except ImportError:
+        print_log("📦 Playwright가 설치되어 있지 않습니다. 자동 설치를 진행합니다...")
+        subprocess.run([sys.executable, "-m", "pip", "install", "playwright"], check=True)
+    
+    print_log("🌐 Playwright Chromium 바이너리 확인 및 필요시 다운로드 중...")
+    try:
+        subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=True)
+        print_log("✅ 브라우저 바이너리 준비 완료")
+    except Exception as e:
+        print_log(f"⚠️ 바이너리 설치 중 예외 (이미 설치되어 있을 수 있음): {e}")
+
+
+# 스크립트 로드 시 즉시 바이너리 환경 보장
+ensure_playwright_installed()
+from playwright.sync_api import sync_playwright
+
+
 def setup_session_from_env():
     env_session = os.environ.get("TOSS_SESSION_JSON", "").strip()
     if env_session:
@@ -37,21 +52,22 @@ def setup_session_from_env():
             os.makedirs(os.path.dirname(SESSION_PATH), exist_ok=True)
             with open(SESSION_PATH, "w", encoding="utf-8") as f:
                 f.write(env_session)
-            print_log("🔑 세션 복원 완료[cite: 3]")
+            print_log("🔑 세션 복원 완료")
         except Exception as e:
             print_log(f"⚠️ 세션 복원 예외: {e}")
 
 
+# 🚀 [깃허브 자동 푸시] 수집된 DB를 원격 깃허브 레포지토리에 동기화
 def push_to_github_automatically():
     try:
         gh_token = os.environ.get("GH_TOKEN", "").strip()
-        print_log("🚀 깃허브 자동 동기화 시도[cite: 3]...")
+        print_log("🚀 깃허브 자동 동기화 시도...")
 
         if os.path.exists(WORKER_DB_PATH):
             shutil.copy(WORKER_DB_PATH, ROOT_DB_PATH)
 
         if not gh_token:
-            print_log("ℹ️ [GH_TOKEN 미설정] 로컬 테스트 완료 (Push 스킵)[cite: 3]")
+            print_log("ℹ️ [GH_TOKEN 미설정] 로컬 테스트 완료 (Push 스킵)")
             return
 
         repo_url = f"https://x-access-token:{gh_token}@github.com/84ethan-bit/morvix-shop.git"
@@ -68,9 +84,9 @@ def push_to_github_automatically():
         push_res = subprocess.run(["git", "push", repo_url, "HEAD:main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
         
         if push_res.returncode == 0:
-            print_log("🎉 깃허브 푸시 성공[cite: 3]!")
+            print_log("🎉 깃허브 푸시 성공!")
         else:
-            print_log(f"⚠️ Git Push 실패: {push_res.stderr.strip()}[cite: 3]")
+            print_log(f"⚠️ Git Push 실패: {push_res.stderr.strip()}")
 
     except Exception as e:
         print_log(f"❌ Auto Git Push 예외: {e}")
@@ -100,7 +116,6 @@ def harvest_today_deals_exclusively(page):
     ]
 
     try:
-        # 레이아웃 보정 및 75% 줌
         page.evaluate("""
             const style = document.createElement('style');
             style.innerHTML = `
@@ -111,7 +126,6 @@ def harvest_today_deals_exclusively(page):
         """)
         page.wait_for_timeout(1000)
 
-        # 상세 페이지 이동 차단 가드
         page.evaluate("""
             window.addEventListener('click', (e) => {
                 const target = e.target.closest('a');
@@ -123,7 +137,6 @@ def harvest_today_deals_exclusively(page):
             }, true);
         """)
 
-        # 💡 [요청 반영] 스크롤 최대 30회, 같은 화면(높이 유지)이 3번 연속 감지되면 종료
         print_log("📜 '오늘만 이가격' 하단 로딩 스크롤 진행 중 (최대 30회, 동일 화면 3회 시 종료)...")
         last_height = page.evaluate("document.body.scrollHeight")
         same_height_count = 0
@@ -140,7 +153,7 @@ def harvest_today_deals_exclusively(page):
                     print_log(f"🛑 [스크롤 완료] 동일 화면이 3번 연속 감지되어 스크롤을 종료합니다. (총 {step + 1}회 시도)")
                     break
             else:
-                same_height_count = 0  # 높이가 바뀌었으면 카운트 리셋
+                same_height_count = 0 
                 last_height = new_height
 
         page.wait_for_timeout(2000)
@@ -160,7 +173,6 @@ def harvest_today_deals_exclusively(page):
 
                 lines = [l.strip() for l in raw_text.split('\n') if l.strip()]
                 
-                # 1. 상품명 파싱 및 정제
                 candidate_titles = []
                 for l in lines:
                     if re.search(r'\d+.*당', l) or re.search(r'^\d+%\s*특가', l):
@@ -178,7 +190,6 @@ def harvest_today_deals_exclusively(page):
                 if not title or title in seen_titles:
                     continue
 
-                # 2. 가격 파싱
                 price_lines = [l for l in lines if '원' in l and not any(k in l for k in ['당 ', '수익', '개당'])]
                 valid_prices = []
                 for pl in price_lines:
@@ -192,7 +203,6 @@ def harvest_today_deals_exclusively(page):
                     continue
                 price = min(valid_prices)
 
-                # 3. 할인율 파싱
                 disc_match = re.search(r'(\d+)\s*[%％]', raw_text)
                 if disc_match:
                     discount_rate = f"{disc_match.group(1)}%"
@@ -201,7 +211,6 @@ def harvest_today_deals_exclusively(page):
                 else:
                     discount_rate = "특가"
 
-                # 4. 썸네일 이미지 파싱
                 img_url = card.evaluate(r"""el => {
                     const img = el.querySelector('img');
                     return img ? (img.currentSrc || img.src || img.getAttribute('data-src') || '') : '';
@@ -209,7 +218,6 @@ def harvest_today_deals_exclusively(page):
                 if not img_url or not img_url.startswith('http'):
                     img_url = "https://static.toss.im/icons/png/4x/icon-toss-logo.png"
 
-                # 5. [링크 발급] 버튼 클릭 및 2초 완벽 동기화
                 real_toss_link = None
                 try:
                     btn.scroll_into_view_if_needed()
@@ -265,7 +273,7 @@ def harvest_today_deals_exclusively(page):
             except Exception:
                 continue
 
-        print_log(f"✅ [오늘만 이가격] 수집 완료: 총 {len(harvested)}개[cite: 3]")
+        print_log(f"✅ [오늘만 이가격] 수집 완료: 총 {len(harvested)}개")
 
     except Exception as sec_err:
         print_log(f"⚠️ [오늘만 이가격] 오류 발생: {sec_err}")
@@ -274,19 +282,21 @@ def harvest_today_deals_exclusively(page):
 
 
 def harvest_sharelink_portal():
-    print_log("🚀 [V56] 스마트 스크롤 수집 엔진 가동[cite: 3]")
+    print_log("🚀 [V56] 스마트 스크롤 수집 엔진 가동 (서버 헤드리스 최적화 완료)")
     setup_session_from_env()
 
     use_session = os.path.exists(SESSION_PATH)
     all_harvested_deals = []
 
     with sync_playwright() as p:
+        # 🌐 [핵심 수정 완료] 외부 서버 환경 필수 설정: headless=True 지정
         browser = p.chromium.launch(
-            headless=False,
-            slow_mo=150,
+            headless=True,
             args=[
                 "--no-sandbox", 
                 "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage",  # 메모리 부족(OOM) 방지
+                "--disable-gpu",
                 "--disable-blink-features=AutomationControlled"
             ]
         )
@@ -307,7 +317,7 @@ def harvest_sharelink_portal():
 
         try:
             url_today = "https://sharelink.toss.im/links/best-ranking/daily-deals?sectionCode=TODAY_DEAL"
-            print_log(f"📡 오늘만 이가격 페이지 접속 중[cite: 3]...")
+            print_log(f"📡 오늘만 이가격 페이지 접속 중...")
             page.goto(url_today, wait_until="domcontentloaded", timeout=60000)
             page.wait_for_timeout(3000)
             
@@ -321,13 +331,12 @@ def harvest_sharelink_portal():
     if all_harvested_deals:
         update_db_with_deals(all_harvested_deals)
     else:
-        print_log("⚠️ 수집된 상품이 0개입니다. 브라우저 창에서 로그인이 정상적으로 되어 있는지 확인해 주세요.")
+        print_log("⚠️ 수집된 상품이 0개입니다. 로그인이 정상적으로 되어 있는지 확인해 주세요.")
 
 
 def update_db_with_deals(deals):
     target_path = ROOT_DB_PATH if os.path.exists(ROOT_DB_PATH) else WORKER_DB_PATH
     db = {"products": []}
-    db["products"] = []  # 완전 초기화 후 적재
 
     now = datetime.now()
     count_added = 0
@@ -378,7 +387,7 @@ def update_db_with_deals(deals):
     with open(WORKER_DB_PATH, "w", encoding="utf-8") as f:
         json.dump(db, f, ensure_ascii=False, indent=2)
 
-    print_log(f"🎉 [오늘만 이가격] DB 초기화 및 스마트 스크롤 적재 완료 (총 {len(db['products'])}개)[cite: 3]")
+    print_log(f"🎉 [오늘만 이가격] DB 초기화 및 스마트 스크롤 적재 완료 (총 {len(db['products'])}개)")
     push_to_github_automatically()
 
 
