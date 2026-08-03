@@ -1,3 +1,9 @@
+"""
+=============================================================================
+MORVIX SHOP OS - Toss ShareLink Portal Harvester (V56 - Smart Scroll Stop)
+worker/sharelink_toss_harvester.py
+=============================================================================
+"""
 import sys
 import os
 import json
@@ -6,6 +12,7 @@ import re
 import subprocess
 import shutil
 from datetime import datetime, timedelta
+from playwright.sync_api import sync_playwright
 
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
@@ -16,31 +23,12 @@ WORKER_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DB_PATH = os.path.join(BASE_DIR, "morvix_shop_db.json")
 WORKER_DB_PATH = os.path.join(WORKER_DIR, "morvix_shop_db.json")
 SESSION_PATH = os.path.join(BASE_DIR, "scratch", "toss_sharelink_session.json")
+BEST_HARVESTER_SCRIPT = os.path.join(WORKER_DIR, "harvest_best_ranking.py")
 
 
 def print_log(msg):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{timestamp}] {msg}", flush=True)
-
-
-def ensure_playwright_installed():
-    try:
-        from playwright.sync_api import sync_playwright
-        print_log("🔍 Playwright 패키지 확인 완료")
-    except ImportError:
-        print_log("📦 Playwright가 설치되어 있지 않습니다. 자동 설치를 진행합니다...")
-        subprocess.run([sys.executable, "-m", "pip", "install", "playwright"], check=True)
-    
-    print_log("🌐 Playwright Chromium 바이너리 확인 및 필요시 다운로드 중...")
-    try:
-        subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=True)
-        print_log("✅ 브라우저 바이너리 준비 완료")
-    except Exception as e:
-        print_log(f"⚠️ 바이너리 설치 중 예외 (이미 설치되어 있을 수 있음): {e}")
-
-
-ensure_playwright_installed()
-from playwright.sync_api import sync_playwright
 
 
 def setup_session_from_env():
@@ -53,6 +41,40 @@ def setup_session_from_env():
             print_log("🔑 세션 복원 완료")
         except Exception as e:
             print_log(f"⚠️ 세션 복원 예외: {e}")
+
+
+def push_to_github_automatically():
+    try:
+        gh_token = os.environ.get("GH_TOKEN", "").strip()
+        print_log("🚀 깃허브 자동 동기화 시도...")
+
+        if os.path.exists(WORKER_DB_PATH):
+            shutil.copy(WORKER_DB_PATH, ROOT_DB_PATH)
+
+        if not gh_token:
+            print_log("ℹ️ [GH_TOKEN 미설정] 로컬 테스트 완료 (Push 스킵)")
+            return
+
+        repo_url = f"https://x-access-token:{gh_token}@github.com/84ethan-bit/morvix-shop.git"
+        
+        subprocess.run(["git", "config", "user.name", "Morvix Auto Bot"], cwd=BASE_DIR, capture_output=True)
+        subprocess.run(["git", "config", "user.email", "bot@morvix.kr"], cwd=BASE_DIR, capture_output=True)
+        
+        subprocess.run(["git", "add", "-f", ROOT_DB_PATH], cwd=BASE_DIR, capture_output=True)
+        subprocess.run(["git", "add", "-f", WORKER_DB_PATH], cwd=BASE_DIR, capture_output=True)
+        
+        commit_msg = f"Auto Sync Today Deals (V56 Smart Scroll): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
+        
+        push_res = subprocess.run(["git", "push", repo_url, "HEAD:main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
+        
+        if push_res.returncode == 0:
+            print_log("🎉 깃허브 푸시 성공!")
+        else:
+            print_log(f"⚠️ Git Push 실패: {push_res.stderr.strip()}")
+
+    except Exception as e:
+        print_log(f"❌ Auto Git Push 예외: {e}")
 
 
 def clean_product_name(raw_name):
@@ -100,16 +122,13 @@ def harvest_today_deals_exclusively(page):
             }, true);
         """)
 
-        print_log("📜 '오늘만 이가격' 페이지 초기 렌더링 안정화 대기 중 (3초)...")
-        page.wait_for_timeout(3000)
-
         print_log("📜 '오늘만 이가격' 하단 로딩 스크롤 진행 중 (최대 30회, 동일 화면 3회 시 종료)...")
         last_height = page.evaluate("document.body.scrollHeight")
         same_height_count = 0
 
         for step in range(30):
             page.evaluate("window.scrollTo(0, document.body.scrollHeight);")
-            page.wait_for_timeout(3500)
+            page.wait_for_timeout(2000)
             
             new_height = page.evaluate("document.body.scrollHeight")
             if new_height == last_height:
@@ -119,7 +138,7 @@ def harvest_today_deals_exclusively(page):
                     print_log(f"🛑 [스크롤 완료] 동일 화면이 3번 연속 감지되어 스크롤을 종료합니다. (총 {step + 1}회 시도)")
                     break
             else:
-                same_height_count = 0 
+                same_height_count = 0
                 last_height = new_height
 
         page.wait_for_timeout(2000)
@@ -223,6 +242,8 @@ def harvest_today_deals_exclusively(page):
                     else:
                         continue
 
+                print_log(f"   🎯 [오늘만 이가격 수집] {title} | {price}원 | {discount_rate} ➔ {real_toss_link}")
+
                 seen_titles.add(title)
                 harvested.append({
                     "name": title,
@@ -246,7 +267,7 @@ def harvest_today_deals_exclusively(page):
 
 
 def harvest_sharelink_portal():
-    print_log("🚀 [V56] 스마트 스크롤 수집 엔진 가동 (세션 유지 모드)")
+    print_log("🚀 [V56] 스마트 스크롤 수집 엔진 가동")
     setup_session_from_env()
 
     use_session = os.path.exists(SESSION_PATH)
@@ -254,12 +275,11 @@ def harvest_sharelink_portal():
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
-            headless=True,
+            headless=False,
+            slow_mo=150,
             args=[
                 "--no-sandbox", 
                 "--disable-setuid-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-gpu",
                 "--disable-blink-features=AutomationControlled"
             ]
         )
@@ -280,7 +300,7 @@ def harvest_sharelink_portal():
 
         try:
             url_today = "https://sharelink.toss.im/links/best-ranking/daily-deals?sectionCode=TODAY_DEAL"
-            print_log(f"📡 오늘만 이가격 페이지 접속 중...")
+            print_log(f"📡 오늘만 이가격 페이지 접속 중: {url_today}")
             page.goto(url_today, wait_until="domcontentloaded", timeout=60000)
             page.wait_for_timeout(3000)
             
@@ -289,31 +309,18 @@ def harvest_sharelink_portal():
         except Exception as main_err:
             print_log(f"❌ 전체 예외: {main_err}")
 
-        print_log("🔒 1번 수집기 완료: 브라우저 세션을 유지한 채 2번 수집기 연동을 대기합니다.")
+        browser.close()
 
     if all_harvested_deals:
         update_db_with_deals(all_harvested_deals)
     else:
-        print_log("⚠️ 수집된 상품이 0개입니다. 로그인이 정상적으로 되어 있는지 확인해 주세요.")
-
-    try:
-        best_harvester_path = os.path.join(WORKER_DIR, "harvest_best_ranking.py")
-        if os.path.exists(best_harvester_path):
-            print_log("🚀 [연동 실행] 1번 완료 후 2번 BEST 상품 수집기(harvest_best_ranking.py)를 가동합니다...")
-            result = subprocess.run([sys.executable, best_harvester_path], capture_output=False)
-            if result.returncode == 0:
-                print_log("🎉 2번 BEST 상품 수집기까지 완벽하게 완료되었습니다!")
-            else:
-                print_log(f"⚠️ 2번 수집기 실행 중 오류 발생 (Exit Code: {result.returncode})")
-        else:
-            print_log(f"ℹ️ 2번 수집기 파일을 찾을 수 없습니다: {best_harvester_path}")
-    except Exception as e:
-        print_log(f"❌ 2번 수집기 연동 실행 중 예외 발생: {e}")
+        print_log("⚠️ 수집된 상품이 0개입니다. 브라우저 창에서 로그인이 정상적으로 되어 있는지 확인해 주세요.")
 
 
 def update_db_with_deals(deals):
     target_path = ROOT_DB_PATH if os.path.exists(ROOT_DB_PATH) else WORKER_DB_PATH
     db = {"products": []}
+    db["products"] = []
 
     now = datetime.now()
     count_added = 0
@@ -364,8 +371,16 @@ def update_db_with_deals(deals):
     with open(WORKER_DB_PATH, "w", encoding="utf-8") as f:
         json.dump(db, f, ensure_ascii=False, indent=2)
 
-    print_log(f"🎉 [오늘만 이가격] 임시 적재 완료 (총 {len(db['products'])}개) ➔ 2번 수집기 연동 대기중")
-    # 💡 1번에서는 중간 푸시를 하지 않고 2번으로 제어권을 넘김
+    print_log(f"🎉 [오늘만 이가격] DB 초기화 및 스마트 스크롤 적재 완료 (총 {len(db['products'])}개)")
+    
+    if os.path.exists(BEST_HARVESTER_SCRIPT):
+        print_log(f"🚀 [연동 실행] 1번 완료 후 2번 BEST 상품 수집기({os.path.basename(BEST_HARVESTER_SCRIPT)})를 가동합니다...")
+        try:
+            subprocess.run([sys.executable, "-u", BEST_HARVESTER_SCRIPT], check=True)
+        except Exception as e:
+            print_log(f"❌ 2번 BEST 수집기 연동 실행 실패: {e}")
+    else:
+        print_log(f"❌ 연동할 BEST 수집기 파일을 찾을 수 없습니다: {BEST_HARVESTER_SCRIPT}")
 
 
 if __name__ == "__main__":
