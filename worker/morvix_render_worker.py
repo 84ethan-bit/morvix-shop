@@ -5,9 +5,9 @@ morvix_render_worker.py
 
 [정시 스케줄링 관리자]
 1. KST(한국 표준시) 기준 00:01 및 12:01 매일 정시 수집 자동 가동
-2. 서버 최초 구동 시 즉시 실행을 방지하고 다음 정시까지 안전 대기
-3. 자정 00:00 KST DB 전수 리셋 및 신규 수집 준비
-4. 대기 시간 동안 자원 소비 0% 휴면 모드 유지
+2. 서버 최초 구동 시 즉시 1회 수집을 실행하여 테스트 및 초기 적재 수행
+3. 이후부터는 다음 정시(00:01 또는 12:01)까지 안전 대기
+4. 자정 00:00 KST DB 전수 리셋 및 신규 수집 준비
 =============================================================================
 """
 import os
@@ -68,7 +68,7 @@ class MorvixBridgeHandler(BaseHTTPRequestHandler):
             self._respond(200, {
                 "status": "MORVIX_RENDER_WORKER_ONLINE",
                 "mode": "TOSS_SHOPPING_HYBRID_PIPELINE",
-                "schedule": "KST 00:01 & 12:01 DAILY",
+                "schedule": "KST 00:01 & 12:01 DAILY (IMMEDIATE TEST MODE)",
                 "timestamp": datetime.now().isoformat()
             })
         else:
@@ -101,7 +101,7 @@ def check_midnight_today_price_reset():
 
 
 def get_seconds_until_next_target_time():
-    """타임존에 구애받지 않고 오직 실제 한국 시간(KST, UTC+9) 기준 다음 목표 시각(00:01 또는 12:01)까지 남은 초(second) 계산"""
+    """다음 목표 시각(00:01 또는 12:01)까지 남은 초(second) 계산"""
     KST = timezone(td(hours=9))
     now_kst = datetime.now(KST)
     
@@ -121,52 +121,57 @@ def get_seconds_until_next_target_time():
     return wait_seconds
 
 
+def run_pipeline():
+    """1번 및 2번 통합 수집 파이프라인 실행 함수"""
+    try:
+        check_midnight_today_price_reset()
+
+        print(f"\n[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 🕐 토스 파트너 정시 수집 시작...", flush=True)
+        
+        script_candidate1 = os.path.join(BASE_DIR, "worker", "sharelink_toss_harvester.py")
+        script_candidate2 = os.path.join(BASE_DIR, "sharelink_toss_harvester.py")
+        
+        if os.path.exists(script_candidate1):
+            harvester_script = script_candidate1
+        elif os.path.exists(script_candidate2):
+            harvester_script = script_candidate2
+        else:
+            harvester_script = script_candidate1
+
+        print(f"📍 수집기 실행 파일 경로: {harvester_script}", flush=True)
+
+        cmd = [sys.executable, "-u", harvester_script]
+        env = dict(os.environ)
+        env["PYTHONUNBUFFERED"] = "1"
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, cwd=BASE_DIR, env=env, bufsize=1)
+
+        for line in proc.stdout:
+            print(line, end="", flush=True)
+
+        proc.wait()
+        if proc.returncode == 0:
+            print(f"[{datetime.now().strftime('%H:%M:%S')}] ✅ 정시 수집 완료", flush=True)
+        else:
+            print(f"❌ 수집기 returncode={proc.returncode}", flush=True)
+
+    except Exception as e:
+        print(f"❌ 정시 수집 루프 예외: {e}", flush=True)
+
+
 def autonomous_harvest_loop():
-    """00:01 KST 및 12:01 KST 정시 자동 수집 루프 (서버 켜짐 즉시 실행 방지 버전)"""
-    print("🤖 [AUTO LOOP] KST 00:01 / 12:01 정시 수집 스케줄러 가동", flush=True)
+    """서버 구동 즉시 1회 실행 후, 다음 정시부터 스케줄링 루프 가동"""
+    print("🤖 [AUTO LOOP] 기동 즉시 수집 테스트 모드 가동", flush=True)
 
-    # 💡 [핵심 수정] 서버가 켜지자마자 수집을 실행하지 않고, 먼저 다음 정시까지 남은 대기 시간을 계산하여 대기합니다.
-    first_sleep_sec = get_seconds_until_next_target_time()
-    print(f"⏳ 서버 최초 구동: 지정된 KST 정시까지 대기 모드로 진입합니다. (대기 시간: {int(first_sleep_sec//3600)}시간 {int((first_sleep_sec%3600)//60)}분)")
-    time.sleep(first_sleep_sec)
+    # 💡 [즉시 테스트 핵심] 서버가 켜지자마자 대기하지 않고 곧바로 수집을 1회 수행합니다.
+    print("🚀 [즉시 실행] 서버 최초 구동 테스트를 위해 수집 파이프라인을 즉시 실행합니다...")
+    run_pipeline()
 
+    # 이후부터는 다음 정시까지 대기 후 반복
     while True:
-        try:
-            check_midnight_today_price_reset()
-
-            print(f"\n[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 🕐 토스 파트너 정시 수집 시작...", flush=True)
-            
-            script_candidate1 = os.path.join(BASE_DIR, "worker", "sharelink_toss_harvester.py")
-            script_candidate2 = os.path.join(BASE_DIR, "sharelink_toss_harvester.py")
-            
-            if os.path.exists(script_candidate1):
-                harvester_script = script_candidate1
-            elif os.path.exists(script_candidate2):
-                harvester_script = script_candidate2
-            else:
-                harvester_script = script_candidate1
-
-            print(f"📍 수집기 실행 파일 경로: {harvester_script}", flush=True)
-
-            cmd = [sys.executable, "-u", harvester_script]
-            env = dict(os.environ)
-            env["PYTHONUNBUFFERED"] = "1"
-            proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, cwd=BASE_DIR, env=env, bufsize=1)
-
-            for line in proc.stdout:
-                print(line, end="", flush=True)
-
-            proc.wait()
-            if proc.returncode == 0:
-                print(f"[{datetime.now().strftime('%H:%M:%S')}] ✅ 정시 수집 완료", flush=True)
-            else:
-                print(f"❌ 수집기 returncode={proc.returncode}", flush=True)
-
-        except Exception as e:
-            print(f"❌ 정시 수집 루프 예외: {e}", flush=True)
-
         sleep_sec = get_seconds_until_next_target_time()
+        print(f"⏳ 지정된 KST 정시까지 대기 모드로 진입합니다. (대기 시간: {int(sleep_sec//3600)}시간 {int((sleep_sec%3600)//60)}분)")
         time.sleep(sleep_sec)
+        run_pipeline()
 
 
 def ensure_playwright_browsers():
@@ -220,7 +225,7 @@ def run():
     port = int(os.getenv("PORT", "10000"))
     print("=" * 60)
     print(f"🚀 MORVIX RENDER CLOUD WORKER ONLINE — PORT {port}")
-    print(f"⏰ KST 00:01 & 12:01 DAILY SCHEDULED HARVEST")
+    print(f"⏰ IMMEDIATE TEST MODE + KST SCHEDULED HARVEST")
     print("=" * 60)
     httpd = HTTPServer(('0.0.0.0', port), MorvixBridgeHandler)
     httpd.serve_forever()
