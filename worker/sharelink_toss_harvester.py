@@ -1,6 +1,6 @@
 """
 =============================================================================
-MORVIX SHOP OS - Toss ShareLink Portal Harvester (Robust Chromium/Firefox Engine)
+MORVIX SHOP OS - Toss ShareLink Portal Harvester (Accurate Click Selector)
 worker/sharelink_toss_harvester.py
 =============================================================================
 """
@@ -63,7 +63,7 @@ def push_to_github_automatically():
         subprocess.run(["git", "add", "-f", ROOT_DB_PATH], cwd=BASE_DIR, capture_output=True)
         subprocess.run(["git", "add", "-f", WORKER_DB_PATH], cwd=BASE_DIR, capture_output=True)
         
-        commit_msg = f"Auto Sync Today Deals (Robust Parser): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        commit_msg = f"Auto Sync Today Deals (Fixed Click Selector): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
         
         push_res = subprocess.run(["git", "push", repo_url, "HEAD:main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
@@ -88,7 +88,7 @@ def clean_product_name(raw_name):
 
 
 def harvest_today_deals_exclusively(page):
-    print_log("🔎 [오늘만 이가격] 유연한 필터링 스마트 스크롤 수집 엔진 가동...")
+    print_log("🔎 [오늘만 이가격] 전체 보기 페이지 수집 엔진 가동...")
     
     harvested = []
     seen_titles = set()
@@ -112,11 +112,11 @@ def harvest_today_deals_exclusively(page):
         """)
         page.wait_for_timeout(1000)
 
-        print_log("📜 '오늘만 이가격' 하단 로딩 스크롤 진행 중...")
+        print_log("📜 '오늘만 이가격' 전체 목록 하단 스크롤 진행 중...")
         last_height = page.evaluate("document.body.scrollHeight")
         same_height_count = 0
 
-        for step in range(30):
+        for step in range(35):
             page.evaluate("window.scrollTo(0, document.body.scrollHeight);")
             page.wait_for_timeout(2000)
             
@@ -137,14 +137,12 @@ def harvest_today_deals_exclusively(page):
 
         for idx, btn in enumerate(btn_locators):
             try:
-                # 크로미움/파이어폭스 모두 대응할 수 있도록 상위 요소를 넓게 탐색
                 card = btn.locator("xpath=ancestor::*[contains(@class, 'Card') or contains(@class, 'Item') or contains(@class, 'Product') or contains(@class, 'Box') or self::article or self::section][1]")
                 if not card or not card.count():
                     card = btn.locator("xpath=ancestor::div[4]")
 
                 raw_text = card.inner_text() if card.count() else ""
                 if not raw_text:
-                    # 카드가 안 잡히면 버튼 주변 텍스트라도 가져옴
                     raw_text = btn.locator("xpath=ancestor::div[1]").inner_text()
 
                 lines = [l.strip() for l in raw_text.split('\n') if l.strip()]
@@ -160,7 +158,6 @@ def harvest_today_deals_exclusively(page):
                             candidate_titles.append(l)
 
                 if not candidate_titles:
-                    # 후보가 없으면 길이 조건 완화해서 탐색
                     for l in lines:
                         if len(l) >= 2 and '원' not in l and '%' not in l:
                             candidate_titles.append(l)
@@ -174,18 +171,16 @@ def harvest_today_deals_exclusively(page):
                 if not title or title in seen_titles or title in JUNK_KEYWORDS or len(title) < 2:
                     continue
 
-                # 가격 추출 로직 완화
                 price_lines = [l for l in lines if '원' in l]
                 valid_prices = []
                 for pl in price_lines:
                     prices = re.findall(r'([\d,]+)\s*원', pl)
                     for p in prices:
                         val = int(p.replace(',', ''))
-                        if val >= 100:  # 가격 기준 낮춤
+                        if val >= 100:
                             valid_prices.append(val)
 
                 if not valid_prices:
-                    # 전체 텍스트에서 숫자+원 패턴 탐색
                     all_prices = re.findall(r'([\d,]+)\s*원', raw_text)
                     for p in all_prices:
                         val = int(p.replace(',', ''))
@@ -264,7 +259,7 @@ def harvest_today_deals_exclusively(page):
             except Exception:
                 continue
 
-        print_log(f"✅ 유연 정제 수집 완료: 총 {len(harvested)}개")
+        print_log(f"✅ 정제된 수집 완료: 총 {len(harvested)}개")
 
     except Exception as sec_err:
         print_log(f"⚠️ 오류 발생: {sec_err}")
@@ -273,7 +268,7 @@ def harvest_today_deals_exclusively(page):
 
 
 def harvest_sharelink_portal():
-    print_log("🚀 스마트 스크롤 수집 엔진 가동 (Robust Browser)")
+    print_log("🚀 스마트 스크롤 수집 엔진 가동 (Fixed Full View Click)")
     setup_session_from_env()
 
     use_session = os.path.exists(SESSION_PATH)
@@ -327,19 +322,39 @@ def harvest_sharelink_portal():
             except Exception:
                 pass
 
-            print_log("🖱️ '오늘만 이가격' 섹션 탐색 및 클릭 시도...")
+            print_log("🖱️ '오늘만 이가격' 전체 보기 버튼 정밀 탐색 및 클릭 시도...")
             try:
-                full_view_btn = page.locator("text='오늘만 이 가격에 살 수 있는 하루특가'").locator("xpath=following::*[contains(text(), '전체 보기') or contains(text(), '전체보기')][1]")
-                if not full_view_btn.count():
-                    full_view_btn = page.locator("text='전체 보기'").first
+                # 💡 다양한 형태의 전체보기 버튼 텍스트와 요소를 정확하게 타격하도록 보완
+                clicked = False
                 
-                if full_view_btn.count() > 0:
-                    full_view_btn.scroll_into_view_if_needed()
-                    page.wait_for_timeout(500)
-                    full_view_btn.click(force=True)
-                    page.wait_for_timeout(3000)
-            except Exception:
-                pass
+                # 방법 1: '오늘만 이 가격' 섹션 근처의 '전체 보기' 텍스트 링크/버튼 탐색
+                full_view_selectors = [
+                    "text='오늘만 이 가격에 살 수 있는 하루특가' >> xpath=following::*[contains(text(), '전체 보기') or contains(text(), '전체보기')][1]",
+                    "text='오늘만이가격' >> xpath=following::*[contains(text(), '전체 보기') or contains(text(), '전체보기')][1]",
+                    "text='전체 보기'",
+                    "text='전체보기'",
+                    "a:has-text('전체')",
+                    "button:has-text('전체')"
+                ]
+
+                for sel in full_view_selectors:
+                    try:
+                        target = page.locator(sel).first
+                        if target.count() > 0:
+                            target.scroll_into_view_if_needed()
+                            page.wait_for_timeout(500)
+                            target.click(force=True)
+                            print_log(f"🎯 전체 보기 버튼 클릭 성공 (셀렉터: {sel})")
+                            page.wait_for_timeout(3000)
+                            clicked = True
+                            break
+                    except Exception:
+                        continue
+
+                if not clicked:
+                    print_log("⚠️ 명시적 전체보기 버튼을 못 찾아 URL 직접 이동 또는 스크롤 탐색 유지")
+            except Exception as e:
+                print_log(f"⚠️ 전체 보기 클릭 예외 무시: {e}")
 
             all_harvested_deals.extend(harvest_today_deals_exclusively(page))
 
