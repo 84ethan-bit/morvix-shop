@@ -1,6 +1,6 @@
 """
 =============================================================================
-MORVIX SHOP OS - Toss ShareLink Portal Harvester (V57 - Home Click & Fixed Session)
+MORVIX SHOP OS - Toss ShareLink Portal Harvester (V58 - Firefox Headless Server Fix)
 worker/sharelink_toss_harvester.py
 =============================================================================
 """
@@ -62,7 +62,7 @@ def push_to_github_automatically():
         subprocess.run(["git", "add", "-f", ROOT_DB_PATH], cwd=BASE_DIR, capture_output=True)
         subprocess.run(["git", "add", "-f", WORKER_DB_PATH], cwd=BASE_DIR, capture_output=True)
         
-        commit_msg = f"Auto Sync Today Deals (V57 Home Click Headless): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        commit_msg = f"Auto Sync Today Deals (V58 Firefox Headless): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
         
         push_res = subprocess.run(["git", "push", repo_url, "HEAD:main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
@@ -87,7 +87,7 @@ def clean_product_name(raw_name):
 
 
 def harvest_today_deals_exclusively(page):
-    print_log("🔎 [오늘만 이가격] 스마트 스크롤 종료 수집 엔진 가동 (V57)...[cite: 2]")
+    print_log("🔎 [오늘만 이가격] 스마트 스크롤 종료 수집 엔진 가동 (V58)...")
     
     harvested = []
     seen_titles = set()
@@ -121,7 +121,7 @@ def harvest_today_deals_exclusively(page):
             }, true);
         """)
 
-        print_log("📜 '오늘만 이가격' 하단 로딩 스크롤 진행 중 (최대 30회, 동일 화면 3회 시 종료)...[cite: 2]")
+        print_log("📜 '오늘만 이가격' 하단 로딩 스크롤 진행 중 (최대 30회, 동일 화면 3회 시 종료)...")
         last_height = page.evaluate("document.body.scrollHeight")
         same_height_count = 0
 
@@ -143,7 +143,7 @@ def harvest_today_deals_exclusively(page):
         page.wait_for_timeout(2000)
 
         btn_locators = page.locator("button:has-text('링크 발급')").all()
-        print_log(f"📍 [오늘만 이가격] 감지된 [링크 발급] 버튼: 총 {len(btn_locators)}개[cite: 2]")
+        print_log(f"📍 [오늘만 이가격] 감지된 [링크 발급] 버튼: 총 {len(btn_locators)}개")
 
         for idx, btn in enumerate(btn_locators):
             try:
@@ -266,23 +266,17 @@ def harvest_today_deals_exclusively(page):
 
 
 def harvest_sharelink_portal():
-    print_log("🚀 [V57] 스마트 스크롤 수집 엔진 가동")
+    print_log("🚀 [V58] 스마트 스크롤 수집 엔진 가동 (Firefox)")
     setup_session_from_env()
 
     use_session = os.path.exists(SESSION_PATH)
     all_harvested_deals = []
 
     with sync_playwright() as p:
-        # 💡 서버 환경(헤드리스)에서 정상 구동되도록 headless=True 및 --disable-dev-shm-usage 적용
-        browser = p.chromium.launch(
+        # 💡 리눅스 서버 디스플레이 충돌이 없는 Firefox 헤드리스 모드 사용
+        browser = p.firefox.launch(
             headless=True,
-            slow_mo=100,
-            args=[
-                "--no-sandbox", 
-                "--disable-setuid-sandbox",
-                "--disable-blink-features=AutomationControlled",
-                "--disable-dev-shm-usage"
-            ]
+            slow_mo=100
         )
         
         ctx_opts = {
