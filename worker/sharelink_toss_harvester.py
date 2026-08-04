@@ -47,7 +47,7 @@ def run_harvester_daemon():
         time.sleep(10800) # 3시간 대기
 
 if __name__ == "__main__":
-    # 0. 시작 시점 서버 공인 IP 확인 후 로그 찍기
+    # 0. 시작 시점 서버 공인 IP 확인 후 즉시 출력 (가장 먼저 실행)
     check_and_print_server_ip()
 
     # 1. 웹 서버를 백그라운드 스레드로 실행 (포트 바인딩 해결)
