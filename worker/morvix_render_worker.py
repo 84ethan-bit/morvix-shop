@@ -1,6 +1,6 @@
 """
 =============================================================================
-MORVIX SHOP OS - Integrated Scheduler (00:01 Target Pipeline)
+MORVIX SHOP OS - Integrated Scheduler (Startup & Periodic Pipeline)
 scheduler.py
 =============================================================================
 """
@@ -8,7 +8,7 @@ import sys
 import os
 import time
 import subprocess
-from datetime import datetime, timedelta
+from datetime import datetime
 
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
@@ -21,7 +21,7 @@ def print_log(msg):
     print(f"[{timestamp}] [SCHEDULER] {msg}", flush=True)
 
 def run_pipeline():
-    print_log("🚀 [오케스트레이터] 파이프라인 주기적 가동 시작...")
+    print_log("🚀 [오케스트레이터] 파이프라인 가동 시작...")
     
     # 1번 수집기 실행 (오늘만 이가격)
     worker1_path = os.path.join(WORKER_DIR, "sharelink_toss_harvester.py")
@@ -45,26 +45,21 @@ def run_pipeline():
         except Exception as e:
             print_log(f"❌ [2번 수집기] 오류 발생: {e}")
 
-    print_log("🎉 [오케스트레이터] 전체 파이프라인 작업 종료. 다음 주기를 대기합니다.")
+    print_log("🎉 [오케스트레이터] 전체 파이프라인 작업 종료.")
 
 if __name__ == "__main__":
     print_log("🛡️ Morvix Shop OS 통합 스케줄러 백그라운드 구동 시작")
     
-    now = datetime.now()
-    target = now.replace(hour=0, minute=1, second=0, microsecond=0)
-    if now >= target:
-        target += timedelta(days=1)
-    
-    wait_seconds = (target - now).total_seconds()
-    print_log(f"⏳ 다음 목표 실행 시간(00:01)까지 약 {int(wait_seconds)}초 대기 중...")
-    time.sleep(wait_seconds)
-
+    # 1. 서버 부팅 직후 기다리지 않고 최초 1회 즉시 실행
+    print_log("🚀 서버 부팅 직후 최초 수집 파이프라인을 즉시 실행합니다.")
     try:
         run_pipeline()
     except Exception as err:
         print_log(f"⚠️ 최초 실행 예외 발생: {err}")
     
+    # 2. 이후 주기적인 반복 실행 루프 (예: 6시간 간격)
     while True:
+        print_log("⏳ 다음 작업 주기(6시간) 대기 중...")
         time.sleep(21600)
         try:
             run_pipeline()
