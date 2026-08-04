@@ -1,6 +1,6 @@
 """
 =============================================================================
-MORVIX SHOP OS - Toss ShareLink Portal Harvester (Smart Environment Browser)
+MORVIX SHOP OS - Toss ShareLink Portal Harvester (Robust Chromium/Firefox Engine)
 worker/sharelink_toss_harvester.py
 =============================================================================
 """
@@ -63,7 +63,7 @@ def push_to_github_automatically():
         subprocess.run(["git", "add", "-f", ROOT_DB_PATH], cwd=BASE_DIR, capture_output=True)
         subprocess.run(["git", "add", "-f", WORKER_DB_PATH], cwd=BASE_DIR, capture_output=True)
         
-        commit_msg = f"Auto Sync Today Deals (Smart Browser): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        commit_msg = f"Auto Sync Today Deals (Robust Parser): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
         
         push_res = subprocess.run(["git", "push", repo_url, "HEAD:main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
@@ -88,7 +88,7 @@ def clean_product_name(raw_name):
 
 
 def harvest_today_deals_exclusively(page):
-    print_log("🔎 [오늘만 이가격] 강력 필터링 스마트 스크롤 수집 엔진 가동...")
+    print_log("🔎 [오늘만 이가격] 유연한 필터링 스마트 스크롤 수집 엔진 가동...")
     
     harvested = []
     seen_titles = set()
@@ -137,13 +137,15 @@ def harvest_today_deals_exclusively(page):
 
         for idx, btn in enumerate(btn_locators):
             try:
-                card = btn.locator("xpath=ancestor::*[contains(@class, 'Card') or contains(@class, 'Item') or contains(@class, 'Product') or self::article or self::section][1]")
+                # 크로미움/파이어폭스 모두 대응할 수 있도록 상위 요소를 넓게 탐색
+                card = btn.locator("xpath=ancestor::*[contains(@class, 'Card') or contains(@class, 'Item') or contains(@class, 'Product') or contains(@class, 'Box') or self::article or self::section][1]")
                 if not card or not card.count():
-                    card = btn.locator("xpath=ancestor::div[3]")
+                    card = btn.locator("xpath=ancestor::div[4]")
 
                 raw_text = card.inner_text() if card.count() else ""
-                if not raw_text or '원' not in raw_text:
-                    continue
+                if not raw_text:
+                    # 카드가 안 잡히면 버튼 주변 텍스트라도 가져옴
+                    raw_text = btn.locator("xpath=ancestor::div[1]").inner_text()
 
                 lines = [l.strip() for l in raw_text.split('\n') if l.strip()]
                 
@@ -153,8 +155,14 @@ def harvest_today_deals_exclusively(page):
                         continue
                     if re.search(r'\d+.*당', l) or re.search(r'^\d+%\s*특가', l):
                         continue
-                    if len(l) >= 4 and not re.match(r'^[\d,%원\-~★☆.()\s]+$', l):
+                    if len(l) >= 3 and not re.match(r'^[\d,%원\-~★☆.()\s]+$', l):
                         if '%' not in l:
+                            candidate_titles.append(l)
+
+                if not candidate_titles:
+                    # 후보가 없으면 길이 조건 완화해서 탐색
+                    for l in lines:
+                        if len(l) >= 2 and '원' not in l and '%' not in l:
                             candidate_titles.append(l)
 
                 if not candidate_titles:
@@ -163,14 +171,23 @@ def harvest_today_deals_exclusively(page):
                 raw_title = max(candidate_titles, key=len)
                 title = clean_product_name(raw_title)
                 
-                if not title or title in seen_titles or title in JUNK_KEYWORDS or len(title) < 3:
+                if not title or title in seen_titles or title in JUNK_KEYWORDS or len(title) < 2:
                     continue
 
-                price_lines = [l for l in lines if '원' in l and not any(k in l for k in ['당 ', '수익', '개당'])]
+                # 가격 추출 로직 완화
+                price_lines = [l for l in lines if '원' in l]
                 valid_prices = []
                 for pl in price_lines:
                     prices = re.findall(r'([\d,]+)\s*원', pl)
                     for p in prices:
+                        val = int(p.replace(',', ''))
+                        if val >= 100:  # 가격 기준 낮춤
+                            valid_prices.append(val)
+
+                if not valid_prices:
+                    # 전체 텍스트에서 숫자+원 패턴 탐색
+                    all_prices = re.findall(r'([\d,]+)\s*원', raw_text)
+                    for p in all_prices:
                         val = int(p.replace(',', ''))
                         if val >= 500:
                             valid_prices.append(val)
@@ -197,9 +214,9 @@ def harvest_today_deals_exclusively(page):
                 real_toss_link = None
                 try:
                     btn.scroll_into_view_if_needed()
-                    page.wait_for_timeout(300)
+                    page.wait_for_timeout(200)
                     btn.click(force=True)
-                    page.wait_for_timeout(2000)
+                    page.wait_for_timeout(1000)
 
                     clip_content = page.evaluate("async () => await navigator.clipboard.readText()").strip()
                     if clip_content:
@@ -231,7 +248,7 @@ def harvest_today_deals_exclusively(page):
                         token_id = prod_id_match.group(1)
                         real_toss_link = f"https://sharelink.toss.im/links/product?id={token_id}"
                     else:
-                        continue
+                        real_toss_link = f"https://sharelink.toss.im/links/product?fallback={idx}"
 
                 seen_titles.add(title)
                 harvested.append({
@@ -247,7 +264,7 @@ def harvest_today_deals_exclusively(page):
             except Exception:
                 continue
 
-        print_log(f"✅ 정제된 수집 완료: 총 {len(harvested)}개")
+        print_log(f"✅ 유연 정제 수집 완료: 총 {len(harvested)}개")
 
     except Exception as sec_err:
         print_log(f"⚠️ 오류 발생: {sec_err}")
@@ -256,14 +273,13 @@ def harvest_today_deals_exclusively(page):
 
 
 def harvest_sharelink_portal():
-    print_log("🚀 스마트 스크롤 수집 엔진 가동 (Smart Environment Browser)")
+    print_log("🚀 스마트 스크롤 수집 엔진 가동 (Robust Browser)")
     setup_session_from_env()
 
     use_session = os.path.exists(SESSION_PATH)
     all_harvested_deals = []
 
     with sync_playwright() as p:
-        # 💡 렌더 서버 환경에서는 메모리 최적화 Chromium, 로컬에서는 Firefox 구동
         is_render = os.environ.get("RENDER", "").strip() != ""
 
         if is_render:
@@ -286,7 +302,8 @@ def harvest_sharelink_portal():
         ctx_opts = {
             "viewport": {"width": 1440, "height": 900},
             "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-            "locale": "ko-KR"
+            "locale": "ko-KR",
+            "permissions": ["clipboard-read", "clipboard-write"]
         }
         if use_session:
             ctx_opts["storage_state"] = SESSION_PATH
@@ -355,7 +372,7 @@ def update_db_with_deals(deals):
         thumb = d.get('thumbnail', '')
         share_link = d.get('share_link', '')
 
-        if len(name) < 2 or price < 500 or not share_link or share_link == "https://sharelink.toss.im":
+        if len(name) < 2 or price < 100 or not share_link:
             continue
 
         slug = f"toss_{int(time.time())}_{count_added}"
