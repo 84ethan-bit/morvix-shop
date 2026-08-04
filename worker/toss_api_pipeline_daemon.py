@@ -21,7 +21,8 @@ TOKEN_URL = "https://oauth2.cert.toss.im/token"
 API_BASE_URL = "https://sharelink.toss.im/openapi"
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DB_PATH = os.path.join(BASE_DIR, "worker", "morvix_shop_db.json")
+# 수정됨: worker/ 폴더를 거치지 않고 최상단 루트에 저장되도록 변경
+DB_PATH = os.path.join(BASE_DIR, "morvix_shop_db.json")
 
 def get_access_token():
     payload = {
@@ -120,7 +121,8 @@ def push_db_to_github(db_data):
     if not GH_TOKEN or not GH_REPO:
         return False
 
-    file_path = "worker/morvix_shop_db.json"
+    # 수정됨: 깃허브 최상단 루트에 있는 morvix_shop_db.json을 타겟으로 지정
+    file_path = "morvix_shop_db.json"
     url = f"https://api.github.com/repos/{GH_REPO}/contents/{file_path}"
     headers = {
         "Authorization": f"Bearer {GH_TOKEN}",
