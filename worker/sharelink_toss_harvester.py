@@ -62,7 +62,7 @@ def push_to_github_automatically():
         subprocess.run(["git", "add", "-f", ROOT_DB_PATH], cwd=BASE_DIR, capture_output=True)
         subprocess.run(["git", "add", "-f", WORKER_DB_PATH], cwd=BASE_DIR, capture_output=True)
         
-        commit_msg = f"Auto Sync Today Deals (V57 Home Click): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        commit_msg = f"Auto Sync Today Deals (V57 Home Click Headless): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
         
         push_res = subprocess.run(["git", "push", repo_url, "HEAD:main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
@@ -87,7 +87,7 @@ def clean_product_name(raw_name):
 
 
 def harvest_today_deals_exclusively(page):
-    print_log("🔎 [오늘만 이가격] 스마트 스크롤 종료 수집 엔진 가동 (V57)...")
+    print_log("🔎 [오늘만 이가격] 스마트 스크롤 종료 수집 엔진 가동 (V57)...[cite: 2]")
     
     harvested = []
     seen_titles = set()
@@ -121,7 +121,7 @@ def harvest_today_deals_exclusively(page):
             }, true);
         """)
 
-        print_log("📜 '오늘만 이가격' 하단 로딩 스크롤 진행 중 (최대 30회, 동일 화면 3회 시 종료)...")
+        print_log("📜 '오늘만 이가격' 하단 로딩 스크롤 진행 중 (최대 30회, 동일 화면 3회 시 종료)...[cite: 2]")
         last_height = page.evaluate("document.body.scrollHeight")
         same_height_count = 0
 
@@ -143,7 +143,7 @@ def harvest_today_deals_exclusively(page):
         page.wait_for_timeout(2000)
 
         btn_locators = page.locator("button:has-text('링크 발급')").all()
-        print_log(f"📍 [오늘만 이가격] 감지된 [링크 발급] 버튼: 총 {len(btn_locators)}개")
+        print_log(f"📍 [오늘만 이가격] 감지된 [링크 발급] 버튼: 총 {len(btn_locators)}개[cite: 2]")
 
         for idx, btn in enumerate(btn_locators):
             try:
@@ -273,13 +273,15 @@ def harvest_sharelink_portal():
     all_harvested_deals = []
 
     with sync_playwright() as p:
+        # 💡 서버 환경(헤드리스)에서 정상 구동되도록 headless=True 및 --disable-dev-shm-usage 적용
         browser = p.chromium.launch(
-            headless=False,
+            headless=True,
             slow_mo=100,
             args=[
                 "--no-sandbox", 
                 "--disable-setuid-sandbox",
-                "--disable-blink-features=AutomationControlled"
+                "--disable-blink-features=AutomationControlled",
+                "--disable-dev-shm-usage"
             ]
         )
         
@@ -298,36 +300,25 @@ def harvest_sharelink_portal():
         page = ctx.new_page()
 
         try:
-            # 💡 [수정] 홈 화면 접속 후 우측 '전체 보기' 버튼을 찾아 클릭하도록 변경
             url_home = "https://sharelink.toss.im/home"
             print_log(f"📡 토스 쉐어링크 홈 화면 접속 중: {url_home}")
             page.goto(url_home, wait_until="domcontentloaded", timeout=60000)
             page.wait_for_timeout(3000)
             
-            print_log("=" * 60)
-            print_log("🛑 [수동 로그인 확인] 브라우저 창에서 로그인이 완료되었는지 확인하세요.")
-            print_log("🛑 로그인이 완료되어 홈 화면이 뜰 때까지 최대 2분간 대기합니다...")
-            print_log("=" * 60)
-
             try:
                 page.wait_for_url("**/home**", timeout=120000)
                 page.wait_for_timeout(3000)
                 
-                # 로그인 직후 세션 저장 보완
                 os.makedirs(os.path.dirname(SESSION_PATH), exist_ok=True)
                 ctx.storage_state(path=SESSION_PATH)
                 print_log(f"🎉 로그인 세션 확인 및 저장 완료: {SESSION_PATH}")
             except Exception as wait_err:
                 print_log(f"⚠️ 로그인 대기 시간 초과 또는 페이지 이동 감지 실패 (계속 진행): {wait_err}")
 
-            # 💡 [핵심 추가] 홈 화면의 '오늘만 이 가격에 살 수 있는 하루특가' 우측 '전체 보기 >' 버튼 클릭
             print_log("🖱️ '오늘만 이가격' 섹션의 [전체 보기] 버튼 탐색 및 클릭 시도...")
             try:
-                # '오늘만 이 가격에 살 수 있는 하루특가' 타이틀 주변 또는 우측의 '전체보기' 링크/텍스트 클릭
-                # 스크린샷 기준으로 '오늘만 이 가격에 살 수 있는 하루특가' 텍스트 영역 근처의 '전체 보기'를 타겟팅
                 full_view_btn = page.locator("text='오늘만 이 가격에 살 수 있는 하루특가'").locator("xpath=following::*[contains(text(), '전체 보기') or contains(text(), '전체보기')][1]")
                 if not full_view_btn.count():
-                    # 대체 셀렉터: 페이지 내 '전체 보기' 텍스트 중 첫 번째 혹은 영역 내 버튼
                     full_view_btn = page.locator("text='전체 보기'").first
                 
                 if full_view_btn.count() > 0:
