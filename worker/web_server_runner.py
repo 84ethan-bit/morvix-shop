@@ -51,19 +51,15 @@ def run_dummy_server():
 def run_harvester_daemon():
     """
     스마트 자정(00:01) 스케줄러 데몬
-    - 서버 켜지자마자 최초 1회 즉시 실행 (베스트 + 오늘만 이가격 모두 수집)
+    - 서버 켜지자마자 최초 1회 즉시 실행 (오늘만 이가격 수집 및 기존 베스트 통합 후 푸시)
     - 이후부터는 매일 밤 00시 01분에 작동
-    - 오늘만 이가격: 매일 00시 01분 수집
-    - 베스트 상품: 3일에 한 번 00시 01분 수집
     """
-    # 1. 서버 시작 직후 최초 1회 실행 (베스트 포함 전체 수집)
+    # 1. 서버 시작 직후 최초 1회 실행
     print("🚀 [스마트 데몬] 서버 기동 직후 최초 수집 실행 시작...", flush=True)
     try:
-        run_pipeline_cycle(refresh_best=True)
+        run_pipeline_cycle()
     except Exception as e:
         print(f"❌ [스마트 데몬] 최초 실행 중 에러 발생: {e}", flush=True)
-
-    day_counter = 0  # 3일 주기를 카운트하기 위한 변수
 
     while True:
         # 현재 시간 기준으로 다음 날 00시 01분까지 남은 초(seconds)를 계산
@@ -77,13 +73,9 @@ def run_harvester_daemon():
         time.sleep(sleep_seconds)
 
         # 자정 00시 01분이 되어 깨어남
-        day_counter += 1
-        # 3일에 한 번은 베스트 상품도 함께 재수집 (1, 4, 7일째...)
-        refresh_best = (day_counter % 3 == 1)
-
-        print(f"🚀 [스마트 데몬] 정기 수집 실행 (베스트 재수집 여부: {refresh_best})...", flush=True)
+        print(f"🚀 [스마트 데몬] 정기 수집 실행 (오늘만 이가격 수집 및 통합)...", flush=True)
         try:
-            run_pipeline_cycle(refresh_best=refresh_best)
+            run_pipeline_cycle()
         except Exception as e:
             print(f"❌ [스마트 데몬] 정기 실행 중 에러 발생: {e}", flush=True)
 
