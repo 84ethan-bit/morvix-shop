@@ -169,13 +169,13 @@ def run_pipeline_cycle():
     print(f"✅ [API 파이프라인] 총 {success_count}개 상품 카테고리별 자동 분류 및 깃허브 동기화 완료")
 
 if __name__ == "__main__":
-    print("🛡️ Morvix Shop OS - Toss API 카테고리 분류 파이프라인 데몬 가동")
+    print("🛡️ Morvix Shop OS - Toss API 카테고리 분류 파이프라인 데몬 가동 (12시간 주기)")
     while True:
         try:
             run_pipeline_cycle()
         except Exception as e:
             print(f"❌ 파이프라인 실행 중 오류 발생: {e}")
         
-        # 3시간 마다 반복 실행
-        print("💤 [API 파이프라인] 다음 수집까지 3시간 대기 중...")
-        time.sleep(10800)
+        # 12시간마다 반복 실행 (하루 2번)
+        print("💤 [API 파이프라인] 다음 수집까지 12시간 대기 중...")
+        time.sleep(43200)
