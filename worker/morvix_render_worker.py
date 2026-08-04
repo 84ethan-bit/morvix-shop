@@ -21,39 +21,39 @@ def print_log(msg):
     print(f"[{timestamp}] [SCHEDULER] {msg}", flush=True)
 
 def run_pipeline():
-    print_log("🚀 [오케스트레이터] 파이프라인 주기적 가동 시작...")
+    print_log("🚀 [오케스트레이터] 파이프라인 주기적 가동 시작...")[cite: 2]
     
     # 1번 수집기 실행 (오늘만 이가격)
     worker1_path = os.path.join(WORKER_DIR, "sharelink_toss_harvester.py")
     if os.path.exists(worker1_path):
-        print_log("📦 [1번 수집기] 오늘만 이가격 수집 가동...")
+        print_log("📦 [1번 수집기] 오늘만 이가격 수집 가동...")[cite: 2]
         try:
             subprocess.run([sys.executable, worker1_path], check=True, cwd=BASE_DIR)
-            print_log("✅ [1번 수집기] 완료")
+            print_log("✅ [1번 수집기] 완료")[cite: 2]
         except Exception as e:
-            print_log(f"❌ [1번 수집기] 오류 발생: {e}")
+            print_log(f"❌ [1번 수집기] 오류 발생: {e}")[cite: 2]
             
     time.sleep(5)
 
     # 2번 수집기 실행 (BEST 랭킹)
     worker2_path = os.path.join(WORKER_DIR, "harvest_best_ranking.py")
     if os.path.exists(worker2_path):
-        print_log("🏆 [2번 수집기] BEST 랭킹 수집 가동...")
+        print_log("🏆 [2번 수집기] BEST 랭킹 수집 가동...")[cite: 2]
         try:
             subprocess.run([sys.executable, worker2_path], check=True, cwd=BASE_DIR)
-            print_log("✅ [2번 수집기] 완료")
+            print_log("✅ [2번 수집기] 완료")[cite: 2]
         except Exception as e:
-            print_log(f"❌ [2번 수집기] 오류 발생: {e}")
+            print_log(f"❌ [2번 수집기] 오류 발생: {e}")[cite: 2]
 
-    print_log("🎉 [오케스트레이터] 전체 파이프라인 주기 작업 종료. 다음 주기를 대기합니다.")
+    print_log("🎉 [오케스트레이터] 전체 파이프라인 주기 작업 종료. 다음 주기를 대기합니다.")[cite: 2]
 
 if __name__ == "__main__":
-    print_log("🛡️ Morvix Shop OS 통합 스케줄러 백그라운드 구동 시작")
-    run_pipeline()
+    print_log("🛡️ Morvix Shop OS 통합 스케줄러 백그라운드 구동 시작")[cite: 2]
+    run_pipeline()  # 💡 서버가 켜지자마자 전체 파이프라인을 1회 즉시 실행합니다.
     
     while True:
-        time.sleep(21600)  # 6시간 주기
+        time.sleep(21600)  # 6시간 주기 대기
         try:
             run_pipeline()
         except Exception as err:
-            print_log(f"⚠️ 스케줄러 루프 예외 발생: {err}")
+            print_log(f"⚠️ 스케줄러 루프 예외 발생: {err}")[cite: 2]
