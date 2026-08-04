@@ -1,0 +1,48 @@
+name: Morvix Shop Auto Harvester
+
+on:
+  schedule:
+    # 매일 4번 자동 실행 (한국 시간 기준 대략 00:00, 06:00, 12:00, 18:00)
+    - cron: '0 15,21,3,9 * * *'
+  workflow_dispatch: # 깃허브 웹에서 수동으로 즉시 실행 버튼 누를 수 있음
+
+jobs:
+  harvest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          playwright install chromium
+
+      - name: Run Worker 1 (Today Price)
+        env:
+          TOSS_SESSION_JSON: ${{ secrets.TOSS_SESSION_JSON }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: python worker/sharelink_toss_harvester.py
+
+      - name: Wait for stability
+        run: sleep 5
+
+      - name: Run Worker 2 (Best Ranking)
+        env:
+          TOSS_SESSION_JSON: ${{ secrets.TOSS_SESSION_JSON }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: python worker/harvest_best_ranking.py
+
+      - name: Commit and Push DB Changes
+        run: |
+          git config --global user.name "Morvix Auto Bot"
+          git config --global user.email "bot@morvix.kr"
+          git add morvix_shop_db.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto: Update shop database via GitHub Actions" && git push)
