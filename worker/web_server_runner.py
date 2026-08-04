@@ -46,11 +46,12 @@ def run_dummy_server():
         httpd.serve_forever()
 
 def run_harvester_daemon():
-    """백그라운드에서 수집기 데몬 실행"""
+    """백그라운드에서 API 수집기 데몬 실행"""
     time.sleep(5)
-    daemon_script = os.path.join(os.path.dirname(__file__), "toss_365_unattended_daemon.py")
+    # 기존 크롤링 데몬에서 새로운 토스 API 파이프라인 데몬으로 변경됨
+    daemon_script = os.path.join(os.path.dirname(__file__), "toss_api_pipeline_daemon.py")
     while True:
-        print("🚀 [통합 데몬] 수집기 루프 실행 시작...", flush=True)
+        print("🚀 [통합 데몬] API 수집기 루프 실행 시작...", flush=True)
         os.system(f"python {daemon_script}")
         print("💤 [통합 데몬] 대기 중 (3시간 후 재실행)...", flush=True)
         time.sleep(10800)
