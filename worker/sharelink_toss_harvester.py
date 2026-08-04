@@ -1,6 +1,6 @@
 """
 =============================================================================
-MORVIX SHOP OS - Toss ShareLink Portal Harvester (Accurate Click Selector)
+MORVIX SHOP OS - Toss ShareLink Portal Harvester (Auto Category Classification)
 worker/sharelink_toss_harvester.py
 =============================================================================
 """
@@ -63,7 +63,7 @@ def push_to_github_automatically():
         subprocess.run(["git", "add", "-f", ROOT_DB_PATH], cwd=BASE_DIR, capture_output=True)
         subprocess.run(["git", "add", "-f", WORKER_DB_PATH], cwd=BASE_DIR, capture_output=True)
         
-        commit_msg = f"Auto Sync Today Deals (Fixed Click Selector): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        commit_msg = f"Auto Sync Today Deals (Auto Category): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
         
         push_res = subprocess.run(["git", "push", repo_url, "HEAD:main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
@@ -85,6 +85,50 @@ def clean_product_name(raw_name):
     cleaned = re.sub(r'수익금?\s*[\d,]+원', '', cleaned)
     cleaned = re.sub(r'\s+', ' ', cleaned).strip()
     return cleaned.lstrip(',').lstrip('-').strip() if len(cleaned.lstrip(',').lstrip('-').strip()) >= 2 else raw_name
+
+
+def determine_category(name):
+    """상품 이름 기반 자동 카테고리 분류 함수"""
+    name_lower = name.lower()
+    
+    # 식품 / 농수축산물 / 간식 / 음료
+    food_keywords = [
+        '사과', '복숭아', '수박', '참외', '토마토', '포도', '귤', '자두', '고구마', '감자', '단호박', '샤인머스켓', '무화과', '망고',
+        '김치', '고기', '삼겹살', '소고기', '한돈', '한우', '목살', 'LA갈비', '닭', '오리', '곱창', '막창', '장조림', '젓갈', '간장게장',
+        '쌀', '잡곡', '현미', '참기름', '식용유', '오일', '소스', '된장', '국수', '냉면', '만두', '볶음밥', '죽', '국밥', '탕', '찌개',
+        '생수', '우유', '두유', '커피', '음료', '탄산', '제로', '주스', '차', '콤부차', '에이드', '아이스크림', '요거트', '요플레',
+        '빵', '베이글', '식빵', '약과', '과자', '초콜릿', '캔디', '젤리', '떡', '견과', '땅콩', '아몬드', '프로틴', '효소', '유산균',
+        '영양제', '루테인', '오메가', '비타민', '마그네슘', '홍삼', '석류', '배즙', '스틱', '알배기', '굴비', '갈치', '문어', '오징어', '새우'
+    ]
+    if any(kw in name_lower for kw in food_keywords):
+        return "food"
+
+    # 디지털 / 가전 / 모바일
+    digital_keywords = [
+        '충전기', '케이블', '이어폰', '헤드셋', '거치대', '맥세이프', '스마트폰', '보조배터리', '선풍기', '드라이기', 
+        '청소기', '가습기', '서큘레이터', '블루투스', '스피커', '램프', '조명', 'C타입', '릴케이블'
+    ]
+    if any(kw in name_lower for kw in digital_keywords):
+        return "digital"
+
+    # 패션 / 의류 / 잡화
+    fashion_keywords = [
+        '티셔츠', '바지', '팬츠', '셔츠', '원피스', '스커트', '속옷', '나시', '양말', '모자', '가방', '파자마', 
+        '잠옷', '세트', '신발', '스니커즈', '슬리퍼', '레깅스', '벨트', '장갑', '목걸이', '반지'
+    ]
+    if any(kw in name_lower for kw in fashion_keywords):
+        return "fashion"
+
+    # 뷰티 / 화장품 / 케어
+    beauty_keywords = [
+        '토너', '패드', '크림', '앰플', '세럼', '마스크팩', '클렌징', '샴푸', '린스', '바디워시', '치약', '칫솔', 
+        '면도기', '립', '선크림', '향수', '화장품', '리들샷', '시카'
+    ]
+    if any(kw in name_lower for kw in beauty_keywords):
+        return "beauty"
+
+    # 기본값 (리빙 / 생활 / 기타)
+    return "living"
 
 
 def harvest_today_deals_exclusively(page):
@@ -245,6 +289,9 @@ def harvest_today_deals_exclusively(page):
                     else:
                         real_toss_link = f"https://sharelink.toss.im/links/product?fallback={idx}"
 
+                # 💡 카테고리 자동 분류 적용
+                auto_category = determine_category(title)
+
                 seen_titles.add(title)
                 harvested.append({
                     "name": title,
@@ -253,7 +300,8 @@ def harvest_today_deals_exclusively(page):
                     "thumbnail": img_url,
                     "share_link": real_toss_link,
                     "section": "today_price",
-                    "priority": 1
+                    "priority": 1,
+                    "category": auto_category
                 })
 
             except Exception:
@@ -268,7 +316,7 @@ def harvest_today_deals_exclusively(page):
 
 
 def harvest_sharelink_portal():
-    print_log("🚀 스마트 스크롤 수집 엔진 가동 (Fixed Full View Click)")
+    print_log("🚀 스마트 스크롤 수집 엔진 가동 (Auto Category)")
     setup_session_from_env()
 
     use_session = os.path.exists(SESSION_PATH)
@@ -324,10 +372,7 @@ def harvest_sharelink_portal():
 
             print_log("🖱️ '오늘만 이가격' 전체 보기 버튼 정밀 탐색 및 클릭 시도...")
             try:
-                # 💡 다양한 형태의 전체보기 버튼 텍스트와 요소를 정확하게 타격하도록 보완
                 clicked = False
-                
-                # 방법 1: '오늘만 이 가격' 섹션 근처의 '전체 보기' 텍스트 링크/버튼 탐색
                 full_view_selectors = [
                     "text='오늘만 이 가격에 살 수 있는 하루특가' >> xpath=following::*[contains(text(), '전체 보기') or contains(text(), '전체보기')][1]",
                     "text='오늘만이가격' >> xpath=following::*[contains(text(), '전체 보기') or contains(text(), '전체보기')][1]",
@@ -386,6 +431,7 @@ def update_db_with_deals(deals):
         discount = d.get('discount_rate', '')
         thumb = d.get('thumbnail', '')
         share_link = d.get('share_link', '')
+        category = d.get('category', 'living')
 
         if len(name) < 2 or price < 100 or not share_link:
             continue
@@ -399,7 +445,7 @@ def update_db_with_deals(deals):
             "subtitle": f"토스 파트너 특가 {discount} 적용",
             "section": d.get("section", "today_price"),
             "priority": d.get("priority", 1),
-            "category": "life",
+            "category": category,
             "status": "ACTIVE",
             "price": price,
             "original_price": int(price * 1.35) if price else 0,

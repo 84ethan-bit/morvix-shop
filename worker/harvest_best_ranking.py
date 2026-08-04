@@ -1,6 +1,6 @@
 """
 =============================================================================
-MORVIX SHOP OS - BEST Ranking Harvester (Worker 2 - Render Memory Optimized)
+MORVIX SHOP OS - BEST Ranking Harvester (Auto Category Classification)
 worker/harvest_best_ranking.py
 =============================================================================
 """
@@ -59,7 +59,7 @@ def push_to_github_automatically():
         subprocess.run(["git", "add", "-f", ROOT_DB_PATH], cwd=BASE_DIR, capture_output=True)
         subprocess.run(["git", "add", "-f", WORKER_DB_PATH], cwd=BASE_DIR, capture_output=True)
         
-        commit_msg = f"Auto Sync Best Ranking Memory Optimized: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        commit_msg = f"Auto Sync Best Ranking Auto Category: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
         
         push_res = subprocess.run(["git", "push", repo_url, "HEAD:main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
@@ -80,8 +80,46 @@ def clean_product_name(raw_name):
     cleaned = re.sub(r'\s+', ' ', cleaned).strip()
     return cleaned.lstrip(',').lstrip('-').strip() if len(cleaned.lstrip(',').lstrip('-').strip()) >= 2 else raw_name
 
+def determine_category(name):
+    """상품 이름 기반 자동 카테고리 분류 함수"""
+    name_lower = name.lower()
+    
+    food_keywords = [
+        '사과', '복숭아', '수박', '참외', '토마토', '포도', '귤', '자두', '고구마', '감자', '단호박', '샤인머스켓', '무화과', '망고',
+        '김치', '고기', '삼겹살', '소고기', '한돈', '한우', '목살', 'LA갈비', '닭', '오리', '곱창', '막창', '장조림', '젓갈', '간장게장',
+        '쌀', '잡곡', '현미', '참기름', '식용유', '오일', '소스', '된장', '국수', '냉면', '만두', '볶음밥', '죽', '국밥', '탕', '찌개',
+        '생수', '우유', '두유', '커피', '음료', '탄산', '제로', '주스', '차', '콤부차', '에이드', '아이스크림', '요거트', '요플레',
+        '빵', '베이글', '식빵', '약과', '과자', '초콜릿', '캔디', '젤리', '떡', '견과', '땅콩', '아몬드', '프로틴', '효소', '유산균',
+        '영양제', '루테인', '오메가', '비타민', '마그네슘', '홍삼', '석류', '배즙', '스틱', '알배기', '굴비', '갈치', '문어', '오징어', '새우'
+    ]
+    if any(kw in name_lower for kw in food_keywords):
+        return "food"
+
+    digital_keywords = [
+        '충전기', '케이블', '이어폰', '헤드셋', '거치대', '맥세이프', '스마트폰', '보조배터리', '선풍기', '드라이기', 
+        '청소기', '가습기', '서큘레이터', '블루투스', '스피커', '램프', '조명', 'C타입', '릴케이블'
+    ]
+    if any(kw in name_lower for kw in digital_keywords):
+        return "digital"
+
+    fashion_keywords = [
+        '티셔츠', '바지', '팬츠', '셔츠', '원피스', '스커트', '속옷', '나시', '양말', '모자', '가방', '파자마', 
+        '잠옷', '세트', '신발', '스니커즈', '슬리퍼', '레깅스', '벨트', '장갑', '목걸이', '반지'
+    ]
+    if any(kw in name_lower for kw in fashion_keywords):
+        return "fashion"
+
+    beauty_keywords = [
+        '토너', '패드', '크림', '앰플', '세럼', '마스크팩', '클렌징', '샴푸', '린스', '바디워시', '치약', '칫솔', 
+        '면도기', '립', '선크림', '향수', '화장품', '리들샷', '시카'
+    ]
+    if any(kw in name_lower for kw in beauty_keywords):
+        return "beauty"
+
+    return "living"
+
 def harvest_best_ranking_exclusively():
-    print_log("🏆 [BEST 랭킹] 메모리 최적화 수집 엔진 가동...")
+    print_log("🏆 [BEST 랭킹] 메모리 최적화 수집 엔진 가동 (Auto Category)...")
     setup_session_from_env()
     
     harvested = []
@@ -96,7 +134,6 @@ def harvest_best_ranking_exclusively():
     ]
 
     with sync_playwright() as p:
-        # 💡 렌더 서버 512MB 제한 우회를 위한 메모리 최적화 인자 적용
         browser = p.chromium.launch(
             headless=True,
             args=[
@@ -234,6 +271,9 @@ def harvest_best_ranking_exclusively():
                         else:
                             continue
 
+                    # 💡 카테고리 자동 분류 적용
+                    auto_category = determine_category(title)
+
                     seen_titles.add(title)
                     harvested.append({
                         "name": title,
@@ -242,7 +282,8 @@ def harvest_best_ranking_exclusively():
                         "thumbnail": img_url,
                         "share_link": real_toss_link,
                         "section": "best_ranking",
-                        "priority": 2
+                        "priority": 2,
+                        "category": auto_category
                     })
 
                 except Exception:
@@ -278,7 +319,7 @@ def harvest_best_ranking_exclusively():
                 "subtitle": f"토스 베스트 특가 {d['discount_rate']} 적용",
                 "section": "best_ranking",
                 "priority": 2,
-                "category": "life",
+                "category": d['category'],
                 "status": "ACTIVE",
                 "price": d['price'],
                 "original_price": int(d['price'] * 1.35),
