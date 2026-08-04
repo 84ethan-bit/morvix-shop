@@ -1,6 +1,6 @@
 """
 =============================================================================
-MORVIX SHOP OS - Toss ShareLink Portal Harvester (V56 - Smart Scroll Stop)
+MORVIX SHOP OS - Toss ShareLink Portal Harvester (V57 - Home Click & Fixed Session)
 worker/sharelink_toss_harvester.py
 =============================================================================
 """
@@ -62,7 +62,7 @@ def push_to_github_automatically():
         subprocess.run(["git", "add", "-f", ROOT_DB_PATH], cwd=BASE_DIR, capture_output=True)
         subprocess.run(["git", "add", "-f", WORKER_DB_PATH], cwd=BASE_DIR, capture_output=True)
         
-        commit_msg = f"Auto Sync Today Deals (V56 Smart Scroll): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        commit_msg = f"Auto Sync Today Deals (V57 Home Click): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
         
         push_res = subprocess.run(["git", "push", repo_url, "HEAD:main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
@@ -87,7 +87,7 @@ def clean_product_name(raw_name):
 
 
 def harvest_today_deals_exclusively(page):
-    print_log("🔎 [오늘만 이가격] 스마트 스크롤 종료 수집 엔진 가동 (V56)...")
+    print_log("🔎 [오늘만 이가격] 스마트 스크롤 종료 수집 엔진 가동 (V57)...")
     
     harvested = []
     seen_titles = set()
@@ -266,7 +266,7 @@ def harvest_today_deals_exclusively(page):
 
 
 def harvest_sharelink_portal():
-    print_log("🚀 [V56] 스마트 스크롤 수집 엔진 가동")
+    print_log("🚀 [V57] 스마트 스크롤 수집 엔진 가동")
     setup_session_from_env()
 
     use_session = os.path.exists(SESSION_PATH)
@@ -274,13 +274,11 @@ def harvest_sharelink_portal():
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
-            headless=True,
-            slow_mo=50,
+            headless=False,
+            slow_mo=100,
             args=[
                 "--no-sandbox", 
                 "--disable-setuid-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-gpu",
                 "--disable-blink-features=AutomationControlled"
             ]
         )
@@ -300,15 +298,59 @@ def harvest_sharelink_portal():
         page = ctx.new_page()
 
         try:
-            url_today = "https://sharelink.toss.im/links/best-ranking/daily-deals?sectionCode=TODAY_DEAL"
-            print_log(f"📡 오늘만 이가격 페이지 접속 중: {url_today}")
-            page.goto(url_today, wait_until="domcontentloaded", timeout=60000)
+            # 💡 [수정] 홈 화면 접속 후 우측 '전체 보기' 버튼을 찾아 클릭하도록 변경
+            url_home = "https://sharelink.toss.im/home"
+            print_log(f"📡 토스 쉐어링크 홈 화면 접속 중: {url_home}")
+            page.goto(url_home, wait_until="domcontentloaded", timeout=60000)
             page.wait_for_timeout(3000)
             
+            print_log("=" * 60)
+            print_log("🛑 [수동 로그인 확인] 브라우저 창에서 로그인이 완료되었는지 확인하세요.")
+            print_log("🛑 로그인이 완료되어 홈 화면이 뜰 때까지 최대 2분간 대기합니다...")
+            print_log("=" * 60)
+
+            try:
+                page.wait_for_url("**/home**", timeout=120000)
+                page.wait_for_timeout(3000)
+                
+                # 로그인 직후 세션 저장 보완
+                os.makedirs(os.path.dirname(SESSION_PATH), exist_ok=True)
+                ctx.storage_state(path=SESSION_PATH)
+                print_log(f"🎉 로그인 세션 확인 및 저장 완료: {SESSION_PATH}")
+            except Exception as wait_err:
+                print_log(f"⚠️ 로그인 대기 시간 초과 또는 페이지 이동 감지 실패 (계속 진행): {wait_err}")
+
+            # 💡 [핵심 추가] 홈 화면의 '오늘만 이 가격에 살 수 있는 하루특가' 우측 '전체 보기 >' 버튼 클릭
+            print_log("🖱️ '오늘만 이가격' 섹션의 [전체 보기] 버튼 탐색 및 클릭 시도...")
+            try:
+                # '오늘만 이 가격에 살 수 있는 하루특가' 타이틀 주변 또는 우측의 '전체보기' 링크/텍스트 클릭
+                # 스크린샷 기준으로 '오늘만 이 가격에 살 수 있는 하루특가' 텍스트 영역 근처의 '전체 보기'를 타겟팅
+                full_view_btn = page.locator("text='오늘만 이 가격에 살 수 있는 하루특가'").locator("xpath=following::*[contains(text(), '전체 보기') or contains(text(), '전체보기')][1]")
+                if not full_view_btn.count():
+                    # 대체 셀렉터: 페이지 내 '전체 보기' 텍스트 중 첫 번째 혹은 영역 내 버튼
+                    full_view_btn = page.locator("text='전체 보기'").first
+                
+                if full_view_btn.count() > 0:
+                    full_view_btn.scroll_into_view_if_needed()
+                    page.wait_for_timeout(500)
+                    full_view_btn.click(force=True)
+                    print_log("✅ '전체 보기' 버튼 클릭 성공! 페이지 이동 대기 중...")
+                    page.wait_for_timeout(3000)
+                else:
+                    print_log("⚠️ '전체 보기' 버튼을 찾지 못했습니다. 현재 페이지에서 계속 수집을 시도합니다.")
+            except Exception as click_err:
+                print_log(f"⚠️ '전체 보기' 버튼 클릭 중 예외 발생 (계속 진행): {click_err}")
+
             all_harvested_deals.extend(harvest_today_deals_exclusively(page))
 
         except Exception as main_err:
             print_log(f"❌ 전체 예외: {main_err}")
+
+        try:
+            os.makedirs(os.path.dirname(SESSION_PATH), exist_ok=True)
+            ctx.storage_state(path=SESSION_PATH)
+        except Exception:
+            pass
 
         browser.close()
 
@@ -373,7 +415,7 @@ def update_db_with_deals(deals):
         json.dump(db, f, ensure_ascii=False, indent=2)
 
     print_log(f"🎉 [오늘만 이가격] DB 초기화 및 스마트 스크롤 적재 완료 (총 {len(db['products'])}개)")
-    # 💡 2번 파일 호출 코드 완전 제거 (완벽한 독립 실행 구조 보장)
+    push_to_github_automatically()
 
 
 if __name__ == "__main__":
