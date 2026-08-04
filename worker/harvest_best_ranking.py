@@ -1,6 +1,6 @@
 """
 =============================================================================
-MORVIX SHOP OS - BEST Ranking Harvester (Worker 2 - Simple Card Fix)
+MORVIX SHOP OS - BEST Ranking Harvester (Worker 2 - Render Memory Optimized)
 worker/harvest_best_ranking.py
 =============================================================================
 """
@@ -59,7 +59,7 @@ def push_to_github_automatically():
         subprocess.run(["git", "add", "-f", ROOT_DB_PATH], cwd=BASE_DIR, capture_output=True)
         subprocess.run(["git", "add", "-f", WORKER_DB_PATH], cwd=BASE_DIR, capture_output=True)
         
-        commit_msg = f"Auto Sync Best Ranking Simple Card Fix: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        commit_msg = f"Auto Sync Best Ranking Memory Optimized: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
         
         push_res = subprocess.run(["git", "push", repo_url, "HEAD:main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
@@ -81,7 +81,7 @@ def clean_product_name(raw_name):
     return cleaned.lstrip(',').lstrip('-').strip() if len(cleaned.lstrip(',').lstrip('-').strip()) >= 2 else raw_name
 
 def harvest_best_ranking_exclusively():
-    print_log("🏆 [BEST 랭킹] 간결한 카드 파싱 수집 엔진 가동...")
+    print_log("🏆 [BEST 랭킹] 메모리 최적화 수집 엔진 가동...")
     setup_session_from_env()
     
     harvested = []
@@ -96,9 +96,18 @@ def harvest_best_ranking_exclusively():
     ]
 
     with sync_playwright() as p:
+        # 💡 렌더 서버 512MB 제한 우회를 위한 메모리 최적화 인자 적용
         browser = p.chromium.launch(
             headless=True,
-            args=["--no-sandbox", "--disable-setuid-sandbox", "--disable-blink-features=AutomationControlled"]
+            args=[
+                "--no-sandbox",
+                "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-accelerated-2d-canvas",
+                "--disable-gpu",
+                "--single-process",
+                "--disable-blink-features=AutomationControlled"
+            ]
         )
         
         ctx_opts = {
@@ -130,7 +139,6 @@ def harvest_best_ranking_exclusively():
 
             for idx, btn in enumerate(btn_locators):
                 try:
-                    # 💡 버튼을 감싸고 있는 상위 블록을 유연하게 탐색
                     card = btn.locator("xpath=ancestor::div[3]")
                     raw_text = card.inner_text() if card.count() else ""
                     if not raw_text or '원' not in raw_text:
