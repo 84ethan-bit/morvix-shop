@@ -4,14 +4,16 @@ MORVIX SHOP OS - Render Web Service Dummy Port & Direct Pipeline Runner
 worker/web_server_runner.py
 =============================================================================
 """
+import os
+import sys
 import http.server
 import socketserver
 import threading
-import os
 import time
 import requests
 
-# 파이프라인 데몬 모듈 직접 임포트
+# 동일 폴더(worker) 내의 파이프라인 데몬 모듈을 안전하게 임포트하기 위한 경로 추가
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from toss_api_pipeline_daemon import run_pipeline_cycle
 
 PORT = int(os.environ.get("PORT", 10000))
