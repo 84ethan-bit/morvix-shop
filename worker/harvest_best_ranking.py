@@ -1,8 +1,7 @@
 """
 =============================================================================
-MORVIX SHOP OS - BEST Ranking Harvester (Slow Scroll & Stable Dynamic Harvester)
-- 전용 목적: [지금 많이 팔리는 BEST] 스크롤 대기 시간 4초 보장 및 개별 상품 전수 수집
-- 추가 기능: 1번 데이터 병합 후 최종 통합 DB 구축 및 깃허브 자동 푸시 수행
+MORVIX SHOP OS - BEST Ranking Harvester (Safe Session & Stable Harvester)
+worker/harvest_best_ranking.py
 =============================================================================
 """
 import sys
@@ -24,12 +23,23 @@ WORKER_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DB_PATH = os.path.join(BASE_DIR, "morvix_shop_db.json")
 WORKER_DB_PATH = os.path.join(WORKER_DIR, "morvix_shop_db.json")
 SESSION_PATH = os.path.join(BASE_DIR, "scratch", "toss_sharelink_session.json")
-BEST_DB_PATH = os.path.join(WORKER_DIR, "best_products_db.json")
 
 
 def print_log(msg):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{timestamp}] {msg}", flush=True)
+
+
+def setup_session_from_env():
+    env_session = os.environ.get("TOSS_SESSION_JSON", "").strip()
+    if env_session:
+        try:
+            os.makedirs(os.path.dirname(SESSION_PATH), exist_ok=True)
+            with open(SESSION_PATH, "w", encoding="utf-8") as f:
+                f.write(env_session)
+            print_log("🔑 BEST 수집기 환경변수 세션 복원 완료")
+        except Exception as e:
+            print_log(f"⚠️ 세션 복원 예외: {e}")
 
 
 def push_to_github_automatically():
@@ -77,7 +87,8 @@ def clean_product_name(raw_name):
 
 
 def harvest_best_ranking_exclusively():
-    print_log("🏆 [BEST 수집 엔진] 개별 카드 정밀 인식 스캔 가동...")
+    print_log("🏆 [BEST 수집 엔진] 안정화 세션 검증 수집 가동...")
+    setup_session_from_env()
     
     harvested = []
     seen_titles = set()
@@ -89,17 +100,27 @@ def harvest_best_ranking_exclusively():
         '전체 보기', '전체보기', '특가', '역대급특가'
     ]
 
-    use_session = os.path.exists(SESSION_PATH)
+    # 세션 파일 무결성 검증 로직 추가
+    use_session = False
+    if os.path.exists(SESSION_PATH):
+        try:
+            with open(SESSION_PATH, "r", encoding="utf-8") as f:
+                session_data = json.load(f)
+                if "cookies" in session_data and isinstance(session_data["cookies"], list):
+                    use_session = True
+                    print_log(f"🔑 세션 파일 검증 통과 (쿠키 개수: {len(session_data['cookies'])}개)")
+                else:
+                    print_log("⚠️ 세션 파일 구조가 올바르지 않습니다. (cookies 키 누락)")
+        except Exception as e:
+            print_log(f"⚠️ 세션 파일 파싱 오류 발생: {e}")
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
-            headless=True,
+            headless=False,  # 화면을 직접 눈으로 확인하실 수 있도록 설정
             slow_mo=50,
             args=[
                 "--no-sandbox", 
                 "--disable-setuid-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-gpu",
                 "--disable-blink-features=AutomationControlled"
             ]
         )
@@ -112,7 +133,6 @@ def harvest_best_ranking_exclusively():
         }
         if use_session:
             ctx_opts["storage_state"] = SESSION_PATH
-            print_log("🔑 로그인 세션 파일(Storage State) 로드 완료!")
 
         ctx = browser.new_context(**ctx_opts)
         ctx.grant_permissions(["clipboard-read", "clipboard-write"])
@@ -136,110 +156,132 @@ def harvest_best_ranking_exclusively():
             page.evaluate("window.scrollTo(0, 0);")
             page.wait_for_timeout(2000)
 
-            # 💡 [핵심 수정] 버튼 기준이 아니라 개별 상품 컨테이너(카드) 단위로 리스트를 안정적으로 획득
-            card_locators = page.locator("xpath=//button[contains(text(), '링크 발급')]/ancestor::*[contains(@class, 'Card') or contains(@class, 'Item') or contains(@class, 'Product') or self::article or self::section][1]").all()
-            if not card_locators or len(card_locators) == 0:
-                card_locators = page.locator("xpath=//button[contains(text(), '링크 발급')]/ancestor::div[3]").all()
+            total_processed = 0
+            
+            while True:
+                buttons = page.locator("button:has-text('링크 발급')").all()
+                unprocessed_buttons = buttons[total_processed:]
+                
+                if not unprocessed_buttons:
+                    break
 
-            print_log(f"📍 [BEST 수집] 감지된 개별 상품 카드: 총 {len(card_locators)}개")
+                print_log(f"📍 [진행 상황] 현재까지 처리된 상품: {total_processed}개 / 발견된 전체 버튼: {len(buttons)}개")
 
-            for idx, card in enumerate(card_locators):
-                try:
-                    raw_text = card.inner_text() if card.count() else ""
-                    if not raw_text or '원' not in raw_text:
-                        continue
-
-                    lines = [l.strip() for l in raw_text.split('\n') if l.strip()]
-                    
-                    candidate_titles = []
-                    for l in lines:
-                        if re.match(r'^\d{1,3}$', l) or re.search(r'\d+.*당', l) or re.search(r'^\d+%\s*특가', l):
-                            continue
-                        if len(l) >= 4 and not re.match(r'^[\d,%원\-~★☆.()\s]+$', l):
-                            if not any(k in l for k in JUNK_KEYWORDS) and '%' not in l:
-                                candidate_titles.append(l)
-
-                    if not candidate_titles:
-                        continue
-                    
-                    raw_title = max(candidate_titles, key=len)
-                    title = clean_product_name(raw_title)
-                    
-                    if not title or title in seen_titles:
-                        continue
-
-                    price_lines = [l for l in lines if '원' in l and not any(k in l for k in ['당 ', '수익', '개당'])]
-                    valid_prices = []
-                    for pl in price_lines:
-                        prices = re.findall(r'([\d,]+)\s*원', pl)
-                        for p in prices:
-                            val = int(p.replace(',', ''))
-                            if val >= 500:
-                                valid_prices.append(val)
-
-                    if not valid_prices:
-                        continue
-                    price = min(valid_prices)
-
-                    disc_match = re.search(r'(\d+)\s*[%％]', raw_text)
-                    if disc_match:
-                        discount_rate = f"{disc_match.group(1)}%"
-                    elif '최저가' in raw_text:
-                        discount_rate = "최저가"
-                    elif '역대급특가' in raw_text:
-                        discount_rate = "역대급특가"
-                    else:
-                        discount_rate = "BEST 특가"
-
-                    img_url = card.evaluate(r"""el => {
-                        const img = el.querySelector('img');
-                        return img ? (img.currentSrc || img.src || img.getAttribute('data-src') || '') : '';
-                    }""")
-                    if not img_url or not img_url.startswith('http'):
-                        img_url = "https://static.toss.im/icons/png/4x/icon-toss-logo.png"
-
-                    real_toss_link = None
+                for idx, btn in enumerate(unprocessed_buttons):
                     try:
-                        btn = card.locator("button:has-text('링크 발급')").first
-                        if btn.count():
+                        total_processed += 1
+                        
+                        try:
                             btn.scroll_into_view_if_needed()
-                            page.wait_for_timeout(50)
+                            page.wait_for_timeout(100)
+                        except Exception:
+                            pass
+
+                        card = btn.locator("xpath=ancestor::*[contains(@class, 'Card') or contains(@class, 'Item') or contains(@class, 'Product') or self::article or self::section][1]")
+                        if not card or not card.count():
+                            card = btn.locator("xpath=ancestor::div[4]")
+
+                        raw_text = card.inner_text() if card.count() else ""
+                        if not raw_text or '원' not in raw_text:
+                            card = btn.locator("xpath=ancestor::div[6]")
+                            raw_text = card.inner_text() if card.count() else ""
+                            if not raw_text or '원' not in raw_text:
+                                continue
+
+                        lines = [l.strip() for l in raw_text.split('\n') if l.strip()]
+                        
+                        candidate_titles = []
+                        for l in lines:
+                            if re.match(r'^\d{1,3}$', l) or re.search(r'\d+.*당', l) or re.search(r'^\d+%\s*특가', l):
+                                continue
+                            if len(l) >= 4 and not re.match(r'^[\d,%원\-~★☆.()\s]+$', l):
+                                if not any(k in l for k in JUNK_KEYWORDS) and '%' not in l:
+                                    candidate_titles.append(l)
+
+                        if not candidate_titles:
+                            continue
+                        
+                        raw_title = max(candidate_titles, key=len)
+                        title = clean_product_name(raw_title)
+                        
+                        if not title:
+                            continue
+                        
+                        if title in seen_titles:
+                            title = f"{title}_{total_processed}"
+
+                        price_lines = [l for l in lines if '원' in l and not any(k in l for k in ['당 ', '수익', '개당'])]
+                        valid_prices = []
+                        for pl in price_lines:
+                            prices = re.findall(r'([\d,]+)\s*원', pl)
+                            for p in prices:
+                                val = int(p.replace(',', ''))
+                                if val >= 500:
+                                    valid_prices.append(val)
+
+                        if not valid_prices:
+                            continue
+                        price = min(valid_prices)
+
+                        disc_match = re.search(r'(\d+)\s*[%％]', raw_text)
+                        if disc_match:
+                            discount_rate = f"{disc_match.group(1)}%"
+                        elif '최저가' in raw_text:
+                            discount_rate = "최저가"
+                        elif '역대급특가' in raw_text:
+                            discount_rate = "역대급특가"
+                        else:
+                            discount_rate = "BEST 특가"
+
+                        img_url = card.evaluate(r"""el => {
+                            const img = el.querySelector('img');
+                            return img ? (img.currentSrc || img.src || img.getAttribute('data-src') || '') : '';
+                        }""")
+                        if not img_url or not img_url.startswith('http'):
+                            img_url = "https://static.toss.im/icons/png/4x/icon-toss-logo.png"
+
+                        real_toss_link = None
+                        try:
                             btn.click(force=True)
-                            page.wait_for_timeout(500)
+                            page.wait_for_timeout(300)
 
                             clip_content = page.evaluate("async () => await navigator.clipboard.readText()").strip()
                             if clip_content:
                                 match_link = re.search(r'https:\/\/toss\.im\/_m\/[a-zA-Z0-9]+', clip_content)
                                 if match_link:
                                     real_toss_link = match_link.group(0)
+                        except Exception:
+                            pass
+
+                        if not real_toss_link:
+                            prod_id_match = re.search(r'/product/(\d+)', img_url) or re.search(r'/ai/([a-zA-Z0-9_-]+)', img_url)
+                            if prod_id_match:
+                                token_id = prod_id_match.group(1)
+                                real_toss_link = f"https://sharelink.toss.im/links/product?id={token_id}"
+                            else:
+                                safe_token = str(abs(hash(title)))[:8]
+                                real_toss_link = f"https://sharelink.toss.im/links/product?id=best_{safe_token}"
+
+                        print_log(f"   🔥 [BEST 수집 성공] {title} | {price}원 | {discount_rate}")
+
+                        seen_titles.add(title)
+                        harvested.append({
+                            "name": title,
+                            "price": price,
+                            "discount_rate": discount_rate,
+                            "thumbnail": img_url,
+                            "share_link": real_toss_link,
+                            "section": "best_ranking",
+                            "priority": 2
+                        })
                     except Exception:
-                        pass
+                        continue
+                
+                new_buttons_check = page.locator("button:has-text('링크 발급')").all()
+                if len(new_buttons_check) <= len(buttons):
+                    break
 
-                    if not real_toss_link:
-                        prod_id_match = re.search(r'/product/(\d+)', img_url) or re.search(r'/ai/([a-zA-Z0-9_-]+)', img_url)
-                        if prod_id_match:
-                            token_id = prod_id_match.group(1)
-                            real_toss_link = f"https://sharelink.toss.im/links/product?id={token_id}"
-                        else:
-                            safe_token = str(abs(hash(title)))[:8]
-                            real_toss_link = f"https://sharelink.toss.im/links/product?id=best_{safe_token}"
-
-                    print_log(f"   🔥 [BEST 수집 성공] {title} | {price}원 | {discount_rate}")
-
-                    seen_titles.add(title)
-                    harvested.append({
-                        "name": title,
-                        "price": price,
-                        "discount_rate": discount_rate,
-                        "thumbnail": img_url,
-                        "share_link": real_toss_link,
-                        "section": "best_ranking",
-                        "priority": 2
-                    })
-                except Exception:
-                    continue
-
-            print_log(f"✅ [BEST 상품] 개별 카드 전수 수집 완료: 총 {len(harvested)}개")
+            print_log(f"✅ [BEST 상품] 안정화 전수 수집 완료: 총 {len(harvested)}개")
         except Exception as err:
             print_log(f"❌ BEST 수집 예외 발생: {err}")
 
