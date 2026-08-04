@@ -1,6 +1,6 @@
 """
 =============================================================================
-MORVIX SHOP OS - Toss API Official Pipeline Daemon (Based on Docs)
+MORVIX SHOP OS - Toss Official Smart Cycle Pipeline Daemon
 worker/toss_api_pipeline_daemon.py
 =============================================================================
 """
@@ -11,81 +11,75 @@ import base64
 from datetime import datetime
 import requests
 
-# 환경 변수 불러오기
 ACCESS_KEY = os.environ.get("TOSS_ACCESS_KEY")
 SECRET_KEY = os.environ.get("TOSS_SECRET_KEY")
-USER_LINK_ID = os.environ.get("TOSS_USER_LINK_ID") # 문서상의 publisherId 역할
+USER_LINK_ID = os.environ.get("TOSS_USER_LINK_ID")
 GH_TOKEN = os.environ.get("GH_TOKEN")
 GH_REPO = os.environ.get("GH_REPO", "username/repository-name")
 
-# 문서에 명시된 공식 오픈 아키텍처 주소
-TOKEN_URL = "https://oauth2.cert.toss.im/token" # 알파/테스트 기준 (운영시 변경)
+TOKEN_URL = "https://oauth2.cert.toss.im/token"
 API_BASE_URL = "https://sharelink.toss.im/openapi"
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(BASE_DIR, "worker", "morvix_shop_db.json")
 
 def get_access_token():
-    """1단계: 액세스 토큰 발급"""
     payload = {
         "grant_type": "client_credentials",
         "client_id": ACCESS_KEY,
         "client_secret": SECRET_KEY,
         "scope": "sharelink:read sharelink:write"
     }
-    headers = {
-        "Content-Type": "application/x-www-form-urlencoded"
-    }
+    headers = {"Content-Type": "application/x-www-form-urlencoded"}
     try:
         response = requests.post(TOKEN_URL, data=payload, headers=headers, timeout=15)
         if response.status_code == 200:
-            data = response.json()
-            token = data.get("access_token")
-            print("🔑 [토큰 발급] 액세스 토큰 성공적으로 획득", flush=True)
-            return token
-        else:
-            print(f"⚠️ [토큰 발급] 실패 [코드 {response.status_code}]: {response.text}", flush=True)
+            return response.json().get("access_token")
     except Exception as e:
-        print(f"❌ [토큰 발급] 예외 발생: {e}", flush=True)
+        print(f"❌ [토큰 발급 예외]: {e}", flush=True)
     return None
 
-def check_health(access_token):
-    """2단계: 연결 확인 (Health Check)"""
-    url = f"{API_BASE_URL}/health"
+def fetch_limited_products(access_token, endpoint_path, max_count, category_label):
+    """지정한 개수(max_count)까지만 페이징하며 상품 수집"""
+    all_items = []
+    cursor = None
     headers = {"Authorization": f"Bearer {access_token}"}
-    try:
-        response = requests.get(url, headers=headers, timeout=10)
-        if response.status_code == 200:
-            print("🟢 [Health Check] 연결 상태 정상 (ok)", flush=True)
-            return True
-        else:
-            print(f"⚠️ [Health Check] 실패: {response.text}", flush=True)
-    except Exception as e:
-        print(f"❌ [Health Check] 예외 발생: {e}", flush=True)
-    return False
-
-def fetch_best_products(access_token):
-    """3단계: 상품 목록 가져오기 (베스트 셀링)"""
-    url = f"{API_BASE_URL}/products/best-selling?size=20"
-    headers = {"Authorization": f"Bearer {access_token}"}
-    try:
-        response = requests.get(url, headers=headers, timeout=15)
-        if response.status_code == 200:
-            res_data = response.json()
-            if res_data.get("resultType") == "SUCCESS":
-                items = res_data.get("success", {}).get("items", [])
-                print(f"📦 [상품 수집] 베스트 상품 {len(items)}개 성공적으로 가져옴", flush=True)
-                return items
+    
+    print(f"🔄 [{category_label}] 최대 {max_count}개 수집 시작...", flush=True)
+    while len(all_items) < max_count:
+        fetch_size = min(50, max_count - len(all_items))
+        url = f"{API_BASE_URL}{endpoint_path}?size={fetch_size}"
+        if cursor:
+            url += f"&cursor={cursor}"
+            
+        try:
+            response = requests.get(url, headers=headers, timeout=15)
+            if response.status_code == 200:
+                res_data = response.json()
+                if res_data.get("resultType") == "SUCCESS":
+                    success_data = res_data.get("success", {})
+                    items = success_data.get("items", [])
+                    if not items:
+                        break
+                    all_items.extend(items)
+                    
+                    has_next = success_data.get("hasNext", False)
+                    cursor = success_data.get("nextCursor")
+                    
+                    if not has_next or not cursor:
+                        break
+                else:
+                    break
             else:
-                print(f"⚠️ [상품 수집] API 응답 FAIL: {res_data}", flush=True)
-        else:
-            print(f"⚠️ [상품 수집] 조회 실패 [코드 {response.status_code}]: {response.text}", flush=True)
-    except Exception as e:
-        print(f"❌ [상품 수집] 요청 중 예외 발생: {e}", flush=True)
-    return []
+                break
+        except Exception as e:
+            print(f"⚠️ [{category_label}] 수집 중 예외: {e}", flush=True)
+            break
+            
+    print(f"📦 [{category_label}] 총 {len(all_items)}개 상품 수집 완료", flush=True)
+    return all_items[:max_count]
 
 def issue_share_link(access_token, taca_item_id):
-    """4단계: 쉐어링크 발급"""
     url = f"{API_BASE_URL}/links"
     headers = {
         "Authorization": f"Bearer {access_token}",
@@ -101,15 +95,32 @@ def issue_share_link(access_token, taca_item_id):
             res_data = response.json()
             if res_data.get("resultType") == "SUCCESS":
                 return res_data.get("success", {}).get("shortUrl")
-        print(f"⚠️ [링크 발급] 실패: {response.text}", flush=True)
-    except Exception as e:
-        print(f"⚠️ [링크 발급] 예외 발생: {e}", flush=True)
+    except Exception:
+        pass
     return None
 
+def load_existing_db():
+    """기존 DB 로드 및 기존 쉐어링크 딕셔너리 복원"""
+    existing_links = {}
+    existing_categories = {"베스트": [], "오늘만 이가격": [], "전체": []}
+    
+    if os.path.exists(DB_PATH):
+        try:
+            with open(DB_PATH, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                existing_categories = data.get("categories", existing_categories)
+                for cat_name, items in existing_categories.items():
+                    for item in items:
+                        p_id = item.get("productId")
+                        s_url = item.get("shareUrl")
+                        if p_id and s_url:
+                            existing_links[p_id] = s_url
+        except Exception:
+            pass
+    return existing_links, existing_categories
+
 def push_db_to_github(db_data):
-    """GitHub API를 통한 자동 커밋 및 푸시"""
     if not GH_TOKEN or not GH_REPO:
-        print("⚠️ [GitHub Sync] 설정 누락으로 푸시 생략", flush=True)
         return False
 
     file_path = "worker/morvix_shop_db.json"
@@ -127,7 +138,7 @@ def push_db_to_github(db_data):
         content_base64 = base64.b64encode(json_str.encode("utf-8")).decode("utf-8")
 
         payload = {
-            "message": f"Auto-update official Toss shop DB [{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]",
+            "message": f"Auto-update smart cycle Toss shop DB [{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]",
             "content": content_base64,
             "branch": "main"
         }
@@ -135,87 +146,119 @@ def push_db_to_github(db_data):
             payload["sha"] = sha
 
         put_res = requests.put(url, headers=headers, json=payload)
-        if put_res.status_code in [200, 201]:
-            print("🚀 [GitHub Sync] 깃허브 DB 자동 푸시 성공!", flush=True)
-            return True
-    except Exception as e:
-        print(f"⚠️ [GitHub Sync] 예외 발생: {e}", flush=True)
+        return put_res.status_code in [200, 201]
+    except Exception:
+        pass
     return False
 
-def run_pipeline_cycle():
-    print(f"\n[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 🚀 [API 파이프라인] 수집 사이클 시작", flush=True)
+def run_pipeline_cycle(refresh_best=True):
+    print(f"\n[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 🚀 [스마트 파이프라인] 실행 (베스트 수집 여부: {refresh_best})", flush=True)
     
-    # 1단계: 토큰 발급
     access_token = get_access_token()
     if not access_token:
-        print("💤 [API 파이프라인] 토큰 발급 실패로 이번 주기를 종료합니다.", flush=True)
+        print("💤 [파이프라인] 토큰 발급 실패", flush=True)
         return
 
-    # 2단계: 연결 확인
-    if not check_health(access_token):
-        print("💤 [API 파이프라인] Health check 실패로 이번 주기를 종료합니다.", flush=True)
-        return
+    # 기존 링크와 카테고리 데이터 로드
+    existing_links, existing_categories = load_existing_db()
 
-    # 3단계: 상품 목록 가져오기
-    raw_items = fetch_best_products(access_token)
-    if not raw_items:
-        print("💤 [API 파이프라인] 수집된 상품이 없습니다.", flush=True)
-        return
+    # 1. 베스트 상품 (3일에 1번만 재수집, 아니면 기존 데이터 유지)
+    if refresh_best:
+        best_items = fetch_limited_products(access_token, "/products/best-selling", 200, "베스트 상품")
+        best_processed = []
+        for item in best_items:
+            taca_id = item.get('tacaItemId')
+            if not taca_id:
+                continue
+            short_url = existing_links.get(taca_id) or issue_share_link(access_token, taca_id)
+            if not short_url:
+                continue
+            existing_links[taca_id] = short_url
+            best_processed.append({
+                "productId": taca_id,
+                "name": item.get('displayName'),
+                "price": item.get('displayPrice'),
+                "originalPrice": item.get('originalPrice'),
+                "imageUrl": item.get('thumbnailUrl'),
+                "shareUrl": short_url,
+                "category": "베스트",
+                "updatedAt": datetime.now().isoformat()
+            })
+        categorized_db_best = best_processed
+    else:
+        print("📦 [베스트 상품] 3일 주기가 아니므로 기존 데이터를 유지합니다.", flush=True)
+        categorized_db_best = existing_categories.get("베스트", [])
 
-    categorized_db = {"전체": []}
-    success_count = 0
-
-    for item in raw_items:
-        taca_item_id = item.get('tacaItemId')
-        if not taca_item_id:
+    # 2. 오늘만 이가격 상품 (매일 24시간마다 100개 수집)
+    today_items = fetch_limited_products(access_token, "/products/today-special", 100, "오늘만 이가격")
+    today_processed = []
+    for item in today_items:
+        taca_id = item.get('tacaItemId')
+        if not taca_id:
             continue
-            
-        # 4단계: 쉐어링크 발급 (shortUrl 확보)
-        short_url = issue_share_link(access_token, taca_item_id)
+        short_url = existing_links.get(taca_id) or issue_share_link(access_token, taca_id)
         if not short_url:
             continue
-            
-        # 가이드에 따라 productUrl이 아닌 발급받은 shortUrl을 사용
-        processed_item = {
-            "productId": taca_item_id,
+        existing_links[taca_id] = short_url
+        today_processed.append({
+            "productId": taca_id,
             "name": item.get('displayName'),
             "price": item.get('displayPrice'),
             "originalPrice": item.get('originalPrice'),
             "imageUrl": item.get('thumbnailUrl'),
-            "shareUrl": short_url, # 수익 집계가 되는 쉐어링크
-            "category": "베스트",
+            "shareUrl": short_url,
+            "category": "오늘만 이가격",
             "updatedAt": datetime.now().isoformat()
-        }
+        })
+    categorized_db_today = today_processed
 
-        categorized_db["전체"].append(processed_item)
-        success_count += 1
-
-    if success_count == 0:
-        print("💤 [API 파이프라인] 유효하게 발급된 상품 링크가 없습니다.", flush=True)
-        return
+    # 전체 통합 리스트 생성 (중복 제거)
+    all_combined = []
+    seen_ids = set()
+    for item in categorized_db_best + categorized_db_today:
+        if item["productId"] not in seen_ids:
+            all_combined.append(item)
+            seen_ids.add(item["productId"])
 
     db_data = {
         "updatedAt": datetime.now().isoformat(),
-        "categories": categorized_db
+        "categories": {
+            "전체": all_combined,
+            "베스트": categorized_db_best,
+            "오늘만 이가격": categorized_db_today
+        }
     }
 
     with open(DB_PATH, "w", encoding="utf-8") as f:
         json.dump(db_data, f, ensure_ascii=False, indent=4)
 
     push_db_to_github(db_data)
-    print(f"✅ [API 파이프라인] 총 {success_count}개 상품 쉐어링크 연동 및 깃허브 동기화 완료", flush=True)
+    print(f"✅ [파이프라인] 동기화 완료 (베스트: {len(categorized_db_best)}개, 오늘만 이가격: {len(categorized_db_today)}개)", flush=True)
 
 if __name__ == "__main__":
-    print("🛡️ Morvix Shop OS - Toss Official API 데몬 가동", flush=True)
+    print("🛡️ Morvix Shop OS - Smart Cycle Daemon 가동", flush=True)
+    
+    # 최초 실행 시 베스트 상품 포함 전체 수집
     try:
-        run_pipeline_cycle()
+        run_pipeline_cycle(refresh_best=True)
     except Exception as e:
         print(f"❌ 초기 실행 오류: {e}", flush=True)
 
+    cycle_count = 0
     while True:
-        print("💤 [API 파이프라인] 다음 수집까지 12시간 대기 중...", flush=True)
-        time.sleep(43200)
-        try:
-            run_pipeline_cycle()
-        except Exception as e:
-            print(f"❌ 반복 실행 오류: {e}", flush=True)
+        # 24시간(86400초)마다 루프가 돔
+        print("💤 [파이프라인] 24시간 대기 중...", flush=True)
+        time.sleep(86400) 
+        cycle_count += 1
+        
+        # 3일에 한 번(3번째 24시간 주기마다) 베스트 상품 재수집 (3 * 24시간 = 3일)
+        if cycle_count % 3 == 0:
+            try:
+                run_pipeline_cycle(refresh_best=True)
+            except Exception as e:
+                print(f"❌ 베스트 재수집 오류: {e}", flush=True)
+        else:
+            try:
+                run_pipeline_cycle(refresh_best=False)
+            except Exception as e:
+                print(f"❌ 오늘만 이가격 수집 오류: {e}", flush=True)
