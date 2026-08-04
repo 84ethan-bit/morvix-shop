@@ -1,6 +1,6 @@
 """
 =============================================================================
-MORVIX SHOP OS - BEST Ranking Harvester (Worker 2)
+MORVIX SHOP OS - BEST Ranking Harvester (Worker 2 - Simple Card Fix)
 worker/harvest_best_ranking.py
 =============================================================================
 """
@@ -23,9 +23,6 @@ WORKER_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DB_PATH = os.path.join(BASE_DIR, "morvix_shop_db.json")
 WORKER_DB_PATH = os.path.join(WORKER_DIR, "morvix_shop_db.json")
 SESSION_PATH = os.path.join(BASE_DIR, "scratch", "toss_sharelink_session.json")
-
-TOSS_ID = os.environ.get("TOSS_ID", "YOUR_TOSS_ID")
-TOSS_PW = os.environ.get("TOSS_PW", "YOUR_TOSS_PASSWORD")
 
 def print_log(msg):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -62,7 +59,7 @@ def push_to_github_automatically():
         subprocess.run(["git", "add", "-f", ROOT_DB_PATH], cwd=BASE_DIR, capture_output=True)
         subprocess.run(["git", "add", "-f", WORKER_DB_PATH], cwd=BASE_DIR, capture_output=True)
         
-        commit_msg = f"Auto Sync Pipeline V56: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        commit_msg = f"Auto Sync Best Ranking Simple Card Fix: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
         
         push_res = subprocess.run(["git", "push", repo_url, "HEAD:main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
@@ -84,7 +81,7 @@ def clean_product_name(raw_name):
     return cleaned.lstrip(',').lstrip('-').strip() if len(cleaned.lstrip(',').lstrip('-').strip()) >= 2 else raw_name
 
 def harvest_best_ranking_exclusively():
-    print_log("🏆 [BEST 랭킹] 수집 엔진 가동...")
+    print_log("🏆 [BEST 랭킹] 간결한 카드 파싱 수집 엔진 가동...")
     setup_session_from_env()
     
     harvested = []
@@ -95,7 +92,7 @@ def harvest_best_ranking_exclusively():
         '수익', '당 ', '개당', '100g', '100ml', '10g', '1포당', 
         '1롤당', '1매당', '1매입당', '1마리당', '1세트당', '1정당', '1미당',
         '링크 발급', '최저가', '내일출발', '오늘출발', '베스트판매자', 
-        '전체 보기', '전체보기', '특가', '역대급특가'
+        '전체 보기', '전체보기', '특가', '역대급특가', '지금 많이 팔리는', '내일도착'
     ]
 
     with sync_playwright() as p:
@@ -123,51 +120,21 @@ def harvest_best_ranking_exclusively():
             page.goto(url_best, wait_until="domcontentloaded", timeout=60000)
             page.wait_for_timeout(4000)
 
-            if "login" in page.url or page.locator("input[type='text'], input[type='tel']").count() > 0:
-                print_log("⚠️ 로그인 필요 감지. 자동 로그인 시도...")
-                try:
-                    id_inp = page.locator("input[type='text'], input[type='tel']").first()
-                    if id_inp.count() > 0:
-                        id_inp.fill(TOSS_ID)
-                        page.wait_for_timeout(500)
-                        nxt = page.locator("button:has-text('다음'), button:has-text('확인')").first()
-                        if nxt.count() > 0:
-                            nxt.click()
-                            page.wait_for_timeout(2000)
-
-                    pw_inp = page.locator("input[type='password']").first()
-                    if pw_inp.count() > 0:
-                        pw_inp.fill(TOSS_PW)
-                        page.wait_for_timeout(500)
-                        l_btn = page.locator("button:has-text('로그인'), button:has-text('확인')").first()
-                        if l_btn.count() > 0:
-                            l_btn.click()
-                            page.wait_for_timeout(8000)
-
-                    page.goto(url_best, wait_until="domcontentloaded", timeout=60000)
-                    page.wait_for_timeout(4000)
-                    os.makedirs(os.path.dirname(SESSION_PATH), exist_ok=True)
-                    ctx.storage_state(path=SESSION_PATH)
-                    print_log("🎉 신규 세션 갱신 및 저장 완료")
-                except Exception as ex:
-                    print_log(f"⚠️ 자동 로그인 실패: {ex}")
-
+            print_log("📜 베스트 랭킹 페이지 하단 스크롤 진행 중...")
             for step in range(12):
                 page.evaluate("window.scrollBy(0, 1500);")
-                page.wait_for_timeout(3000)
+                page.wait_for_timeout(2000)
 
-            buttons = page.locator("button:has-text('링크 발급')").all()
-            print_log(f"🔍 발견된 링크 발급 버튼: {len(buttons)}개")
+            btn_locators = page.locator("button:has-text('링크 발급')").all()
+            print_log(f"🔍 감지된 [링크 발급] 버튼: 총 {len(btn_locators)}개")
 
-            for btn in buttons:
+            for idx, btn in enumerate(btn_locators):
                 try:
-                    card = btn.locator("xpath=ancestor::*[contains(@class, 'Card') or contains(@class, 'Item') or contains(@class, 'Product') or self::article or self::section][1]")
-                    if not card or not card.count():
-                        card = btn.locator("xpath=ancestor::div[4]")
-
+                    # 💡 버튼을 감싸고 있는 상위 블록을 유연하게 탐색
+                    card = btn.locator("xpath=ancestor::div[3]")
                     raw_text = card.inner_text() if card.count() else ""
                     if not raw_text or '원' not in raw_text:
-                        card = btn.locator("xpath=ancestor::div[6]")
+                        card = btn.locator("xpath=ancestor::div[4]")
                         raw_text = card.inner_text() if card.count() else ""
                         if not raw_text or '원' not in raw_text:
                             continue
@@ -175,10 +142,12 @@ def harvest_best_ranking_exclusively():
                     lines = [l.strip() for l in raw_text.split('\n') if l.strip()]
                     candidate_titles = []
                     for l in lines:
-                        if re.match(r'^\d{1,3}$', l) or re.search(r'\d+.*당', l) or re.search(r'^\d+%\s*특가', l):
+                        if re.match(r'^\d{1,3}$', l) or any(jk in l for jk in JUNK_KEYWORDS):
+                            continue
+                        if re.search(r'\d+.*당', l) or re.search(r'^\d+%\s*특가', l):
                             continue
                         if len(l) >= 4 and not re.match(r'^[\d,%원\-~★☆.()\s]+$', l):
-                            if not any(k in l for k in JUNK_KEYWORDS) and '%' not in l:
+                            if '%' not in l:
                                 candidate_titles.append(l)
 
                     if not candidate_titles:
@@ -186,22 +155,45 @@ def harvest_best_ranking_exclusively():
                     
                     raw_title = max(candidate_titles, key=len)
                     title = clean_product_name(raw_title)
-                    if not title or title in seen_titles:
+                    
+                    if not title or title in seen_titles or title in JUNK_KEYWORDS or len(title) < 3:
                         continue
 
-                    prices = re.findall(r'([\d,]+)\s*원', raw_text)
-                    valid_prices = [int(p.replace(',', '')) for p in prices if int(p.replace(',', '')) >= 500]
+                    price_lines = [l for l in lines if '원' in l and not any(k in l for k in ['당 ', '수익', '개당'])]
+                    valid_prices = []
+                    for pl in price_lines:
+                        prices = re.findall(r'([\d,]+)\s*원', pl)
+                        for p in prices:
+                            val = int(p.replace(',', ''))
+                            if val >= 500:
+                                valid_prices.append(val)
+
                     if not valid_prices:
                         continue
                     price = min(valid_prices)
 
                     disc_match = re.search(r'(\d+)\s*[%％]', raw_text)
-                    discount_rate = f"{disc_match.group(1)}%" if disc_match else "BEST 특가"
+                    if disc_match:
+                        discount_rate = f"{disc_match.group(1)}%"
+                    elif '최저가' in raw_text:
+                        discount_rate = "최저가"
+                    else:
+                        discount_rate = "BEST 특가"
+
+                    img_url = card.evaluate(r"""el => {
+                        const img = el.querySelector('img');
+                        return img ? (img.currentSrc || img.src || img.getAttribute('data-src') || '') : '';
+                    }""")
+                    if not img_url or not img_url.startswith('http'):
+                        img_url = "https://static.toss.im/icons/png/4x/icon-toss-logo.png"
 
                     real_toss_link = None
                     try:
+                        btn.scroll_into_view_if_needed()
+                        page.wait_for_timeout(200)
                         btn.click(force=True)
-                        page.wait_for_timeout(300)
+                        page.wait_for_timeout(1500)
+
                         clip_content = page.evaluate("async () => await navigator.clipboard.readText()").strip()
                         if clip_content:
                             match_link = re.search(r'https:\/\/toss\.im\/_m\/[a-zA-Z0-9]+', clip_content)
@@ -211,18 +203,40 @@ def harvest_best_ranking_exclusively():
                         pass
 
                     if not real_toss_link:
-                        real_toss_link = f"https://sharelink.toss.im/links/best-ranking"
+                        extracted_url = card.evaluate(r"""el => {
+                            const allEls = Array.from(el.querySelectorAll('a, input, textarea'));
+                            for (const el of allEls) {
+                                const href = el.href || el.value || '';
+                                if (href && href.includes('toss.im/_m/')) {
+                                    return href.trim();
+                                }
+                            }
+                            return '';
+                        }""")
+                        if extracted_url:
+                            match_link = re.search(r'https:\/\/toss\.im\/_m\/[a-zA-Z0-9]+', extracted_url)
+                            if match_link:
+                                real_toss_link = match_link.group(0)
+
+                    if not real_toss_link:
+                        prod_id_match = re.search(r'/product/(\d+)', img_url) or re.search(r'/ai/([a-zA-Z0-9_-]+)', img_url)
+                        if prod_id_match:
+                            token_id = prod_id_match.group(1)
+                            real_toss_link = f"https://sharelink.toss.im/links/product?id={token_id}"
+                        else:
+                            continue
 
                     seen_titles.add(title)
                     harvested.append({
                         "name": title,
                         "price": price,
                         "discount_rate": discount_rate,
-                        "thumbnail": "https://static.toss.im/icons/png/4x/icon-toss-logo.png",
+                        "thumbnail": img_url,
                         "share_link": real_toss_link,
                         "section": "best_ranking",
                         "priority": 2
                     })
+
                 except Exception:
                     continue
 
@@ -262,7 +276,7 @@ def harvest_best_ranking_exclusively():
                 "original_price": int(d['price'] * 1.35),
                 "discount_rate": d['discount_rate'],
                 "toss_link": d['share_link'],
-                "affiliate_links": [{"platform": "toss", "label": "💙 토스할인가 확인 ➔", "url": d['share_link'], "priority": 1}],
+                "affiliate_links": [{"platform": "toss", "label": "💙 토스할인가 확인 ➔", "url": d['share_link'], "priority": 1, "bg_gradient": "linear-gradient(135deg, #0052cc, #2684ff)"}],
                 "thumbnail": d['thumbnail'],
                 "added_date": now.isoformat(),
                 "expiry_date": (now + timedelta(hours=48)).isoformat()

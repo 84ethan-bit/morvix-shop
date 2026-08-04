@@ -1,6 +1,6 @@
 """
 =============================================================================
-MORVIX SHOP OS - Integrated Scheduler (V56 Pipeline)
+MORVIX SHOP OS - Integrated Scheduler (00:01 Target Pipeline)
 scheduler.py
 =============================================================================
 """
@@ -8,7 +8,7 @@ import sys
 import os
 import time
 import subprocess
-from datetime import datetime
+from datetime import datetime, timedelta
 
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
@@ -45,14 +45,27 @@ def run_pipeline():
         except Exception as e:
             print_log(f"❌ [2번 수집기] 오류 발생: {e}")
 
-    print_log("🎉 [오케스트레이터] 전체 파이프라인 주기 작업 종료. 다음 주기를 대기합니다.")
+    print_log("🎉 [오케스트레이터] 전체 파이프라인 작업 종료. 다음 주기를 대기합니다.")
 
 if __name__ == "__main__":
     print_log("🛡️ Morvix Shop OS 통합 스케줄러 백그라운드 구동 시작")
-    run_pipeline()  # 서버 가동 시 즉시 전체 파이프라인 1회 실행
+    
+    now = datetime.now()
+    target = now.replace(hour=0, minute=1, second=0, microsecond=0)
+    if now >= target:
+        target += timedelta(days=1)
+    
+    wait_seconds = (target - now).total_seconds()
+    print_log(f"⏳ 다음 목표 실행 시간(00:01)까지 약 {int(wait_seconds)}초 대기 중...")
+    time.sleep(wait_seconds)
+
+    try:
+        run_pipeline()
+    except Exception as err:
+        print_log(f"⚠️ 최초 실행 예외 발생: {err}")
     
     while True:
-        time.sleep(21600)  # 6시간 주기 대기
+        time.sleep(21600)
         try:
             run_pipeline()
         except Exception as err:
