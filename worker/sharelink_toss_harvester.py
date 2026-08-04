@@ -1,6 +1,6 @@
 """
 =============================================================================
-MORVIX SHOP OS - Toss ShareLink Portal Harvester (Auto Category Classification)
+MORVIX SHOP OS - Toss ShareLink Portal Harvester (Memory Optimized)
 worker/sharelink_toss_harvester.py
 =============================================================================
 """
@@ -63,7 +63,7 @@ def push_to_github_automatically():
         subprocess.run(["git", "add", "-f", ROOT_DB_PATH], cwd=BASE_DIR, capture_output=True)
         subprocess.run(["git", "add", "-f", WORKER_DB_PATH], cwd=BASE_DIR, capture_output=True)
         
-        commit_msg = f"Auto Sync Today Deals (Auto Category): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        commit_msg = f"Auto Sync Today Deals (Memory Optimized): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
         
         push_res = subprocess.run(["git", "push", repo_url, "HEAD:main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
@@ -91,7 +91,6 @@ def determine_category(name):
     """상품 이름 기반 자동 카테고리 분류 함수"""
     name_lower = name.lower()
     
-    # 식품 / 농수축산물 / 간식 / 음료
     food_keywords = [
         '사과', '복숭아', '수박', '참외', '토마토', '포도', '귤', '자두', '고구마', '감자', '단호박', '샤인머스켓', '무화과', '망고',
         '김치', '고기', '삼겹살', '소고기', '한돈', '한우', '목살', 'LA갈비', '닭', '오리', '곱창', '막창', '장조림', '젓갈', '간장게장',
@@ -103,7 +102,6 @@ def determine_category(name):
     if any(kw in name_lower for kw in food_keywords):
         return "food"
 
-    # 디지털 / 가전 / 모바일
     digital_keywords = [
         '충전기', '케이블', '이어폰', '헤드셋', '거치대', '맥세이프', '스마트폰', '보조배터리', '선풍기', '드라이기', 
         '청소기', '가습기', '서큘레이터', '블루투스', '스피커', '램프', '조명', 'C타입', '릴케이블'
@@ -111,7 +109,6 @@ def determine_category(name):
     if any(kw in name_lower for kw in digital_keywords):
         return "digital"
 
-    # 패션 / 의류 / 잡화
     fashion_keywords = [
         '티셔츠', '바지', '팬츠', '셔츠', '원피스', '스커트', '속옷', '나시', '양말', '모자', '가방', '파자마', 
         '잠옷', '세트', '신발', '스니커즈', '슬리퍼', '레깅스', '벨트', '장갑', '목걸이', '반지'
@@ -119,7 +116,6 @@ def determine_category(name):
     if any(kw in name_lower for kw in fashion_keywords):
         return "fashion"
 
-    # 뷰티 / 화장품 / 케어
     beauty_keywords = [
         '토너', '패드', '크림', '앰플', '세럼', '마스크팩', '클렌징', '샴푸', '린스', '바디워시', '치약', '칫솔', 
         '면도기', '립', '선크림', '향수', '화장품', '리들샷', '시카'
@@ -127,7 +123,6 @@ def determine_category(name):
     if any(kw in name_lower for kw in beauty_keywords):
         return "beauty"
 
-    # 기본값 (리빙 / 생활 / 기타)
     return "living"
 
 
@@ -289,7 +284,6 @@ def harvest_today_deals_exclusively(page):
                     else:
                         real_toss_link = f"https://sharelink.toss.im/links/product?fallback={idx}"
 
-                # 💡 카테고리 자동 분류 적용
                 auto_category = determine_category(title)
 
                 seen_titles.add(title)
@@ -316,7 +310,7 @@ def harvest_today_deals_exclusively(page):
 
 
 def harvest_sharelink_portal():
-    print_log("🚀 스마트 스크롤 수집 엔진 가동 (Auto Category)")
+    print_log("🚀 스마트 스크롤 수집 엔진 가동 (Memory Optimized)")
     setup_session_from_env()
 
     use_session = os.path.exists(SESSION_PATH)
@@ -335,7 +329,11 @@ def harvest_sharelink_portal():
                     "--disable-dev-shm-usage",
                     "--disable-accelerated-2d-canvas",
                     "--disable-gpu",
-                    "--single-process"
+                    "--single-process",
+                    "--disable-extensions",
+                    "--disable-infobars",
+                    "--disable-notifications",
+                    "--js-flags=--max-old-space-size=128"
                 ]
             )
         else:
@@ -345,9 +343,12 @@ def harvest_sharelink_portal():
         ctx_opts = {
             "viewport": {"width": 1440, "height": 900},
             "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-            "locale": "ko-KR",
-            "permissions": ["clipboard-read", "clipboard-write"]
+            "locale": "ko-KR"
         }
+        
+        if is_render:
+            ctx_opts["permissions"] = ["clipboard-read", "clipboard-write"]
+
         if use_session:
             ctx_opts["storage_state"] = SESSION_PATH
             print_log("🔑 로그인 세션 파일 로드 완료!")
