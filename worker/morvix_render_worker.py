@@ -1,6 +1,6 @@
 """
 =============================================================================
-MORVIX SHOP OS - Integrated Scheduler (Path-Fixed Version)
+MORVIX SHOP OS - Integrated Scheduler (Path-Fixed v2)
 scheduler.py
 =============================================================================
 """
@@ -13,15 +13,22 @@ from datetime import datetime
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
+# 현재 파일 위치 기준, 또는 상위 폴더를 기준으로 올바른 worker 경로 지정
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-WORKER_DIR = os.path.join(BASE_DIR, "worker")
+if os.path.basename(BASE_DIR) == "worker":
+    # 스크립트가 worker 폴더 안에서 실행되는 경우
+    WORKER_DIR = BASE_DIR
+    BASE_DIR = os.path.dirname(BASE_DIR)
+else:
+    # 스크립트가 루트에서 실행되는 경우
+    WORKER_DIR = os.path.join(BASE_DIR, "worker")
 
 def print_log(msg):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{timestamp}] [SCHEDULER] {msg}", flush=True)
 
 def run_pipeline():
-    print_log(f"🚀 [오케스트레이터] 파이프라인 가동 시작 (기준 경로: {BASE_DIR})")
+    print_log(f"🚀 [오케스트레이터] 파이프라인 가동 시작 (BASE_DIR: {BASE_DIR})")
     print_log(f"📁 [디버그] WORKER_DIR 경로: {WORKER_DIR}")
     
     if os.path.exists(WORKER_DIR):
