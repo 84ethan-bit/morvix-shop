@@ -1,6 +1,6 @@
 """
 =============================================================================
-MORVIX SHOP OS - Integrated Scheduler (Startup & Periodic Pipeline)
+MORVIX SHOP OS - Integrated Scheduler (Path-Fixed Version)
 scheduler.py
 =============================================================================
 """
@@ -21,43 +21,58 @@ def print_log(msg):
     print(f"[{timestamp}] [SCHEDULER] {msg}", flush=True)
 
 def run_pipeline():
-    print_log("🚀 [오케스트레이터] 파이프라인 가동 시작...")
+    print_log(f"🚀 [오케스트레이터] 파이프라인 가동 시작 (기준 경로: {BASE_DIR})")
+    print_log(f"📁 [디버그] WORKER_DIR 경로: {WORKER_DIR}")
     
+    if os.path.exists(WORKER_DIR):
+        print_log(f"📁 [디버그] worker 폴더 내 파일 목록: {os.listdir(WORKER_DIR)}")
+    else:
+        print_log(f"❌ [오류] worker 폴더를 찾을 수 없습니다: {WORKER_DIR}")
+        return
+
     # 1번 수집기 실행 (오늘만 이가격)
     worker1_path = os.path.join(WORKER_DIR, "sharelink_toss_harvester.py")
     if os.path.exists(worker1_path):
-        print_log("📦 [1번 수집기] 오늘만 이가격 수집 가동...")
+        print_log(f"📦 [1번 수집기] 실행 시도: {worker1_path}")
         try:
-            subprocess.run([sys.executable, worker1_path], check=True, cwd=BASE_DIR)
+            result = subprocess.run([sys.executable, worker1_path], check=True, cwd=BASE_DIR, capture_output=True, text=True)
+            print(result.stdout)
             print_log("✅ [1번 수집기] 완료")
+        except subprocess.CalledProcessError as e:
+            print_log(f"❌ [1번 수집기] 실행 실패 (에러코드 {e.returncode}):\n{e.stderr}")
         except Exception as e:
-            print_log(f"❌ [1번 수집기] 오류 발생: {e}")
+            print_log(f"❌ [1번 수집기] 예외 발생: {e}")
+    else:
+        print_log(f"❌ [1번 수집기] 파일을 찾을 수 없음: {worker1_path}")
             
     time.sleep(5)
 
     # 2번 수집기 실행 (BEST 랭킹)
     worker2_path = os.path.join(WORKER_DIR, "harvest_best_ranking.py")
     if os.path.exists(worker2_path):
-        print_log("🏆 [2번 수집기] BEST 랭킹 수집 가동...")
+        print_log(f"🏆 [2번 수집기] 실행 시도: {worker2_path}")
         try:
-            subprocess.run([sys.executable, worker2_path], check=True, cwd=BASE_DIR)
+            result = subprocess.run([sys.executable, worker2_path], check=True, cwd=BASE_DIR, capture_output=True, text=True)
+            print(result.stdout)
             print_log("✅ [2번 수집기] 완료")
+        except subprocess.CalledProcessError as e:
+            print_log(f"❌ [2번 수집기] 실행 실패 (에러코드 {e.returncode}):\n{e.stderr}")
         except Exception as e:
-            print_log(f"❌ [2번 수집기] 오류 발생: {e}")
+            print_log(f"❌ [2번 수집기] 예외 발생: {e}")
+    else:
+        print_log(f"❌ [2번 수집기] 파일을 찾을 수 없음: {worker2_path}")
 
     print_log("🎉 [오케스트레이터] 전체 파이프라인 작업 종료.")
 
 if __name__ == "__main__":
     print_log("🛡️ Morvix Shop OS 통합 스케줄러 백그라운드 구동 시작")
     
-    # 1. 서버 부팅 직후 기다리지 않고 최초 1회 즉시 실행
     print_log("🚀 서버 부팅 직후 최초 수집 파이프라인을 즉시 실행합니다.")
     try:
         run_pipeline()
     except Exception as err:
         print_log(f"⚠️ 최초 실행 예외 발생: {err}")
     
-    # 2. 이후 주기적인 반복 실행 루프 (예: 6시간 간격)
     while True:
         print_log("⏳ 다음 작업 주기(6시간) 대기 중...")
         time.sleep(21600)
