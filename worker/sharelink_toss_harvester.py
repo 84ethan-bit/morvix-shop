@@ -1,6 +1,6 @@
 """
 =============================================================================
-MORVIX SHOP OS - Toss ShareLink Portal Harvester (V62 - Render Memory Optimized)
+MORVIX SHOP OS - Toss ShareLink Portal Harvester (Original Firefox Version)
 worker/sharelink_toss_harvester.py
 =============================================================================
 """
@@ -63,7 +63,7 @@ def push_to_github_automatically():
         subprocess.run(["git", "add", "-f", ROOT_DB_PATH], cwd=BASE_DIR, capture_output=True)
         subprocess.run(["git", "add", "-f", WORKER_DB_PATH], cwd=BASE_DIR, capture_output=True)
         
-        commit_msg = f"Auto Sync Today Deals (V62 Memory Optimized): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        commit_msg = f"Auto Sync Today Deals (Original Firefox): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
         
         push_res = subprocess.run(["git", "push", repo_url, "HEAD:main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
@@ -256,25 +256,14 @@ def harvest_today_deals_exclusively(page):
 
 
 def harvest_sharelink_portal():
-    print_log("🚀 스마트 스크롤 수집 엔진 가동 (Chromium + 메모리 최적화)")
+    print_log("🚀 스마트 스크롤 수집 엔진 가동 (Firefox)")
     setup_session_from_env()
 
     use_session = os.path.exists(SESSION_PATH)
     all_harvested_deals = []
 
     with sync_playwright() as p:
-        # 💡 렌더 서버 512MB 제한 우회를 위한 Chromium 메모리 최적화 인자 적용
-        browser = p.chromium.launch(
-            headless=True,
-            args=[
-                "--no-sandbox",
-                "--disable-setuid-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-accelerated-2d-canvas",
-                "--disable-gpu",
-                "--single-process"  # 단일 프로세스 모드로 메모리 절약 극대화
-            ]
-        )
+        browser = p.firefox.launch(headless=True, slow_mo=100)
         
         ctx_opts = {
             "viewport": {"width": 1440, "height": 900},
