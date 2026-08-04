@@ -1,6 +1,6 @@
 """
 =============================================================================
-MORVIX SHOP OS - Render Web Service Dummy Port & Harvester Runner with IP Checker
+MORVIX SHOP OS - Render Web Service Dummy Port & Direct Pipeline Runner
 worker/web_server_runner.py
 =============================================================================
 """
@@ -9,8 +9,10 @@ import socketserver
 import threading
 import os
 import time
-import sys
 import requests
+
+# 파이프라인 데몬 모듈 직접 임포트
+from toss_api_pipeline_daemon import run_pipeline_cycle
 
 PORT = int(os.environ.get("PORT", 10000))
 
@@ -18,13 +20,11 @@ def check_and_print_server_ip():
     """렌더 아웃바운드 공인 IP 확인 및 강제 로그 출력"""
     print("🌐 [RENDER IP CHECK] 외부 IP 조회 시도 중...", flush=True)
     try:
-        # ipify 또는 다른 공인 IP 확인 서비스 활용
         res = requests.get('https://api.ipify.org?format=json', timeout=10)
         if res.status_code == 200:
             current_ip = res.json().get('ip')
             print(f"\n=======================================================", flush=True)
             print(f"🌐 [RENDER OUTBOUND IP]: {current_ip}", flush=True)
-            print(f"💡 위 IP 주소를 토스 쉐어링크 Open API 설정 페이지에 등록하세요.", flush=True)
             print(f"=======================================================\n", flush=True)
         else:
             print(f"⚠️ IP 조회 응답 코드 이상: {res.status_code}", flush=True)
@@ -46,15 +46,17 @@ def run_dummy_server():
         httpd.serve_forever()
 
 def run_harvester_daemon():
-    """백그라운드에서 API 수집기 데몬 실행"""
+    """백그라운드에서 직접 파이프라인 함수 호출"""
     time.sleep(5)
-    # 기존 크롤링 데몬에서 새로운 토스 API 파이프라인 데몬으로 변경됨
-    daemon_script = os.path.join(os.path.dirname(__file__), "toss_api_pipeline_daemon.py")
     while True:
-        print("🚀 [통합 데몬] API 수집기 루프 실행 시작...", flush=True)
-        os.system(f"python {daemon_script}")
-        print("💤 [통합 데몬] 대기 중 (3시간 후 재실행)...", flush=True)
-        time.sleep(10800)
+        print("🚀 [통합 데몬] API 수집기 함수 직접 실행 시작...", flush=True)
+        try:
+            run_pipeline_cycle()
+        except Exception as e:
+            print(f"❌ [통합 데몬] 실행 중 에러 발생: {e}", flush=True)
+            
+        print("💤 [통합 데몬] 대기 중 (12시간 후 재실행)...", flush=True)
+        time.sleep(43200)
 
 if __name__ == "__main__":
     # 0. 시작 직후 공인 IP 확인 함수 실행
