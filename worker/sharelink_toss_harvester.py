@@ -1,6 +1,6 @@
 """
 =============================================================================
-MORVIX SHOP OS - Toss ShareLink Portal Harvester (Original Firefox Version)
+MORVIX SHOP OS - Toss ShareLink Portal Harvester (Smart Environment Browser)
 worker/sharelink_toss_harvester.py
 =============================================================================
 """
@@ -63,7 +63,7 @@ def push_to_github_automatically():
         subprocess.run(["git", "add", "-f", ROOT_DB_PATH], cwd=BASE_DIR, capture_output=True)
         subprocess.run(["git", "add", "-f", WORKER_DB_PATH], cwd=BASE_DIR, capture_output=True)
         
-        commit_msg = f"Auto Sync Today Deals (Original Firefox): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        commit_msg = f"Auto Sync Today Deals (Smart Browser): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True)
         
         push_res = subprocess.run(["git", "push", repo_url, "HEAD:main", "--force"], cwd=BASE_DIR, capture_output=True, text=True)
@@ -256,14 +256,32 @@ def harvest_today_deals_exclusively(page):
 
 
 def harvest_sharelink_portal():
-    print_log("🚀 스마트 스크롤 수집 엔진 가동 (Firefox)")
+    print_log("🚀 스마트 스크롤 수집 엔진 가동 (Smart Environment Browser)")
     setup_session_from_env()
 
     use_session = os.path.exists(SESSION_PATH)
     all_harvested_deals = []
 
     with sync_playwright() as p:
-        browser = p.firefox.launch(headless=True, slow_mo=100)
+        # 💡 렌더 서버 환경에서는 메모리 최적화 Chromium, 로컬에서는 Firefox 구동
+        is_render = os.environ.get("RENDER", "").strip() != ""
+
+        if is_render:
+            print_log("렌더 서버 환경 감지: 메모리 최적화된 Chromium 구동")
+            browser = p.chromium.launch(
+                headless=True,
+                args=[
+                    "--no-sandbox",
+                    "--disable-setuid-sandbox",
+                    "--disable-dev-shm-usage",
+                    "--disable-accelerated-2d-canvas",
+                    "--disable-gpu",
+                    "--single-process"
+                ]
+            )
+        else:
+            print_log("로컬 환경 감지: Firefox 구동")
+            browser = p.firefox.launch(headless=True, slow_mo=100)
         
         ctx_opts = {
             "viewport": {"width": 1440, "height": 900},
