@@ -725,6 +725,20 @@ body {
   background: rgba(255,255,255,0.15);
 }
 
+/* --- Base Product Grid Layout (4 Columns on Desktop, 3 on Tablet, 2 on Mobile) --- */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 1100px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+
 /* --- Mobile Commerce Optimization (2-Column Grid & Compact Cards) --- */
 @media (max-width: 768px) {
   .platform-hero-section {
