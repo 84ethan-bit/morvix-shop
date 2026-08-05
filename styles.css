@@ -33,14 +33,52 @@
   padding: 0;
 }
 
+@keyframes livePulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 6px rgba(74, 222, 128, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0);
+  }
+}
+
+.live-pulse-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #4ADE80;
+  border-radius: 50%;
+  animation: livePulse 1.8s infinite ease-in-out;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
 /* --- Integrated Header Disclosure Notice --- */
 .header-disclosure-text {
   font-size: 0.82rem;
   font-weight: 600;
-  color: #64748B;
-  text-align: right;
-  line-height: 1.35;
+  color: #334155;
+  background: #F0F7FF;
+  border: 1px solid #D0E3FF;
+  border-radius: 14px;
+  padding: 8px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.4;
   letter-spacing: -0.2px;
+  box-shadow: 0 2px 6px rgba(0, 82, 204, 0.04);
+}
+
+.header-disclosure-text strong {
+  color: #0F172A;
+  font-weight: 800;
 }
 
 body {
@@ -66,16 +104,17 @@ body {
   .header-nav-inner {
     flex-direction: column !important;
     align-items: flex-start !important;
-    gap: 6px !important;
+    gap: 8px !important;
   }
 
   .header-disclosure-text {
-    font-size: 0.72rem !important;
-    line-height: 1.3 !important;
+    font-size: 0.75rem !important;
+    line-height: 1.35 !important;
     text-align: left !important;
     width: 100% !important;
-    padding-top: 4px;
-    border-top: 1px solid #F1F5F9;
+    padding: 7px 12px !important;
+    border-radius: 10px !important;
+    box-sizing: border-box !important;
   }
 
   .hero-heading {
@@ -361,14 +400,14 @@ body {
 }
 
 .card-item-title {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #191F28;
-  line-height: 1.35;
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1.4;
   letter-spacing: -0.3px;
-  margin: 0;
+  margin: 0 0 4px 0;
   word-break: keep-all;
-  height: 2.6em;
+  height: 2.8em;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -377,9 +416,10 @@ body {
 
 .card-price-row {
   display: flex;
-  align-items: baseline;
-  gap: 6px;
-  margin-top: auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  margin: 0;
   white-space: nowrap !important;
 }
 
@@ -391,16 +431,17 @@ body {
 }
 
 .card-price-text {
-  color: #191F28;
-  font-size: 1.05rem;
+  color: #0F172A;
+  font-size: 1.18rem;
   font-weight: 900;
-  letter-spacing: -0.4px;
+  letter-spacing: -0.5px;
   white-space: nowrap !important;
 }
 
 .card-orig-price {
-  color: #8B95A1;
-  font-size: 0.78rem;
+  color: #94A3B8;
+  font-size: 0.75rem;
+  font-weight: 500;
   text-decoration: line-through;
   white-space: nowrap !important;
 }
@@ -577,15 +618,163 @@ body {
   scroll-snap-align: start !important;
 }
 
-/* --- Section 2: Grid Layout & Mobile 2-Column Grid System --- */
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+/* --- Platform Hero Section --- */
+.platform-hero-section {
+  max-width: 1200px;
+  margin: 20px auto 24px;
+  padding: 0 24px;
+}
+
+.platform-hero-card {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  border-radius: 20px;
+  padding: 28px 32px;
+  color: #FFFFFF;
+  box-shadow: 0 8px 24px rgba(15,23,42,0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.platform-hero-glow {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.platform-hero-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
   gap: 20px;
+}
+
+.platform-badge-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #38BDF8;
+  margin-bottom: 10px;
+}
+
+.platform-hero-title {
+  font-size: 1.65rem;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  margin: 0 0 6px;
+  font-family: 'Pretendard', 'Outfit', sans-serif;
+  word-break: keep-all;
+}
+
+.platform-hero-desc {
+  color: #94A3B8;
+  font-size: 0.9rem;
+  margin: 0;
+  font-weight: 500;
+  word-break: keep-all;
+}
+
+.platform-metrics-widget {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(8px);
+  padding: 14px 20px;
+  border-radius: 16px;
+}
+
+.metric-item {
+  text-align: center;
+  padding: 0 8px;
+}
+
+.metric-label {
+  font-size: 0.72rem;
+  color: #94A3B8;
+  font-weight: 600;
+  margin-bottom: 2px;
+  white-space: nowrap;
+}
+
+.metric-value {
+  font-size: 1.15rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.metric-value.blue-text { color: #38BDF8; }
+.metric-value.green-text { color: #4ADE80; display: flex; align-items: center; justify-content: center; gap: 4px; }
+.metric-value.yellow-text { color: #FACC15; }
+
+.metric-divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255,255,255,0.15);
 }
 
 /* --- Mobile Commerce Optimization (2-Column Grid & Compact Cards) --- */
 @media (max-width: 768px) {
+  .platform-hero-section {
+    padding: 0 16px !important;
+    margin: 12px auto 16px !important;
+  }
+
+  .platform-hero-card {
+    padding: 20px 18px !important;
+    border-radius: 16px !important;
+  }
+
+  .platform-hero-title {
+    font-size: 1.22rem !important;
+    line-height: 1.35 !important;
+    letter-spacing: -0.4px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .platform-hero-desc {
+    font-size: 0.8rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .platform-metrics-widget {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 4px !important;
+    padding: 12px 8px !important;
+    margin-top: 12px !important;
+    box-sizing: border-box !important;
+    justify-items: center !important;
+  }
+
+  .metric-item {
+    padding: 0 2px !important;
+  }
+
+  .metric-label {
+    font-size: 0.65rem !important;
+  }
+
+  .metric-value {
+    font-size: 0.92rem !important;
+  }
+
+  .metric-divider {
+    display: none !important;
+  }
   .product-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 10px !important;
@@ -612,22 +801,24 @@ body {
   }
 
   .card-item-title {
-    font-size: 0.84rem !important;
-    line-height: 1.3 !important;
-    height: 2.6em;
+    font-size: 0.94rem !important;
+    font-weight: 800 !important;
+    line-height: 1.38 !important;
+    height: 2.76em;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    margin-bottom: 6px !important;
+    margin-bottom: 4px !important;
   }
 
   .card-discount-text {
-    font-size: 0.92rem !important;
+    font-size: 0.98rem !important;
   }
 
   .card-price-text {
-    font-size: 1.05rem !important;
+    font-size: 1.12rem !important;
+    font-weight: 900 !important;
   }
 
   .card-orig-price {

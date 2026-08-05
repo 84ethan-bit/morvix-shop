@@ -137,6 +137,36 @@ function renderCategories() {
   return;
 }
 
+function normalizeProductSchema(rawList, defaultCategory = '') {
+  if (!Array.isArray(rawList)) return [];
+  return rawList.map(p => {
+    if (!p) return null;
+    const thumbnail = p.thumbnail || p.imageUrl || p.image || '';
+    const name = p.name || p.title || '';
+    const price = typeof p.price === 'number' ? p.price : parseInt(String(p.price || 0).replace(/[^0-9]/g, '')) || 0;
+    const original_price = typeof p.originalPrice === 'number' ? p.originalPrice : (typeof p.original_price === 'number' ? p.original_price : parseInt(String(p.originalPrice || p.original_price || 0).replace(/[^0-9]/g, '')) || 0);
+    const toss_link = p.shareUrl || p.toss_link || p.url || '#';
+    const slug = String(p.productId || p.slug || p.id || Math.random());
+    const discount_rate = p.discount_rate || (original_price > price ? Math.round((1 - price / original_price) * 100) + '%' : '');
+    const isTodayPrice = defaultCategory === '오늘만 이가격' || p.category === '오늘만 이가격' || p.category === '오늘만 이 가격' || p.section === 'today_price' || p.category === 'today_price';
+    
+    return {
+      ...p,
+      id: slug,
+      slug: slug,
+      name: name,
+      price: price,
+      original_price: original_price,
+      discount_rate: discount_rate,
+      thumbnail: thumbnail,
+      toss_link: toss_link,
+      section: isTodayPrice ? 'today_price' : (p.section || 'best_seller'),
+      category: p.category || defaultCategory || 'all',
+      status: 'ACTIVE'
+    };
+  }).filter(p => p && p.name && p.thumbnail);
+}
+
 // --------------------------------------------------------------------------
 // Initialize MORVIX SHOP OS
 // --------------------------------------------------------------------------
@@ -154,8 +184,32 @@ async function initShopOS() {
     const res = await fetch('morvix_shop_db.json?t=' + Date.now(), { cache: 'no-store' });
     if (res.ok) {
       const fetched = await res.json();
+      let normalizedProducts = [];
+
       if (fetched && Array.isArray(fetched.products)) {
-        dbData.products = fetched.products;
+        normalizedProducts = normalizeProductSchema(fetched.products);
+      } else if (fetched && fetched.categories) {
+        const todayPriceList = fetched.categories['오늘만 이가격'] || fetched.categories['오늘만 이 가격'] || [];
+        const todaySlugs = new Set(todayPriceList.map(p => String(p.productId || p.slug || p.id)));
+
+        const allList = fetched.categories['전체'] || [];
+        
+        const normalizedToday = normalizeProductSchema(todayPriceList, '오늘만 이가격');
+        const normalizedAll = normalizeProductSchema(allList, 'all').map(p => {
+          if (todaySlugs.has(p.slug)) p.section = 'today_price';
+          return p;
+        });
+
+        // Merge & Deduplicate
+        const map = new Map();
+        [...normalizedToday, ...normalizedAll].forEach(p => {
+          if (!map.has(p.slug)) map.set(p.slug, p);
+        });
+        normalizedProducts = Array.from(map.values());
+      }
+
+      if (normalizedProducts.length > 0) {
+        dbData.products = normalizedProducts;
       }
     }
   } catch (err) {
@@ -169,6 +223,24 @@ async function initShopOS() {
   renderProducts();
   setupRouting();
   setupAdminEvents();
+  setupSection1Scroll();
+}
+
+function setupSection1Scroll() {
+  const grid = document.getElementById('time-attack-grid');
+  const btnLeft = document.getElementById('btn-scroll-left');
+  const btnRight = document.getElementById('btn-scroll-right');
+  if (!grid || !btnLeft || !btnRight) return;
+
+  btnLeft.addEventListener('click', (e) => {
+    e.preventDefault();
+    grid.scrollBy({ left: -450, behavior: 'smooth' });
+  });
+
+  btnRight.addEventListener('click', (e) => {
+    e.preventDefault();
+    grid.scrollBy({ left: 450, behavior: 'smooth' });
+  });
 }
 
 // Render Exactly 2 Dedicated Core Categories: 오늘만 이 가격 & 지금 많이 팔리는 BEST
@@ -177,13 +249,51 @@ function renderCategories() {
   if (!container) return;
 
   const categories = [
-    { id: 'all', name: '📦 전체' },
-    { id: 'fruit', name: '🍎 과일·신선' },
-    { id: 'food', name: '🥦 식품' },
-    { id: 'living', name: '🏠 생활·주방' },
-    { id: 'car', name: '🚗 차량용품' },
-    { id: 'fashion', name: '👔 패션·뷰티' },
-    { id: 'health', name: '💊 건강' }
+    { 
+      id: 'all', 
+      name: '전체', 
+      iconSvg: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect></svg>'
+    },
+    { 
+      id: 'today_price', 
+      name: '오늘만 이가격', 
+      iconSvg: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3.5z"></path></svg>'
+    },
+    { 
+      id: 'best', 
+      name: 'BEST', 
+      iconSvg: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"></path></svg>'
+    },
+    { 
+      id: 'fruit', 
+      name: '과일·신선', 
+      iconSvg: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.91 4.91 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06z"></path><path d="M10 2c1 .5 2 2 2 5"></path></svg>'
+    },
+    { 
+      id: 'food', 
+      name: '식품', 
+      iconSvg: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>'
+    },
+    { 
+      id: 'living', 
+      name: '생활·주방', 
+      iconSvg: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>'
+    },
+    { 
+      id: 'car', 
+      name: '차량용품', 
+      iconSvg: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H7c-.7 0-1.3.3-1.8.7C4.3 8.6 3 10 3 10s-2.7.6-4.5 1.1C.7 11.3 0 12.1 0 13v3c0 .6.4 1 1 1h2"></path><circle cx="7" cy="17" r="2"></circle><path d="M9 17h6"></path><circle cx="17" cy="17" r="2"></circle></svg>'
+    },
+    { 
+      id: 'fashion', 
+      name: '패션·뷰티', 
+      iconSvg: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg>'
+    },
+    { 
+      id: 'health', 
+      name: '건강', 
+      iconSvg: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>'
+    }
   ];
 
   container.style.display = 'flex';
@@ -195,13 +305,14 @@ function renderCategories() {
 
   container.innerHTML = categories.map(cat => {
     const isActive = (currentCategory === cat.id) || (!currentCategory && cat.id === 'all');
-    const activeStyle = 'background: #0F172A; color: #FFFFFF; border: 1.5px solid #0F172A; font-weight: 800; box-shadow: 0 4px 12px rgba(15,23,42,0.18);';
+    const activeStyle = 'background: #0052CC; color: #FFFFFF; border: 1.5px solid #0052CC; font-weight: 800; box-shadow: 0 4px 12px rgba(0,82,204,0.22);';
     const inactiveStyle = 'background: #F8FAFC; color: #475569; border: 1.5px solid #E2E8F0; font-weight: 700;';
     const style = isActive ? activeStyle : inactiveStyle;
 
     return `
-      <button class="cat-pill ${isActive ? 'active' : ''}" data-cat="${cat.id}" style="${style} padding: 10px 20px; font-size: 0.92rem; border-radius: 24px; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; white-space: nowrap; font-family: 'Pretendard', sans-serif;">
-        ${cat.name}
+      <button class="cat-pill ${isActive ? 'active' : ''}" data-cat="${cat.id}" style="${style} padding: 9px 18px; font-size: 0.9rem; border-radius: 24px; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; white-space: nowrap; font-family: 'Pretendard', sans-serif; display: inline-flex; align-items: center; gap: 6px;">
+        <span class="cat-icon" style="display: inline-flex; align-items: center; color: ${isActive ? '#FFFFFF' : '#64748B'};">${cat.iconSvg}</span>
+        <span>${cat.name}</span>
       </button>
     `;
   }).join('');
@@ -266,21 +377,33 @@ function renderUniversalProductCard(p, badgeHTML = '', extraCardStyle = '') {
 
   const tossLink = getTossShareLink(p);
 
+  // 3. 네온 할인율 뱃지 (시선 강탈)
+  let discountBadgeHTML = '';
+  if (discRate) {
+    const formattedRate = discRate.includes('%') ? discRate : '-' + discRate + '%';
+    discountBadgeHTML = `<span style="position: absolute; top: 8px; right: 8px; background: linear-gradient(135deg, #FF4757 0%, #FF6B81 100%); color: #FFFFFF; font-size: 0.76rem; font-weight: 900; padding: 3px 8px; border-radius: 8px; box-shadow: 0 3px 10px rgba(255,71,87,0.35); z-index: 3; letter-spacing: -0.3px;">${formattedRate}</span>`;
+  }
+
   return `
-    <a href="${tossLink}" class="product-card-v2" onclick="handleProductCardClick(event, '${tossLink}', '${p.slug}')" style="${extraCardStyle}">
+    <a href="${tossLink}" target="_self" class="product-card-v2" onclick="handleProductCardClick(event, '${tossLink}', '${p.slug}')" style="${extraCardStyle}">
       <!-- 1. Pure 1:1 Image Box with Absolute Badge -->
-      <div class="card-thumb-frame">
+      <div class="card-thumb-frame" style="position: relative;">
         <img class="card-thumb-img" src="${p.thumbnail}" alt="${cleanTitle}" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80';">
         ${badgeHTML}
+        ${discountBadgeHTML}
       </div>
 
-      <!-- 2. Clean 3-Part Information Hierarchy -->
+      <!-- 2. Clean 3-Part Information Hierarchy & CTA Tag -->
       <div class="card-info-wrap">
         <h3 class="card-item-title">${cleanTitle}</h3>
-        <div class="card-price-row">
-          ${discRate ? `<span class="card-discount-text">${discRate}</span>` : ''}
-          <span class="card-price-text">${priceStr}</span>
-          ${origPriceStr ? `<span class="card-orig-price">${origPriceStr}</span>` : ''}
+        <div class="card-bottom-row" style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%; margin-top: auto; padding-top: 6px; flex-wrap: nowrap;">
+          <div class="card-price-row" style="margin: 0;">
+            <span class="card-price-text">${priceStr}</span>
+            ${origPriceStr ? `<span class="card-orig-price" style="display: block; font-size: 0.75rem;">${origPriceStr}</span>` : ''}
+          </div>
+          <span class="cta-direct-btn" style="background: rgba(0, 82, 204, 0.07); color: #0052CC; border: 1px solid rgba(0, 82, 204, 0.2); font-size: 0.73rem; font-weight: 800; padding: 5px 9px; border-radius: 8px; display: inline-flex; align-items: center; gap: 3px; flex-shrink: 0; white-space: nowrap; transition: all 0.2s ease;">
+            토스 특가 보기 ➔
+          </span>
         </div>
       </div>
     </a>
@@ -289,8 +412,11 @@ function renderUniversalProductCard(p, badgeHTML = '', extraCardStyle = '') {
 
 // 📱 토스 앱 0.1초 즉시 직행 네비게이션 엔진 (팝업창 100% 원천 차단)
 function handleProductCardClick(e, url, slug) {
-  if (!url) return;
-  if (e) e.preventDefault();
+  if (e) {
+    e.preventDefault();
+    if (e.stopPropagation) e.stopPropagation();
+  }
+  if (!url || url === '#') return;
   try {
     trackOutboundClick(slug);
   } catch (err) {}
@@ -365,6 +491,11 @@ function renderProducts() {
 
   // Filter out any invalid/null product entries
   let activeProducts = dbData.products.filter(p => p && p.name && p.thumbnail && (p.status === 'ACTIVE' || !p.status));
+
+  const metricToday = document.getElementById('metric-today-count');
+  if (metricToday && activeProducts.length > 0) {
+    metricToday.textContent = `${activeProducts.length}개`;
+  }
   const catTitles = {
     'all': '📦 전체 핫딜 모음집',
     'fruit': '🍎 과일·신선 핫딜 모음집',
