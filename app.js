@@ -57,7 +57,6 @@ function updateProductLifecycleStates() {
     if (!p.status || p.status === 'EXPIRED' || p.status === 'OUT_OF_STOCK') {
       p.status = 'ACTIVE';
     }
-    // 카테고리 자동 지정 (없을 경우 이름 기반 추론)
     if (!p.category || p.category === '전체') {
       p.category = getAutoCategory(p.name);
     }
@@ -236,12 +235,12 @@ function renderProducts() {
   let activeProducts = dbData.products.filter(p => p && (p.name || '').trim());
   let filtered = activeProducts;
 
-  // 카테고리 필터링 적용
+  // 카테고리 필터링 적용 (오늘만 이가격 매칭 포함)
   if (currentCategory && currentCategory !== 'all') {
     if (currentCategory === 'best') {
       filtered = activeProducts.filter(p => p.category === '베스트');
     } else if (currentCategory === 'today') {
-      filtered = activeProducts.filter(p => p.category === '오늘만 이가격');
+      filtered = activeProducts.filter(p => p.category === '오늘만 이가격' || p.category === 'today');
     } else {
       filtered = activeProducts.filter(p => p.category === currentCategory || getAutoCategory(p.name) === currentCategory);
     }
