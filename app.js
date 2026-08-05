@@ -8,7 +8,6 @@ function openTossMobileView(url, e) {
   window.location.href = url;
 }
 
-
 const INITIAL_DB_DATA = {
   "store_info": {
     "brand_name": "MORVIX SHOP OS",
@@ -18,16 +17,13 @@ const INITIAL_DB_DATA = {
   },
   "categories": [
     {"id": "all", "name": "모든 제품", "icon": "📦"},
-    {"id": "featured", "name": "오늘의 추천", "icon": "🌟"},
-    {"id": "reels", "name": "릴스 속 그 상품", "icon": "🎬"},
-    {"id": "best100", "name": "베스트 100", "icon": "🏆"},
+    {"id": "best", "name": "베스트", "icon": "🏆"},
+    {"id": "today", "name": "오늘만 이가격", "icon": "⏰"},
     {"id": "summer", "name": "여름/장마", "icon": "❄️"},
     {"id": "life", "name": "생활용품", "icon": "🏠"},
     {"id": "cleaning", "name": "청소/위생", "icon": "🧹"},
     {"id": "kitchen", "name": "주방/요리", "icon": "🍳"},
-    {"id": "it", "name": "IT/디지털", "icon": "📱"},
-    {"id": "car", "name": "자동차", "icon": "🚗"},
-    {"id": "pet", "name": "반려동물", "icon": "🐾"}
+    {"id": "it", "name": "IT/디지털", "icon": "📱"}
   ],
   "products": []
 };
@@ -37,53 +33,17 @@ let currentCategory = 'all';
 let currentSort = 'popular';
 let displayedProductCount = 24;
 
-
 // --------------------------------------------------------------------------
-// 1. Smart Category Auto Classifier (hot-deal-studio Engine Ported & Extended)
+// 1. Smart Category Auto Classifier
 // --------------------------------------------------------------------------
 function getAutoCategory(titleText) {
   const lk = (titleText || '').toLowerCase().replace(/\s+/g, '');
 
-  // 1. Summer & Cooling (Priority 1)
-  if (anyKeyword(lk, [
-    "서큘레이터", "선풍기", "에어컨", "쿨링", "이불", "패드", "여름", "얼음", "장마", "모기", "포충기", "냉풍기",
-    "초냉감", "열대야", "부채", "제습기", "냉매", "아이스", "얼음조끼", "쿨매트", "쿨베개", "냉감", "홑이불", "시원"
-  ])) return "summer";
+  if (anyKeyword(lk, ["서큘레이터", "선풍기", "에어컨", "쿨링", "이불", "패드", "여름", "얼음", "장마", "모기", "냉풍기", "아이스", "쿨매트", "냉감", "시원"])) return "summer";
+  if (anyKeyword(lk, ["청소기", "청소", "소독", "세제", "휴지", "물티슈", "샴푸", "칫솔", "치약", "비누", "걸레", "유연제", "수건", "기저귀", "키친타올", "생리대", "면도기", "살충제", "마스크", "방향제", "바디워시", "화장지"])) return "cleaning";
+  if (anyKeyword(lk, ["냄비", "프라이팬", "식기", "그릇", "도마", "칼", "주방", "조리", "밥솥", "전기포트", "믹서기", "에어프라이어", "전자레인지", "텀블러", "밀폐용기", "오븐", "식기세척기", "수저", "젓가락"])) return "kitchen";
+  if (anyKeyword(lk, ["맥세이프", "거치대", "충전기", "아이폰", "갤럭시", "키보드", "마우스", "무선", "디지털", "모니터", "노트북", "태블릿", "에어팟", "버즈", "워치", "스피커", "이어폰", "헤드폰", "usb", "케이블", "보조배터리"])) return "it";
 
-  // 2. Cleaning & Vacuum & Hygiene (Priority 2 - BEFORE general IT)
-  if (anyKeyword(lk, [
-    "청소기", "청소", "소독", "탈취", "세제", "위생", "스크러버", "휴지", "물티슈", "샴푸", "린스", "칫솔", "치약", "비누", "걸레",
-    "유연제", "섬유유연제", "수건", "기저귀", "키친타올", "생리대", "면도기", "살충제", "제습제", "마스크", "손세정제",
-    "방향제", "건전지", "세탁세제", "주방세제", "바디워시", "화장지", "티슈", "치실", "구강청결제", "로봇청소기"
-  ])) return "cleaning";
-
-  // 3. Kitchen & Cooking (Priority 3)
-  if (anyKeyword(lk, [
-    "냄비", "프라이팬", "식기", "그릇", "도마", "칼", "가위", "주방", "조리", "밥솥", "전기포트", "믹서기", "에어프라이어",
-    "전자레인지", "텀블러", "밀폐용기", "도시락", "오븐", "토스터", "커피머신", "쌀통", "행주", "수세미", "니트릴", "호일",
-    "랩", "지퍼백", "식세기", "식기세척기", "수저", "젓가락", "포크", "쟁반", "국자", "뒤집개", "집게", "위생장갑"
-  ])) return "kitchen";
-
-  // 4. IT & Electronics (Priority 4)
-  if (anyKeyword(lk, [
-    "맥세이프", "거치대", "충전기", "충전", "아이폰", "갤럭시", "데스크", "키보드", "마우스", "무선", "it", "디지털",
-    "모니터", "노트북", "태블릿", "아이패드", "에어팟", "버즈", "워치", "스피커", "이어폰", "헤드폰", "공유기", "외장하드",
-    "usb", "닌텐도", "플스", "게임기", "공기청정기", "가전", "tv", "노트북가방", "파우치", "케이블", "보조배터리"
-  ])) return "it";
-
-  // 5. Automotive (Priority 5)
-  if (anyKeyword(lk, [
-    "자동차", "차량", "햇빛", "차광", "우산", "세차", "블랙박스", "네비게이션", "와이퍼", "타이어", "광택", "방향제",
-    "시트커버", "핸들커버", "차량용", "엔진오일", "워셔액", "하이패스", "세차용품", "트렁크", "차박"
-  ])) return "car";
-
-  // 6. Pets (Priority 6)
-  if (anyKeyword(lk, [
-    "강아지", "고양이", "펫", "사료", "간식", "장난감", "목줄", "하네스", "캣타워", "펫푸드", "반려동물", "애완",
-    "멍멍", "야옹", "츄르", "모래", "배변패드", "이동장", "숨집", "애견", "캣"
-  ])) return "pet";
-
-  // 7. General Home & Living (Fallback)
   return "life";
 }
 
@@ -91,49 +51,17 @@ function anyKeyword(text, keywords) {
   return keywords.some(kw => text.includes(kw));
 }
 
-// --------------------------------------------------------------------------
-// 2. Price & Discount Rate Regex Engine (hot-deal-studio Engine Ported)
-// --------------------------------------------------------------------------
-function parsePriceAndDiscount(rawText) {
-  let discount = 0;
-  let price = 0;
-
-  const discountMatch = (rawText || '').match(/(\d+)\s*[%％]/);
-  if (discountMatch) {
-    discount = parseInt(discountMatch[1]);
-  }
-
-  const allPrices = (rawText || '').match(/([\d,]+)\s*원/g);
-  if (allPrices && allPrices.length > 0) {
-    const parsedNums = allPrices.map(p => parseInt(p.replace(/[^0-9]/g, ''))).filter(n => n >= 500);
-    if (parsedNums.length > 0) {
-      price = parsedNums[parsedNums.length - 1];
-    }
-  }
-
-  return { discount, price };
-}
-
-// --------------------------------------------------------------------------
-// 3. State-Based Product Lifecycle Management (ACTIVE, EXPIRED, OUT_OF_STOCK, HIDDEN)
-// --------------------------------------------------------------------------
 function updateProductLifecycleStates() {
   if (!dbData || !dbData.products) return;
   dbData.products.forEach(p => {
     if (!p.status || p.status === 'EXPIRED' || p.status === 'OUT_OF_STOCK') {
       p.status = 'ACTIVE';
     }
+    // 카테고리 자동 지정 (없을 경우 이름 기반 추론)
+    if (!p.category || p.category === '전체') {
+      p.category = getAutoCategory(p.name);
+    }
   });
-}
-
-
-function renderCategories() {
-  const container = document.getElementById('category-container');
-  if (container) {
-    container.style.display = 'none';
-    if (container.parentElement) container.parentElement.style.display = 'none';
-  }
-  return;
 }
 
 // --------------------------------------------------------------------------
@@ -145,10 +73,10 @@ async function initShopOS() {
     if (res.ok) {
       const fetched = await res.json();
       if (fetched) {
-        if (Array.isArray(fetched.products) && fetched.products.length > 0) {
-          dbData.products = fetched.products;
-        } else if (fetched.categories && Array.isArray(fetched.categories['전체']) && fetched.categories['전체'].length > 0) {
+        if (fetched.categories && Array.isArray(fetched.categories['전체'])) {
           dbData.products = fetched.categories['전체'];
+        } else if (Array.isArray(fetched.products)) {
+          dbData.products = fetched.products;
         }
       }
     }
@@ -168,14 +96,15 @@ function renderCategories() {
   const container = document.getElementById('category-container');
   if (!container) return;
 
-  const categories = [
+  const categories = dbData.categories || [
     { id: 'all', name: '📦 전체' },
-    { id: 'fruit', name: '🍎 과일·신선' },
-    { id: 'food', name: '🥦 식품' },
-    { id: 'living', name: '🏠 생활·주방' },
-    { id: 'car', name: '🚗 차량용품' },
-    { id: 'fashion', name: '👔 패션·뷰티' },
-    { id: 'health', name: '💊 건강' }
+    { id: 'best', name: '🏆 베스트' },
+    { id: 'today', name: '⏰ 오늘만 이가격' },
+    { id: 'summer', name: '❄️ 여름/장마' },
+    { id: 'life', name: '🏠 생활용품' },
+    { id: 'cleaning', name: '🧹 청소/위생' },
+    { id: 'kitchen', name: '🍳 주방/요리' },
+    { id: 'it', name: '📱 IT/디지털' }
   ];
 
   container.style.display = 'flex';
@@ -186,14 +115,16 @@ function renderCategories() {
   if (container.parentElement) container.parentElement.style.display = 'block';
 
   container.innerHTML = categories.map(cat => {
-    const isActive = (currentCategory === cat.id) || (!currentCategory && cat.id === 'all');
+    const catId = cat.id || cat;
+    const catName = cat.name || cat;
+    const isActive = (currentCategory === catId) || (!currentCategory && catId === 'all');
     const activeStyle = 'background: #0F172A; color: #FFFFFF; border: 1.5px solid #0F172A; font-weight: 800; box-shadow: 0 4px 12px rgba(15,23,42,0.18);';
     const inactiveStyle = 'background: #F8FAFC; color: #475569; border: 1.5px solid #E2E8F0; font-weight: 700;';
     const style = isActive ? activeStyle : inactiveStyle;
 
     return `
-      <button class="cat-pill ${isActive ? 'active' : ''}" data-cat="${cat.id}" style="${style} padding: 10px 20px; font-size: 0.92rem; border-radius: 24px; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; white-space: nowrap; font-family: 'Pretendard', sans-serif;">
-        ${cat.name}
+      <button class="cat-pill ${isActive ? 'active' : ''}" data-cat="${catId}" style="${style} padding: 10px 20px; font-size: 0.92rem; border-radius: 24px; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; white-space: nowrap; font-family: 'Pretendard', sans-serif;">
+        ${catName}
       </button>
     `;
   }).join('');
@@ -277,28 +208,13 @@ function loadMoreProducts() {
   renderProducts();
 }
 
-function trackOutboundClick(slug) {
-  try {
-    logRealClickEvent(slug, 'toss');
-  } catch (e) {}
-}
-window.trackOutboundClick = trackOutboundClick;
-
 function getTossShareLink(p) {
   if (!p) return 'https://toss.im';
   return p.shareUrl || p.share_link || p.toss_link || 'https://toss.im';
 }
 
-function parseDiscountNum(val) {
-  if (!val) return 0;
-  const nums = String(val).replace(/[^\d]/g, '');
-  return nums ? parseInt(nums, 10) : 0;
-}
-
 function renderProducts() {
   const grid = document.getElementById('product-grid');
-  const timeAttackGrid = document.getElementById('time-attack-grid');
-  const title = document.getElementById('section-title');
   const count = document.getElementById('product-count');
   const sortSelect = document.getElementById('sort-select');
   const loadMoreWrap = document.getElementById('load-more-wrap');
@@ -320,8 +236,15 @@ function renderProducts() {
   let activeProducts = dbData.products.filter(p => p && (p.name || '').trim());
   let filtered = activeProducts;
 
+  // 카테고리 필터링 적용
   if (currentCategory && currentCategory !== 'all') {
-    filtered = activeProducts.filter(p => p.category === currentCategory);
+    if (currentCategory === 'best') {
+      filtered = activeProducts.filter(p => p.category === '베스트');
+    } else if (currentCategory === 'today') {
+      filtered = activeProducts.filter(p => p.category === '오늘만 이가격');
+    } else {
+      filtered = activeProducts.filter(p => p.category === currentCategory || getAutoCategory(p.name) === currentCategory);
+    }
   }
 
   if (count) count.textContent = `총 ${filtered.length}개 핫딜 노출 중`;
@@ -368,61 +291,9 @@ function openProductDetail(slug) {
   }
 }
 
-const EVENT_LOG_KEY = 'morvix_real_click_events_v1';
-
-function logRealClickEvent(slug, platform) {
-  try {
-    const rawLogs = localStorage.getItem(EVENT_LOG_KEY);
-    const logs = rawLogs ? JSON.parse(rawLogs) : [];
-    logs.unshift({ timestamp: new Date().toISOString(), slug, platform });
-    localStorage.setItem(EVENT_LOG_KEY, JSON.stringify(logs.slice(0, 500)));
-  } catch (e) {}
-}
-
 const DB_STORAGE_KEY = 'morvix_master_db_products_v14';
 
-async function saveMasterDbToStorage() {
-  if (!dbData || !dbData.products) return;
-  try {
-    localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(dbData.products));
-  } catch (e) {}
-}
-
-async function loadMasterDbFromStorage() {
-  try {
-    const res = await fetch('morvix_shop_db.json?t=' + Date.now(), { cache: 'no-store' });
-    if (res.ok) {
-      const serverData = await res.json();
-      
-      let productList = [];
-      if (serverData && serverData.categories && Array.isArray(serverData.categories['전체'])) {
-        productList = serverData.categories['전체'];
-      } else if (serverData && Array.isArray(serverData.products)) {
-        productList = serverData.products;
-      }
-
-      if (productList.length > 0) {
-        dbData.products = productList;
-        localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(dbData.products));
-        return;
-      }
-    }
-  } catch (err) {
-    console.warn("Server DB fetch notice:", err);
-  }
-
-  try {
-    const saved = localStorage.getItem(DB_STORAGE_KEY);
-    if (saved) {
-      const parsedProds = JSON.parse(saved);
-      if (Array.isArray(parsedProds) && parsedProds.length > 0) {
-        dbData.products = parsedProds;
-      }
-    }
-  } catch (e) {}
-}
-
-function verifyAndOpenAdmin() {
+async function verifyAndOpenAdmin() {
   const modal = document.getElementById('admin-modal');
   const loginModal = document.getElementById('admin-login-modal');
   if (sessionStorage.getItem('morvix_admin_auth') === 'true') {
