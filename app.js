@@ -644,11 +644,20 @@ async function saveMasterDbToStorage() {
 
 async function loadMasterDbFromStorage() {
   try {
-    const res = await fetch('/api/products');
+    const res = await fetch('/morvix_shop_db.json?t=' + Date.now()); // 혹은 기존 '/api/products' 경로 유지 여부에 맞춰 확인
     if (res.ok) {
       const serverData = await res.json();
-      if (serverData && Array.isArray(serverData.products) && serverData.products.length > 0) {
-        dbData = serverData;
+      
+      // 👉 카테고리 구조인지, products 배열 구조인지 양쪽 모두 대응하도록 매핑
+      let productList = [];
+      if (serverData && serverData.categories && Array.isArray(serverData.categories['전체'])) {
+        productList = serverData.categories['전체'];
+      } else if (serverData && Array.isArray(serverData.products)) {
+        productList = serverData.products;
+      }
+
+      if (productList.length > 0) {
+        dbData = { products: productList };
         localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(dbData.products));
         return;
       }
