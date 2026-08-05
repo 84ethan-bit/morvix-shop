@@ -19,6 +19,10 @@ def get_kst_now():
     """해외 렌더 서버(UTC) 환경에서도 100% 정확한 한국 표준시(KST) 구하기"""
     return datetime.now(timezone.utc).astimezone(KST)
 
+# 동일 폴더(worker) 내의 파이프라인 데몬 모듈을 안전하게 임포트하기 위한 경로 추가
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from toss_api_pipeline_daemon import run_pipeline_cycle
+
 RENDER_EXTERNAL_URL = os.environ.get("RENDER_EXTERNAL_URL")
 
 def check_and_print_server_ip():
