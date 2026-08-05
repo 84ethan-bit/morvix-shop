@@ -393,17 +393,14 @@ function renderUniversalProductCard(p, badgeHTML = '', extraCardStyle = '') {
         ${discountBadgeHTML}
       </div>
 
-      <!-- 2. Clean 3-Part Information Hierarchy & CTA Tag -->
+      <!-- 2. Clean Minimalist Information Hierarchy (Uncluttered Price Layout) -->
       <div class="card-info-wrap">
         <h3 class="card-item-title">${cleanTitle}</h3>
-        <div class="card-bottom-row" style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%; margin-top: auto; padding-top: 6px; flex-wrap: nowrap;">
-          <div class="card-price-row" style="margin: 0;">
+        <div class="card-bottom-row" style="display: flex; align-items: baseline; justify-content: space-between; width: 100%; margin-top: auto; padding-top: 6px;">
+          <div class="card-price-row" style="display: flex; align-items: baseline; gap: 6px; margin: 0; flex-wrap: wrap;">
             <span class="card-price-text">${priceStr}</span>
-            ${origPriceStr ? `<span class="card-orig-price" style="display: block; font-size: 0.75rem;">${origPriceStr}</span>` : ''}
+            ${origPriceStr ? `<span class="card-orig-price">${origPriceStr}</span>` : ''}
           </div>
-          <span class="cta-direct-btn" style="background: rgba(0, 82, 204, 0.07); color: #0052CC; border: 1px solid rgba(0, 82, 204, 0.2); font-size: 0.73rem; font-weight: 800; padding: 5px 9px; border-radius: 8px; display: inline-flex; align-items: center; gap: 3px; flex-shrink: 0; white-space: nowrap; transition: all 0.2s ease;">
-            토스 특가 보기 ➔
-          </span>
         </div>
       </div>
     </a>
