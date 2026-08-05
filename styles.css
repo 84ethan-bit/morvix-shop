@@ -400,7 +400,7 @@ body {
 }
 
 .card-item-title {
-  font-size: 0.98rem;
+  font-size: 1.10rem;
   font-weight: 800;
   color: #0F172A;
   line-height: 1.4;
@@ -815,7 +815,7 @@ body {
   }
 
   .card-item-title {
-    font-size: 0.94rem !important;
+    font-size: 1.02rem !important;
     font-weight: 800 !important;
     line-height: 1.38 !important;
     height: 2.76em;
