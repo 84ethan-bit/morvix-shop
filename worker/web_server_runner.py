@@ -66,6 +66,8 @@ def run_dummy_server():
         print(f"🌐 렌더 포트 바인딩 성공: 포트 {PORT}에서 웹 서버 대기 중...", flush=True)
         httpd.serve_forever()
 
+import traceback
+
 def run_harvester_daemon():
     """
     스마트 자정(00:01) 스케줄러 데몬
@@ -80,6 +82,7 @@ def run_harvester_daemon():
         run_pipeline_cycle()
     except Exception as e:
         print(f"❌ [스마트 데몬] 최초 실행 중 에러 발생: {e}", flush=True)
+        traceback.print_exc()
 
     while True:
         # 🇰🇷 해외 렌더 서버(UTC) 환경에서도 정확한 '한국 표준시(KST)' 기준 다음 00시 01분 계산
@@ -100,6 +103,7 @@ def run_harvester_daemon():
             run_pipeline_cycle()
         except Exception as e:
             print(f"❌ [스마트 데몬] 정기 실행 중 에러 발생: {e}", flush=True)
+            traceback.print_exc()
 
 if __name__ == "__main__":
     # 0. 시작 직후 공인 IP 확인 함수 실행

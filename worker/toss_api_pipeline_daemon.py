@@ -25,6 +25,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(BASE_DIR, "morvix_shop_db.json")
 
 def get_access_token():
+    if not ACCESS_KEY or not SECRET_KEY:
+        print("⚠️ [환경변수 미설정] Render 대시보드에 TOSS_ACCESS_KEY 또는 TOSS_SECRET_KEY가 등록되지 않았습니다.", flush=True)
+        return None
+
     payload = {
         "grant_type": "client_credentials",
         "client_id": ACCESS_KEY,
@@ -36,8 +40,10 @@ def get_access_token():
         response = requests.post(TOKEN_URL, data=payload, headers=headers, timeout=15)
         if response.status_code == 200:
             return response.json().get("access_token")
-    except Exception:
-        pass
+        else:
+            print(f"⚠️ [토스트 토큰 발급 응답 에러] 상태코드: {response.status_code}, 내용: {response.text}", flush=True)
+    except Exception as e:
+        print(f"⚠️ [토큰 발급 통신 예외]: {e}", flush=True)
     return None
 
 def fetch_limited_products(access_token, endpoint_path, max_count, category_label):
@@ -119,6 +125,7 @@ def load_existing_db():
 
 def push_db_to_github(db_data):
     if not GH_TOKEN or not GH_REPO:
+        print("⚠️ [GitHub 푸시 불가] Render 대시보드에 GH_TOKEN 또는 GH_REPO가 등록되지 않았습니다.", flush=True)
         return False
 
     # 수정됨: 깃허브 최상단 루트에 있는 morvix_shop_db.json을 타겟으로 지정
