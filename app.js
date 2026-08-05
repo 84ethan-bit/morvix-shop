@@ -467,6 +467,51 @@ function parseDiscountNum(val) {
   return nums ? parseInt(nums, 10) : 0;
 }
 
+function getAutoCategory(name) {
+  if (!name) return 'living';
+  const n = String(name).toLowerCase();
+  if (n.includes('사과') || n.includes('배') || n.includes('귤') || n.includes('복숭아') || n.includes('체리') || n.includes('딸기') || n.includes('샤인머스캣') || n.includes('과일') || n.includes('신선') || n.includes('고구마') || n.includes('감자') || n.includes('토마토')) return 'fruit';
+  if (n.includes('고기') || n.includes('한우') || n.includes('삼겹살') || n.includes('밀키트') || n.includes('볶음밥') || n.includes('라면') || n.includes('햇반') || n.includes('만두') || n.includes('김치') || n.includes('닭가슴살') || n.includes('스팸') || n.includes('음료') || n.includes('커피') || n.includes('식품') || n.includes('간식')) return 'food';
+  if (n.includes('차량') || n.includes('세차') || n.includes('타이어') || n.includes('블랙박스') || n.includes('카시트') || n.includes('핸들') || n.includes('방향제') || n.includes('와이퍼')) return 'car';
+  if (n.includes('옷') || n.includes('원피스') || n.includes('티셔츠') || n.includes('바지') || n.includes('화장품') || n.includes('크림') || n.includes('앰플') || n.includes('로션') || n.includes('패션') || n.includes('뷰티') || n.includes('마스크팩')) return 'fashion';
+  if (n.includes('유산균') || n.includes('비타민') || n.includes('오메가3') || n.includes('홍삼') || n.includes('영양제') || n.includes('건강')) return 'health';
+  if (n.includes('냄비') || n.includes('후라이팬') || n.includes('세제') || n.includes('휴지') || n.includes('청소') || n.includes('이불') || n.includes('생활') || n.includes('주방') || n.includes('수건')) return 'living';
+  return 'living';
+}
+
+function matchesCategory(p, catId) {
+  if (!p || !catId || catId === 'all') return true;
+  const pCat = (p.category || '').trim();
+  const autoCat = getAutoCategory(p.name || '');
+
+  if (catId === 'today_price' || catId === 'today') {
+    return pCat === '오늘만 이가격' || pCat === '오늘만 이 가격' || pCat === 'today' || pCat === 'today_price' || p.section === 'today_price';
+  }
+  if (catId === 'best') {
+    return pCat === '베스트' || pCat === 'best' || p.section === 'best_seller' || Boolean(p.rank);
+  }
+  if (catId === 'fruit') {
+    return pCat === '과일·신선' || pCat === '과일' || pCat === '신선' || pCat === 'fruit' || autoCat === 'fruit';
+  }
+  if (catId === 'food') {
+    return pCat === '식품' || pCat === 'food' || autoCat === 'food';
+  }
+  if (catId === 'living') {
+    return pCat === '생활·주방' || pCat === '생활' || pCat === '주방' || pCat === 'living' || autoCat === 'living';
+  }
+  if (catId === 'car') {
+    return pCat === '차량용품' || pCat === '차량' || pCat === 'car' || autoCat === 'car';
+  }
+  if (catId === 'fashion') {
+    return pCat === '패션·뷰티' || pCat === '패션' || pCat === '뷰티' || pCat === 'fashion' || autoCat === 'fashion';
+  }
+  if (catId === 'health') {
+    return pCat === '건강' || pCat === 'health' || autoCat === 'health';
+  }
+
+  return pCat === catId || autoCat === catId;
+}
+
 function renderProducts() {
   const grid = document.getElementById('product-grid');
   const timeAttackGrid = document.getElementById('time-attack-grid');
@@ -498,6 +543,9 @@ function renderProducts() {
   }
   const catTitles = {
     'all': '📦 전체 핫딜 모음집',
+    'today_price': '⏰ 오늘만 이가격 핫딜 모음집',
+    'today': '⏰ 오늘만 이가격 핫딜 모음집',
+    'best': '🏆 BEST 베스트 핫딜 모음집',
     'fruit': '🍎 과일·신선 핫딜 모음집',
     'food': '🥦 식품 핫딜 모음집',
     'living': '🏠 생활·주방 핫딜 모음집',
@@ -507,14 +555,12 @@ function renderProducts() {
   };
 
   if (currentCategory && currentCategory !== 'all') {
-    filtered = activeProducts.filter(p => p.category === currentCategory);
+    filtered = activeProducts.filter(p => matchesCategory(p, currentCategory));
     if (title) title.textContent = catTitles[currentCategory] || '📦 핫딜 모음집';
   } else {
     filtered = activeProducts;
     if (title) title.textContent = '📦 전체 핫딜 모음집';
   }
-
-
 
   // Apply Sorting
   if (currentSort === 'discount') {
@@ -532,7 +578,7 @@ function renderProducts() {
   let timeAttackDeals = [];
   if (timeAttackGrid) {
     if (currentCategory && currentCategory !== 'all') {
-      timeAttackDeals = activeProducts.filter(p => p.section === 'today_price' && p.category === currentCategory);
+      timeAttackDeals = activeProducts.filter(p => p.section === 'today_price' && matchesCategory(p, currentCategory));
     } else {
       timeAttackDeals = activeProducts.filter(p => p.section === 'today_price');
     }
