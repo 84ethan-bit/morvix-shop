@@ -10,7 +10,11 @@ import http.server
 import socketserver
 import threading
 import time
+import requests
 from datetime import datetime, timedelta, timezone
+
+# 🌐 렌더 주입 PORT 환경변수 수신 (기본값 10000)
+PORT = int(os.environ.get("PORT", 10000))
 
 # 🇰🇷 한국 표준시 (KST: UTC+9) 명시적 타임존 정의
 KST = timezone(timedelta(hours=9))
