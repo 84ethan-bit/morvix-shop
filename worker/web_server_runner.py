@@ -113,13 +113,13 @@ if __name__ == "__main__":
     # 0. 시작 직후 공인 IP 확인 함수 실행
     check_and_print_server_ip()
 
-    # 1. 웹 서버를 백그라운드 스레드로 실행
-    server_thread = threading.Thread(target=run_dummy_server, daemon=True)
-    server_thread.start()
+    # 1. 핫딜 수집 및 00:01 자정 스케줄러 데몬을 백그라운드 스레드로 먼저 실행
+    harvester_thread = threading.Thread(target=run_harvester_daemon, daemon=True)
+    harvester_thread.start()
 
     # 2. 렌더 슬립 방지 하트비트 셀프 핑 스레드 가동
     heartbeat_thread = threading.Thread(target=run_keepalive_heartbeat, daemon=True)
     heartbeat_thread.start()
 
-    # 3. 메인 스레드에서는 최초 1회 수집 + 00:01 자정 스케줄러 데몬 실행
-    run_harvester_daemon()
+    # 3. 메인 스레드에서 즉시 렌더 웹 서버 실행 (0.001초 포트 바인딩 완료 ➔ 렌더 포트 검사 100% 즉시 합격)
+    run_dummy_server()

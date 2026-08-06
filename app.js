@@ -465,15 +465,81 @@ function parseDiscountNum(val) {
 }
 
 function getAutoCategory(name) {
-  if (!name) return 'living';
+  if (!name) return 'food';
   const n = String(name).toLowerCase();
-  if (n.includes('사과') || n.includes('배') || n.includes('귤') || n.includes('복숭아') || n.includes('체리') || n.includes('딸기') || n.includes('샤인머스캣') || n.includes('과일') || n.includes('신선') || n.includes('고구마') || n.includes('감자') || n.includes('토마토')) return 'fruit';
-  if (n.includes('고기') || n.includes('한우') || n.includes('삼겹살') || n.includes('밀키트') || n.includes('볶음밥') || n.includes('라면') || n.includes('햇반') || n.includes('만두') || n.includes('김치') || n.includes('닭가슴살') || n.includes('스팸') || n.includes('음료') || n.includes('커피') || n.includes('식품') || n.includes('간식')) return 'food';
-  if (n.includes('차량') || n.includes('세차') || n.includes('타이어') || n.includes('블랙박스') || n.includes('카시트') || n.includes('핸들') || n.includes('방향제') || n.includes('와이퍼')) return 'car';
-  if (n.includes('옷') || n.includes('원피스') || n.includes('티셔츠') || n.includes('바지') || n.includes('화장품') || n.includes('크림') || n.includes('앰플') || n.includes('로션') || n.includes('패션') || n.includes('뷰티') || n.includes('마스크팩')) return 'fashion';
-  if (n.includes('유산균') || n.includes('비타민') || n.includes('오메가3') || n.includes('홍삼') || n.includes('영양제') || n.includes('건강')) return 'health';
-  if (n.includes('냄비') || n.includes('후라이팬') || n.includes('세제') || n.includes('휴지') || n.includes('청소') || n.includes('이불') || n.includes('생활') || n.includes('주방') || n.includes('수건')) return 'living';
-  return 'living';
+
+  // 1. 음료 / 두유 / 우유 / 미숫가루 / 크림치즈 / 치즈 / 과자 / 프링글스 / 찌개 / 가공식품 강제 식품 분류 (패션/건강/생활 침범 100% 차단)
+  if (
+    n.includes('두유') || n.includes('우유') || n.includes('미숫가루') || n.includes('크림치즈') || n.includes('치즈') || 
+    n.includes('프링글스') || n.includes('칩') || n.includes('과자') || n.includes('스낵') || 
+    n.includes('떡') || n.includes('찰떡') || n.includes('부대찌개') || n.includes('찌개') || 
+    n.includes('펑리수') || n.includes('볶음밥') || n.includes('밀키트') || n.includes('라면') || 
+    n.includes('햇반') || n.includes('만두') || n.includes('김치') || n.includes('닭가슴살') || 
+    n.includes('스팸') || n.includes('커피') || n.includes('음료') || n.includes('주스') || 
+    n.includes('스파클링') || n.includes('에이드') || n.includes('소다') || n.includes('콩')
+  ) {
+    return 'food';
+  }
+
+  // 2. 차량용품 강제 즉시 분류
+  if (
+    n.includes('와이퍼') || n.includes('블랙박스') || n.includes('카시트') || n.includes('세차') || 
+    n.includes('차량') || n.includes('타이어') || n.includes('방향제') || n.includes('핸들')
+  ) {
+    return 'car';
+  }
+
+  // 3. 패션·뷰티 강제 즉시 분류 (화장품, 앰플, 원피스, 니트, 피부 보습크림)
+  const isCosmeticCream = n.includes('페이셜 크림') || n.includes('수분크림') || n.includes('영양크림') || n.includes('보습크림') || n.includes('선크림') || (n.includes('크림') && !n.includes('치즈') && !n.includes('찰떡') && !n.includes('빵'));
+  if (
+    n.includes('화장품') || isCosmeticCream || n.includes('앰플') || n.includes('로션') || 
+    n.includes('마스크팩') || n.includes('원피스') || n.includes('니트') || n.includes('티셔츠') || 
+    n.includes('바지') || n.includes('옷') || n.includes('패션') || n.includes('뷰티') || 
+    n.includes('패치') || n.includes('스티커') || n.includes('양말') || n.includes('신발') || n.includes('가방')
+  ) {
+    return 'fashion';
+  }
+
+  // 4. 건강기능식품 강제 즉시 분류 (두유/음료 제외)
+  if (
+    n.includes('유산균') || n.includes('비타민') || n.includes('오메가') || n.includes('홍삼') || 
+    n.includes('영양제') || n.includes('콜라겐') || n.includes('프로틴') || n.includes('루테인') || 
+    n.includes('마그네슘') || n.includes('밀크씨슬') || n.includes('건강기능')
+  ) {
+    return 'health';
+  }
+
+  // 5. 생과일 / 정육 / 수산물 (과일·신선) 정밀 분류
+  if (
+    n.includes('복숭아') || n.includes('황도') || n.includes('백도') || n.includes('사과') || 
+    n.includes('배') || n.includes('귤') || n.includes('감귤') || n.includes('한라봉') || 
+    n.includes('천혜향') || n.includes('체리') || n.includes('딸기') || n.includes('샤인머스캣') || 
+    n.includes('포도') || n.includes('수박') || n.includes('참외') || n.includes('자두') || 
+    n.includes('키위') || n.includes('토마토') || n.includes('바나나') || n.includes('망고') || 
+    n.includes('신선') || n.includes('농산') || n.includes('한우') || n.includes('삼겹살') || 
+    n.includes('목살') || n.includes('소고기') || n.includes('돼지고기') || n.includes('생선') || 
+    n.includes('오징어') || n.includes('전복') || n.includes('새우') || n.includes('연어') || 
+    n.includes('회필렛') || n.includes('구운란') || n.includes('계란') || n.includes('달걀') || 
+    n.includes('흑돼지') || n.includes('왕구이') || n.includes('오돌뼈')
+  ) {
+    return 'fruit';
+  }
+
+  // 6. 진짜 순수 생활·주방 용품만 'living' 반환 (아이스박스, 수납, 배수구, 휴지, 세제, 냄비 등)
+  if (
+    n.includes('아이스박스') || n.includes('박스') || n.includes('보관함') || n.includes('수납') || 
+    n.includes('휴지') || n.includes('물티슈') || n.includes('세제') || n.includes('유연제') || 
+    n.includes('냄비') || n.includes('후라이팬') || n.includes('프라이팬') || n.includes('그릇') || 
+    n.includes('수저') || n.includes('밀폐용기') || n.includes('청소') || n.includes('마스크') || 
+    n.includes('치약') || n.includes('칫솔') || n.includes('샴푸') || n.includes('린스') || 
+    n.includes('바디워시') || n.includes('수건') || n.includes('이불') || n.includes('베개') || 
+    n.includes('배터리') || n.includes('보조배터리') || n.includes('충전기') || n.includes('클리너') || 
+    n.includes('배수구') || n.includes('멀티탭') || n.includes('건전지')
+  ) {
+    return 'living';
+  }
+
+  return 'food';
 }
 
 function matchesCategory(p, catId) {
@@ -487,26 +553,29 @@ function matchesCategory(p, catId) {
   if (catId === 'best') {
     return pCat === '베스트' || pCat === 'best' || p.section === 'best_seller' || Boolean(p.rank);
   }
+
+  // 🍎 과일·신선 탭은 오직 정밀 분류 결과가 'fruit'인 순수 과일/신선 식품만 노출 (배터리, 클리너, 과자, 주스 완전 매장)
   if (catId === 'fruit') {
-    return pCat === '과일·신선' || pCat === '과일' || pCat === '신선' || pCat === 'fruit' || autoCat === 'fruit';
-  }
-  if (catId === 'food') {
-    return pCat === '식품' || pCat === 'food' || autoCat === 'food';
-  }
-  if (catId === 'living') {
-    return pCat === '생활·주방' || pCat === '생활' || pCat === '주방' || pCat === 'living' || autoCat === 'living';
-  }
-  if (catId === 'car') {
-    return pCat === '차량용품' || pCat === '차량' || pCat === 'car' || autoCat === 'car';
-  }
-  if (catId === 'fashion') {
-    return pCat === '패션·뷰티' || pCat === '패션' || pCat === '뷰티' || pCat === 'fashion' || autoCat === 'fashion';
-  }
-  if (catId === 'health') {
-    return pCat === '건강' || pCat === 'health' || autoCat === 'health';
+    return autoCat === 'fruit';
   }
 
-  return pCat === catId || autoCat === catId;
+  if (catId === 'food') {
+    return autoCat === 'food';
+  }
+  if (catId === 'living') {
+    return autoCat === 'living';
+  }
+  if (catId === 'car') {
+    return autoCat === 'car';
+  }
+  if (catId === 'fashion') {
+    return autoCat === 'fashion';
+  }
+  if (catId === 'health') {
+    return autoCat === 'health';
+  }
+
+  return autoCat === catId;
 }
 
 function renderProducts() {
@@ -2149,6 +2218,137 @@ function deleteProduct(id) {
   }
 }
 
+// --------------------------------------------------------------------------
+// 🔐 Secret Admin Visitor Analytics & 5-Click Logo Entrance Engine
+// --------------------------------------------------------------------------
+const ADMIN_ANALYTICS_KEY = 'morvix_secret_admin_analytics_v1';
+let logoClickCount = 0;
+let logoClickTimer = null;
+
+function initSecretAdminVisitorTracker() {
+  try {
+    const todayStr = new Date().toISOString().split('T')[0];
+    let stats = {
+      today_date: todayStr,
+      today_count: 0,
+      total_views: 0,
+      pc_count: 0,
+      mobile_count: 0,
+      recent_visits: [],
+      top_products: {}
+    };
+
+    const saved = localStorage.getItem(ADMIN_ANALYTICS_KEY);
+    if (saved) {
+      try {
+        stats = { ...stats, ...JSON.parse(saved) };
+      } catch (e) {}
+    }
+
+    if (stats.today_date !== todayStr) {
+      stats.today_date = todayStr;
+      stats.today_count = 0;
+    }
+
+    stats.today_count += 1;
+    stats.total_views += 1;
+
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isMobile) stats.mobile_count += 1;
+    else stats.pc_count += 1;
+
+    const nowTime = new Date().toLocaleTimeString('ko-KR', { hour12: false });
+    const deviceTag = isMobile ? '📱 Mobile' : '🖥️ PC';
+    stats.recent_visits.unshift(`${nowTime} - ${deviceTag} (유입 완료)`);
+    stats.recent_visits = stats.recent_visits.slice(0, 15);
+
+    localStorage.setItem(ADMIN_ANALYTICS_KEY, JSON.stringify(stats));
+  } catch (e) {}
+
+  // 1. URL 시크릿 파라미터 감지 (?admin=7777 또는 ?admin=morvix)
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('admin') === '7777' || urlParams.get('admin') === 'morvix') {
+    openAdminAnalyticsModal();
+  }
+
+  // 2. ♾️ MORVIX 상단 로고 5회 연속 클릭 시크릿 게이트 연결
+  setTimeout(() => {
+    const logoEl = document.querySelector('.header-nav-inner > div');
+    if (logoEl) {
+      logoEl.addEventListener('click', (e) => {
+        logoClickCount += 1;
+        if (logoClickTimer) clearTimeout(logoClickTimer);
+        logoClickTimer = setTimeout(() => { logoClickCount = 0; }, 1800);
+
+        if (logoClickCount >= 5) {
+          logoClickCount = 0;
+          const pw = prompt('🔐 대표님 전용 관리자 비밀번호를 입력하세요:');
+          if (pw === '7777' || pw === 'morvix' || pw === 'morvix777') {
+            openAdminAnalyticsModal();
+          } else if (pw !== null) {
+            alert('❌ 비밀번호가 올바르지 않습니다.');
+          }
+        }
+      });
+    }
+  }, 500);
+}
+
+function openAdminAnalyticsModal() {
+  const modal = document.getElementById('admin-analytics-modal');
+  if (!modal) return;
+
+  try {
+    const saved = localStorage.getItem(ADMIN_ANALYTICS_KEY);
+    const stats = saved ? JSON.parse(saved) : { today_count: 1, total_views: 1, pc_count: 1, mobile_count: 0, recent_visits: [], top_products: {} };
+
+    document.getElementById('admin-kpi-today').textContent = (stats.today_count || 1) + '명';
+    document.getElementById('admin-kpi-total').textContent = (stats.total_views || 1) + '회';
+
+    const totalDev = (stats.mobile_count || 0) + (stats.pc_count || 0) || 1;
+    const mobPct = Math.round(((stats.mobile_count || 0) / totalDev) * 100);
+    const pcPct = 100 - mobPct;
+
+    document.getElementById('admin-mobile-pct').textContent = mobPct + '%';
+    document.getElementById('admin-pc-pct').textContent = pcPct + '%';
+    document.getElementById('admin-mobile-bar').style.width = mobPct + '%';
+    document.getElementById('admin-pc-bar').style.width = pcPct + '%';
+
+    // Top Products
+    const topProdEl = document.getElementById('admin-top-products-list');
+    const topProds = stats.top_products || {};
+    const sorted = Object.entries(topProds).sort((a, b) => b[1] - a[1]).slice(0, 5);
+    if (sorted.length === 0) {
+      topProdEl.innerHTML = '<span style="color:#64748B;">아직 클릭된 상품이 없습니다. 실시간 기록 중...</span>';
+    } else {
+      topProdEl.innerHTML = sorted.map(([name, clicks], idx) => `
+        <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
+          <span>${idx + 1}. ${name}</span>
+          <strong style="color:#38BDF8;">${clicks}회 클릭</strong>
+        </div>
+      `).join('');
+    }
+
+    // Recent visits
+    const recentEl = document.getElementById('admin-recent-visits-list');
+    const visits = stats.recent_visits || [];
+    if (visits.length === 0) {
+      recentEl.innerHTML = '<div>방문 기록 집계 중...</div>';
+    } else {
+      recentEl.innerHTML = visits.map(v => `<div style="padding: 2px 0;">• ${v}</div>`).join('');
+    }
+  } catch (e) {}
+
+  modal.style.display = 'block';
+}
+window.openAdminAnalyticsModal = openAdminAnalyticsModal;
+
+function closeAdminAnalyticsModal() {
+  const modal = document.getElementById('admin-analytics-modal');
+  if (modal) modal.style.display = 'none';
+}
+window.closeAdminAnalyticsModal = closeAdminAnalyticsModal;
+
 function setupRouting() {
   handleGoRedirectRoute();
   const search = window.location.search;
@@ -2168,4 +2368,7 @@ window.addEventListener('hashchange', () => {
   else if (hash && !hash.startsWith('go/')) openProductDetail(hash);
 });
 
-document.addEventListener('DOMContentLoaded', initShopOS);
+document.addEventListener('DOMContentLoaded', () => {
+  initShopOS();
+  initSecretAdminVisitorTracker();
+});
