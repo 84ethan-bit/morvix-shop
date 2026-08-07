@@ -78,52 +78,30 @@ import traceback
 
 def run_harvester_daemon():
     """
-    스마트 자정(00:01) 스케줄러 데몬
-    - 서버 켜지자마자 최초 1회 즉시 실행 (오늘만 이가격 수집 및 기존 베스트 통합 후 푸시)
-    - 이후부터는 매일 밤 00시 01분에 정확히 깨어나 작동
+    GitHub Actions 매일 밤 00:01 KST 깨우기 연동 수집 데몬
+    - GitHub이 깨우기 신호를 보낼 때마다 1회차 핫딜 수집 및 DB 동기화 실행
+    - 수집 완수 후 15분 지나면 Render가 자동으로 전력을 0% 상태로 끄는 자연 휴면(Sleep) 진입
     """
-    # 1. 배포/서버 기동 직후 최초 1회 즉시 수집 실행
     print("\n=======================================================", flush=True)
-    print("🚀 [배포 최초 수집] 서버 기동 직후 1회차 핫딜 수집 및 통합 시작...", flush=True)
+    print(f"🚀 [{get_kst_now().strftime('%Y-%m-%d %H:%M:%S')} KST] 핫딜 수집 및 DB 동기화 파이프라인 가동...", flush=True)
     print("=======================================================\n", flush=True)
     try:
         run_pipeline_cycle()
+        print("\n=======================================================", flush=True)
+        print("✅ [수집 완수] 오늘만 이가격 & 베스트 핫딜 수집 완료!", flush=True)
+        print("💤 렌더 서버는 15분 후 자동으로 휴면(Sleep) 상태에 진입합니다.", flush=True)
+        print("=======================================================\n", flush=True)
     except Exception as e:
-        print(f"❌ [스마트 데몬] 최초 실행 중 에러 발생: {e}", flush=True)
+        print(f"❌ [수집 데몬] 실행 중 에러 발생: {e}", flush=True)
         traceback.print_exc()
-
-    while True:
-        # 🇰🇷 해외 렌더 서버(UTC) 환경에서도 정확한 '한국 표준시(KST)' 기준 다음 00시 01분 계산
-        now_kst = get_kst_now()
-        target_time_kst = now_kst.replace(hour=0, minute=1, second=0, microsecond=0)
-        if target_time_kst <= now_kst:
-            target_time_kst += timedelta(days=1)
-        
-        sleep_seconds = max(1, (target_time_kst - now_kst).total_seconds())
-        hours_left = sleep_seconds / 3600
-        print(f"💤 [스마트 데몬] 다음 한국시간(KST) 00:01 수집 예정 시각: {target_time_kst.strftime('%Y-%m-%d %H:%M:%S')} KST (약 {hours_left:.2f}시간 후 대기 중)...", flush=True)
-        
-        time.sleep(sleep_seconds)
-
-        # 자정 00시 01분이 되어 깨어남
-        print(f"\n🚀 [스마트 데몬] 자정(00:01) 정기 수집 실행 (오늘만 이가격 갱신 & 통합)...", flush=True)
-        try:
-            run_pipeline_cycle()
-        except Exception as e:
-            print(f"❌ [스마트 데몬] 정기 실행 중 에러 발생: {e}", flush=True)
-            traceback.print_exc()
 
 if __name__ == "__main__":
     # 0. 시작 직후 공인 IP 확인 함수 실행
     check_and_print_server_ip()
 
-    # 1. 핫딜 수집 및 00:01 자정 스케줄러 데몬을 백그라운드 스레드로 먼저 실행
+    # 1. 핫딜 수집 파이프라인을 백그라운드 스레드로 가동
     harvester_thread = threading.Thread(target=run_harvester_daemon, daemon=True)
     harvester_thread.start()
 
-    # 2. 렌더 슬립 방지 하트비트 셀프 핑 스레드 가동
-    heartbeat_thread = threading.Thread(target=run_keepalive_heartbeat, daemon=True)
-    heartbeat_thread.start()
-
-    # 3. 메인 스레드에서 즉시 렌더 웹 서버 실행 (0.001초 포트 바인딩 완료 ➔ 렌더 포트 검사 100% 즉시 합격)
+    # 2. 메인 스레드에서 즉시 렌더 포트 10000 바인딩 (0.001초 렌더 포트 검사 100% 200 OK 합격)
     run_dummy_server()

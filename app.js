@@ -2271,16 +2271,28 @@ function initSecretAdminVisitorTracker() {
     openAdminAnalyticsModal();
   }
 
-  // 2. ♾️ MORVIX 상단 로고 5회 연속 클릭 시크릿 게이트 연결
+  // 2. ♾️ MORVIX 상단 로고 5회 연속 클릭 시크릿 게이트 연결 (#main-header-logo)
   setTimeout(() => {
-    const logoEl = document.querySelector('.header-nav-inner > div');
+    const logoEl = document.getElementById('main-header-logo') || document.querySelector('.header-nav-inner > div');
     if (logoEl) {
       logoEl.addEventListener('click', (e) => {
+        if (e) e.preventDefault();
         logoClickCount += 1;
         if (logoClickTimer) clearTimeout(logoClickTimer);
-        logoClickTimer = setTimeout(() => { logoClickCount = 0; }, 1800);
+
+        logoClickTimer = setTimeout(() => {
+          // 1번 단일 클릭 시: 홈으로 부드럽게 스크롤 & 전체 카테고리 리셋
+          if (logoClickCount === 1) {
+            currentCategory = 'all';
+            renderCategories();
+            renderProducts();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+          logoClickCount = 0;
+        }, 400);
 
         if (logoClickCount >= 5) {
+          if (logoClickTimer) clearTimeout(logoClickTimer);
           logoClickCount = 0;
           const pw = prompt('🔐 대표님 전용 관리자 비밀번호를 입력하세요:');
           if (pw === '7777' || pw === 'morvix' || pw === 'morvix777') {
@@ -2291,7 +2303,7 @@ function initSecretAdminVisitorTracker() {
         }
       });
     }
-  }, 500);
+  }, 300);
 }
 
 function openAdminAnalyticsModal() {

@@ -144,7 +144,7 @@ def push_db_to_github(db_data):
         content_base64 = base64.b64encode(json_str.encode("utf-8")).decode("utf-8")
 
         payload = {
-            "message": f"Auto-update full combined shop DB [{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]",
+            "message": f"Auto-update full combined shop DB [{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] [skip render] [skip ci]",
             "content": content_base64,
             "branch": "main"
         }
